@@ -6,6 +6,7 @@ import VolatilityCard from "./VolatilityCard";
 import IndicesCard from "./IndicesCard";
 import BondForexCard from "./BondForexCard";
 import CommodityCard from "./CommodityCard";
+import HistoricalStatsCard from "./HistoricalStatsCard";
 import type { MarketData } from "@/lib/types";
 
 export default function Dashboard() {
@@ -73,6 +74,11 @@ export default function Dashboard() {
       {/* メインゲージ */}
       <div className="flex justify-center mb-8">
         <FearGreedGauge data={data.fearGreed} />
+      </div>
+
+      {/* 過去の統計 */}
+      <div className="mb-8">
+        <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
 
       {/* ボラティリティ + 主要指数 */}

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "generate:stats": "npx tsx scripts/generate-historical-stats.ts"
   },
   "dependencies": {
     "next": "16.2.4",

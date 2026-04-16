@@ -2,34 +2,34 @@ import { describe, it, expect } from "vitest";
 import { getSentimentLevel, getSentimentColor } from "@/lib/types";
 
 describe("getSentimentLevel", () => {
-  it("0-20は極度の恐怖を返す", () => {
-    expect(getSentimentLevel(0)).toBe("極度の恐怖");
-    expect(getSentimentLevel(10)).toBe("極度の恐怖");
-    expect(getSentimentLevel(20)).toBe("極度の恐怖");
+  it("0-20は極寒（総悲観）を返す", () => {
+    expect(getSentimentLevel(0)).toBe("極寒（総悲観）");
+    expect(getSentimentLevel(10)).toBe("極寒（総悲観）");
+    expect(getSentimentLevel(20)).toBe("極寒（総悲観）");
   });
 
-  it("21-40は恐怖を返す", () => {
-    expect(getSentimentLevel(21)).toBe("恐怖");
-    expect(getSentimentLevel(30)).toBe("恐怖");
-    expect(getSentimentLevel(40)).toBe("恐怖");
+  it("21-40は冷え込み（弱気）を返す", () => {
+    expect(getSentimentLevel(21)).toBe("冷え込み（弱気）");
+    expect(getSentimentLevel(30)).toBe("冷え込み（弱気）");
+    expect(getSentimentLevel(40)).toBe("冷え込み（弱気）");
   });
 
-  it("41-60は中立を返す", () => {
-    expect(getSentimentLevel(41)).toBe("中立");
-    expect(getSentimentLevel(50)).toBe("中立");
-    expect(getSentimentLevel(60)).toBe("中立");
+  it("41-60は平温（中立）を返す", () => {
+    expect(getSentimentLevel(41)).toBe("平温（中立）");
+    expect(getSentimentLevel(50)).toBe("平温（中立）");
+    expect(getSentimentLevel(60)).toBe("平温（中立）");
   });
 
-  it("61-80は欲望を返す", () => {
-    expect(getSentimentLevel(61)).toBe("欲望");
-    expect(getSentimentLevel(70)).toBe("欲望");
-    expect(getSentimentLevel(80)).toBe("欲望");
+  it("61-80は加熱（強気）を返す", () => {
+    expect(getSentimentLevel(61)).toBe("加熱（強気）");
+    expect(getSentimentLevel(70)).toBe("加熱（強気）");
+    expect(getSentimentLevel(80)).toBe("加熱（強気）");
   });
 
-  it("81-100は極度の欲望を返す", () => {
-    expect(getSentimentLevel(81)).toBe("極度の欲望");
-    expect(getSentimentLevel(90)).toBe("極度の欲望");
-    expect(getSentimentLevel(100)).toBe("極度の欲望");
+  it("81-100は沸騰（総楽観）を返す", () => {
+    expect(getSentimentLevel(81)).toBe("沸騰（総楽観）");
+    expect(getSentimentLevel(90)).toBe("沸騰（総楽観）");
+    expect(getSentimentLevel(100)).toBe("沸騰（総楽観）");
   });
 });
 

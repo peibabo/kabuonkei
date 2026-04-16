@@ -64,18 +64,18 @@ export interface MarketData {
 }
 
 export type SentimentLevel =
-  | "極度の恐怖"
-  | "恐怖"
-  | "中立"
-  | "欲望"
-  | "極度の欲望";
+  | "極寒（総悲観）"
+  | "冷え込み（弱気）"
+  | "平温（中立）"
+  | "加熱（強気）"
+  | "沸騰（総楽観）";
 
 export function getSentimentLevel(score: number): SentimentLevel {
-  if (score <= 20) return "極度の恐怖";
-  if (score <= 40) return "恐怖";
-  if (score <= 60) return "中立";
-  if (score <= 80) return "欲望";
-  return "極度の欲望";
+  if (score <= 20) return "極寒（総悲観）";
+  if (score <= 40) return "冷え込み（弱気）";
+  if (score <= 60) return "平温（中立）";
+  if (score <= 80) return "加熱（強気）";
+  return "沸騰（総楽観）";
 }
 
 export function getSentimentColor(score: number): string {

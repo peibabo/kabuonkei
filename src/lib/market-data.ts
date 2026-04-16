@@ -5,6 +5,7 @@ import type {
   VolatilityData,
   BondYieldData,
   ForexData,
+  CommodityData,
   ChartPoint,
   MarketData,
 } from "./types";
@@ -204,6 +205,34 @@ export async function fetchForex(): Promise<ForexData> {
   };
 }
 
+export async function fetchCommodities(): Promise<CommodityData[]> {
+  const symbols = [
+    { symbol: "GC=F", name: "金（ゴールド）" },
+    { symbol: "CL=F", name: "原油（WTI）" },
+    { symbol: "BTC-USD", name: "ビットコイン" },
+  ];
+
+  const results = await Promise.all(
+    symbols.map(async ({ symbol, name }) => {
+      const [quote, chart] = await Promise.all([
+        fetchQuote(symbol),
+        fetchChart(symbol),
+      ]);
+      if (!quote) return null;
+      return {
+        symbol,
+        name,
+        price: Math.round(quote.price * 100) / 100,
+        change: Math.round(quote.change * 100) / 100,
+        changePercent: Math.round(quote.changePercent * 100) / 100,
+        chart,
+      };
+    })
+  );
+
+  return results.filter((r): r is CommodityData => r !== null);
+}
+
 // メモリキャッシュ
 let cachedData: MarketData | null = null;
 let cacheTimestamp: number = 0;
@@ -216,11 +245,12 @@ export async function fetchAllMarketData(): Promise<MarketData> {
   }
 
   // VIXを先に取得し、Fear & GreedのフォールバックにVIX値を渡す
-  const [volatility, indices, bonds, forex] = await Promise.all([
+  const [volatility, indices, bonds, forex, commodities] = await Promise.all([
     fetchVolatilityData(),
     fetchIndices(),
     fetchBondYield(),
     fetchForex(),
+    fetchCommodities(),
   ]);
 
   const vixPrice = volatility.find((v) => v.symbol === "^VIX")?.price;
@@ -237,6 +267,7 @@ export async function fetchAllMarketData(): Promise<MarketData> {
     indices,
     bonds,
     forex,
+    commodities,
     lastUpdated,
   };
   cacheTimestamp = now;

@@ -44,12 +44,22 @@ export interface ForexData {
   changePercent: number;
 }
 
+export interface CommodityData {
+  symbol: string;
+  name: string;
+  price: number;
+  change: number;
+  changePercent: number;
+  chart: ChartPoint[];
+}
+
 export interface MarketData {
   fearGreed: FearGreedData;
   volatility: VolatilityData[];
   indices: IndexData[];
   bonds: BondYieldData;
   forex: ForexData;
+  commodities: CommodityData[];
   lastUpdated: string;
 }
 

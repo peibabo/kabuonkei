@@ -5,6 +5,7 @@ import FearGreedGauge from "./FearGreedGauge";
 import VolatilityCard from "./VolatilityCard";
 import IndicesCard from "./IndicesCard";
 import BondForexCard from "./BondForexCard";
+import CommodityCard from "./CommodityCard";
 import type { MarketData } from "@/lib/types";
 
 export default function Dashboard() {
@@ -80,9 +81,10 @@ export default function Dashboard() {
         <IndicesCard data={data.indices} />
       </div>
 
-      {/* 金利・為替 */}
+      {/* 金利・為替 + コモディティ・暗号資産 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <BondForexCard bonds={data.bonds} forex={data.forex} />
+        <CommodityCard data={data.commodities} />
       </div>
 
       {/* フッター */}

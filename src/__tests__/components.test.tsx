@@ -2,7 +2,8 @@ import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import FearGreedGauge from "@/components/FearGreedGauge";
 import IndicesCard from "@/components/IndicesCard";
-import type { FearGreedData, IndexData } from "@/lib/types";
+import CommodityCard from "@/components/CommodityCard";
+import type { FearGreedData, IndexData, CommodityData } from "@/lib/types";
 
 afterEach(() => {
   cleanup();
@@ -77,5 +78,61 @@ describe("IndicesCard", () => {
     expect(screen.getByText("日経平均")).toBeInTheDocument();
     expect(screen.getByText("+0.30%")).toBeInTheDocument();
     expect(screen.getByText("+0.50%")).toBeInTheDocument();
+  });
+});
+
+const mockCommodityData: CommodityData[] = [
+  {
+    symbol: "GC=F",
+    name: "金（ゴールド）",
+    price: 2350.5,
+    change: 12.3,
+    changePercent: 0.53,
+    chart: [],
+  },
+  {
+    symbol: "CL=F",
+    name: "原油（WTI）",
+    price: 78.42,
+    change: -1.15,
+    changePercent: -1.45,
+    chart: [],
+  },
+  {
+    symbol: "BTC-USD",
+    name: "ビットコイン",
+    price: 67890,
+    change: 1234.56,
+    changePercent: 1.85,
+    chart: [],
+  },
+];
+
+describe("CommodityCard", () => {
+  it("コモディティ名と変動率を表示する", () => {
+    render(<CommodityCard data={mockCommodityData} />);
+    expect(screen.getByText("金（ゴールド）")).toBeInTheDocument();
+    expect(screen.getByText("原油（WTI）")).toBeInTheDocument();
+    expect(screen.getByText("ビットコイン")).toBeInTheDocument();
+    expect(screen.getByText("+0.53%")).toBeInTheDocument();
+    expect(screen.getByText("-1.45%")).toBeInTheDocument();
+    expect(screen.getByText("+1.85%")).toBeInTheDocument();
+  });
+
+  it("単位を表示する", () => {
+    render(<CommodityCard data={mockCommodityData} />);
+    expect(screen.getByText("USD/oz")).toBeInTheDocument();
+    expect(screen.getByText("USD/bbl")).toBeInTheDocument();
+    expect(screen.getByText("USD")).toBeInTheDocument();
+  });
+
+  it("セクションタイトルを表示する", () => {
+    render(<CommodityCard data={mockCommodityData} />);
+    expect(screen.getByText("コモディティ・暗号資産")).toBeInTheDocument();
+  });
+
+  it("データが空の場合は何も表示しない", () => {
+    const { container } = render(<CommodityCard data={[]} />);
+    expect(container.innerHTML).toBe("");
   });
 });

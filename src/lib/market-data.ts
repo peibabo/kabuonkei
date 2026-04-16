@@ -87,49 +87,58 @@ export async function fetchFearGreedIndex(
 
 async function fetchQuote(
   symbol: string
-): Promise<{ price: number; change: number; changePercent: number }> {
-  const result = await yahooFinance.quote(symbol);
-  return {
-    price: result.regularMarketPrice ?? 0,
-    change: result.regularMarketChange ?? 0,
-    changePercent: result.regularMarketChangePercent ?? 0,
-  };
+): Promise<{ price: number; change: number; changePercent: number } | null> {
+  try {
+    const result = await yahooFinance.quote(symbol);
+    if (!result || result.regularMarketPrice == null) return null;
+    return {
+      price: result.regularMarketPrice ?? 0,
+      change: result.regularMarketChange ?? 0,
+      changePercent: result.regularMarketChangePercent ?? 0,
+    };
+  } catch {
+    return null;
+  }
 }
 
 async function fetchChart(
   symbol: string,
   days: number = 30
 ): Promise<ChartPoint[]> {
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - days);
+  try {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
 
-  const result = await yahooFinance.chart(symbol, {
-    period1: startDate.toISOString().split("T")[0],
-    period2: endDate.toISOString().split("T")[0],
-    interval: "1d",
-  });
+    const result = await yahooFinance.chart(symbol, {
+      period1: startDate.toISOString().split("T")[0],
+      period2: endDate.toISOString().split("T")[0],
+      interval: "1d",
+    });
 
-  return result.quotes
-    .filter((q) => q.close != null)
-    .map((q) => ({
-      date: new Date(q.date).toISOString().split("T")[0],
-      value: Math.round((q.close as number) * 100) / 100,
-    }));
+    return result.quotes
+      .filter((q) => q.close != null)
+      .map((q) => ({
+        date: new Date(q.date).toISOString().split("T")[0],
+        value: Math.round((q.close as number) * 100) / 100,
+      }));
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchVolatilityData(): Promise<VolatilityData[]> {
   const symbols = [
     { symbol: "^VIX", name: "VIX（恐怖指数）" },
-    { symbol: "^JNV", name: "日経VI" },
   ];
 
-  return Promise.all(
+  const results = await Promise.all(
     symbols.map(async ({ symbol, name }) => {
       const [quote, chart] = await Promise.all([
         fetchQuote(symbol),
         fetchChart(symbol),
       ]);
+      if (!quote) return null;
       return {
         symbol,
         name,
@@ -139,6 +148,8 @@ export async function fetchVolatilityData(): Promise<VolatilityData[]> {
       };
     })
   );
+
+  return results.filter((r): r is VolatilityData => r !== null);
 }
 
 export async function fetchIndices(): Promise<IndexData[]> {
@@ -150,9 +161,10 @@ export async function fetchIndices(): Promise<IndexData[]> {
     { symbol: "^TPX", name: "TOPIX" },
   ];
 
-  return Promise.all(
+  const results = await Promise.all(
     symbols.map(async ({ symbol, name }) => {
       const quote = await fetchQuote(symbol);
+      if (!quote) return null;
       return {
         symbol,
         name,
@@ -162,6 +174,8 @@ export async function fetchIndices(): Promise<IndexData[]> {
       };
     })
   );
+
+  return results.filter((r): r is IndexData => r !== null);
 }
 
 export async function fetchBondYield(): Promise<BondYieldData> {
@@ -172,8 +186,8 @@ export async function fetchBondYield(): Promise<BondYieldData> {
 
   return {
     name: "米国10年債利回り",
-    yield: Math.round(quote.price * 1000) / 1000,
-    change: Math.round(quote.change * 1000) / 1000,
+    yield: quote ? Math.round(quote.price * 1000) / 1000 : 0,
+    change: quote ? Math.round(quote.change * 1000) / 1000 : 0,
     chart,
   };
 }
@@ -184,9 +198,9 @@ export async function fetchForex(): Promise<ForexData> {
   return {
     pair: "USD/JPY",
     name: "ドル円",
-    rate: Math.round(quote.price * 100) / 100,
-    change: Math.round(quote.change * 100) / 100,
-    changePercent: Math.round(quote.changePercent * 100) / 100,
+    rate: quote ? Math.round(quote.price * 100) / 100 : 0,
+    change: quote ? Math.round(quote.change * 100) / 100 : 0,
+    changePercent: quote ? Math.round(quote.changePercent * 100) / 100 : 0,
   };
 }
 

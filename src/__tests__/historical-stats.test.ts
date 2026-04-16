@@ -21,7 +21,7 @@ describe("historical-stats", () => {
 
     it("各レベルに必要なフィールドが全て存在する", () => {
       const stats = getHistoricalStats();
-      const expectedLevels = ["極寒", "冷え込み", "平温", "加熱", "沸騰"];
+      const expectedLevels = ["極寒", "冷え込み", "平温", "過熱", "沸騰"];
       const periods = ["1m", "3m", "6m"] as const;
 
       stats.levels.forEach((level, i) => {

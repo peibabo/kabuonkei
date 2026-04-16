@@ -21,7 +21,7 @@ describe("HistoricalStatsCard", () => {
     expect(screen.getAllByText("極寒").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("冷え込み").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("平温").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText("加熱").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("過熱").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("沸騰").length).toBeGreaterThanOrEqual(1);
   });
 

@@ -38,7 +38,7 @@ const TEMPERATURE_BANDS = [
   { y1: 0, y2: 20, color: "#2563eb" },   // 極寒
   { y1: 20, y2: 40, color: "#0ea5e9" },  // 冷え込み
   { y1: 40, y2: 60, color: "#ca8a04" },  // 平温
-  { y1: 60, y2: 80, color: "#ea580c" },  // 加熱
+  { y1: 60, y2: 80, color: "#ea580c" },  // 過熱
   { y1: 80, y2: 100, color: "#dc2626" }, // 沸騰
 ];
 
@@ -169,7 +169,7 @@ export default function TemperatureTrendCard({ vixChart, currentScore }: Props) 
           { label: "極寒", color: "#2563eb" },
           { label: "冷え込み", color: "#0ea5e9" },
           { label: "平温", color: "#ca8a04" },
-          { label: "加熱", color: "#ea580c" },
+          { label: "過熱", color: "#ea580c" },
           { label: "沸騰", color: "#dc2626" },
         ].map((item) => (
           <div key={item.label} className="flex items-center gap-1">

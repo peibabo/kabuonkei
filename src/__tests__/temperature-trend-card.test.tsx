@@ -47,7 +47,7 @@ describe("TemperatureTrendCard", () => {
     expect(screen.getByText("極寒")).toBeInTheDocument();
     expect(screen.getByText("冷え込み")).toBeInTheDocument();
     expect(screen.getByText("平温")).toBeInTheDocument();
-    expect(screen.getByText("加熱")).toBeInTheDocument();
+    expect(screen.getByText("過熱")).toBeInTheDocument();
     expect(screen.getByText("沸騰")).toBeInTheDocument();
   });
 

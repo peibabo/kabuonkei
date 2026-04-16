@@ -24,10 +24,10 @@ describe("getSentimentLevel", () => {
     expect(getSentimentLevel(60)).toBe("平温");
   });
 
-  it("61-80は加熱を返す", () => {
-    expect(getSentimentLevel(61)).toBe("加熱");
-    expect(getSentimentLevel(70)).toBe("加熱");
-    expect(getSentimentLevel(80)).toBe("加熱");
+  it("61-80は過熱を返す", () => {
+    expect(getSentimentLevel(61)).toBe("過熱");
+    expect(getSentimentLevel(70)).toBe("過熱");
+    expect(getSentimentLevel(80)).toBe("過熱");
   });
 
   it("81-100は沸騰を返す", () => {

@@ -85,7 +85,7 @@ async function main() {
       { label: "極寒（0-20）", min: 0, max: 20 },
       { label: "冷え込み（21-40）", min: 21, max: 40 },
       { label: "平温（41-60）", min: 41, max: 60 },
-      { label: "加熱（61-80）", min: 61, max: 80 },
+      { label: "過熱（61-80）", min: 61, max: 80 },
       { label: "沸騰（81-100）", min: 81, max: 100 },
     ];
     console.log("\n--- 温度帯分布 ---");

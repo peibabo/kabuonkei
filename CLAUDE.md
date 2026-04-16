@@ -15,6 +15,12 @@
 - APIキャッシュ: メモリキャッシュ（15分TTL）
 - デプロイ先: Vercel
 
+## 過去統計データ
+
+- `src/data/historical-stats.json`: VIXベースの温度帯ごとに、日経225・S&P500の将来リターン（1ヶ月/3ヶ月/6ヶ月）を事前計算した静的JSON
+- 生成スクリプト: `npm run generate:stats`（`scripts/generate-historical-stats.ts`）
+- 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
+
 ## 既知の制約
 
 - **CNN Fear & Greed API**: サーバーサイドからのリクエストをbot検知(418)でブロックする。現在はVIXベースの簡易推定値でフォールバック中

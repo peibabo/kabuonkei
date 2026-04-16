@@ -1,6 +1,10 @@
 "use client";
 
-import { getSentimentLevel, getSentimentColor } from "@/lib/types";
+import {
+  getSentimentLevel,
+  getSentimentDescription,
+  getSentimentColor,
+} from "@/lib/types";
 import type { FearGreedData } from "@/lib/types";
 
 interface Props {
@@ -10,6 +14,7 @@ interface Props {
 export default function FearGreedGauge({ data }: Props) {
   const isEstimated = data.rating === "estimated";
   const level = getSentimentLevel(data.score);
+  const description = getSentimentDescription(data.score);
   const color = getSentimentColor(data.score);
   // ゲージの角度計算: 0-100を-90度〜90度にマッピング
   const angle = (data.score / 100) * 180 - 90;
@@ -77,6 +82,7 @@ export default function FearGreedGauge({ data }: Props) {
         >
           {level}
         </div>
+        <div className="text-sm text-gray-500 mt-0.5">{description}</div>
       </div>
 
       {/* 過去データ（CNN APIから取得時のみ表示） */}

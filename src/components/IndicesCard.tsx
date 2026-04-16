@@ -28,7 +28,7 @@ export default function IndicesCard({ data }: Props) {
               </span>
               <span
                 className={`ml-2 text-sm font-medium ${
-                  item.changePercent >= 0 ? "text-green-600" : "text-red-600"
+                  item.changePercent >= 0 ? "text-red-500" : "text-green-500"
                 }`}
               >
                 {item.changePercent >= 0 ? "+" : ""}

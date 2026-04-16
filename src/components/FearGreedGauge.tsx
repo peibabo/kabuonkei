@@ -77,12 +77,12 @@ export default function FearGreedGauge({ data }: Props) {
           {data.score}
         </div>
         <div
-          className="text-xl font-semibold mt-1"
+          className="text-2xl font-semibold mt-1"
           style={{ color }}
         >
           {level}
         </div>
-        <div className="text-sm text-gray-500 mt-0.5">{description}</div>
+        <div className="text-base text-gray-500 mt-0.5">{description}</div>
       </div>
 
       {/* 過去データ（CNN APIから取得時のみ表示） */}

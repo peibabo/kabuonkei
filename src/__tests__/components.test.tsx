@@ -26,7 +26,7 @@ describe("FearGreedGauge", () => {
     render(<FearGreedGauge data={mockFearGreedData} />);
     expect(screen.getByText("38")).toBeInTheDocument();
     expect(screen.getByText("冷え込み")).toBeInTheDocument();
-    expect(screen.getByText("弱気")).toBeInTheDocument();
+    expect(screen.getByText("（弱気）")).toBeInTheDocument();
   });
 
   it("過去データを表示する", () => {

@@ -82,7 +82,7 @@ export default function FearGreedGauge({ data }: Props) {
         >
           {level}
         </div>
-        <div className="text-base text-gray-500 mt-0.5">{description}</div>
+        <div className="text-base text-gray-500 mt-0.5">（{description}）</div>
       </div>
 
       {/* 過去データ（CNN APIから取得時のみ表示） */}

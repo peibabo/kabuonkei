@@ -36,11 +36,11 @@ export default function FearGreedGauge({ data }: Props) {
           {/* 背景のアーク */}
           <defs>
             <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#dc2626" />
-              <stop offset="25%" stopColor="#ea580c" />
+              <stop offset="0%" stopColor="#2563eb" />
+              <stop offset="25%" stopColor="#0ea5e9" />
               <stop offset="50%" stopColor="#ca8a04" />
-              <stop offset="75%" stopColor="#65a30d" />
-              <stop offset="100%" stopColor="#16a34a" />
+              <stop offset="75%" stopColor="#ea580c" />
+              <stop offset="100%" stopColor="#dc2626" />
             </linearGradient>
           </defs>
           <path

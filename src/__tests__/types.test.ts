@@ -66,10 +66,10 @@ describe("getSentimentDescription", () => {
 
 describe("getSentimentColor", () => {
   it("スコアに応じた色コードを返す", () => {
-    expect(getSentimentColor(10)).toBe("#dc2626");
-    expect(getSentimentColor(30)).toBe("#ea580c");
+    expect(getSentimentColor(10)).toBe("#2563eb");
+    expect(getSentimentColor(30)).toBe("#0ea5e9");
     expect(getSentimentColor(50)).toBe("#ca8a04");
-    expect(getSentimentColor(70)).toBe("#65a30d");
-    expect(getSentimentColor(90)).toBe("#16a34a");
+    expect(getSentimentColor(70)).toBe("#ea580c");
+    expect(getSentimentColor(90)).toBe("#dc2626");
   });
 });

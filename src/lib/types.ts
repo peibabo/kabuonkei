@@ -89,9 +89,9 @@ export function getSentimentDescription(score: number): SentimentDescription {
 }
 
 export function getSentimentColor(score: number): string {
-  if (score <= 20) return "#dc2626"; // red-600
-  if (score <= 40) return "#ea580c"; // orange-600
-  if (score <= 60) return "#ca8a04"; // yellow-600
-  if (score <= 80) return "#65a30d"; // lime-600
-  return "#16a34a"; // green-600
+  if (score <= 20) return "#2563eb"; // blue-600（極寒）
+  if (score <= 40) return "#0ea5e9"; // sky-500（冷え込み）
+  if (score <= 60) return "#ca8a04"; // yellow-600（平温）
+  if (score <= 80) return "#ea580c"; // orange-600（加熱）
+  return "#dc2626"; // red-600（沸騰）
 }

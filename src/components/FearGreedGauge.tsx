@@ -16,8 +16,6 @@ export default function FearGreedGauge({ data }: Props) {
   const level = getSentimentLevel(data.score);
   const description = getSentimentDescription(data.score);
   const color = getSentimentColor(data.score);
-  // ゲージの角度計算: 0-100を-90度〜90度にマッピング
-  const angle = (data.score / 100) * 180 - 90;
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
@@ -31,8 +29,8 @@ export default function FearGreedGauge({ data }: Props) {
       </h2>
 
       {/* ゲージ */}
-      <div className="relative w-64 h-36 mx-auto mb-4">
-        <svg viewBox="0 0 200 110" className="w-full h-full">
+      <div className="relative w-64 h-40 mx-auto mb-4">
+        <svg viewBox="0 0 200 120" className="w-full h-full">
           {/* 背景のアーク */}
           <defs>
             <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -54,18 +52,18 @@ export default function FearGreedGauge({ data }: Props) {
           <line
             x1="100"
             y1="100"
-            x2={100 + 65 * Math.cos((angle * Math.PI) / 180)}
-            y2={100 - 65 * Math.sin((-angle * Math.PI) / 180)}
+            x2={100 + 65 * Math.cos((Math.PI * (100 - data.score)) / 100)}
+            y2={100 - 65 * Math.sin((Math.PI * (100 - data.score)) / 100)}
             stroke="#1f2937"
             strokeWidth="3"
             strokeLinecap="round"
           />
           <circle cx="100" cy="100" r="5" fill="#1f2937" />
           {/* ラベル */}
-          <text x="15" y="108" fontSize="8" fill="#9ca3af" textAnchor="start">
+          <text x="20" y="118" fontSize="8" fill="#9ca3af" textAnchor="middle">
             0
           </text>
-          <text x="185" y="108" fontSize="8" fill="#9ca3af" textAnchor="end">
+          <text x="180" y="118" fontSize="8" fill="#9ca3af" textAnchor="middle">
             100
           </text>
         </svg>

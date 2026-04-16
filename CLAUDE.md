@@ -13,7 +13,7 @@
 - **Recharts** でミニチャート描画
 - **Vitest + Testing Library** でテスト
 - APIキャッシュ: メモリキャッシュ（15分TTL）
-- デプロイ先: Vercel
+- デプロイ先: Vercel（予定）
 
 ## 過去統計データ
 

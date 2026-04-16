@@ -38,6 +38,19 @@ describe("FearGreedGauge", () => {
     const { container } = render(<FearGreedGauge data={mockFearGreedData} />);
     expect(container.textContent).toContain("出典: CNN Business");
   });
+
+  it("推定値の場合はVIXベース推定表示になる", () => {
+    const estimatedData: FearGreedData = {
+      ...mockFearGreedData,
+      rating: "estimated",
+    };
+    const { container } = render(<FearGreedGauge data={estimatedData} />);
+    expect(screen.getByText("VIXベース推定値")).toBeInTheDocument();
+    expect(container.textContent).toContain("VIXから推定");
+    expect(container.textContent).not.toContain("出典: CNN Business");
+    // 過去データは非表示
+    expect(screen.queryByText("前日")).not.toBeInTheDocument();
+  });
 });
 
 const mockIndicesData: IndexData[] = [

@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function FearGreedGauge({ data }: Props) {
+  const isEstimated = data.rating === "estimated";
   const level = getSentimentLevel(data.score);
   const color = getSentimentColor(data.score);
   // ゲージの角度計算: 0-100を-90度〜90度にマッピング
@@ -17,6 +18,11 @@ export default function FearGreedGauge({ data }: Props) {
     <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
       <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
         Fear &amp; Greed Index
+        {isEstimated && (
+          <span className="block text-xs font-normal text-amber-500 mt-1">
+            VIXベース推定値
+          </span>
+        )}
       </h2>
 
       {/* ゲージ */}
@@ -73,24 +79,28 @@ export default function FearGreedGauge({ data }: Props) {
         </div>
       </div>
 
-      {/* 過去データ */}
-      <div className="grid grid-cols-3 gap-4 text-center text-sm">
-        <div>
-          <div className="text-gray-500">前日</div>
-          <div className="font-bold text-gray-800">{data.previousClose}</div>
+      {/* 過去データ（CNN APIから取得時のみ表示） */}
+      {!isEstimated && (
+        <div className="grid grid-cols-3 gap-4 text-center text-sm">
+          <div>
+            <div className="text-gray-500">前日</div>
+            <div className="font-bold text-gray-800">{data.previousClose}</div>
+          </div>
+          <div>
+            <div className="text-gray-500">1週間前</div>
+            <div className="font-bold text-gray-800">{data.oneWeekAgo}</div>
+          </div>
+          <div>
+            <div className="text-gray-500">1ヶ月前</div>
+            <div className="font-bold text-gray-800">{data.oneMonthAgo}</div>
+          </div>
         </div>
-        <div>
-          <div className="text-gray-500">1週間前</div>
-          <div className="font-bold text-gray-800">{data.oneWeekAgo}</div>
-        </div>
-        <div>
-          <div className="text-gray-500">1ヶ月前</div>
-          <div className="font-bold text-gray-800">{data.oneMonthAgo}</div>
-        </div>
-      </div>
+      )}
 
       <p className="text-xs text-gray-400 mt-4 text-center">
-        出典: CNN Business
+        {isEstimated
+          ? "VIXから推定（CNN APIが利用できない場合の代替値）"
+          : "出典: CNN Business"}
       </p>
     </div>
   );

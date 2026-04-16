@@ -20,6 +20,7 @@
 - `src/data/historical-stats.json`: VIXベースの温度帯ごとに、日経225・S&P500の将来リターン（1ヶ月/3ヶ月/6ヶ月）を事前計算した静的JSON
 - 生成スクリプト: `npm run generate:stats`（`scripts/generate-historical-stats.ts`）
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
+- **自動更新**: GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
 
 ## 既知の制約
 

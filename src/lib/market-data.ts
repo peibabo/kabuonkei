@@ -26,7 +26,7 @@ interface CNNFearGreedResponse {
 
 /**
  * VIXの値からFear & Greedスコアを簡易推定する。
- * VIX 10以下 → 95（極度の欲望）、VIX 40以上 → 5（極度の恐怖）の線形マッピング。
+ * VIX 10以下 → 95（沸騰）、VIX 40以上 → 5（極寒）の線形マッピング。
  */
 function estimateFearGreedFromVix(vix: number): number {
   const score = Math.round(100 - ((vix - 10) / 30) * 100);

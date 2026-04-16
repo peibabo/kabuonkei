@@ -63,25 +63,35 @@ export interface MarketData {
   lastUpdated: string;
 }
 
-export type SentimentLevel =
-  | "極度の恐怖"
-  | "恐怖"
+export type SentimentLevel = "極寒" | "冷え込み" | "平温" | "加熱" | "沸騰";
+
+export type SentimentDescription =
+  | "総悲観"
+  | "弱気"
   | "中立"
-  | "欲望"
-  | "極度の欲望";
+  | "強気"
+  | "総楽観";
 
 export function getSentimentLevel(score: number): SentimentLevel {
-  if (score <= 20) return "極度の恐怖";
-  if (score <= 40) return "恐怖";
+  if (score <= 20) return "極寒";
+  if (score <= 40) return "冷え込み";
+  if (score <= 60) return "平温";
+  if (score <= 80) return "加熱";
+  return "沸騰";
+}
+
+export function getSentimentDescription(score: number): SentimentDescription {
+  if (score <= 20) return "総悲観";
+  if (score <= 40) return "弱気";
   if (score <= 60) return "中立";
-  if (score <= 80) return "欲望";
-  return "極度の欲望";
+  if (score <= 80) return "強気";
+  return "総楽観";
 }
 
 export function getSentimentColor(score: number): string {
-  if (score <= 20) return "#dc2626"; // red-600
-  if (score <= 40) return "#ea580c"; // orange-600
-  if (score <= 60) return "#ca8a04"; // yellow-600
-  if (score <= 80) return "#65a30d"; // lime-600
-  return "#16a34a"; // green-600
+  if (score <= 20) return "#2563eb"; // blue-600（極寒）
+  if (score <= 40) return "#0ea5e9"; // sky-500（冷え込み）
+  if (score <= 60) return "#ca8a04"; // yellow-600（平温）
+  if (score <= 80) return "#ea580c"; // orange-600（加熱）
+  return "#dc2626"; // red-600（沸騰）
 }

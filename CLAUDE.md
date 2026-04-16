@@ -14,3 +14,9 @@
 - **Vitest + Testing Library** でテスト
 - APIキャッシュ: メモリキャッシュ（15分TTL）
 - デプロイ先: Vercel
+
+## 既知の制約
+
+- **CNN Fear & Greed API**: サーバーサイドからのリクエストをbot検知(418)でブロックする。現在はVIXベースの簡易推定値でフォールバック中
+- **日経VI (`^JNV`)**: Yahoo Financeにシンボルが存在しない。別データソース（JPX or J-Quants）が必要
+- **yahoo-finance2 v3**: `new YahooFinance()` でインスタンス化が必要（v2の `import yahooFinance from ...` の直接利用は不可）

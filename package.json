@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest",
     "test:run": "vitest run",
-    "generate:stats": "npx tsx scripts/generate-historical-stats.ts"
+    "generate:stats": "npx tsx scripts/generate-historical-stats.ts",
+    "generate:temperature-history": "npx tsx scripts/generate-temperature-history.ts"
   },
   "dependencies": {
     "next": "16.2.4",

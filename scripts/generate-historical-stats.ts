@@ -23,7 +23,7 @@ const SENTIMENT_RANGES: Array<{
   { level: "極寒", scoreRange: [0, 20] },
   { level: "冷え込み", scoreRange: [21, 40] },
   { level: "平温", scoreRange: [41, 60] },
-  { level: "加熱", scoreRange: [61, 80] },
+  { level: "過熱", scoreRange: [61, 80] },
   { level: "沸騰", scoreRange: [81, 100] },
 ];
 
@@ -40,11 +40,11 @@ function estimateFearGreedFromVix(vix: number): number {
 
 function getSentimentLevel(
   score: number
-): "極寒" | "冷え込み" | "平温" | "加熱" | "沸騰" {
+): "極寒" | "冷え込み" | "平温" | "過熱" | "沸騰" {
   if (score <= 20) return "極寒";
   if (score <= 40) return "冷え込み";
   if (score <= 60) return "平温";
-  if (score <= 80) return "加熱";
+  if (score <= 80) return "過熱";
   return "沸騰";
 }
 

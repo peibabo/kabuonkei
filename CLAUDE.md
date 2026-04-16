@@ -22,6 +22,13 @@
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
 - **自動更新**: GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
 
+## 温度推移データ
+
+- `src/data/temperature-history.json`: 過去約11ヶ月分のVIX日次データから算出した温度スコア（0-100）の時系列JSON
+- 生成スクリプト: `npm run generate:temperature-history`（`scripts/generate-temperature-history.ts`）
+- ランタイムの直近30日VIXチャートデータとマージして使用（ハイブリッド方式）
+- GitHub Actionsで `historical-stats.json` と同時に自動更新
+
 ## 既知の制約
 
 - **CNN Fear & Greed API**: サーバーサイドからのリクエストをbot検知(418)でブロックする。現在はVIXベースの簡易推定値でフォールバック中

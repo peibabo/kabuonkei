@@ -7,6 +7,7 @@ import IndicesCard from "./IndicesCard";
 import BondForexCard from "./BondForexCard";
 import CommodityCard from "./CommodityCard";
 import HistoricalStatsCard from "./HistoricalStatsCard";
+import TemperatureTrendCard from "./TemperatureTrendCard";
 import type { MarketData } from "@/lib/types";
 
 export default function Dashboard() {
@@ -74,6 +75,14 @@ export default function Dashboard() {
       {/* メインゲージ */}
       <div className="flex justify-center mb-8">
         <FearGreedGauge data={data.fearGreed} />
+      </div>
+
+      {/* 温度の推移チャート */}
+      <div className="mb-8">
+        <TemperatureTrendCard
+          vixChart={data.volatility[0]?.chart ?? []}
+          currentScore={data.fearGreed.score}
+        />
       </div>
 
       {/* 過去の統計 */}

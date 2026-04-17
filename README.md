@@ -16,6 +16,8 @@
 - **過去の統計（米国版）** - 米国版温度帯別の S&P500 将来リターン統計
 - **過去の統計（日本版）** - 日本版温度帯別の日経225将来リターン統計
   - 温度計と統計対象市場を 1:1 で揃える純粋分離（米国=S&P500 / 日本=日経225）
+- **今日の類似日** - 今日の温度に最も近かった過去日 TOP5 と、その日からの1M/3M/6M将来リターンをナラティブで表示
+  - 主要経済イベント（コロナショック底、Brexit、令和のブラックマンデー等）はラベル付き
 - **日本市場の需給** - 投資主体別売買動向（海外投資家等の買越/売越）+ 裁定残推移 + 信用倍率
 - **VIX（恐怖指数）** - 現在値 + 30日チャート
 - **主要指数** - S&P500, ダウ, ナスダック, 日経平均, TOPIX
@@ -45,6 +47,13 @@ npm run test:run
 
 # ビルド
 npm run build
+
+# 静的データの再生成（通常は月1回GitHub Actionsで自動実行）
+npm run generate:stats                      # 米国版 温度帯別リターン
+npm run generate:japan-stats                # 日本版 温度帯別リターン
+npm run generate:temperature-history        # 米国版 温度推移
+npm run generate:japan-temperature-history  # 日本版 温度推移
+npm run generate:similar-days               # 類似日検索データ（日本/米国両方）
 ```
 
 ## デプロイ

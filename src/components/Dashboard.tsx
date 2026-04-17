@@ -11,6 +11,7 @@ import HistoricalStatsCard from "./HistoricalStatsCard";
 import JapanHistoricalStatsCard from "./JapanHistoricalStatsCard";
 import TemperatureTrendCard from "./TemperatureTrendCard";
 import JapanTemperatureTrendCard from "./JapanTemperatureTrendCard";
+import SimilarDaysCard from "./SimilarDaysCard";
 import InvestorTradingCard from "./InvestorTradingCard";
 import ArbitrageBalanceCard from "./ArbitrageBalanceCard";
 import MarginTradingCard from "./MarginTradingCard";
@@ -23,6 +24,12 @@ import {
   getLatestMarginTrading,
   getMarginRatioHistory,
 } from "@/lib/japan-market-data";
+import {
+  findSimilarDays,
+  getJapanSimilarDaysFile,
+  getMarketEvents,
+  getUsSimilarDaysFile,
+} from "@/lib/similar-days";
 
 export default function Dashboard() {
   const [data, setData] = useState<MarketData | null>(null);
@@ -111,19 +118,56 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* 過去の統計（日本版） */}
-      {data.japanFearGreed && (
-        <div className="mb-8">
+      {/* 過去の統計（日本版 / 米国版 2列配置） */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {data.japanFearGreed && (
           <JapanHistoricalStatsCard
             currentScore={data.japanFearGreed.score}
           />
-        </div>
-      )}
-
-      {/* 過去の統計（米国版） */}
-      <div className="mb-8">
+        )}
         <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
+
+      {/* 今日の類似日（日本版 / 米国版 2列配置） */}
+      {(() => {
+        const events = getMarketEvents();
+        const japanFile = getJapanSimilarDaysFile();
+        const usFile = getUsSimilarDaysFile();
+        const japanScore = data.japanFearGreed?.score ?? null;
+        const usScore = data.fearGreed.score;
+        const japanMatches =
+          japanScore != null
+            ? findSimilarDays(japanScore, japanFile.daily, events, 5)
+            : [];
+        const usMatches = findSimilarDays(usScore, usFile.daily, events, 5);
+        if (japanMatches.length === 0 && usMatches.length === 0) return null;
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {japanScore != null && japanMatches.length > 0 && (
+              <SimilarDaysCard
+                title="🇯🇵 今日の類似日（日本版）"
+                subtitle="今日の温度に最も近かった過去の日と、その後の日経225"
+                currentScore={japanScore}
+                similarDays={japanMatches}
+                marketLabel="日経225"
+                dataRangeFrom={japanFile.dataRange.from}
+                dataRangeTo={japanFile.dataRange.to}
+              />
+            )}
+            {usMatches.length > 0 && (
+              <SimilarDaysCard
+                title="🇺🇸 今日の類似日（米国版）"
+                subtitle="今日の温度に最も近かった過去の日と、その後のS&P500"
+                currentScore={usScore}
+                similarDays={usMatches}
+                marketLabel="S&P500"
+                dataRangeFrom={usFile.dataRange.from}
+                dataRangeTo={usFile.dataRange.to}
+              />
+            )}
+          </div>
+        );
+      })()}
 
       {/* 投資主体別売買動向 + 裁定残 + 信用倍率 */}
       {(() => {

@@ -123,10 +123,25 @@ export interface ArbitrageBalanceData {
   daily: ArbitrageBalanceDay[];
 }
 
-/** 日本市場データ: 投資主体別 + 裁定残をまとめた型 */
+/** 信用取引残高: 週次データ */
+export interface MarginTradingWeek {
+  date: string; // 申込日 "2026-04-10"
+  buyBalance: number; // 信用買い残（億円）
+  sellBalance: number; // 信用売り残（億円）
+  ratio: number; // 信用倍率 = buyBalance / sellBalance
+}
+
+/** 信用取引残高: 全体 */
+export interface MarginTradingData {
+  generatedAt: string;
+  weekly: MarginTradingWeek[];
+}
+
+/** 日本市場データ: 投資主体別 + 裁定残 + 信用倍率をまとめた型 */
 export interface JapanMarketData {
   investorTrading: InvestorTradingData;
   arbitrageBalance: ArbitrageBalanceData;
+  marginTrading: MarginTradingData;
 }
 
 export function getSentimentColor(score: number): string {

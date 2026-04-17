@@ -18,6 +18,7 @@ const USER_AGENT =
 const JPX_BASE = "https://www.jpx.co.jp";
 const INVESTOR_TYPE_URL = `${JPX_BASE}/markets/statistics-equities/investor-type/`;
 const ARBITRAGE_URL = `${JPX_BASE}/markets/statistics-equities/program/index.html`;
+const MARGIN_URL = `${JPX_BASE}/markets/statistics-equities/margin/04.html`;
 
 const WEEKS_TO_FETCH = 12;
 const ARBITRAGE_DAYS_TO_FETCH = 60; // 約12週分の営業日
@@ -266,6 +267,87 @@ function parseArbitrageExcel(
   };
 }
 
+// --- 信用取引残高 ---
+
+interface MarginTradingWeek {
+  date: string;
+  buyBalance: number;
+  sellBalance: number;
+  ratio: number;
+}
+
+/** 百万円 → 億円に変換（小数第1位） */
+function hyakumanYenToOkuYen(hyakumanYen: number): number {
+  return Math.round((hyakumanYen / 100) * 10) / 10;
+}
+
+/** HTMLからmtseisan*.xlsのURLと日付を抽出 */
+function extractMarginLinks(html: string): { url: string; date: string }[] {
+  const regex = /href="([^"]*mtseisan(\d{10})\.xls)"/g;
+  const links: { url: string; date: string }[] = [];
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    const digits = match[2]; // e.g. "2026041000"
+    const yyyy = digits.slice(0, 4);
+    const mm = digits.slice(4, 6);
+    const dd = digits.slice(6, 8);
+    links.push({
+      url: JPX_BASE + match[1],
+      date: `${yyyy}-${mm}-${dd}`,
+    });
+  }
+  // 日付降順でソート
+  links.sort((a, b) => b.date.localeCompare(a.date));
+  return links;
+}
+
+/** 信用取引残高Excelをパース（二市場計・金額ベース） */
+function parseMarginExcel(
+  buffer: Buffer,
+  date: string
+): MarginTradingWeek | null {
+  const wb = XLSX.read(buffer);
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+  // "二市場計" を含む行を探し、その次の行（金額行）を取得
+  let valueRow: unknown[] | null = null;
+  for (let i = 0; i < rows.length; i++) {
+    const cellStr = String(rows[i]?.[1] ?? "");
+    if (cellStr.includes("二市場計")) {
+      // 次の行が金額行（"金額Val."）
+      if (i + 1 < rows.length) {
+        valueRow = rows[i + 1];
+      }
+      break;
+    }
+  }
+
+  if (!valueRow) {
+    console.warn(`  信用残データが見つかりません: ${date}`);
+    return null;
+  }
+
+  const sellBalance = parseNumber(valueRow[11]); // 合計 売残高（百万円）
+  const buyBalance = parseNumber(valueRow[13]); // 合計 買残高（百万円）
+
+  if (buyBalance === 0 && sellBalance === 0) {
+    console.warn(`  信用残が0です: ${date}`);
+    return null;
+  }
+
+  const sellOku = hyakumanYenToOkuYen(sellBalance);
+  const buyOku = hyakumanYenToOkuYen(buyBalance);
+  const ratio = sellOku > 0 ? Math.round((buyOku / sellOku) * 100) / 100 : 0;
+
+  return {
+    date,
+    buyBalance: buyOku,
+    sellBalance: sellOku,
+    ratio,
+  };
+}
+
 // --- メイン ---
 
 async function main() {
@@ -328,6 +410,34 @@ async function main() {
 
   console.log(`  合計 ${daily.length} 日分取得\n`);
 
+  // --- 信用取引残高 ---
+  console.log("■ 信用取引残高の取得...");
+  const marginHtml = await fetchText(MARGIN_URL);
+  const marginLinks = extractMarginLinks(marginHtml);
+  console.log(`  ${marginLinks.length} 件のリンクを検出`);
+
+  const marginWeekly: MarginTradingWeek[] = [];
+
+  for (const { url, date } of marginLinks) {
+    try {
+      console.log(`  取得中: ${url.split("/").pop()} (${date})`);
+      const buf = await fetchBuffer(url);
+      const week = parseMarginExcel(buf, date);
+      if (week) {
+        marginWeekly.push(week);
+        console.log(`    → 買残: ${week.buyBalance}億円, 売残: ${week.sellBalance}億円, 倍率: ${week.ratio}倍`);
+      }
+    } catch (err) {
+      console.warn(`  スキップ: ${err}`);
+    }
+    await sleep(500);
+  }
+
+  // 日付昇順にソート
+  marginWeekly.sort((a, b) => a.date.localeCompare(b.date));
+
+  console.log(`  合計 ${marginWeekly.length} 週分取得\n`);
+
   // --- JSON出力 ---
   const output = {
     investorTrading: {
@@ -337,6 +447,10 @@ async function main() {
     arbitrageBalance: {
       generatedAt: new Date().toISOString().split("T")[0],
       daily,
+    },
+    marginTrading: {
+      generatedAt: new Date().toISOString().split("T")[0],
+      weekly: marginWeekly,
     },
   };
 
@@ -362,6 +476,13 @@ async function main() {
     console.log(`裁定残 最新: ${latest.date}`);
     console.log(`  買い残: ${latest.buyBalance}百万株`);
     console.log(`  売り残: ${latest.sellBalance}百万株`);
+  }
+  if (marginWeekly.length > 0) {
+    const latest = marginWeekly[marginWeekly.length - 1];
+    console.log(`信用倍率 最新: ${latest.date}`);
+    console.log(`  買い残: ${latest.buyBalance}億円`);
+    console.log(`  売り残: ${latest.sellBalance}億円`);
+    console.log(`  信用倍率: ${latest.ratio}倍`);
   }
 }
 

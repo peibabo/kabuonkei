@@ -6,6 +6,9 @@ import {
   getArbitrageBalanceData,
   getLatestArbitrageBalance,
   getArbitrageBuyBalanceHistory,
+  getMarginTradingData,
+  getLatestMarginTrading,
+  getMarginRatioHistory,
 } from "@/lib/japan-market-data";
 
 describe("japan-market-data", () => {
@@ -83,6 +86,48 @@ describe("japan-market-data", () => {
 
     it("getArbitrageBuyBalanceHistoryがChartPoint形式を返す", () => {
       const history = getArbitrageBuyBalanceHistory();
+      expect(history.length).toBeGreaterThan(0);
+      for (const point of history) {
+        expect(point.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(typeof point.value).toBe("number");
+        expect(point.value).toBeGreaterThan(0);
+      }
+    });
+  });
+
+  describe("信用倍率", () => {
+    it("週次データが存在する", () => {
+      const data = getMarginTradingData();
+      expect(data.generatedAt).toBeTruthy();
+      expect(data.weekly.length).toBeGreaterThan(0);
+    });
+
+    it("各週に必要なフィールドが存在する", () => {
+      const data = getMarginTradingData();
+      for (const week of data.weekly) {
+        expect(week.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(typeof week.buyBalance).toBe("number");
+        expect(week.buyBalance).toBeGreaterThan(0);
+        expect(typeof week.sellBalance).toBe("number");
+        expect(week.sellBalance).toBeGreaterThan(0);
+        expect(typeof week.ratio).toBe("number");
+        expect(week.ratio).toBeGreaterThan(0);
+      }
+    });
+
+    it("getLatestMarginTradingが最新週を返す", () => {
+      const latest = getLatestMarginTrading();
+      expect(latest).toBeDefined();
+      expect(latest!.ratio).toBeGreaterThan(0);
+
+      const data = getMarginTradingData();
+      expect(latest!.date).toBe(
+        data.weekly[data.weekly.length - 1].date
+      );
+    });
+
+    it("getMarginRatioHistoryがChartPoint形式を返す", () => {
+      const history = getMarginRatioHistory();
       expect(history.length).toBeGreaterThan(0);
       for (const point of history) {
         expect(point.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);

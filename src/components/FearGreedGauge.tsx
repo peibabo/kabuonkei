@@ -9,9 +9,13 @@ import type { FearGreedData } from "@/lib/types";
 
 interface Props {
   data: FearGreedData;
+  title?: string;
 }
 
-export default function FearGreedGauge({ data }: Props) {
+export default function FearGreedGauge({
+  data,
+  title = "Fear & Greed Index",
+}: Props) {
   const isEstimated = data.rating === "estimated";
   const level = getSentimentLevel(data.score);
   const description = getSentimentDescription(data.score);
@@ -20,7 +24,7 @@ export default function FearGreedGauge({ data }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
       <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
-        Fear &amp; Greed Index
+        {title}
         {isEstimated && (
           <span className="block text-xs font-normal text-amber-500 mt-1">
             VIXベース推定値

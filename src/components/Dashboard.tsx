@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import FearGreedGauge from "./FearGreedGauge";
+import JapanFearGreedGauge from "./JapanFearGreedGauge";
 import VolatilityCard from "./VolatilityCard";
 import IndicesCard from "./IndicesCard";
 import BondForexCard from "./BondForexCard";
 import CommodityCard from "./CommodityCard";
 import HistoricalStatsCard from "./HistoricalStatsCard";
+import JapanHistoricalStatsCard from "./JapanHistoricalStatsCard";
 import TemperatureTrendCard from "./TemperatureTrendCard";
 import InvestorTradingCard from "./InvestorTradingCard";
 import ArbitrageBalanceCard from "./ArbitrageBalanceCard";
@@ -83,9 +85,18 @@ export default function Dashboard() {
         </p>
       </header>
 
-      {/* メインゲージ */}
-      <div className="flex justify-center mb-8">
-        <FearGreedGauge data={data.fearGreed} />
+      {/* メインゲージ（米国版 / 日本版 2列配置） */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <FearGreedGauge
+          data={data.fearGreed}
+          title="Fear & Greed（米国）"
+        />
+        {data.japanFearGreed && (
+          <JapanFearGreedGauge
+            data={data.japanFearGreed}
+            title="市場温度（日本）"
+          />
+        )}
       </div>
 
       {/* 温度の推移チャート */}
@@ -96,10 +107,19 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* 過去の統計 */}
+      {/* 過去の統計（米国版） */}
       <div className="mb-8">
         <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
+
+      {/* 過去の統計（日本版） */}
+      {data.japanFearGreed && (
+        <div className="mb-8">
+          <JapanHistoricalStatsCard
+            currentScore={data.japanFearGreed.score}
+          />
+        </div>
+      )}
 
       {/* 投資主体別売買動向 + 裁定残 + 信用倍率 */}
       {(() => {

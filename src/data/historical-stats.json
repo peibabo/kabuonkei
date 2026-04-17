@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-16",
+  "generatedAt": "2026-04-17",
   "dataRange": {
-    "from": "2016-04-16",
-    "to": "2026-04-16"
+    "from": "2016-04-17",
+    "to": "2026-04-17"
   },
   "levels": [
     {
@@ -110,10 +110,10 @@
       "occurrences": 335,
       "nikkei225": {
         "1m": {
-          "avgReturn": 0.9,
+          "avgReturn": 1,
           "medianReturn": 1.2,
-          "winRate": 62,
-          "sampleSize": 324
+          "winRate": 62.2,
+          "sampleSize": 325
         },
         "3m": {
           "avgReturn": 4.7,
@@ -132,8 +132,8 @@
         "1m": {
           "avgReturn": 0.8,
           "medianReturn": 2.1,
-          "winRate": 61.6,
-          "sampleSize": 323
+          "winRate": 61.7,
+          "sampleSize": 324
         },
         "3m": {
           "avgReturn": 3.4,
@@ -155,7 +155,7 @@
         61,
         80
       ],
-      "occurrences": 813,
+      "occurrences": 814,
       "nikkei225": {
         "1m": {
           "avgReturn": 1.1,
@@ -185,9 +185,9 @@
         },
         "3m": {
           "avgReturn": 3.5,
-          "medianReturn": 4.8,
-          "winRate": 78.9,
-          "sampleSize": 779
+          "medianReturn": 4.7,
+          "winRate": 79,
+          "sampleSize": 780
         },
         "6m": {
           "avgReturn": 5.6,

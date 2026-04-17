@@ -29,7 +29,16 @@
 - ランタイムの直近30日VIXチャートデータとマージして使用（ハイブリッド方式）
 - GitHub Actionsで `historical-stats.json` と同時に自動更新
 
-## 既知の制約
+## 日本市場データ
+
+- `src/data/japan-market-data.json`: JPX公開データから取得した日本市場固有の需給データ
+  - **投資主体別売買動向**: 海外投資家・個人・信託銀行・投資信託・事業法人の週次売買差引（億円）
+  - **裁定残**: 裁定買い残・売り残の日次データ（百万株）
+- 生成��クリプト: `npm run generate:japan-market`（`scripts/generate-japan-market-data.ts`）
+- データソース: JPXの統計ページからExcel/CSVをダウンロードしてパース
+- **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週金曜 JST 9:00に自動実行
+
+## 既知の制���
 
 - **CNN Fear & Greed API**: サーバーサイドからのリクエストをbot検知(418)でブロックする。現在はVIXベースの簡易推定値でフォールバック中
 - **日経VI (`^JNV`)**: Yahoo Financeにシンボルが存在しない。別データソース（JPX or J-Quants）が必要

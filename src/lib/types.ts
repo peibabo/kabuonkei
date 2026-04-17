@@ -88,6 +88,47 @@ export function getSentimentDescription(score: number): SentimentDescription {
   return "総楽観";
 }
 
+// --- 日本市場固有データ ---
+
+/** 投資主体別売買動向: 各主体の売買差引 */
+export interface InvestorTradingEntity {
+  name: string; // "海外投資家" | "個人" | "信託銀行" | "投資信託" | "事業法人"
+  netAmount: number; // 差引き（買越=正、売越=負）（億円）
+}
+
+/** 投資主体別売買動向: 週次データ */
+export interface InvestorTradingWeek {
+  weekLabel: string; // "2026年4月第2週"
+  startDate: string; // "2026-04-06"
+  endDate: string; // "2026-04-10"
+  entities: InvestorTradingEntity[];
+}
+
+/** 投資主体別売買動向: 全体 */
+export interface InvestorTradingData {
+  generatedAt: string;
+  weeks: InvestorTradingWeek[];
+}
+
+/** 裁定残: 日次データ */
+export interface ArbitrageBalanceDay {
+  date: string; // 報告日 "2026-04-14"
+  buyBalance: number; // 裁定買い残（百万株）
+  sellBalance: number; // 裁定売り残（百万株）
+}
+
+/** 裁定残: 全体 */
+export interface ArbitrageBalanceData {
+  generatedAt: string;
+  daily: ArbitrageBalanceDay[];
+}
+
+/** 日本市場データ: 投資主体別 + 裁定残をまとめた型 */
+export interface JapanMarketData {
+  investorTrading: InvestorTradingData;
+  arbitrageBalance: ArbitrageBalanceData;
+}
+
 export function getSentimentColor(score: number): string {
   if (score <= 20) return "#2563eb"; // blue-600（極寒）
   if (score <= 40) return "#0ea5e9"; // sky-500（冷え込み）

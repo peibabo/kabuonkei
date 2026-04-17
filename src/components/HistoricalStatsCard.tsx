@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
   getHistoricalStats,
@@ -70,7 +69,7 @@ function HighlightMessage({
   score: number;
 }) {
   const color = getSentimentColor(score);
-  const threeMonth = stats.nikkei225["3m"];
+  const threeMonth = stats.sp500["3m"];
   const winCount = Math.round(
     (threeMonth.winRate / 100) * threeMonth.sampleSize
   );
@@ -84,13 +83,13 @@ function HighlightMessage({
       }}
     >
       <p className="text-sm text-gray-800 leading-relaxed">
-        過去10年で「
+        過去10年、米国版温度が「
         <span className="font-bold" style={{ color }}>
           {stats.level}
         </span>
         」だった
         <span className="font-bold">{stats.occurrences}日間</span>
-        のうち、3ヶ月後に日経平均が上昇したのは
+        のうち、3ヶ月後にS&P500が上昇したのは
         <span className="font-bold">
           {winCount}回（{threeMonth.winRate.toFixed(0)}%）
         </span>
@@ -103,10 +102,7 @@ function HighlightMessage({
   );
 }
 
-type IndexTab = "nikkei225" | "sp500";
-
 export default function HistoricalStatsCard({ currentScore }: Props) {
-  const [activeTab, setActiveTab] = useState<IndexTab>("nikkei225");
   const historicalStats = getHistoricalStats();
   const currentStats = getStatsForScore(currentScore);
   const currentLevel = getSentimentLevel(currentScore);
@@ -114,42 +110,17 @@ export default function HistoricalStatsCard({ currentScore }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
       <h2 className="text-lg font-bold text-gray-900 mb-1">
-        📊 過去の統計
+        📊 過去の統計（米国版温度）
       </h2>
       <p className="text-sm text-gray-500 mb-4">
-        過去10年、同じ温度のとき何が起きた？
+        米国版温度が同じだったとき、S&P500 はどう動いた？
       </p>
 
       {currentStats && (
         <HighlightMessage stats={currentStats} score={currentScore} />
       )}
 
-      {/* モバイル用タブ切り替え */}
-      <div className="flex gap-2 mb-4 md:hidden">
-        <button
-          className={`flex-1 py-2 text-sm rounded-lg font-medium transition-colors ${
-            activeTab === "nikkei225"
-              ? "bg-gray-900 text-white"
-              : "bg-gray-100 text-gray-600"
-          }`}
-          onClick={() => setActiveTab("nikkei225")}
-        >
-          日経225
-        </button>
-        <button
-          className={`flex-1 py-2 text-sm rounded-lg font-medium transition-colors ${
-            activeTab === "sp500"
-              ? "bg-gray-900 text-white"
-              : "bg-gray-100 text-gray-600"
-          }`}
-          onClick={() => setActiveTab("sp500")}
-        >
-          S&P 500
-        </button>
-      </div>
-
-      {/* デスクトップ: 全カラム表示 */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
@@ -159,37 +130,13 @@ export default function HistoricalStatsCard({ currentScore }: Props) {
               <th className="px-2 py-2 text-center text-xs text-gray-500 font-medium">
                 日数
               </th>
-              <th
-                className="px-2 py-2 text-center text-xs text-gray-400 font-medium"
-                colSpan={3}
-              >
-                日経225（平均リターン）
-              </th>
-              <th
-                className="px-2 py-2 text-center text-xs text-gray-400 font-medium"
-                colSpan={3}
-              >
-                S&P 500（平均リターン）
-              </th>
-            </tr>
-            <tr className="border-b border-gray-100">
-              <th colSpan={2} />
-              <th className="px-2 py-1 text-center text-xs text-gray-400">
+              <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
                 1ヶ月
               </th>
-              <th className="px-2 py-1 text-center text-xs text-gray-400">
+              <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
                 3ヶ月
               </th>
-              <th className="px-2 py-1 text-center text-xs text-gray-400">
-                6ヶ月
-              </th>
-              <th className="px-2 py-1 text-center text-xs text-gray-400">
-                1ヶ月
-              </th>
-              <th className="px-2 py-1 text-center text-xs text-gray-400">
-                3ヶ月
-              </th>
-              <th className="px-2 py-1 text-center text-xs text-gray-400">
+              <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
                 6ヶ月
               </th>
             </tr>
@@ -213,67 +160,9 @@ export default function HistoricalStatsCard({ currentScore }: Props) {
                   <td className="px-2 py-2 text-center text-sm text-gray-500">
                     {levelStats.occurrences}日
                   </td>
-                  <ReturnCell stats={levelStats.nikkei225["1m"]} />
-                  <ReturnCell stats={levelStats.nikkei225["3m"]} />
-                  <ReturnCell stats={levelStats.nikkei225["6m"]} />
                   <ReturnCell stats={levelStats.sp500["1m"]} />
                   <ReturnCell stats={levelStats.sp500["3m"]} />
                   <ReturnCell stats={levelStats.sp500["6m"]} />
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* モバイル: タブで切り替え */}
-      <div className="md:hidden overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="px-2 py-2 text-left text-xs text-gray-500 font-medium">
-                温度
-              </th>
-              <th className="px-2 py-2 text-center text-xs text-gray-500 font-medium">
-                日数
-              </th>
-              <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
-                1ヶ月
-              </th>
-              <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
-                3ヶ月
-              </th>
-              <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
-                6ヶ月
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {historicalStats.levels.map((levelStats) => {
-              const isCurrent = levelStats.level === currentLevel;
-              const midScore =
-                (levelStats.scoreRange[0] + levelStats.scoreRange[1]) / 2;
-              const color = getSentimentColor(midScore);
-              const indexData =
-                activeTab === "nikkei225"
-                  ? levelStats.nikkei225
-                  : levelStats.sp500;
-              return (
-                <tr
-                  key={levelStats.level}
-                  className={`border-b border-gray-50 ${isCurrent ? "bg-gray-50" : ""}`}
-                >
-                  <LevelIndicator
-                    level={levelStats.level}
-                    color={color}
-                    isCurrent={isCurrent}
-                  />
-                  <td className="px-2 py-2 text-center text-sm text-gray-500">
-                    {levelStats.occurrences}日
-                  </td>
-                  <ReturnCell stats={indexData["1m"]} />
-                  <ReturnCell stats={indexData["3m"]} />
-                  <ReturnCell stats={indexData["6m"]} />
                 </tr>
               );
             })}
@@ -288,7 +177,7 @@ export default function HistoricalStatsCard({ currentScore }: Props) {
           {historicalStats.generatedAt}
         </p>
         <p>
-          ※ VIXベースの温度推定による過去統計です。将来のリターンを保証するものではありません。
+          ※ VIXベースの温度推定による S&P500 の過去統計です。将来のリターンを保証するものではありません。
         </p>
       </div>
     </div>

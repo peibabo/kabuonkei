@@ -30,14 +30,12 @@ describe("historical-stats", () => {
         expect(level.scoreRange).toHaveLength(2);
 
         for (const p of periods) {
-          for (const index of ["nikkei225", "sp500"] as const) {
-            const periodStats = level[index][p];
-            expect(periodStats.avgReturn).toBeDefined();
-            expect(periodStats.medianReturn).toBeDefined();
-            expect(periodStats.winRate).toBeGreaterThanOrEqual(0);
-            expect(periodStats.winRate).toBeLessThanOrEqual(100);
-            expect(periodStats.sampleSize).toBeGreaterThan(0);
-          }
+          const periodStats = level.sp500[p];
+          expect(periodStats.avgReturn).toBeDefined();
+          expect(periodStats.medianReturn).toBeDefined();
+          expect(periodStats.winRate).toBeGreaterThanOrEqual(0);
+          expect(periodStats.winRate).toBeLessThanOrEqual(100);
+          expect(periodStats.sampleSize).toBeGreaterThan(0);
         }
       });
     });

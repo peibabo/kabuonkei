@@ -38,8 +38,10 @@
 
 ## 過去統計データ
 
+温度計と統計対象市場を 1:1 で揃える方針（**米国版 = S&P500 / 日本版 = 日経225** の純粋分離）。クロス分析（米国温度×日本株など）は現状扱わない。
+
 ### 米国版
-- `src/data/historical-stats.json`: VIXベースの温度帯ごとに、日経225・S&P500の将来リターン（1ヶ月/3ヶ月/6ヶ月）を事前計算した静的JSON
+- `src/data/historical-stats.json`: VIXベースの温度帯ごとに、S&P500 の将来リターン（1ヶ月/3ヶ月/6ヶ月）を事前計算した静的JSON
 - 生成スクリプト: `npm run generate:stats`（`scripts/generate-historical-stats.ts`）
 
 ### 日本版

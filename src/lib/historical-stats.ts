@@ -22,7 +22,6 @@ export interface SentimentLevelStats {
   level: SentimentLevel;
   scoreRange: [number, number];
   occurrences: number;
-  nikkei225: IndexHistoricalStats;
   sp500: IndexHistoricalStats;
 }
 

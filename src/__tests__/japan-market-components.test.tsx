@@ -2,9 +2,11 @@ import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import InvestorTradingCard from "@/components/InvestorTradingCard";
 import ArbitrageBalanceCard from "@/components/ArbitrageBalanceCard";
+import MarginTradingCard from "@/components/MarginTradingCard";
 import type {
   InvestorTradingWeek,
   ArbitrageBalanceDay,
+  MarginTradingWeek,
   ChartPoint,
 } from "@/lib/types";
 
@@ -125,6 +127,84 @@ describe("ArbitrageBalanceCard", () => {
     );
     expect(
       screen.getByText("裁定買い残 推移（百万株）")
+    ).toBeInTheDocument();
+  });
+});
+
+const mockMarginWeek: MarginTradingWeek = {
+  date: "2026-04-10",
+  buyBalance: 51565.1,
+  sellBalance: 9733.1,
+  ratio: 5.3,
+};
+
+const mockRatioHistory: ChartPoint[] = [
+  { date: "2026-03-13", value: 5.71 },
+  { date: "2026-03-19", value: 5.68 },
+  { date: "2026-03-27", value: 3.53 },
+  { date: "2026-04-03", value: 6.07 },
+  { date: "2026-04-10", value: 5.3 },
+];
+
+describe("MarginTradingCard", () => {
+  it("タイトルと日付を表示する", () => {
+    render(
+      <MarginTradingCard
+        latest={mockMarginWeek}
+        ratioHistory={mockRatioHistory}
+      />
+    );
+    expect(screen.getByRole("heading", { name: "信用倍率" })).toBeInTheDocument();
+    expect(
+      screen.getByText("買い残が多いほど上値が重くなる傾向")
+    ).toBeInTheDocument();
+    expect(screen.getByText("2026-04-10 現在")).toBeInTheDocument();
+  });
+
+  it("信用倍率を表示する", () => {
+    render(
+      <MarginTradingCard
+        latest={mockMarginWeek}
+        ratioHistory={mockRatioHistory}
+      />
+    );
+    expect(screen.getByText("5.30")).toBeInTheDocument();
+    expect(screen.getByText("倍")).toBeInTheDocument();
+  });
+
+  it("買い残と売り残を表示する", () => {
+    render(
+      <MarginTradingCard
+        latest={mockMarginWeek}
+        ratioHistory={mockRatioHistory}
+      />
+    );
+    expect(screen.getByText("信用買い残")).toBeInTheDocument();
+    expect(screen.getByText("51,565.1")).toBeInTheDocument();
+    expect(screen.getByText("信用売り残")).toBeInTheDocument();
+    expect(screen.getByText("9,733.1")).toBeInTheDocument();
+  });
+
+  it("前週比の変化を表示する", () => {
+    render(
+      <MarginTradingCard
+        latest={mockMarginWeek}
+        ratioHistory={mockRatioHistory}
+      />
+    );
+    // 5.3 - 6.07 = -0.77
+    expect(screen.getByText("-0.77")).toBeInTheDocument();
+  });
+
+  it("推移チャートのラベルを表示する", () => {
+    render(
+      <MarginTradingCard
+        latest={mockMarginWeek}
+        ratioHistory={mockRatioHistory}
+      />
+    );
+    expect(
+      screen.getByText("信用倍率 推移（倍）")
     ).toBeInTheDocument();
   });
 });

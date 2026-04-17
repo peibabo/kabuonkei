@@ -34,6 +34,7 @@
 - `src/data/japan-market-data.json`: JPX公開データから取得した日本市場固有の需給データ
   - **投資主体別売買動向**: 海外投資家・個人・信託銀行・投資信託・事業法人の週次売買差引（億円）
   - **裁定残**: 裁定買い残・売り残の日次データ（百万株）
+  - **信用倍率**: 信用買い残・売り残（億円）と信用倍率（= 買残/売残）の週次データ。JPX「信用取引現在高」ページから取得
 - 生成��クリプト: `npm run generate:japan-market`（`scripts/generate-japan-market-data.ts`）
 - データソース: JPXの統計ページからExcel/CSVをダウンロードしてパース
 - **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週金曜 JST 9:00に自動実行

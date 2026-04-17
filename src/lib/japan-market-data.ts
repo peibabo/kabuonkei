@@ -4,6 +4,8 @@ import type {
   InvestorTradingWeek,
   ArbitrageBalanceData,
   ArbitrageBalanceDay,
+  MarginTradingData,
+  MarginTradingWeek,
   ChartPoint,
 } from "./types";
 import rawData from "@/data/japan-market-data.json";
@@ -48,5 +50,24 @@ export function getArbitrageBuyBalanceHistory(): ChartPoint[] {
   return data.arbitrageBalance.daily.map((day) => ({
     date: day.date,
     value: day.buyBalance,
+  }));
+}
+
+// --- 信用倍率 ---
+
+export function getMarginTradingData(): MarginTradingData {
+  return data.marginTrading;
+}
+
+export function getLatestMarginTrading(): MarginTradingWeek | undefined {
+  const weekly = data.marginTrading.weekly;
+  return weekly[weekly.length - 1];
+}
+
+/** 信用倍率の週次推移（チャート用） */
+export function getMarginRatioHistory(): ChartPoint[] {
+  return data.marginTrading.weekly.map((week) => ({
+    date: week.date,
+    value: week.ratio,
   }));
 }

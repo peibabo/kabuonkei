@@ -10,12 +10,15 @@ import HistoricalStatsCard from "./HistoricalStatsCard";
 import TemperatureTrendCard from "./TemperatureTrendCard";
 import InvestorTradingCard from "./InvestorTradingCard";
 import ArbitrageBalanceCard from "./ArbitrageBalanceCard";
+import MarginTradingCard from "./MarginTradingCard";
 import type { MarketData } from "@/lib/types";
 import {
   getLatestInvestorTrading,
   getForeignInvestorNetHistory,
   getLatestArbitrageBalance,
   getArbitrageBuyBalanceHistory,
+  getLatestMarginTrading,
+  getMarginRatioHistory,
 } from "@/lib/japan-market-data";
 
 export default function Dashboard() {
@@ -98,15 +101,17 @@ export default function Dashboard() {
         <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
 
-      {/* 投資主体別売買動向 + 裁定残 */}
+      {/* 投資主体別売買動向 + 裁定残 + 信用倍率 */}
       {(() => {
         const latestInvestor = getLatestInvestorTrading();
         const foreignHistory = getForeignInvestorNetHistory();
         const latestArbitrage = getLatestArbitrageBalance();
         const buyHistory = getArbitrageBuyBalanceHistory();
-        if (!latestInvestor && !latestArbitrage) return null;
+        const latestMargin = getLatestMarginTrading();
+        const marginHistory = getMarginRatioHistory();
+        if (!latestInvestor && !latestArbitrage && !latestMargin) return null;
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             {latestInvestor && (
               <InvestorTradingCard
                 latest={latestInvestor}
@@ -117,6 +122,12 @@ export default function Dashboard() {
               <ArbitrageBalanceCard
                 latest={latestArbitrage}
                 buyHistory={buyHistory}
+              />
+            )}
+            {latestMargin && (
+              <MarginTradingCard
+                latest={latestMargin}
+                ratioHistory={marginHistory}
               />
             )}
           </div>

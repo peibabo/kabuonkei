@@ -32,6 +32,9 @@ export default function InvestorTradingCard({
       <h2 className="text-lg font-bold text-gray-700 mb-1">
         投資主体別売買動向
       </h2>
+      <p className="text-xs text-gray-500 mb-1">
+        誰が買って、誰が売っている？
+      </p>
       <p className="text-xs text-gray-400 mb-4">
         {latest.weekLabel}（{latest.startDate} 〜 {latest.endDate}）
       </p>

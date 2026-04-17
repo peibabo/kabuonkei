@@ -57,6 +57,9 @@ describe("InvestorTradingCard", () => {
     );
     expect(screen.getByText("投資主体別売買動向")).toBeInTheDocument();
     expect(
+      screen.getByText("誰が買って、誰が売っている？")
+    ).toBeInTheDocument();
+    expect(
       screen.getByText("2026年4月第2週（2026-04-06 〜 2026-04-10）")
     ).toBeInTheDocument();
   });
@@ -83,6 +86,9 @@ describe("ArbitrageBalanceCard", () => {
       />
     );
     expect(screen.getByText("裁定残")).toBeInTheDocument();
+    expect(
+      screen.getByText("先物市場に溜まった将来の売り圧力")
+    ).toBeInTheDocument();
     expect(screen.getByText("2026-04-14 現在")).toBeInTheDocument();
   });
 

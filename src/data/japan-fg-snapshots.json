@@ -1,5 +1,19 @@
 {
-  "generatedAt": "",
+  "generatedAt": "2026-04-17T09:08:58.010Z",
   "method": "full5",
-  "snapshots": []
+  "snapshots": [
+    {
+      "date": "2026-04-17",
+      "score": 84,
+      "level": "沸騰",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 87,
+        "foreignFlow": 89,
+        "marginRatio": 86,
+        "arbitrage": 97,
+        "usdJpyMomentum": 62
+      }
+    }
+  ]
 }

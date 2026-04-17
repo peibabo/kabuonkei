@@ -57,7 +57,7 @@ describe("InvestorTradingCard", () => {
         foreignHistory={mockForeignHistory}
       />
     );
-    expect(screen.getByText("投資主体別売買動向")).toBeInTheDocument();
+    expect(screen.getByText("🇯🇵 投資主体別売買動向")).toBeInTheDocument();
     expect(
       screen.getByText("誰が買って、誰が売っている？")
     ).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe("ArbitrageBalanceCard", () => {
         buyHistory={mockBuyHistory}
       />
     );
-    expect(screen.getByText("裁定残")).toBeInTheDocument();
+    expect(screen.getByText("🇯🇵 裁定残")).toBeInTheDocument();
     expect(
       screen.getByText("買い残が多いほど将来の売り圧力に")
     ).toBeInTheDocument();
@@ -154,7 +154,7 @@ describe("MarginTradingCard", () => {
         ratioHistory={mockRatioHistory}
       />
     );
-    expect(screen.getByRole("heading", { name: "信用倍率" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "🇯🇵 信用倍率" })).toBeInTheDocument();
     expect(
       screen.getByText("買い残が多いほど上値が重くなる傾向")
     ).toBeInTheDocument();

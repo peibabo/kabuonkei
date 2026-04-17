@@ -34,7 +34,7 @@
 - 計算: `src/lib/japan-fear-greed/` 配下（公開 API は `@/lib/japan-fear-greed` から import）。エントリポイントは `computeJapanFearGreed()`
 - 閾値定数: `JAPAN_FG_THRESHOLDS`（`src/lib/japan-fear-greed/thresholds.ts`）
 - 欠損処理: 利用可能な要素のみで合成。2要素未満の場合はnullを返す
-- UI: `src/components/JapanFearGreedGauge.tsx`（米国版と横並び2列配置）
+- UI: `src/components/JapanFearGreedGauge.tsx`（PC は左=日本版 / 右=米国版の 2 列配置。見出しは 🇯🇵 / 🇺🇸 の国旗絵文字付きで国識別を明示）
 
 ## 過去統計データ
 

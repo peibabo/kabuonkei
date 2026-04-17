@@ -86,34 +86,29 @@ export default function Dashboard() {
         </p>
       </header>
 
-      {/* メインゲージ（米国版 / 日本版 2列配置） */}
+      {/* メインゲージ（日本版 / 米国版 2列配置） */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <FearGreedGauge
-          data={data.fearGreed}
-          title="Fear & Greed（米国）"
-        />
         {data.japanFearGreed && (
           <JapanFearGreedGauge
             data={data.japanFearGreed}
-            title="市場温度（日本）"
+            title="🇯🇵 市場温度（日本）"
           />
         )}
+        <FearGreedGauge
+          data={data.fearGreed}
+          title="🇺🇸 Fear & Greed（米国）"
+        />
       </div>
 
-      {/* 温度の推移チャート（米国版 / 日本版 2列配置） */}
+      {/* 温度の推移チャート（日本版 / 米国版 2列配置） */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <JapanTemperatureTrendCard
+          currentScore={data.japanFearGreed?.score ?? 50}
+        />
         <TemperatureTrendCard
           vixChart={data.volatility[0]?.chart ?? []}
           currentScore={data.fearGreed.score}
         />
-        <JapanTemperatureTrendCard
-          currentScore={data.japanFearGreed?.score ?? 50}
-        />
-      </div>
-
-      {/* 過去の統計（米国版） */}
-      <div className="mb-8">
-        <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
 
       {/* 過去の統計（日本版） */}
@@ -124,6 +119,11 @@ export default function Dashboard() {
           />
         </div>
       )}
+
+      {/* 過去の統計（米国版） */}
+      <div className="mb-8">
+        <HistoricalStatsCard currentScore={data.fearGreed.score} />
+      </div>
 
       {/* 投資主体別売買動向 + 裁定残 + 信用倍率 */}
       {(() => {

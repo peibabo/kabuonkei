@@ -98,7 +98,7 @@ export default function TemperatureTrendCard({ vixChart, currentScore }: Props) 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-        <h2 className="text-lg font-bold text-gray-700">温度の推移</h2>
+        <h2 className="text-lg font-bold text-gray-700">🇺🇸 温度の推移（米国）</h2>
         <div className="flex gap-1">
           {(Object.keys(PERIOD_DAYS) as Period[]).map((p) => (
             <button

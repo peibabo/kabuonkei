@@ -110,7 +110,7 @@ export default function JapanHistoricalStatsCard({ currentScore }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
       <h2 className="text-lg font-bold text-gray-900 mb-1">
-        📊 過去の統計（日本版温度）
+        🇯🇵 過去の統計（日本版温度）
       </h2>
       <p className="text-sm text-gray-500 mb-4">
         日本版温度が同じだったとき、日経平均はどう動いた？

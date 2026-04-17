@@ -11,23 +11,12 @@
 import YahooFinance from "yahoo-finance2";
 import { writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
+import { estimateFearGreedFromVix, round1 } from "./_lib/shared";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
 // --- 設定 ---
 const MONTHS_BACK = 11;
-
-// --- ユーティリティ ---
-
-/** VIXからFear & Greedスコアを推定（market-data.tsと同じロジック） */
-function estimateFearGreedFromVix(vix: number): number {
-  const score = Math.round(100 - ((vix - 10) / 30) * 100);
-  return Math.max(0, Math.min(100, score));
-}
-
-function round1(n: number): number {
-  return Math.round(n * 10) / 10;
-}
 
 // --- メイン ---
 async function main() {

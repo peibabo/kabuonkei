@@ -17,36 +17,13 @@ import {
   normalizeNikkeiMaDeviation,
   normalizeUsdJpyMomentum,
 } from "../src/lib/japan-fear-greed";
+import { fetchDailyCloses, sleep } from "./_lib/shared";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
 const YEARS_BACK = 10;
 const MA_WINDOW = 125;
 const MOMENTUM_WINDOW = 50;
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-async function fetchDailyCloses(
-  symbol: string,
-  period1: string,
-  period2: string
-): Promise<Map<string, number>> {
-  const result = await yahooFinance.chart(symbol, {
-    period1,
-    period2,
-    interval: "1d",
-  });
-  const map = new Map<string, number>();
-  for (const q of result.quotes) {
-    if (q.close != null) {
-      const dateStr = new Date(q.date).toISOString().split("T")[0];
-      map.set(dateStr, q.close);
-    }
-  }
-  return map;
-}
 
 async function main() {
   const endDate = new Date();
@@ -59,12 +36,22 @@ async function main() {
   console.log(`データ取得期間: ${period1} 〜 ${period2}`);
 
   console.log("取得中: ^N225...");
-  const nikkeiMap = await fetchDailyCloses("^N225", period1, period2);
+  const nikkeiMap = await fetchDailyCloses(
+    yahooFinance,
+    "^N225",
+    period1,
+    period2
+  );
   console.log(`  → ${nikkeiMap.size} 日分取得`);
   await sleep(2000);
 
   console.log("取得中: USDJPY=X...");
-  const usdJpyMap = await fetchDailyCloses("USDJPY=X", period1, period2);
+  const usdJpyMap = await fetchDailyCloses(
+    yahooFinance,
+    "USDJPY=X",
+    period1,
+    period2
+  );
   console.log(`  → ${usdJpyMap.size} 日分取得`);
 
   const nikkeiDates = [...nikkeiMap.keys()].sort();

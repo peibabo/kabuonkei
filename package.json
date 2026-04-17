@@ -14,6 +14,7 @@
     "generate:japan-market": "npx tsx scripts/generate-japan-market-data.ts",
     "generate:japan-stats": "npx tsx scripts/generate-japan-historical-stats.ts",
     "generate:japan-temperature-history": "npx tsx scripts/generate-japan-temperature-history.ts",
+    "generate:similar-days": "npx tsx scripts/generate-similar-days.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts"
   },
   "dependencies": {

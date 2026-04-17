@@ -51,7 +51,7 @@
 
 ### 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
-- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版の3種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
+- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データの4種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
 
 ## 温度推移データ
 
@@ -80,6 +80,24 @@
 Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オレンジ で重ねがけ。Tooltipで各要素スコアを表示。
 - `src/lib/japan-temperature-history.ts` の `mergeJapanTemperatureData()` が2系列を統合し、`sliceByDays()` で期間フィルタ
 
+## 今日の類似日（Similar Days）
+
+今日の温度スコアに最も近かった過去日を TOP5 抽出し、その日からの 1ヶ月/3ヶ月/6ヶ月リターンを併せて表示するナラティブ機能。再訪動機とSNS拡散を狙う。
+
+### データ
+- `src/data/japan-similar-days.json`: 10年分の `{ date, score, return1m, return3m, return6m }` 配列（^N225ベース）
+- `src/data/us-similar-days.json`: 同上（^GSPCベース）
+- `src/data/market-events.json`: 主要経済イベントの日付→ラベル辞書（コロナショック底、Brexit、令和のブラックマンデー等）
+- スコア基準は温度推移と同じ: 日本=C1(125日MA)+C5(50日USDJPYモメンタム)、米国=VIXベース推定
+- 生成スクリプト: `npm run generate:similar-days`（`scripts/generate-similar-days.ts`）
+
+### ライブラリ・UI
+- アクセサ: `src/lib/similar-days.ts`（`getJapanSimilarDays` / `getUsSimilarDays` / `getMarketEvents` / `findSimilarDays`）
+- UI: `src/components/SimilarDaysCard.tsx`（日本版/米国版共通、Dashboard で2列配置）
+- 検索ロジック: `findSimilarDays(currentScore, history, events, topN)`
+  - スコア差が小さい順。同率ならイベントラベル付きを優先、さらに同率なら新しい日付を優先
+  - `return3m` が null のエントリ（最近すぎて未到達）は除外
+
 ## 日本市場データ
 
 - `src/data/japan-market-data.json`: JPX公開データから取得した日本市場固有の需給データ
@@ -106,6 +124,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - `historical-stats.ts` / `japan-historical-stats.ts`: 過去統計 JSON のアクセサ
 - `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサと系列マージ
 - `japan-market-data.ts`: 日本市場需給 JSON のアクセサ
+- `similar-days.ts`: 類似日検索（`findSimilarDays` / 日本・米国のアクセサ / イベントラベル取得）
 
 `scripts/_lib/shared.ts` には生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export。
 

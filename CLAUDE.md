@@ -128,6 +128,28 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 
 `scripts/_lib/shared.ts` には生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export。
 
+## 公開サイトとしての運用
+
+### ページ構成
+- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）
+- `/about` — サイト説明（`src/app/about/page.tsx`）
+- `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記
+- `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）
+- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）
+
+### SEO / 計測
+- **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
+- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap は `/`, `/about`, `/terms`, `/privacy` の 4 ページ
+- **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
+- **OG 画像**: `public/og-image.png`（1200×630px）。**リリース前に手動で配置が必要**
+
+### 環境変数
+- `NEXT_PUBLIC_SITE_URL` — canonical / OGP / sitemap のベース URL
+- `NEXT_PUBLIC_GA_ID` — Google Analytics 4 の測定 ID
+- `GOOGLE_SITE_VERIFICATION` — Google Search Console サイト所有権確認コード
+
+`.env.example` を参照。本番は Vercel のプロジェクト設定で環境変数を投入する想定。
+
 ## 既知の制約
 
 - **CNN Fear & Greed API**: サーバーサイドからのリクエストをbot検知(418)でブロックする。現在はVIXベースの簡易推定値でフォールバック中

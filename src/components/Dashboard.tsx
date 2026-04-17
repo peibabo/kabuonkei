@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import FearGreedGauge from "./FearGreedGauge";
 import JapanFearGreedGauge from "./JapanFearGreedGauge";
 import VolatilityCard from "./VolatilityCard";
@@ -91,6 +92,12 @@ export default function Dashboard() {
         <p className="text-xs text-gray-400 mt-1">
           最終更新: {data.lastUpdated}
         </p>
+        <Link
+          href="/about"
+          className="inline-block mt-2 text-xs text-gray-500 hover:text-gray-800 underline"
+        >
+          これは何？
+        </Link>
       </header>
 
       {/* メインゲージ（日本版 / 米国版 2列配置） */}

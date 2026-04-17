@@ -87,7 +87,7 @@ describe("ArbitrageBalanceCard", () => {
     );
     expect(screen.getByText("裁定残")).toBeInTheDocument();
     expect(
-      screen.getByText("先物市場に溜まった将来の売り圧力")
+      screen.getByText("買い残が多いほど将来の売り圧力に")
     ).toBeInTheDocument();
     expect(screen.getByText("2026-04-14 現在")).toBeInTheDocument();
   });

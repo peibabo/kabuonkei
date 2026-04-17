@@ -105,8 +105,13 @@ function formatXAxisDate(dateStr: string, longPeriod: boolean): string {
   return `${Number(month)}/${Number(day)}`;
 }
 
-export default function JapanTemperatureTrendCard() {
+interface Props {
+  currentScore: number;
+}
+
+export default function JapanTemperatureTrendCard({ currentScore }: Props) {
   const [period, setPeriod] = useState<Period>("1Y");
+  const lineColor = getSentimentColor(currentScore);
 
   const allSimple = useMemo(() => getSimpleHistory(), []);
   const allFull = useMemo(() => getFullSnapshots(), []);
@@ -233,13 +238,13 @@ export default function JapanTemperatureTrendCard() {
             isAnimationActive={false}
             name="simple"
           />
-          {/* フル版: 濃い実線 */}
+          {/* フル版: 濃い実線（現在スコアの温度色） */}
           <Line
             type="monotone"
             dataKey="fullScore"
-            stroke="#ea580c"
+            stroke={lineColor}
             strokeWidth={2.5}
-            dot={{ r: 2, fill: "#ea580c" }}
+            dot={{ r: 2, fill: lineColor }}
             connectNulls
             isAnimationActive={false}
             name="full"
@@ -283,8 +288,8 @@ export default function JapanTemperatureTrendCard() {
         </div>
         <div className="flex items-center gap-2">
           <span
-            className="inline-block w-6 h-[2px] bg-orange-600"
-            style={{ backgroundColor: "#ea580c" }}
+            className="inline-block w-6 h-[2px]"
+            style={{ backgroundColor: lineColor }}
           />
           <span>
             <strong>本体（5要素）</strong>：上記2要素＋海外投資家フロー・信用倍率・裁定残の5要素平均。

@@ -106,7 +106,9 @@ export default function Dashboard() {
           vixChart={data.volatility[0]?.chart ?? []}
           currentScore={data.fearGreed.score}
         />
-        <JapanTemperatureTrendCard />
+        <JapanTemperatureTrendCard
+          currentScore={data.japanFearGreed?.score ?? 50}
+        />
       </div>
 
       {/* 過去の統計（米国版） */}

@@ -8,7 +8,15 @@ import BondForexCard from "./BondForexCard";
 import CommodityCard from "./CommodityCard";
 import HistoricalStatsCard from "./HistoricalStatsCard";
 import TemperatureTrendCard from "./TemperatureTrendCard";
+import InvestorTradingCard from "./InvestorTradingCard";
+import ArbitrageBalanceCard from "./ArbitrageBalanceCard";
 import type { MarketData } from "@/lib/types";
+import {
+  getLatestInvestorTrading,
+  getForeignInvestorNetHistory,
+  getLatestArbitrageBalance,
+  getArbitrageBuyBalanceHistory,
+} from "@/lib/japan-market-data";
 
 export default function Dashboard() {
   const [data, setData] = useState<MarketData | null>(null);
@@ -90,6 +98,36 @@ export default function Dashboard() {
         <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
 
+      {/* 日本市場の需給 */}
+      {(() => {
+        const latestInvestor = getLatestInvestorTrading();
+        const foreignHistory = getForeignInvestorNetHistory();
+        const latestArbitrage = getLatestArbitrageBalance();
+        const buyHistory = getArbitrageBuyBalanceHistory();
+        if (!latestInvestor && !latestArbitrage) return null;
+        return (
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+              <span>🇯🇵</span> 日本市場の需給
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {latestInvestor && (
+                <InvestorTradingCard
+                  latest={latestInvestor}
+                  foreignHistory={foreignHistory}
+                />
+              )}
+              {latestArbitrage && (
+                <ArbitrageBalanceCard
+                  latest={latestArbitrage}
+                  buyHistory={buyHistory}
+                />
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ボラティリティ + 主要指数 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <VolatilityCard data={data.volatility} />
@@ -108,7 +146,7 @@ export default function Dashboard() {
           当サイトは投資助言を行うものではありません。投資判断はご自身の責任でお願いします。
         </p>
         <p>
-          データソース: CNN Business, Yahoo Finance |{" "}
+          データソース: CNN Business, Yahoo Finance, JPX |{" "}
           &copy; {new Date().getFullYear()} 株温計
         </p>
       </footer>

@@ -1,0 +1,27 @@
+name: Update Japan Market Data
+
+on:
+  schedule:
+    # 毎週金曜 午前9時 JST（UTC 0:00）
+    - cron: '0 0 * * 5'
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  update-japan-market:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run generate:japan-market
+      - name: Commit and push if changed
+        run: |
+          git diff --quiet src/data/ && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/japan-market-data.json
+          git commit -m "chore: 日本市場データを更新（$(date +%Y-%m-%d)）"
+          git push

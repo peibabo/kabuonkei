@@ -1,0 +1,197 @@
+{
+  "investorTrading": {
+    "generatedAt": "2026-04-17",
+    "weeks": [
+      {
+        "weekLabel": "2026年3月第2週",
+        "startDate": "2026-03-09",
+        "endDate": "2026-03-13",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": -4729
+          },
+          {
+            "name": "個人",
+            "netAmount": 4049
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -2659.3
+          },
+          {
+            "name": "投資信託",
+            "netAmount": -1118.5
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 2718.5
+          }
+        ]
+      },
+      {
+        "weekLabel": "2026年3月第3週",
+        "startDate": "2026-03-16",
+        "endDate": "2026-03-19",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": -4919
+          },
+          {
+            "name": "個人",
+            "netAmount": 3092
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -578.1
+          },
+          {
+            "name": "投資信託",
+            "netAmount": 56
+          },
+          {
+            "name": "事業法人",
+            "netAmount": -1689.3
+          }
+        ]
+      },
+      {
+        "weekLabel": "2026年3月第4週",
+        "startDate": "2026-03-23",
+        "endDate": "2026-03-27",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": -15086.3
+          },
+          {
+            "name": "個人",
+            "netAmount": -45.2
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -1013
+          },
+          {
+            "name": "投資信託",
+            "netAmount": 3529
+          },
+          {
+            "name": "事業法人",
+            "netAmount": -118.4
+          }
+        ]
+      },
+      {
+        "weekLabel": "2026年4月第1週",
+        "startDate": "2026-03-30",
+        "endDate": "2026-04-03",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": 19093.2
+          },
+          {
+            "name": "個人",
+            "netAmount": -4503.5
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": 1435.3
+          },
+          {
+            "name": "投資信託",
+            "netAmount": 1007.9
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 240.8
+          }
+        ]
+      },
+      {
+        "weekLabel": "2026年4月第2週",
+        "startDate": "2026-04-06",
+        "endDate": "2026-04-10",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": 16351.7
+          },
+          {
+            "name": "個人",
+            "netAmount": -7857.1
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -540.2
+          },
+          {
+            "name": "投資信託",
+            "netAmount": -1491.5
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 178.7
+          }
+        ]
+      }
+    ]
+  },
+  "arbitrageBalance": {
+    "generatedAt": "2026-04-17",
+    "daily": [
+      {
+        "date": "2026-04-01",
+        "buyBalance": 1272.2,
+        "sellBalance": 72.5
+      },
+      {
+        "date": "2026-04-02",
+        "buyBalance": 1274.4,
+        "sellBalance": 75.6
+      },
+      {
+        "date": "2026-04-03",
+        "buyBalance": 1296.7,
+        "sellBalance": 77.1
+      },
+      {
+        "date": "2026-04-06",
+        "buyBalance": 1331.5,
+        "sellBalance": 76.1
+      },
+      {
+        "date": "2026-04-07",
+        "buyBalance": 1308.7,
+        "sellBalance": 68.6
+      },
+      {
+        "date": "2026-04-08",
+        "buyBalance": 1362.1,
+        "sellBalance": 63.3
+      },
+      {
+        "date": "2026-04-09",
+        "buyBalance": 1354.4,
+        "sellBalance": 45.2
+      },
+      {
+        "date": "2026-04-10",
+        "buyBalance": 1364.5,
+        "sellBalance": 31.6
+      },
+      {
+        "date": "2026-04-13",
+        "buyBalance": 1370.2,
+        "sellBalance": 30
+      },
+      {
+        "date": "2026-04-14",
+        "buyBalance": 1355.9,
+        "sellBalance": 34.6
+      }
+    ]
+  }
+}

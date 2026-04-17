@@ -10,6 +10,7 @@ import CommodityCard from "./CommodityCard";
 import HistoricalStatsCard from "./HistoricalStatsCard";
 import JapanHistoricalStatsCard from "./JapanHistoricalStatsCard";
 import TemperatureTrendCard from "./TemperatureTrendCard";
+import JapanTemperatureTrendCard from "./JapanTemperatureTrendCard";
 import InvestorTradingCard from "./InvestorTradingCard";
 import ArbitrageBalanceCard from "./ArbitrageBalanceCard";
 import MarginTradingCard from "./MarginTradingCard";
@@ -99,12 +100,13 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* 温度の推移チャート */}
-      <div className="mb-8">
+      {/* 温度の推移チャート（米国版 / 日本版 2列配置） */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <TemperatureTrendCard
           vixChart={data.volatility[0]?.chart ?? []}
           currentScore={data.fearGreed.score}
         />
+        <JapanTemperatureTrendCard />
       </div>
 
       {/* 過去の統計（米国版） */}

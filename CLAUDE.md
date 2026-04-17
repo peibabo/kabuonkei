@@ -53,10 +53,30 @@
 
 ## 温度推移データ
 
+### 米国版
 - `src/data/temperature-history.json`: 過去約11ヶ月分のVIX日次データから算出した米国版温度スコア（0-100）の時系列JSON
 - 生成スクリプト: `npm run generate:temperature-history`（`scripts/generate-temperature-history.ts`）
 - ランタイムの直近30日VIXチャートデータとマージして使用（ハイブリッド方式）
 - GitHub Actionsで `historical-stats.json` と同時に自動更新
+
+### 日本版（ハイブリッド方式 B+A）
+
+日本版の温度推移は「簡易10年版」と「本体5要素版の日次スナップショット」の2系列を重ね表示する。
+
+**B: 簡易10年版（`src/data/japan-temperature-history.json`）**
+- `^N225` + `USDJPY=X` の過去10年日次データから C1（125日MA乖離）+ C5（50日モメンタム）の2要素等ウェイト平均スコアを算出
+- 生成スクリプト: `npm run generate:japan-temperature-history`（`scripts/generate-japan-temperature-history.ts`）
+- 毎月1日 JST 9:00 に `update-historical-stats.yml` で自動再生成
+
+**A: 本体5要素版の日次スナップショット（`src/data/japan-fg-snapshots.json`）**
+- 現時点の5要素フルスコアを `computeJapanFearGreed()` で算出し、日次でJSONに追記
+- 生成スクリプト: `npm run snapshot:japan-fg`（`scripts/snapshot-japan-fear-greed.ts`）
+- 平日 JST 17:00（東証クローズ後）に `snapshot-japan-fg.yml` で自動実行
+- 配列は日付昇順、同日エントリが既にあれば上書き
+
+**UI**: `src/components/JapanTemperatureTrendCard.tsx`（1M/3M/6M/1Y/5Y/10Y 切替）。
+Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オレンジ で重ねがけ。Tooltipで各要素スコアを表示。
+- `src/lib/japan-temperature-history.ts` の `mergeJapanTemperatureData()` が2系列を統合し、`sliceByDays()` で期間フィルタ
 
 ## 日本市場データ
 
@@ -68,6 +88,7 @@
 - データソース: JPXの統計ページからExcel/CSVをダウンロードしてパース
 - **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週金曜 JST 9:00に自動実行
 - これらの週次・日次データは日本版温度スコア（C2/C3/C4）の入力にもなる
+- 日本版温度の日次スナップショット（`snapshot:japan-fg`）もこのJSONを入力に使う
 
 ## 既知の制約
 

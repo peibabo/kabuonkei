@@ -31,8 +31,8 @@
   3. **信用倍率**: 買残÷売残（C3）
   4. **裁定残バランス**: 買残÷(買残+売残)（C4）
   5. **ドル円モメンタム**: 50営業日モメンタム（C5、%）
-- 計算: `src/lib/japan-fear-greed.ts::computeJapanFearGreed()`
-- 閾値定数: `JAPAN_FG_THRESHOLDS`（同ファイル内）
+- 計算: `src/lib/japan-fear-greed/` 配下（公開 API は `@/lib/japan-fear-greed` から import）。エントリポイントは `computeJapanFearGreed()`
+- 閾値定数: `JAPAN_FG_THRESHOLDS`（`src/lib/japan-fear-greed/thresholds.ts`）
 - 欠損処理: 利用可能な要素のみで合成。2要素未満の場合はnullを返す
 - UI: `src/components/JapanFearGreedGauge.tsx`（米国版と横並び2列配置）
 

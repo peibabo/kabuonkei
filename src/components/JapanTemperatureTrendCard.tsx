@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
+  Area,
   Line,
   XAxis,
   YAxis,
@@ -198,6 +199,13 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
           data={displayData}
           margin={{ top: 4, right: 4, bottom: 0, left: -20 }}
         >
+          <defs>
+            <linearGradient id="japanTemperatureGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={lineColor} stopOpacity={0.2} />
+              <stop offset="95%" stopColor={lineColor} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+
           {TEMPERATURE_BANDS.map((band) => (
             <ReferenceArea
               key={band.y1}
@@ -226,19 +234,19 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
           />
           <Tooltip content={<CustomTooltip />} />
 
-          {/* 簡易版: 淡い破線 */}
-          <Line
+          {/* 簡易版: 温度色の破線 + グラデーション塗り */}
+          <Area
             type="monotone"
             dataKey="simpleScore"
-            stroke="#94a3b8"
+            stroke={lineColor}
             strokeWidth={1.5}
             strokeDasharray="4 3"
-            dot={false}
+            fill="url(#japanTemperatureGradient)"
             connectNulls
             isAnimationActive={false}
             name="simple"
           />
-          {/* フル版: 濃い実線（現在スコアの温度色） */}
+          {/* フル版: 温度色の実線（スナップショット蓄積後に上から重ねる） */}
           <Line
             type="monotone"
             dataKey="fullScore"
@@ -277,8 +285,7 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
           <span
             className="inline-block w-6 h-px"
             style={{
-              background:
-                "repeating-linear-gradient(to right, #94a3b8 0 4px, transparent 4px 7px)",
+              background: `repeating-linear-gradient(to right, ${lineColor} 0 4px, transparent 4px 7px)`,
             }}
           />
           <span>

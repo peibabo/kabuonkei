@@ -111,7 +111,7 @@ interface Props {
 }
 
 export default function JapanTemperatureTrendCard({ currentScore }: Props) {
-  const [period, setPeriod] = useState<Period>("1Y");
+  const [period, setPeriod] = useState<Period>("3M");
   const lineColor = getSentimentColor(currentScore);
 
   const allSimple = useMemo(() => getSimpleHistory(), []);

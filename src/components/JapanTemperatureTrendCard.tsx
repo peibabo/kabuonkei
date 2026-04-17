@@ -11,7 +11,7 @@ import {
   Tooltip,
   ReferenceArea,
 } from "recharts";
-import { getSentimentLevel, getSentimentColor } from "@/lib/types";
+import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
   getSimpleHistory,
   getFullSnapshots,

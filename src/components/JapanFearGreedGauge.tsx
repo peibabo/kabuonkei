@@ -3,7 +3,7 @@
 import {
   getSentimentDescription,
   getSentimentColor,
-} from "@/lib/types";
+} from "@/lib/sentiment";
 import type { JapanFearGreedData } from "@/lib/types";
 
 interface Props {

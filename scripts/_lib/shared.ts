@@ -7,7 +7,7 @@ import YahooFinance from "yahoo-finance2";
 import type { SentimentLevel } from "../../src/lib/types";
 import type { PeriodStats } from "../../src/lib/historical-stats";
 
-export { getSentimentLevel } from "../../src/lib/types";
+export { getSentimentLevel } from "../../src/lib/sentiment";
 export { estimateFearGreedFromVix } from "../../src/lib/temperature-history";
 export type { PeriodStats };
 

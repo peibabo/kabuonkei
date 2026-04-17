@@ -1,5 +1,5 @@
 import type { SentimentLevel } from "./types";
-import { getSentimentLevel } from "./types";
+import { getSentimentLevel } from "./sentiment";
 import statsData from "@/data/historical-stats.json";
 
 /** 期間ごとの統計 */

@@ -1,6 +1,6 @@
 "use client";
 
-import { getSentimentLevel, getSentimentColor } from "@/lib/types";
+import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
   getJapanHistoricalStats,
   getJapanStatsForScore,

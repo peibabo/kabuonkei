@@ -98,7 +98,7 @@ export default function Dashboard() {
         <HistoricalStatsCard currentScore={data.fearGreed.score} />
       </div>
 
-      {/* 日本市場の需給 */}
+      {/* 投資主体別売買動向 + 裁定残 */}
       {(() => {
         const latestInvestor = getLatestInvestorTrading();
         const foreignHistory = getForeignInvestorNetHistory();
@@ -106,24 +106,19 @@ export default function Dashboard() {
         const buyHistory = getArbitrageBuyBalanceHistory();
         if (!latestInvestor && !latestArbitrage) return null;
         return (
-          <div className="mb-8">
-            <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-              <span>🇯🇵</span> 日本市場の需給
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {latestInvestor && (
-                <InvestorTradingCard
-                  latest={latestInvestor}
-                  foreignHistory={foreignHistory}
-                />
-              )}
-              {latestArbitrage && (
-                <ArbitrageBalanceCard
-                  latest={latestArbitrage}
-                  buyHistory={buyHistory}
-                />
-              )}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {latestInvestor && (
+              <InvestorTradingCard
+                latest={latestInvestor}
+                foreignHistory={foreignHistory}
+              />
+            )}
+            {latestArbitrage && (
+              <ArbitrageBalanceCard
+                latest={latestArbitrage}
+                buyHistory={buyHistory}
+              />
+            )}
           </div>
         );
       })()}

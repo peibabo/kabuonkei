@@ -90,6 +90,23 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - これらの週次・日次データは日本版温度スコア（C2/C3/C4）の入力にもなる
 - 日本版温度の日次スナップショット（`snapshot:japan-fg`）もこのJSONを入力に使う
 
+## コード構成（src/lib 配下）
+
+責務ごとにファイルを分割している。主な役割と公開 API：
+
+- `types.ts`: アプリ全体で使う型定義のみ
+- `sentiment.ts`: 温度スコア → 温度帯 / 説明 / 色 への判定関数（`getSentimentLevel` / `getSentimentDescription` / `getSentimentColor`）
+- `yahoo.ts`: yahoo-finance2 の薄いラッパー（`fetchQuote` / `fetchChart` / 共有インスタンス）
+- `fear-greed.ts`: 米国版 Fear & Greed の取得（`fetchFearGreedIndex`）と VIX ベース推定（`estimateFearGreedFromVix`）
+- `indices.ts`: VIX / 主要指数 / 米国10年債利回り / 為替 / コモディティの取得
+- `market-data.ts`: ダッシュボード用エントリポイント `fetchAllMarketData()`（15分メモリキャッシュ）
+- `japan-fear-greed/`: 日本版市場温度の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `compute.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import
+- `historical-stats.ts` / `japan-historical-stats.ts`: 過去統計 JSON のアクセサ
+- `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサと系列マージ
+- `japan-market-data.ts`: 日本市場需給 JSON のアクセサ
+
+`scripts/_lib/shared.ts` には生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export。
+
 ## 既知の制約
 
 - **CNN Fear & Greed API**: サーバーサイドからのリクエストをbot検知(418)でブロックする。現在はVIXベースの簡易推定値でフォールバック中

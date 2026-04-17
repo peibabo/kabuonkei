@@ -1,5 +1,8 @@
 import type { ChartPoint } from "./types";
 import staticData from "@/data/temperature-history.json";
+import { estimateFearGreedFromVix } from "./fear-greed";
+
+export { estimateFearGreedFromVix };
 
 export interface TemperaturePoint {
   date: string; // "YYYY-MM-DD"
@@ -11,12 +14,6 @@ interface TemperatureHistoryData {
   generatedAt: string;
   dataRange: { from: string; to: string };
   daily: TemperaturePoint[];
-}
-
-/** VIXからFear & Greedスコアを推定（market-data.tsと同じロジック） */
-export function estimateFearGreedFromVix(vix: number): number {
-  const score = Math.round(100 - ((vix - 10) / 30) * 100);
-  return Math.max(0, Math.min(100, score));
 }
 
 /** 静的JSONの温度推移データを取得 */

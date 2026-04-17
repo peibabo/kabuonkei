@@ -234,19 +234,18 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
           />
           <Tooltip content={<CustomTooltip />} />
 
-          {/* 簡易版: 温度色の破線 + グラデーション塗り */}
+          {/* 簡易版: 温度色の実線 + グラデーション塗り（米国版と同じ描画） */}
           <Area
             type="monotone"
             dataKey="simpleScore"
             stroke={lineColor}
-            strokeWidth={1.5}
-            strokeDasharray="4 3"
+            strokeWidth={2}
             fill="url(#japanTemperatureGradient)"
             connectNulls
             isAnimationActive={false}
             name="simple"
           />
-          {/* フル版: 温度色の実線（スナップショット蓄積後に上から重ねる） */}
+          {/* フル版: 温度色のやや太い実線（スナップショット蓄積後に上から重ねる） */}
           <Line
             type="monotone"
             dataKey="fullScore"
@@ -281,30 +280,13 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
 
       {/* 系列の説明 */}
       <div className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500 leading-relaxed">
-        <div className="flex items-center gap-2 mb-1">
-          <span
-            className="inline-block w-6 h-px"
-            style={{
-              background: `repeating-linear-gradient(to right, ${lineColor} 0 4px, transparent 4px 7px)`,
-            }}
-          />
-          <span>
-            <strong>簡易版（2要素）</strong>：日経225×125日MA乖離 + USDJPY
-            50日モメンタムの平均。過去10年まで遡れる。
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block w-6 h-[2px]"
-            style={{ backgroundColor: lineColor }}
-          />
-          <span>
-            <strong>本体（5要素）</strong>：上記2要素＋海外投資家フロー・信用倍率・裁定残の5要素平均。
-            {hasFullSnapshots
-              ? "平日JST17:00に日次で記録中。"
-              : "まだ記録が蓄積されていません（平日JST17:00から記録開始）。"}
-          </span>
-        </div>
+        <p>
+          <strong>簡易版（2要素）</strong>：日経225×125日MA乖離 + USDJPY
+          50日モメンタムの平均で過去10年分を描画。
+          <strong className="ml-1">本体（5要素）</strong>
+          ：上記2要素＋海外投資家フロー・信用倍率・裁定残の5要素平均を平日JST17:00に日次記録し、蓄積次第やや太い線で上書き表示
+          {hasFullSnapshots ? "中" : "（まだ記録なし）"}。
+        </p>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import {
   getSentimentLevel,
   getSentimentDescription,
   getSentimentColor,
-} from "@/lib/types";
+} from "@/lib/sentiment";
 
 describe("getSentimentLevel", () => {
   it("0-20は極寒を返す", () => {

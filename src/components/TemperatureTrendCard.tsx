@@ -11,7 +11,7 @@ import {
   ReferenceArea,
 } from "recharts";
 import type { ChartPoint } from "@/lib/types";
-import { getSentimentLevel, getSentimentColor } from "@/lib/types";
+import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
   getStaticTemperatureHistory,
   mergeTemperatureData,

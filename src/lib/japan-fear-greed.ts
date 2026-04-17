@@ -7,7 +7,7 @@ import type {
   JapanFearGreedComponentId,
   JapanFearGreedData,
 } from "./types";
-import { getSentimentLevel } from "./types";
+import { getSentimentLevel } from "./sentiment";
 
 /**
  * 日本版市場温度スコアの閾値定数。

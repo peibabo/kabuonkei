@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getSentimentLevel, getSentimentColor } from "@/lib/types";
+import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
   getHistoricalStats,
   getStatsForScore,

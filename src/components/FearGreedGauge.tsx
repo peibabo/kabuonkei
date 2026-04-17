@@ -4,7 +4,7 @@ import {
   getSentimentLevel,
   getSentimentDescription,
   getSentimentColor,
-} from "@/lib/types";
+} from "@/lib/sentiment";
 import type { FearGreedData } from "@/lib/types";
 
 interface Props {

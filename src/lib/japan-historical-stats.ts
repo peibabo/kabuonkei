@@ -1,5 +1,5 @@
 import type { SentimentLevel } from "./types";
-import { getSentimentLevel } from "./types";
+import { getSentimentLevel } from "./sentiment";
 import statsData from "@/data/japan-historical-stats.json";
 
 export interface PeriodStats {

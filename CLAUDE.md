@@ -21,7 +21,7 @@
 
 ### Fear & Greed（米国版）
 - ソース: CNN Fear & Greed API（bot検知でブロックされた場合はVIXベースの簡易推定にフォールバック）
-- 計算: `src/lib/market-data.ts::fetchFearGreedIndex()` / `estimateFearGreedFromVix()`
+- 計算: `src/lib/fear-greed.ts::fetchFearGreedIndex()` / `estimateFearGreedFromVix()`
 - 実質的に米国市場（S&P500）のセンチメントを示す
 
 ### 市場温度（日本版）

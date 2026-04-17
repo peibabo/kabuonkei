@@ -17,7 +17,7 @@ export default function MarginTradingCard({ latest, ratioHistory }: Props) {
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-lg font-bold text-gray-700 mb-1">信用倍率</h2>
+      <h2 className="text-lg font-bold text-gray-700 mb-1">🇯🇵 信用倍率</h2>
       <p className="text-xs text-gray-500 mb-1">
         買い残が多いほど上値が重くなる傾向
       </p>

@@ -31,7 +31,7 @@ const mockVixChart: ChartPoint[] = [
 describe("TemperatureTrendCard", () => {
   it("タイトルを表示する", () => {
     render(<TemperatureTrendCard vixChart={mockVixChart} currentScore={50} />);
-    expect(screen.getByText("温度の推移")).toBeInTheDocument();
+    expect(screen.getByText("🇺🇸 温度の推移（米国）")).toBeInTheDocument();
   });
 
   it("期間切り替えボタンを表示する", () => {

@@ -13,7 +13,7 @@ interface Props {
 
 export default function JapanFearGreedGauge({
   data,
-  title = "市場温度（日本）",
+  title = "🇯🇵 市場温度（日本）",
 }: Props) {
   const description = getSentimentDescription(data.score);
   const color = getSentimentColor(data.score);

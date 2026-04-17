@@ -16,7 +16,7 @@ export default function ArbitrageBalanceCard({ latest, buyHistory }: Props) {
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-lg font-bold text-gray-700 mb-1">裁定残</h2>
+      <h2 className="text-lg font-bold text-gray-700 mb-1">🇯🇵 裁定残</h2>
       <p className="text-xs text-gray-500 mb-1">
         買い残が多いほど将来の売り圧力に
       </p>

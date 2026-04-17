@@ -152,7 +152,7 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
     return (
       <div className="bg-white rounded-2xl shadow-md p-6">
         <h2 className="text-lg font-bold text-gray-700 mb-4">
-          温度の推移（日本）
+          🇯🇵 温度の推移（日本）
         </h2>
         <p className="text-sm text-gray-500">
           過去データがまだ生成されていません。
@@ -176,7 +176,7 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-        <h2 className="text-lg font-bold text-gray-700">温度の推移（日本）</h2>
+        <h2 className="text-lg font-bold text-gray-700">🇯🇵 温度の推移（日本）</h2>
         <div className="flex flex-wrap gap-1">
           {(Object.keys(PERIOD_DAYS) as Period[]).map((p) => (
             <button

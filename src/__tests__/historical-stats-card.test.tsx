@@ -9,7 +9,7 @@ afterEach(() => {
 describe("HistoricalStatsCard", () => {
   it("ヘッダーを表示する", () => {
     render(<HistoricalStatsCard currentScore={50} />);
-    expect(screen.getByText("📊 過去の統計（米国版温度）")).toBeInTheDocument();
+    expect(screen.getByText("🇺🇸 過去の統計（米国版温度）")).toBeInTheDocument();
     expect(
       screen.getByText("米国版温度が同じだったとき、S&P500 はどう動いた？")
     ).toBeInTheDocument();

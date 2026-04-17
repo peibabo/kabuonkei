@@ -59,7 +59,7 @@ function buildData(
 describe("JapanFearGreedGauge", () => {
   it("タイトルを表示する", () => {
     render(<JapanFearGreedGauge data={buildData()} />);
-    expect(screen.getByText("市場温度（日本）")).toBeInTheDocument();
+    expect(screen.getByText("🇯🇵 市場温度（日本）")).toBeInTheDocument();
   });
 
   it("カスタムタイトルを渡せる", () => {

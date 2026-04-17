@@ -2,7 +2,7 @@
  * 過去統計データ生成スクリプト
  *
  * VIXの過去10年分データから温度帯を算出し、
- * 各温度帯での日経225・S&P500の将来リターンを集計する。
+ * 各温度帯での S&P500 の将来リターンを集計する。
  *
  * 実行: npx tsx scripts/generate-historical-stats.ts
  */
@@ -36,10 +36,9 @@ async function main() {
 
   console.log(`データ取得期間: ${period1} 〜 ${period2}`);
 
-  // 3シンボルの日足データを取得
+  // 2シンボルの日足データを取得（VIX + S&P500）
   const symbols = [
     { symbol: "^VIX", key: "vix" },
-    { symbol: "^N225", key: "nikkei" },
     { symbol: "^GSPC", key: "sp500" },
   ];
 
@@ -70,19 +69,15 @@ async function main() {
     await sleep(2000);
   }
 
-  // 日付で内部結合（3つ全てデータがある日のみ）
+  // 日付で内部結合（VIX と S&P500 の両方にデータがある日のみ）
   const vixMap = rawData["vix"];
-  const nikkeiMap = rawData["nikkei"];
   const sp500Map = rawData["sp500"];
 
-  const allDates = [...vixMap.keys()]
-    .filter((d) => nikkeiMap.has(d) && sp500Map.has(d))
-    .sort();
+  const allDates = [...vixMap.keys()].filter((d) => sp500Map.has(d)).sort();
 
   console.log(`\n内部結合後: ${allDates.length} 取引日`);
 
   // 日付インデックスを作成（将来リターン計算用）
-  const nikkeiDates = [...nikkeiMap.keys()].sort();
   const sp500Dates = [...sp500Map.keys()].sort();
 
   // 各温度帯のリターンを集計
@@ -91,7 +86,6 @@ async function main() {
     string,
     {
       occurrences: number;
-      nikkei: Record<PeriodKey, number[]>;
       sp500: Record<PeriodKey, number[]>;
     }
   > = {};
@@ -99,7 +93,6 @@ async function main() {
   for (const { level } of SENTIMENT_RANGES) {
     levelReturns[level] = {
       occurrences: 0,
-      nikkei: { "1m": [], "3m": [], "6m": [] },
       sp500: { "1m": [], "3m": [], "6m": [] },
     };
   }
@@ -111,24 +104,12 @@ async function main() {
     const entry = levelReturns[level];
     entry.occurrences++;
 
-    const nikkeiPrice = nikkeiMap.get(date)!;
     const sp500Price = sp500Map.get(date)!;
 
     for (const [period, days] of Object.entries(FORWARD_DAYS) as [
       PeriodKey,
       number,
     ][]) {
-      const futureNikkei = findForwardPrice(
-        nikkeiMap,
-        nikkeiDates,
-        date,
-        days
-      );
-      if (futureNikkei != null) {
-        const ret = ((futureNikkei - nikkeiPrice) / nikkeiPrice) * 100;
-        entry.nikkei[period].push(ret);
-      }
-
       const futureSp500 = findForwardPrice(sp500Map, sp500Dates, date, days);
       if (futureSp500 != null) {
         const ret = ((futureSp500 - sp500Price) / sp500Price) * 100;
@@ -144,11 +125,6 @@ async function main() {
       level,
       scoreRange,
       occurrences: entry.occurrences,
-      nikkei225: {
-        "1m": buildPeriodStats(entry.nikkei["1m"]),
-        "3m": buildPeriodStats(entry.nikkei["3m"]),
-        "6m": buildPeriodStats(entry.nikkei["6m"]),
-      },
       sp500: {
         "1m": buildPeriodStats(entry.sp500["1m"]),
         "3m": buildPeriodStats(entry.sp500["3m"]),
@@ -174,9 +150,6 @@ async function main() {
   for (const l of levels) {
     console.log(
       `${l.level}（${l.scoreRange[0]}-${l.scoreRange[1]}）: ${l.occurrences}日`
-    );
-    console.log(
-      `  日経225 3ヶ月後: 平均${l.nikkei225["3m"].avgReturn > 0 ? "+" : ""}${l.nikkei225["3m"].avgReturn}%, 勝率${l.nikkei225["3m"].winRate}% (n=${l.nikkei225["3m"].sampleSize})`
     );
     console.log(
       `  S&P500 3ヶ月後: 平均${l.sp500["3m"].avgReturn > 0 ? "+" : ""}${l.sp500["3m"].avgReturn}%, 勝率${l.sp500["3m"].winRate}% (n=${l.sp500["3m"].sampleSize})`

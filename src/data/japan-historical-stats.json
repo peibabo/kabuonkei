@@ -1,0 +1,150 @@
+{
+  "generatedAt": "2026-04-17",
+  "dataRange": {
+    "from": "2016-04-17",
+    "to": "2026-04-17"
+  },
+  "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。",
+  "levels": [
+    {
+      "level": "極寒",
+      "scoreRange": [
+        0,
+        20
+      ],
+      "occurrences": 111,
+      "nikkei225": {
+        "1m": {
+          "avgReturn": 4.7,
+          "medianReturn": 5,
+          "winRate": 87.4,
+          "sampleSize": 111
+        },
+        "3m": {
+          "avgReturn": 11.5,
+          "medianReturn": 9.6,
+          "winRate": 100,
+          "sampleSize": 111
+        },
+        "6m": {
+          "avgReturn": 20.6,
+          "medianReturn": 20.5,
+          "winRate": 99.1,
+          "sampleSize": 111
+        }
+      }
+    },
+    {
+      "level": "冷え込み",
+      "scoreRange": [
+        21,
+        40
+      ],
+      "occurrences": 336,
+      "nikkei225": {
+        "1m": {
+          "avgReturn": 2,
+          "medianReturn": 2.5,
+          "winRate": 68.8,
+          "sampleSize": 336
+        },
+        "3m": {
+          "avgReturn": 6.8,
+          "medianReturn": 5.2,
+          "winRate": 84.1,
+          "sampleSize": 334
+        },
+        "6m": {
+          "avgReturn": 11.5,
+          "medianReturn": 11.4,
+          "winRate": 88.7,
+          "sampleSize": 336
+        }
+      }
+    },
+    {
+      "level": "平温",
+      "scoreRange": [
+        41,
+        60
+      ],
+      "occurrences": 677,
+      "nikkei225": {
+        "1m": {
+          "avgReturn": 0.7,
+          "medianReturn": 0.7,
+          "winRate": 55.8,
+          "sampleSize": 665
+        },
+        "3m": {
+          "avgReturn": 3.1,
+          "medianReturn": 2,
+          "winRate": 57.4,
+          "sampleSize": 667
+        },
+        "6m": {
+          "avgReturn": 5.4,
+          "medianReturn": 3.1,
+          "winRate": 59.5,
+          "sampleSize": 664
+        }
+      }
+    },
+    {
+      "level": "過熱",
+      "scoreRange": [
+        61,
+        80
+      ],
+      "occurrences": 845,
+      "nikkei225": {
+        "1m": {
+          "avgReturn": 0.8,
+          "medianReturn": 1,
+          "winRate": 60.3,
+          "sampleSize": 837
+        },
+        "3m": {
+          "avgReturn": 1.4,
+          "medianReturn": 0.5,
+          "winRate": 52.8,
+          "sampleSize": 801
+        },
+        "6m": {
+          "avgReturn": 3.9,
+          "medianReturn": 0.7,
+          "winRate": 53.6,
+          "sampleSize": 798
+        }
+      }
+    },
+    {
+      "level": "沸騰",
+      "scoreRange": [
+        81,
+        100
+      ],
+      "occurrences": 349,
+      "nikkei225": {
+        "1m": {
+          "avgReturn": 1.1,
+          "medianReturn": 0.9,
+          "winRate": 56.9,
+          "sampleSize": 346
+        },
+        "3m": {
+          "avgReturn": 2.7,
+          "medianReturn": 1,
+          "winRate": 56.6,
+          "sampleSize": 341
+        },
+        "6m": {
+          "avgReturn": 5,
+          "medianReturn": 2.7,
+          "winRate": 63.5,
+          "sampleSize": 285
+        }
+      }
+    }
+  ]
+}

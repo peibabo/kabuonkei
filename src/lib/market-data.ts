@@ -9,6 +9,11 @@ import type {
   ChartPoint,
   MarketData,
 } from "./types";
+import { computeJapanFearGreed } from "./japan-fear-greed";
+import rawJapanMarketData from "@/data/japan-market-data.json";
+import type { JapanMarketData } from "./types";
+
+const japanMarketData = rawJapanMarketData as unknown as JapanMarketData;
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -245,16 +250,39 @@ export async function fetchAllMarketData(): Promise<MarketData> {
   }
 
   // VIXを先に取得し、Fear & GreedのフォールバックにVIX値を渡す
-  const [volatility, indices, bonds, forex, commodities] = await Promise.all([
+  // ^N225と USDJPY=Xの長期chartも並行取得（日本版温度スコア用）
+  const [
+    volatility,
+    indices,
+    bonds,
+    forex,
+    commodities,
+    nikkei225Chart,
+    usdJpyChart,
+  ] = await Promise.all([
     fetchVolatilityData(),
     fetchIndices(),
     fetchBondYield(),
     fetchForex(),
     fetchCommodities(),
+    fetchChart("^N225", 200),
+    fetchChart("USDJPY=X", 80),
   ]);
 
   const vixPrice = volatility.find((v) => v.symbol === "^VIX")?.price;
   const fearGreed = await fetchFearGreedIndex(vixPrice);
+
+  const nikkei225Price =
+    indices.find((i) => i.symbol === "^N225")?.price ?? null;
+  const japanFearGreed = computeJapanFearGreed({
+    nikkei225Chart,
+    nikkei225Price,
+    usdJpyRate: forex.rate || null,
+    usdJpyChart,
+    investorTrading: japanMarketData.investorTrading ?? null,
+    marginTrading: japanMarketData.marginTrading ?? null,
+    arbitrageBalance: japanMarketData.arbitrageBalance ?? null,
+  });
 
   const jstNow = new Date(
     now + 9 * 60 * 60 * 1000
@@ -263,6 +291,7 @@ export async function fetchAllMarketData(): Promise<MarketData> {
 
   cachedData = {
     fearGreed,
+    japanFearGreed,
     volatility,
     indices,
     bonds,

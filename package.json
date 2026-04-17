@@ -11,7 +11,8 @@
     "test:run": "vitest run",
     "generate:stats": "npx tsx scripts/generate-historical-stats.ts",
     "generate:temperature-history": "npx tsx scripts/generate-temperature-history.ts",
-    "generate:japan-market": "npx tsx scripts/generate-japan-market-data.ts"
+    "generate:japan-market": "npx tsx scripts/generate-japan-market-data.ts",
+    "generate:japan-stats": "npx tsx scripts/generate-japan-historical-stats.ts"
   },
   "dependencies": {
     "next": "16.2.4",

@@ -55,12 +55,39 @@ export interface CommodityData {
 
 export interface MarketData {
   fearGreed: FearGreedData;
+  japanFearGreed: JapanFearGreedData | null;
   volatility: VolatilityData[];
   indices: IndexData[];
   bonds: BondYieldData;
   forex: ForexData;
   commodities: CommodityData[];
   lastUpdated: string;
+}
+
+// --- 日本版 市場温度スコア ---
+
+export type JapanFearGreedComponentId =
+  | "nikkeiMa"
+  | "foreignFlow"
+  | "marginRatio"
+  | "arbitrage"
+  | "usdJpyMomentum";
+
+export interface JapanFearGreedComponent {
+  id: JapanFearGreedComponentId;
+  label: string;
+  score: number;
+  rawValue: number | null;
+  available: boolean;
+  note?: string;
+}
+
+export interface JapanFearGreedData {
+  score: number;
+  level: SentimentLevel;
+  components: JapanFearGreedComponent[];
+  availableCount: number;
+  generatedAt: string;
 }
 
 export type SentimentLevel = "極寒" | "冷え込み" | "平温" | "過熱" | "沸騰";

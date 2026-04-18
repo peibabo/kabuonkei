@@ -46,21 +46,14 @@ export const metadata: Metadata = {
     siteName: "株温計",
     type: "website",
     locale: "ja_JP",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "株温計 - 今日の相場、熱い？冷たい？",
-      },
-    ],
+    // og:image は src/app/opengraph-image.tsx で動的生成され、Next.js が自動で metadata に差し込む
   },
   twitter: {
     card: "summary_large_image",
     title: "株温計 - 今日の相場、熱い？冷たい？",
     description:
       "市場のセンチメント指標を1画面で俯瞰できる日本語ダッシュボード",
-    images: ["/og-image.png"],
+    // twitter:image は未指定のまま。対応プラットフォームは og:image にフォールバックする
   },
   ...(googleSiteVerification
     ? { verification: { google: googleSiteVerification } }

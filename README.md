@@ -64,6 +64,31 @@ Vercel にデプロイを想定。
 vercel
 ```
 
+### 環境変数
+
+`.env.example` を参照してください。主要な変数:
+
+| 変数 | 用途 | 未設定時の挙動 |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | canonical URL / OGP / sitemap のベース URL | `https://kabuonkei.com` をデフォルトとして使用 |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 の測定 ID（例: `G-XXXXXXXXXX`） | GA タグを出力しない（開発時の安全策） |
+| `GOOGLE_SITE_VERIFICATION` | Google Search Console サイト所有権確認コード | verification メタタグを出さない |
+
+### リリース前チェックリスト
+
+- [ ] `public/og-image.png`（1200×630px）を配置
+- [ ] 独自ドメイン取得 & Vercel 連携
+- [ ] `NEXT_PUBLIC_SITE_URL` を本番 URL に設定
+- [ ] GA4 プロパティ作成 → `NEXT_PUBLIC_GA_ID` を設定
+- [ ] Search Console 登録 → `GOOGLE_SITE_VERIFICATION` を設定 → sitemap 送信
+- [ ] 利用規約・プライバシーポリシー・免責事項の文言最終確認
+
+## 法務・運営
+
+- [/about](https://kabuonkei.com/about) サイト説明
+- [/terms](https://kabuonkei.com/terms) 利用規約（免責事項を含む）
+- [/privacy](https://kabuonkei.com/privacy) プライバシーポリシー
+
 ## ライセンス
 
 Private

@@ -76,7 +76,6 @@ vercel
 
 ### リリース前チェックリスト
 
-- [ ] `public/og-image.png`（1200×630px）を配置
 - [ ] 独自ドメイン取得 & Vercel 連携
 - [ ] `NEXT_PUBLIC_SITE_URL` を本番 URL に設定
 - [ ] GA4 プロパティ作成 → `NEXT_PUBLIC_GA_ID` を設定

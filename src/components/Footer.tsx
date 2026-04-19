@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="mt-auto border-t border-gray-200 bg-white">
       <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-600">
         <p className="mb-3 text-xs text-gray-500">
-          本サイトは情報提供のみを目的としており、投資助言・勧誘ではありません。投資判断はご自身の責任でお願いします。
+          本サイトは情報提供のみを目的としており、投資助言・勧誘ではありません。掲載する過去の統計や類似日のリターンは過去データの集計であり、将来の運用成果を保証するものではありません。投資判断はご自身の責任でお願いします。
         </p>
         <p className="mb-4 text-xs text-gray-500">
           データ: Yahoo Finance / CNN Fear &amp; Greed / 日本取引所グループ (JPX)

@@ -54,6 +54,10 @@ npm run generate:japan-stats                # 日本版 温度帯別リターン
 npm run generate:temperature-history        # 米国版 温度推移
 npm run generate:japan-temperature-history  # 日本版 温度推移
 npm run generate:similar-days               # 類似日検索データ（日本/米国両方）
+
+# X Bot（平日 JST 7:30 に GitHub Actions から実行される）
+npm run post:daily-tweet                    # 実投稿（X_API_* が必要）
+npm run post:daily-tweet -- --dry-run       # 投稿せず内容確認のみ
 ```
 
 ## デプロイ
@@ -73,6 +77,7 @@ vercel
 | `NEXT_PUBLIC_SITE_URL` | canonical URL / OGP / sitemap のベース URL | `https://kabuonkei.com` をデフォルトとして使用 |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics 4 の測定 ID（例: `G-XXXXXXXXXX`） | GA タグを出力しない（開発時の安全策） |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console サイト所有権確認コード | verification メタタグを出さない |
+| `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` | X（Twitter）Bot 投稿用（OAuth 1.0a User Context） | `npm run post:daily-tweet` 実行時に起動直後エラー |
 
 ### リリース前チェックリスト
 

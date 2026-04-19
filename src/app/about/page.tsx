@@ -99,6 +99,24 @@ export default function AboutPage() {
             </Link>
             {" "}をご確認ください。
           </p>
+          <p className="mt-2 text-sm text-gray-600">
+            お問い合わせ:{" "}
+            <a
+              href="mailto:info@kabuonkei.com"
+              className="underline hover:text-gray-900"
+            >
+              info@kabuonkei.com
+            </a>
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+            ご利用にあたって
+          </h2>
+          <p className="text-sm text-gray-600">
+            株温計が提供する情報・分析結果は投資判断の参考情報であり、特定の金融商品の売買を推奨するものではありません。また、過去の統計や類似日のリターンはあくまで歴史的データの集計であり、将来の運用成果を保証するものではありません。投資はご自身の判断と責任で行ってください。
+          </p>
         </section>
       </div>
     </main>

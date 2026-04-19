@@ -60,7 +60,7 @@ export default function PrivacyPage() {
             3. Cookie とアクセス解析
           </h2>
           <p>
-            当サイトでは、利用状況の把握のため Google LLC が提供するアクセス解析ツール「Google Analytics（GA4）」を使用する場合があります。Google Analytics は Cookie を用いて匿名のトラフィック情報を収集します。収集されるデータは匿名であり、個人を特定するものではありません。
+            当サイトでは、利用状況の把握のため Google LLC が提供するアクセス解析ツール「Google Analytics 4（GA4）」を使用する場合があります。GA4 は Cookie を用いて匿名のトラフィック情報を収集します。収集されるデータは匿名であり、個人を特定するものではありません。なお、GA4 では IP アドレスはログとして保存されません。
           </p>
           <p className="mt-2">
             Google Analytics の利用規約については{" "}
@@ -84,7 +84,19 @@ export default function PrivacyPage() {
             をご確認ください。
           </p>
           <p className="mt-2">
-            Cookie はブラウザの設定により無効化することが可能です。Cookie を無効化してもサイトの主要機能はご利用いただけます。
+            計測を停止したい場合は、Google が提供する{" "}
+            <a
+              href="https://tools.google.com/dlpage/gaoptout?hl=ja"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-gray-900"
+            >
+              Google アナリティクス オプトアウト アドオン
+            </a>
+            をブラウザにインストールすることで、当サイトを含む GA4 利用サイト全体の計測を無効化できます。
+          </p>
+          <p className="mt-2">
+            Cookie はブラウザの設定により無効化することも可能です。Cookie を無効化してもサイトの主要機能はご利用いただけます。
           </p>
         </section>
 
@@ -115,7 +127,25 @@ export default function PrivacyPage() {
           </p>
         </section>
 
-        <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 17 日</p>
+        <section>
+          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+            7. お問い合わせ
+          </h2>
+          <p>
+            本ポリシーに関するお問い合わせ、個人関連情報の取り扱いについてのご質問は、下記までご連絡ください。
+          </p>
+          <p className="mt-2">
+            連絡先:{" "}
+            <a
+              href="mailto:info@kabuonkei.com"
+              className="underline hover:text-gray-900"
+            >
+              info@kabuonkei.com
+            </a>
+          </p>
+        </section>
+
+        <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 19 日</p>
       </div>
     </main>
   );

@@ -108,7 +108,25 @@ export default function TermsPage() {
           </p>
         </section>
 
-        <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 17 日</p>
+        <section>
+          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+            第 8 条（お問い合わせ）
+          </h2>
+          <p>
+            本規約に関するお問い合わせ、コンテンツの転載許諾、その他のご連絡は下記までお願いします。
+          </p>
+          <p className="mt-2">
+            連絡先:{" "}
+            <a
+              href="mailto:info@kabuonkei.com"
+              className="underline hover:text-gray-900"
+            >
+              info@kabuonkei.com
+            </a>
+          </p>
+        </section>
+
+        <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 19 日</p>
       </div>
     </main>
   );

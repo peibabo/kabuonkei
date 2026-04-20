@@ -25,6 +25,7 @@ import {
   getSentimentLevel,
   getSentimentDescription,
 } from "../src/lib/sentiment";
+import { findSimilarDays } from "../src/lib/similar-days/find";
 import type {
   ChartPoint,
   FearGreedData,
@@ -35,6 +36,10 @@ import type {
   SimilarDayMatch,
   SimilarDaysFile,
 } from "../src/lib/types";
+
+// 既存テスト（scripts/__tests__/post-daily-temperature-tweet.test.ts）との後方互換のため
+// 同名関数を再 export。実体は src/lib/similar-days/find.ts
+export { findSimilarDays };
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -73,33 +78,6 @@ export function formatJstDateLabel(now: Date = new Date()): string {
   const day = jst.getUTCDate();
   const weekday = ["日", "月", "火", "水", "木", "金", "土"][jst.getUTCDay()];
   return `${month}/${day}(${weekday})`;
-}
-
-/**
- * similar-days.ts の findSimilarDays と同一ロジック。
- * `@/data/...` import を避けるため tsx 実行用にインライン化。
- */
-export function findSimilarDays(
-  currentScore: number,
-  history: SimilarDayEntry[],
-  events: Record<string, string>,
-  topN = 1,
-): SimilarDayMatch[] {
-  return history
-    .filter((h) => h.return3m !== null)
-    .map<SimilarDayMatch>((h) => ({
-      ...h,
-      scoreDiff: Math.abs(h.score - currentScore),
-      eventLabel: events[h.date],
-    }))
-    .sort((a, b) => {
-      if (a.scoreDiff !== b.scoreDiff) return a.scoreDiff - b.scoreDiff;
-      const aHasLabel = Boolean(a.eventLabel);
-      const bHasLabel = Boolean(b.eventLabel);
-      if (aHasLabel !== bHasLabel) return aHasLabel ? -1 : 1;
-      return b.date.localeCompare(a.date);
-    })
-    .slice(0, topN);
 }
 
 /** 日米いずれかが極端温度 (score ≤ 20 or ≥ 80) */

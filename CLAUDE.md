@@ -147,7 +147,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
 - **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap は `/`, `/about`, `/terms`, `/privacy` の 4 ページ
 - **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
-- **OG 画像**: `src/app/opengraph-image.tsx` で動的生成（`ImageResponse` + Google Fonts の Noto Sans JP サブセットを fetch）。手動の PNG 配置は不要
+- **OG 画像**: `src/app/opengraph-image.tsx` で動的生成（`ImageResponse` + Google Fonts の Noto Sans JP サブセットを fetch）。手動の PNG 配置は不要。フォント取得（`loadGoogleFont` / `buildNotoSansJpFonts`）と温度計アイコン SVG は `src/lib/og/{fonts,thermometer-svg}.ts` に共通化されており、`/api/og/daily` 側も同じモジュールを参照する
 
 ### 環境変数
 - `NEXT_PUBLIC_SITE_URL` — canonical / OGP / sitemap のベース URL

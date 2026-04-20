@@ -4,8 +4,9 @@ import {
   getSentimentDescription,
   getSentimentLevel,
 } from "@/lib/sentiment";
-import { OG_CHAR_SET, SIZE, THERMOMETER_SVG } from "./_constants";
-import { loadGoogleFont } from "./_lib/fonts";
+import { buildNotoSansJpFonts } from "@/lib/og/fonts";
+import { THERMOMETER_SVG } from "@/lib/og/thermometer-svg";
+import { OG_CHAR_SET, SIZE } from "./_constants";
 import {
   formatJstDateLabel,
   labelFromIsoDate,
@@ -35,33 +36,7 @@ export async function GET(request: Request) {
     japanScore != null ? getSentimentColor(japanScore) : "#6b7280";
   const usColor = usScore != null ? getSentimentColor(usScore) : "#6b7280";
 
-  const [boldFont, mediumFont] = await Promise.all([
-    loadGoogleFont("Noto+Sans+JP:wght@900", OG_CHAR_SET),
-    loadGoogleFont("Noto+Sans+JP:wght@500", OG_CHAR_SET),
-  ]);
-
-  const fonts: {
-    name: string;
-    data: ArrayBuffer;
-    style: "normal";
-    weight: 500 | 900;
-  }[] = [];
-  if (boldFont) {
-    fonts.push({
-      name: "NotoSansJP",
-      data: boldFont,
-      style: "normal",
-      weight: 900,
-    });
-  }
-  if (mediumFont) {
-    fonts.push({
-      name: "NotoSansJP",
-      data: mediumFont,
-      style: "normal",
-      weight: 500,
-    });
-  }
+  const fonts = await buildNotoSansJpFonts(OG_CHAR_SET);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(
     THERMOMETER_SVG,

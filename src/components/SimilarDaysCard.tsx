@@ -2,6 +2,7 @@
 
 import { getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
 import type { SimilarDayMatch } from "@/lib/types";
+import { formatReturn, returnColorClass } from "@/lib/format";
 
 interface Props {
   title: string;
@@ -11,17 +12,6 @@ interface Props {
   marketLabel: string; // "日経225" | "S&P500"
   dataRangeFrom: string;
   dataRangeTo: string;
-}
-
-function formatReturn(value: number | null): string {
-  if (value == null) return "—";
-  const sign = value > 0 ? "+" : "";
-  return `${sign}${value.toFixed(1)}%`;
-}
-
-function returnColorClass(value: number | null): string {
-  if (value == null) return "text-gray-400";
-  return value > 0 ? "text-red-500" : "text-green-500";
 }
 
 function Headline({

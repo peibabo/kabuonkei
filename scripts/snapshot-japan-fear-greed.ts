@@ -13,31 +13,17 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { resolve } from "path";
 import { computeJapanFearGreed } from "../src/lib/japan-fear-greed";
 import type { ChartPoint, JapanMarketData } from "../src/lib/types";
+import {
+  emptySnapshotFile,
+  mergeSnapshotEntry,
+  type SnapshotEntry,
+  type SnapshotFile,
+} from "./_lib/snapshot-merge";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
 const SNAPSHOT_PATH = resolve(__dirname, "../src/data/japan-fg-snapshots.json");
 const MARKET_DATA_PATH = resolve(__dirname, "../src/data/japan-market-data.json");
-
-interface SnapshotEntry {
-  date: string;
-  score: number;
-  level: string;
-  availableCount: number;
-  components: {
-    nikkeiMa: number;
-    foreignFlow: number;
-    marginRatio: number;
-    arbitrage: number;
-    usdJpyMomentum: number;
-  };
-}
-
-interface SnapshotFile {
-  generatedAt: string;
-  method: "full5";
-  snapshots: SnapshotEntry[];
-}
 
 async function fetchChart(
   symbol: string,
@@ -130,32 +116,24 @@ async function main() {
   };
 
   // --- 既存JSONを読み込み、同日があれば置換、なければ追加 ---
-  let file: SnapshotFile = {
-    generatedAt: new Date().toISOString(),
-    method: "full5",
-    snapshots: [],
-  };
+  let existing: SnapshotFile = emptySnapshotFile();
 
   if (existsSync(SNAPSHOT_PATH)) {
     try {
-      file = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf-8")) as SnapshotFile;
+      existing = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf-8")) as SnapshotFile;
     } catch {
       console.warn("既存スナップショットJSONが壊れているため空で初期化");
     }
   }
 
-  const existingIdx = file.snapshots.findIndex((s) => s.date === date);
-  if (existingIdx >= 0) {
-    file.snapshots[existingIdx] = entry;
+  const wasReplaced = existing.snapshots.some((s) => s.date === date);
+  const file = mergeSnapshotEntry(existing, entry);
+
+  if (wasReplaced) {
     console.log(`  ${date} のエントリを上書き`);
   } else {
-    file.snapshots.push(entry);
     console.log(`  ${date} のエントリを新規追加（合計 ${file.snapshots.length} 件）`);
   }
-
-  file.snapshots.sort((a, b) => a.date.localeCompare(b.date));
-  file.generatedAt = new Date().toISOString();
-  file.method = "full5";
 
   mkdirSync(resolve(SNAPSHOT_PATH, ".."), { recursive: true });
   writeFileSync(SNAPSHOT_PATH, JSON.stringify(file, null, 2) + "\n", "utf-8");

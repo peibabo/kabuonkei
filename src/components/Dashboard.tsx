@@ -3,13 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import FearGreedGauge from "./FearGreedGauge";
-import JapanFearGreedGauge from "./JapanFearGreedGauge";
 import VolatilityCard from "./VolatilityCard";
 import IndicesCard from "./IndicesCard";
 import BondForexCard from "./BondForexCard";
 import CommodityCard from "./CommodityCard";
 import HistoricalStatsCard from "./HistoricalStatsCard";
-import JapanHistoricalStatsCard from "./JapanHistoricalStatsCard";
 import TemperatureTrendCard from "./TemperatureTrendCard";
 import JapanTemperatureTrendCard from "./JapanTemperatureTrendCard";
 import SimilarDaysCard from "./SimilarDaysCard";
@@ -103,12 +101,14 @@ export default function Dashboard() {
       {/* メインゲージ（日本版 / 米国版 2列配置） */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {data.japanFearGreed && (
-          <JapanFearGreedGauge
+          <FearGreedGauge
+            market="jp"
             data={data.japanFearGreed}
             title="🇯🇵 市場温度（日本）"
           />
         )}
         <FearGreedGauge
+          market="us"
           data={data.fearGreed}
           title="🇺🇸 Fear & Greed（米国）"
         />
@@ -128,11 +128,12 @@ export default function Dashboard() {
       {/* 過去の統計（日本版 / 米国版 2列配置） */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {data.japanFearGreed && (
-          <JapanHistoricalStatsCard
+          <HistoricalStatsCard
+            market="jp"
             currentScore={data.japanFearGreed.score}
           />
         )}
-        <HistoricalStatsCard currentScore={data.fearGreed.score} />
+        <HistoricalStatsCard market="us" currentScore={data.fearGreed.score} />
       </div>
 
       {/* 今日の類似日（日本版 / 米国版 2列配置） */}

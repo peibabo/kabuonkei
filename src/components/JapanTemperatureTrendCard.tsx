@@ -18,6 +18,10 @@ import {
   sliceByDays,
   type JapanTempPoint,
 } from "@/lib/japan-temperature-history";
+import { TEMPERATURE_BANDS } from "./_trend/constants";
+import TemperatureLegend from "./_trend/TemperatureLegend";
+import PeriodSwitcher from "./_trend/PeriodSwitcher";
+import { formatXAxisDate } from "./_trend/formatXAxisDate";
 
 type Period = "1M" | "3M" | "6M" | "1Y" | "5Y" | "10Y";
 
@@ -39,13 +43,16 @@ const PERIOD_LABELS: Record<Period, string> = {
   "10Y": "10年",
 };
 
-const TEMPERATURE_BANDS = [
-  { y1: 0, y2: 20, color: "#2563eb" },
-  { y1: 20, y2: 40, color: "#0ea5e9" },
-  { y1: 40, y2: 60, color: "#ca8a04" },
-  { y1: 60, y2: 80, color: "#ea580c" },
-  { y1: 80, y2: 100, color: "#dc2626" },
-];
+const PERIODS = Object.keys(PERIOD_DAYS) as readonly Period[];
+
+const TICK_INTERVALS: Record<Period, number> = {
+  "1M": 6,
+  "3M": 14,
+  "6M": 30,
+  "1Y": 60,
+  "5Y": 240,
+  "10Y": 500,
+};
 
 interface MergedRow {
   date: string;
@@ -98,12 +105,6 @@ function CustomTooltip({
       )}
     </div>
   );
-}
-
-function formatXAxisDate(dateStr: string, longPeriod: boolean): string {
-  const [year, month, day] = dateStr.split("-");
-  if (longPeriod) return `${year}/${Number(month)}`;
-  return `${Number(month)}/${Number(day)}`;
 }
 
 interface Props {
@@ -162,36 +163,19 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
   }
 
   const longPeriod = period === "5Y" || period === "10Y";
-  const tickInterval = {
-    "1M": 6,
-    "3M": 14,
-    "6M": 30,
-    "1Y": 60,
-    "5Y": 240,
-    "10Y": 500,
-  }[period];
-
+  const tickInterval = TICK_INTERVALS[period];
   const hasFullSnapshots = displayData.some((d) => d.fullScore != null);
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <h2 className="text-lg font-bold text-gray-700">🇯🇵 温度の推移（日本）</h2>
-        <div className="flex flex-wrap gap-1">
-          {(Object.keys(PERIOD_DAYS) as Period[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                period === p
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              {PERIOD_LABELS[p]}
-            </button>
-          ))}
-        </div>
+        <PeriodSwitcher
+          periods={PERIODS}
+          labels={PERIOD_LABELS}
+          value={period}
+          onChange={setPeriod}
+        />
       </div>
 
       <ResponsiveContainer width="100%" height={220}>
@@ -259,24 +243,7 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
         </ComposedChart>
       </ResponsiveContainer>
 
-      {/* 凡例: 温度帯 */}
-      <div className="flex justify-center gap-3 mt-3 text-xs text-gray-500">
-        {[
-          { label: "極寒", color: "#2563eb" },
-          { label: "冷え込み", color: "#0ea5e9" },
-          { label: "平温", color: "#ca8a04" },
-          { label: "過熱", color: "#ea580c" },
-          { label: "沸騰", color: "#dc2626" },
-        ].map((item) => (
-          <div key={item.label} className="flex items-center gap-1">
-            <span
-              className="inline-block w-2.5 h-2.5 rounded-full"
-              style={{ backgroundColor: item.color }}
-            />
-            <span>{item.label}</span>
-          </div>
-        ))}
-      </div>
+      <TemperatureLegend />
 
       {/* 系列の説明 */}
       <div className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500 leading-relaxed">

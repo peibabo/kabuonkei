@@ -5,21 +5,27 @@ import {
   getSentimentDescription,
   getSentimentColor,
 } from "@/lib/sentiment";
-import type { FearGreedData } from "@/lib/types";
+import type { FearGreedData, JapanFearGreedData } from "@/lib/types";
 
-interface Props {
-  data: FearGreedData;
-  title?: string;
-}
+type Props =
+  | { market: "us"; data: FearGreedData; title?: string }
+  | { market: "jp"; data: JapanFearGreedData; title?: string };
 
-export default function FearGreedGauge({
-  data,
-  title = "Fear & Greed Index",
-}: Props) {
-  const isEstimated = data.rating === "estimated";
-  const level = getSentimentLevel(data.score);
+const DEFAULT_TITLES = {
+  us: "Fear & Greed Index",
+  jp: "🇯🇵 市場温度（日本）",
+} as const;
+
+export default function FearGreedGauge(props: Props) {
+  const { market, data } = props;
+  const title = props.title ?? DEFAULT_TITLES[market];
+
+  const isEstimated = market === "us" && data.rating === "estimated";
+  const level =
+    market === "us" ? getSentimentLevel(data.score) : data.level;
   const description = getSentimentDescription(data.score);
   const color = getSentimentColor(data.score);
+  const gradientId = `gaugeGradient-${market}`;
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
@@ -32,12 +38,11 @@ export default function FearGreedGauge({
         )}
       </h2>
 
-      {/* ゲージ */}
+      {/* ゲージ（市場共通） */}
       <div className="relative w-64 h-40 mx-auto mb-4">
         <svg viewBox="0 0 200 120" className="w-full h-full">
-          {/* 背景のアーク */}
           <defs>
-            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#2563eb" />
               <stop offset="25%" stopColor="#0ea5e9" />
               <stop offset="50%" stopColor="#ca8a04" />
@@ -48,11 +53,10 @@ export default function FearGreedGauge({
           <path
             d="M 20 100 A 80 80 0 0 1 180 100"
             fill="none"
-            stroke="url(#gaugeGradient)"
+            stroke={`url(#${gradientId})`}
             strokeWidth="12"
             strokeLinecap="round"
           />
-          {/* 針 */}
           <line
             x1="100"
             y1="100"
@@ -63,7 +67,6 @@ export default function FearGreedGauge({
             strokeLinecap="round"
           />
           <circle cx="100" cy="100" r="5" fill="#1f2937" />
-          {/* ラベル */}
           <text x="20" y="118" fontSize="8" fill="#9ca3af" textAnchor="middle">
             0
           </text>
@@ -73,21 +76,36 @@ export default function FearGreedGauge({
         </svg>
       </div>
 
-      {/* スコアと状態 */}
+      {/* スコアと状態（市場共通） */}
       <div className="text-center mb-6">
         <div className="text-5xl font-bold" style={{ color }}>
           {data.score}
         </div>
-        <div
-          className="text-2xl font-semibold mt-1"
-          style={{ color }}
-        >
+        <div className="text-2xl font-semibold mt-1" style={{ color }}>
           {level}
         </div>
         <div className="text-base text-gray-500 mt-0.5">（{description}）</div>
       </div>
 
-      {/* 過去データ（CNN APIから取得時のみ表示） */}
+      {/* 下部詳細（市場別） */}
+      {props.market === "us" ? (
+        <UsFooter data={props.data} isEstimated={isEstimated} />
+      ) : (
+        <JpFooter data={props.data} />
+      )}
+    </div>
+  );
+}
+
+function UsFooter({
+  data,
+  isEstimated,
+}: {
+  data: FearGreedData;
+  isEstimated: boolean;
+}) {
+  return (
+    <>
       {!isEstimated && (
         <div className="grid grid-cols-3 gap-4 text-center text-sm">
           <div>
@@ -110,6 +128,53 @@ export default function FearGreedGauge({
           ? "VIXから推定（CNN APIが利用できない場合の代替値）"
           : "出典: CNN Business"}
       </p>
-    </div>
+    </>
+  );
+}
+
+function JpFooter({ data }: { data: JapanFearGreedData }) {
+  return (
+    <>
+      <div className="border-t border-gray-100 pt-4">
+        <p className="text-xs text-gray-500 mb-2 text-center">
+          構成要素（{data.availableCount}/5 利用可能）
+        </p>
+        <div className="space-y-1.5">
+          {data.components.map((c) => {
+            const compColor = c.available
+              ? getSentimentColor(c.score)
+              : "#d1d5db";
+            return (
+              <div
+                key={c.id}
+                className="flex items-center justify-between text-xs"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span
+                    className="inline-block w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: compColor }}
+                  />
+                  <span
+                    className={`truncate ${c.available ? "text-gray-700" : "text-gray-400"}`}
+                  >
+                    {c.label}
+                  </span>
+                </div>
+                <span
+                  className={`font-mono font-semibold ml-2 ${c.available ? "" : "text-gray-400"}`}
+                  style={c.available ? { color: compColor } : undefined}
+                >
+                  {c.available ? c.score : "—"}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <p className="text-xs text-gray-400 mt-4 text-center">
+        5要素の等ウェイト平均 ｜ JPX・Yahoo Financeベース
+      </p>
+    </>
   );
 }

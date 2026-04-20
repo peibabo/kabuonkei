@@ -1,15 +1,8 @@
 /** OG 画像ルート（/api/og/daily）のクエリパラメータ整形用の純粋関数群 */
 
-const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"] as const;
+export { formatJstDateLabel } from "@/lib/jst-date";
 
-/** 現在時刻（JST）から "M/D(曜)" 形式のラベルを返す */
-export function formatJstDateLabel(date: Date = new Date()): string {
-  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-  const month = jst.getUTCMonth() + 1;
-  const day = jst.getUTCDate();
-  const weekday = WEEKDAYS[jst.getUTCDay()];
-  return `${month}/${day}(${weekday})`;
-}
+const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"] as const;
 
 /** "2026-04-20" → "4/20(月)" / パース不能なら null */
 export function labelFromIsoDate(iso: string): string | null {

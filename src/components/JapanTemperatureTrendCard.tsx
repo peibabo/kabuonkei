@@ -9,7 +9,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ReferenceArea,
 } from "recharts";
 import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
@@ -18,11 +17,15 @@ import {
   sliceByDays,
   type JapanTempPoint,
 } from "@/lib/japan-temperature-history";
-import { TEMPERATURE_BANDS } from "./_trend/constants";
 import TemperatureLegend from "./_trend/TemperatureLegend";
-import PeriodSwitcher from "./_trend/PeriodSwitcher";
+import TrendCardHeader from "./_trend/TrendCardHeader";
 import { formatXAxisDate } from "./_trend/formatXAxisDate";
 import { JP_TREND_PERIODS, type JpTrendPeriod } from "./_trend/periods";
+import { renderTemperatureBands } from "./_trend/renderTemperatureBands";
+import {
+  TREND_X_AXIS_BASE_PROPS,
+  TREND_Y_AXIS_PROPS,
+} from "./_trend/axisProps";
 
 interface MergedRow {
   date: string;
@@ -138,15 +141,13 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-        <h2 className="text-lg font-bold text-gray-700">🇯🇵 温度の推移（日本）</h2>
-        <PeriodSwitcher
-          periods={JP_TREND_PERIODS.periods}
-          labels={JP_TREND_PERIODS.labels}
-          value={period}
-          onChange={setPeriod}
-        />
-      </div>
+      <TrendCardHeader
+        title="🇯🇵 温度の推移（日本）"
+        periods={JP_TREND_PERIODS.periods}
+        labels={JP_TREND_PERIODS.labels}
+        value={period}
+        onChange={setPeriod}
+      />
 
       <ResponsiveContainer width="100%" height={220}>
         <ComposedChart
@@ -160,32 +161,14 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
             </linearGradient>
           </defs>
 
-          {TEMPERATURE_BANDS.map((band) => (
-            <ReferenceArea
-              key={band.y1}
-              y1={band.y1}
-              y2={band.y2}
-              fill={band.color}
-              fillOpacity={0.06}
-              ifOverflow="extendDomain"
-            />
-          ))}
+          {renderTemperatureBands()}
 
           <XAxis
-            dataKey="date"
+            {...TREND_X_AXIS_BASE_PROPS}
             tickFormatter={(d) => formatXAxisDate(d, longPeriod)}
             interval={tickInterval}
-            tick={{ fontSize: 11, fill: "#9ca3af" }}
-            axisLine={false}
-            tickLine={false}
           />
-          <YAxis
-            domain={[0, 100]}
-            ticks={[0, 20, 40, 60, 80, 100]}
-            tick={{ fontSize: 11, fill: "#9ca3af" }}
-            axisLine={false}
-            tickLine={false}
-          />
+          <YAxis {...TREND_Y_AXIS_PROPS} />
           <Tooltip content={<CustomTooltip />} />
 
           {/* 簡易版: 温度色の実線 + グラデーション塗り（米国版と同じ描画） */}

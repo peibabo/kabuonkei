@@ -22,37 +22,7 @@ import { TEMPERATURE_BANDS } from "./_trend/constants";
 import TemperatureLegend from "./_trend/TemperatureLegend";
 import PeriodSwitcher from "./_trend/PeriodSwitcher";
 import { formatXAxisDate } from "./_trend/formatXAxisDate";
-
-type Period = "1M" | "3M" | "6M" | "1Y" | "5Y" | "10Y";
-
-const PERIOD_DAYS: Record<Period, number> = {
-  "1M": 30,
-  "3M": 90,
-  "6M": 180,
-  "1Y": 365,
-  "5Y": 1826,
-  "10Y": 3652,
-};
-
-const PERIOD_LABELS: Record<Period, string> = {
-  "1M": "1ヶ月",
-  "3M": "3ヶ月",
-  "6M": "6ヶ月",
-  "1Y": "1年",
-  "5Y": "5年",
-  "10Y": "10年",
-};
-
-const PERIODS = Object.keys(PERIOD_DAYS) as readonly Period[];
-
-const TICK_INTERVALS: Record<Period, number> = {
-  "1M": 6,
-  "3M": 14,
-  "6M": 30,
-  "1Y": 60,
-  "5Y": 240,
-  "10Y": 500,
-};
+import { JP_TREND_PERIODS, type JpTrendPeriod } from "./_trend/periods";
 
 interface MergedRow {
   date: string;
@@ -112,14 +82,14 @@ interface Props {
 }
 
 export default function JapanTemperatureTrendCard({ currentScore }: Props) {
-  const [period, setPeriod] = useState<Period>("3M");
+  const [period, setPeriod] = useState<JpTrendPeriod>("3M");
   const lineColor = getSentimentColor(currentScore);
 
   const allSimple = useMemo(() => getSimpleHistory(), []);
   const allFull = useMemo(() => getFullSnapshots(), []);
 
   const displayData = useMemo<MergedRow[]>(() => {
-    const days = PERIOD_DAYS[period];
+    const days = JP_TREND_PERIODS.days[period];
     const simpleSlice = sliceByDays(allSimple, days);
     const fullSlice = sliceByDays(allFull, days);
 
@@ -163,7 +133,7 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
   }
 
   const longPeriod = period === "5Y" || period === "10Y";
-  const tickInterval = TICK_INTERVALS[period];
+  const tickInterval = JP_TREND_PERIODS.tickIntervals[period];
   const hasFullSnapshots = displayData.some((d) => d.fullScore != null);
 
   return (
@@ -171,8 +141,8 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <h2 className="text-lg font-bold text-gray-700">🇯🇵 温度の推移（日本）</h2>
         <PeriodSwitcher
-          periods={PERIODS}
-          labels={PERIOD_LABELS}
+          periods={JP_TREND_PERIODS.periods}
+          labels={JP_TREND_PERIODS.labels}
           value={period}
           onChange={setPeriod}
         />

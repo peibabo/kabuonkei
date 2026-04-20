@@ -10,19 +10,17 @@ import {
   fetchForex,
   fetchCommodities,
 } from "./indices";
+import { createMemoCache } from "./market-data/cache";
+import { buildMarketData } from "./market-data/compose";
 
 const japanMarketData = rawJapanMarketData as unknown as JapanMarketData;
 
-// メモリキャッシュ
-let cachedData: MarketData | null = null;
-let cacheTimestamp: number = 0;
 const CACHE_DURATION = 15 * 60 * 1000; // 15分
+const cache = createMemoCache<MarketData>(CACHE_DURATION);
 
 export async function fetchAllMarketData(): Promise<MarketData> {
-  const now = Date.now();
-  if (cachedData && now - cacheTimestamp < CACHE_DURATION) {
-    return cachedData;
-  }
+  const cached = cache.get();
+  if (cached) return cached;
 
   // VIXを先に取得し、Fear & GreedのフォールバックにVIX値を渡す
   // ^N225と USDJPY=Xの長期chartも並行取得（日本版温度スコア用）
@@ -59,11 +57,7 @@ export async function fetchAllMarketData(): Promise<MarketData> {
     arbitrageBalance: japanMarketData.arbitrageBalance ?? null,
   });
 
-  const jstNow = new Date(now + 9 * 60 * 60 * 1000);
-  const lastUpdated =
-    jstNow.toISOString().replace("T", " ").slice(0, 19) + " JST";
-
-  cachedData = {
+  const data = buildMarketData({
     fearGreed,
     japanFearGreed,
     volatility,
@@ -71,9 +65,9 @@ export async function fetchAllMarketData(): Promise<MarketData> {
     bonds,
     forex,
     commodities,
-    lastUpdated,
-  };
-  cacheTimestamp = now;
+    now: Date.now(),
+  });
 
-  return cachedData;
+  cache.set(data);
+  return data;
 }

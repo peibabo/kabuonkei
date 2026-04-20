@@ -140,6 +140,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - `/about` — サイト説明（`src/app/about/page.tsx`）
 - `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記
 - `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）
+- `/about` `/terms` `/privacy` の外枠（`<main>` + 戻るリンク + `<h1>` + コンテンツ枠）は `src/components/StaticPageLayout.tsx` に共通化されており、各 page は `<StaticPageLayout title="...">` で本文のみを記述する
 - 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）
 
 ### SEO / 計測

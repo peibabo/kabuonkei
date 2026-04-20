@@ -12,7 +12,7 @@
 - **CNN Fear & Greed API** でセンチメントデータを取得
 - **Recharts** でミニチャート描画
 - **Vitest + Testing Library** でテスト
-- APIキャッシュ: メモリキャッシュ（15分TTL）
+- APIキャッシュ: `/api/market` Route Handler の ISR（`revalidate = 900` 秒 = 15 分）
 - デプロイ先: Vercel（予定）
 
 ## 温度スコアの2本立て
@@ -120,7 +120,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - `yahoo.ts`: yahoo-finance2 の薄いラッパー（`fetchQuote` / `fetchChart` / 共有インスタンス）
 - `fear-greed.ts`: 米国版 Fear & Greed の取得（`fetchFearGreedIndex`）と VIX ベース推定（`estimateFearGreedFromVix`）
 - `indices.ts`: VIX / 主要指数 / 米国10年債利回り / 為替 / コモディティの取得。取得対象のシンボル一覧は `src/lib/indices/symbols.ts`（`VOLATILITY_SYMBOLS` / `INDEX_SYMBOLS` / `BOND_YIELD_SYMBOL` / `FOREX_SYMBOL` / `COMMODITY_SYMBOLS`）に集約
-- `market-data.ts`: ダッシュボード用エントリポイント `fetchAllMarketData()`（15分メモリキャッシュ）。実体は `market-data/cache.ts`（`createMemoCache<T>` 汎用 TTL キャッシュ）と `market-data/compose.ts`（`buildMarketData` / `formatJstTimestamp` 純粋関数）に分離
+- `market-data.ts`: ダッシュボード用エントリポイント `fetchAllMarketData()`。キャッシュは呼び出し元の `/api/market` Route Handler 側で ISR（`revalidate = 900`）により行い、この関数自体は都度 fetch する。実体は `market-data/compose.ts`（`buildMarketData` / `formatJstTimestamp` 純粋関数）に分離。`market-data/cache.ts`（`createMemoCache<T>` 汎用 TTL キャッシュ）は将来の再利用のため残置
 - `japan-fear-greed/`: 日本版市場温度の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `component-builder.ts` / `compute.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import。`component-builder.ts` は `buildAvailableComponent` / `buildUnavailableComponent` / `computeWeightedScore` を提供し、`compute.ts` の C1〜C5 構築定型を圧縮
 - `historical-stats.ts`: 日米共通の過去統計 JSON アクセサ。`market: "us" | "jp"` を受け、`sp500` / `nikkei225` のデータを統一形状 `stats` に正規化して返す（`getHistoricalStats(market)` / `getStatsForScore(score, market)`）
 - `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサと系列マージ

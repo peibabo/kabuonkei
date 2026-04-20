@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T06:45:01.675Z",
+  "generatedAt": "2026-04-20T09:50:07.527Z",
   "method": "full5",
   "snapshots": [
     {
@@ -21,7 +21,7 @@
       "level": "沸騰",
       "availableCount": 5,
       "components": {
-        "nikkeiMa": 89,
+        "nikkeiMa": 88,
         "foreignFlow": 89,
         "marginRatio": 86,
         "arbitrage": 97,

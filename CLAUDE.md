@@ -34,7 +34,7 @@
 - 計算: `src/lib/japan-fear-greed/` 配下（公開 API は `@/lib/japan-fear-greed` から import）。エントリポイントは `computeJapanFearGreed()`
 - 閾値定数: `JAPAN_FG_THRESHOLDS`（`src/lib/japan-fear-greed/thresholds.ts`）
 - 欠損処理: 利用可能な要素のみで合成。2要素未満の場合はnullを返す
-- UI: `src/components/JapanFearGreedGauge.tsx`（PC は左=日本版 / 右=米国版の 2 列配置。見出しは 🇯🇵 / 🇺🇸 の国旗絵文字付きで国識別を明示）
+- UI: `src/components/FearGreedGauge.tsx`（`market: "us" | "jp"` の判別ユニオン prop で日米共通。PC は左=日本版 / 右=米国版の 2 列配置。見出しは 🇯🇵 / 🇺🇸 の国旗絵文字付きで国識別を明示）
 
 ## 過去統計データ
 
@@ -79,6 +79,7 @@
 **UI**: `src/components/JapanTemperatureTrendCard.tsx`（1M/3M/6M/1Y/5Y/10Y 切替）。
 Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オレンジ で重ねがけ。Tooltipで各要素スコアを表示。
 - `src/lib/japan-temperature-history.ts` の `mergeJapanTemperatureData()` が2系列を統合し、`sliceByDays()` で期間フィルタ
+- 温度帯バンド・凡例・期間ボタン・X軸日付フォーマッタは米国版（`TemperatureTrendCard.tsx`）と共通化され、`src/components/_trend/` 配下に集約（`constants.ts` / `TemperatureLegend.tsx` / `PeriodSwitcher.tsx` / `formatXAxisDate.ts`）
 
 ## 今日の類似日（Similar Days）
 
@@ -121,12 +122,14 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - `indices.ts`: VIX / 主要指数 / 米国10年債利回り / 為替 / コモディティの取得
 - `market-data.ts`: ダッシュボード用エントリポイント `fetchAllMarketData()`（15分メモリキャッシュ）
 - `japan-fear-greed/`: 日本版市場温度の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `compute.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import
-- `historical-stats.ts` / `japan-historical-stats.ts`: 過去統計 JSON のアクセサ
+- `historical-stats.ts`: 日米共通の過去統計 JSON アクセサ。`market: "us" | "jp"` を受け、`sp500` / `nikkei225` のデータを統一形状 `stats` に正規化して返す（`getHistoricalStats(market)` / `getStatsForScore(score, market)`）
 - `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサと系列マージ
 - `japan-market-data.ts`: 日本市場需給 JSON のアクセサ
 - `similar-days.ts`: 類似日検索（`findSimilarDays` / 日本・米国のアクセサ / イベントラベル取得）
+- `format.ts`: 共通フォーマッタ（`formatReturn` / `returnColorClass`）
 
 `scripts/_lib/shared.ts` には生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export。
+`scripts/_lib/snapshot-merge.ts` には日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）を分離し、`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化。
 
 ## 公開サイトとしての運用
 

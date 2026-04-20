@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import JapanFearGreedGauge from "@/components/JapanFearGreedGauge";
+import FearGreedGauge from "@/components/FearGreedGauge";
 import type { JapanFearGreedData } from "@/lib/types";
 
 afterEach(() => {
@@ -58,24 +58,24 @@ function buildData(
 
 describe("JapanFearGreedGauge", () => {
   it("タイトルを表示する", () => {
-    render(<JapanFearGreedGauge data={buildData()} />);
+    render(<FearGreedGauge market="jp" data={buildData()} />);
     expect(screen.getByText("🇯🇵 市場温度（日本）")).toBeInTheDocument();
   });
 
   it("カスタムタイトルを渡せる", () => {
-    render(<JapanFearGreedGauge data={buildData()} title="日本センチメント" />);
+    render(<FearGreedGauge market="jp" data={buildData()} title="日本センチメント" />);
     expect(screen.getByText("日本センチメント")).toBeInTheDocument();
   });
 
   it("スコア・温度レベル・説明を表示する", () => {
-    render(<JapanFearGreedGauge data={buildData({ score: 75, level: "過熱" })} />);
+    render(<FearGreedGauge market="jp" data={buildData({ score: 75, level: "過熱" })} />);
     expect(screen.getByText("75")).toBeInTheDocument();
     expect(screen.getByText("過熱")).toBeInTheDocument();
     expect(screen.getByText("（強気）")).toBeInTheDocument();
   });
 
   it("5つの構成要素ラベルを表示する", () => {
-    render(<JapanFearGreedGauge data={buildData()} />);
+    render(<FearGreedGauge market="jp" data={buildData()} />);
     expect(screen.getByText("日経225モメンタム")).toBeInTheDocument();
     expect(screen.getByText("海外投資家フロー")).toBeInTheDocument();
     expect(screen.getByText("信用倍率")).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe("JapanFearGreedGauge", () => {
 
   it("利用可能数を表示する", () => {
     render(
-      <JapanFearGreedGauge data={buildData({ availableCount: 3 })} />
+      <FearGreedGauge market="jp" data={buildData({ availableCount: 3 })} />
     );
     expect(screen.getByText("構成要素（3/5 利用可能）")).toBeInTheDocument();
   });
@@ -100,7 +100,7 @@ describe("JapanFearGreedGauge", () => {
       available: false,
     };
     data.availableCount = 4;
-    render(<JapanFearGreedGauge data={data} />);
+    render(<FearGreedGauge market="jp" data={data} />);
     expect(screen.getByText("—")).toBeInTheDocument();
   });
 });

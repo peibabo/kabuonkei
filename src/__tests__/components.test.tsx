@@ -23,21 +23,21 @@ const mockFearGreedData: FearGreedData = {
 
 describe("FearGreedGauge", () => {
   it("スコアとセンチメントレベルを表示する", () => {
-    render(<FearGreedGauge data={mockFearGreedData} />);
+    render(<FearGreedGauge market="us" data={mockFearGreedData} />);
     expect(screen.getByText("38")).toBeInTheDocument();
     expect(screen.getByText("冷え込み")).toBeInTheDocument();
     expect(screen.getByText("（弱気）")).toBeInTheDocument();
   });
 
   it("過去データを表示する", () => {
-    render(<FearGreedGauge data={mockFearGreedData} />);
+    render(<FearGreedGauge market="us" data={mockFearGreedData} />);
     expect(screen.getByText("前日")).toBeInTheDocument();
     expect(screen.getByText("1週間前")).toBeInTheDocument();
     expect(screen.getByText("1ヶ月前")).toBeInTheDocument();
   });
 
   it("CNN Businessの出典を表示する", () => {
-    const { container } = render(<FearGreedGauge data={mockFearGreedData} />);
+    const { container } = render(<FearGreedGauge market="us" data={mockFearGreedData} />);
     expect(container.textContent).toContain("出典: CNN Business");
   });
 
@@ -46,7 +46,7 @@ describe("FearGreedGauge", () => {
       ...mockFearGreedData,
       rating: "estimated",
     };
-    const { container } = render(<FearGreedGauge data={estimatedData} />);
+    const { container } = render(<FearGreedGauge market="us" data={estimatedData} />);
     expect(screen.getByText("VIXベース推定値")).toBeInTheDocument();
     expect(container.textContent).toContain("VIXから推定");
     expect(container.textContent).not.toContain("出典: CNN Business");

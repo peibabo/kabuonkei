@@ -260,8 +260,16 @@ function loadEvents(): Record<string, string> {
   return JSON.parse(readFileSync(MARKET_EVENTS_PATH, "utf-8"));
 }
 
-async function fetchDailyOgImage(siteUrl: string): Promise<Buffer | null> {
-  const url = `${siteUrl}${DAILY_OG_PATH}`;
+async function fetchDailyOgImage(
+  siteUrl: string,
+  params: { japanScore: number | null; usScore: number | null; isoDate: string },
+): Promise<Buffer | null> {
+  const url = new URL(DAILY_OG_PATH, siteUrl);
+  if (params.japanScore != null)
+    url.searchParams.set("jp", String(params.japanScore));
+  if (params.usScore != null)
+    url.searchParams.set("us", String(params.usScore));
+  url.searchParams.set("date", params.isoDate);
   try {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
@@ -274,6 +282,12 @@ async function fetchDailyOgImage(siteUrl: string): Promise<Buffer | null> {
     console.warn("OG画像取得例外:", err);
     return null;
   }
+}
+
+/** JST基準で YYYY-MM-DD を返す */
+export function jstIsoDate(now: Date = new Date()): string {
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return jst.toISOString().slice(0, 10);
 }
 
 async function postTweet(text: string, image: Buffer | null): Promise<void> {
@@ -386,7 +400,12 @@ async function main() {
       return;
     }
     let image: Buffer | null = null;
-    if (attach) image = await fetchDailyOgImage(siteUrl);
+    if (attach)
+      image = await fetchDailyOgImage(siteUrl, {
+        japanScore,
+        usScore,
+        isoDate: jstIsoDate(),
+      });
     await postTweet(shrunk, image);
     console.log("\n✅ 投稿完了（類似日省略）");
     return;
@@ -399,7 +418,11 @@ async function main() {
 
   let image: Buffer | null = null;
   if (attach) {
-    image = await fetchDailyOgImage(siteUrl);
+    image = await fetchDailyOgImage(siteUrl, {
+      japanScore,
+      usScore,
+      isoDate: jstIsoDate(),
+    });
   }
 
   await postTweet(text, image);

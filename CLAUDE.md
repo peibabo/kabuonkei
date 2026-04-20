@@ -121,7 +121,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - `fear-greed.ts`: 米国版 Fear & Greed の取得（`fetchFearGreedIndex`）と VIX ベース推定（`estimateFearGreedFromVix`）
 - `indices.ts`: VIX / 主要指数 / 米国10年債利回り / 為替 / コモディティの取得
 - `market-data.ts`: ダッシュボード用エントリポイント `fetchAllMarketData()`（15分メモリキャッシュ）
-- `japan-fear-greed/`: 日本版市場温度の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `compute.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import
+- `japan-fear-greed/`: 日本版市場温度の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `component-builder.ts` / `compute.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import。`component-builder.ts` は `buildAvailableComponent` / `buildUnavailableComponent` / `computeWeightedScore` を提供し、`compute.ts` の C1〜C5 構築定型を圧縮
 - `historical-stats.ts`: 日米共通の過去統計 JSON アクセサ。`market: "us" | "jp"` を受け、`sp500` / `nikkei225` のデータを統一形状 `stats` に正規化して返す（`getHistoricalStats(market)` / `getStatsForScore(score, market)`）
 - `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサと系列マージ
 - `japan-market-data.ts`: 日本市場需給 JSON のアクセサ

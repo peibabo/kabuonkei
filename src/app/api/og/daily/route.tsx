@@ -130,7 +130,6 @@ export async function GET(request: Request) {
           padding: 60,
         }}
       >
-        {/* ヘッダー */}
         <div
           style={{
             display: "flex",
@@ -186,13 +185,11 @@ export async function GET(request: Request) {
           前営業日引け時点の市場温度
         </div>
 
-        {/* 日米スコア並び */}
         <div
           style={{
             display: "flex",
             gap: 32,
             marginTop: 8,
-            flex: 1,
           }}
         >
           <ScoreCard
@@ -219,8 +216,7 @@ export async function GET(request: Request) {
             fontWeight: 500,
             color: "#6b7280",
             marginTop: 16,
-            display: "flex",
-            justifyContent: "flex-end",
+            textAlign: "right",
           }}
         >
           kabuonkei.com
@@ -252,47 +248,59 @@ function ScoreCard({
   return (
     <div
       style={{
-        flex: 1,
+        width: 520,
+        height: 300,
         display: "flex",
         flexDirection: "column",
         background: "#ffffff",
         borderRadius: 24,
-        padding: 32,
+        padding: 24,
         boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
         borderTop: `8px solid ${color}`,
       }}
     >
       <div
         style={{
-          fontSize: 40,
-          fontWeight: 500,
-          color: "#1f2937",
           display: "flex",
           alignItems: "center",
-          gap: 12,
+          height: 56,
+          flexShrink: 0,
         }}
       >
-        <span style={{ fontSize: 56 }}>{flag}</span>
-        {country}
+        <div style={{ fontSize: 48, marginRight: 12 }}>{flag}</div>
+        <div
+          style={{
+            fontSize: 36,
+            fontWeight: 500,
+            color: "#1f2937",
+          }}
+        >
+          {country}
+        </div>
       </div>
       <div
         style={{
-          fontSize: 140,
+          display: "flex",
+          fontSize: 112,
           fontWeight: 900,
           color,
-          lineHeight: 1,
-          marginTop: 12,
+          height: 120,
+          marginTop: 8,
+          flexShrink: 0,
           letterSpacing: -4,
+          alignItems: "flex-start",
         }}
       >
-        {score ?? "—"}
+        {String(score ?? "—")}
       </div>
       <div
         style={{
-          fontSize: 48,
+          display: "flex",
+          fontSize: 40,
           fontWeight: 900,
           color: "#111827",
-          marginTop: 12,
+          height: 44,
+          flexShrink: 0,
         }}
       >
         {level}
@@ -300,10 +308,13 @@ function ScoreCard({
       {desc ? (
         <div
           style={{
-            fontSize: 30,
+            display: "flex",
+            fontSize: 22,
             fontWeight: 500,
             color: "#4b5563",
-            marginTop: 4,
+            height: 28,
+            marginTop: 2,
+            flexShrink: 0,
           }}
         >
           {`(${desc})`}

@@ -26,6 +26,7 @@ import {
   getSentimentDescription,
 } from "../src/lib/sentiment";
 import { findSimilarDays } from "../src/lib/similar-days/find";
+import { formatJstDateLabel } from "../src/lib/jst-date";
 import type {
   ChartPoint,
   FearGreedData,
@@ -38,8 +39,8 @@ import type {
 } from "../src/lib/types";
 
 // 既存テスト（scripts/__tests__/post-daily-temperature-tweet.test.ts）との後方互換のため
-// 同名関数を再 export。実体は src/lib/similar-days/find.ts
-export { findSimilarDays };
+// 同名関数を再 export。実体は src/lib/similar-days/find.ts / src/lib/jst-date.ts
+export { findSimilarDays, formatJstDateLabel };
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -69,15 +70,6 @@ export interface TweetContext {
   japanSimilar: SimilarDayMatch | null;
   usSimilar: SimilarDayMatch | null;
   siteUrl: string;
-}
-
-/** "4/19(月)" 形式の JST 日付ラベル */
-export function formatJstDateLabel(now: Date = new Date()): string {
-  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  const month = jst.getUTCMonth() + 1;
-  const day = jst.getUTCDate();
-  const weekday = ["日", "月", "火", "水", "木", "金", "土"][jst.getUTCDay()];
-  return `${month}/${day}(${weekday})`;
 }
 
 /** 日米いずれかが極端温度 (score ≤ 20 or ≥ 80) */

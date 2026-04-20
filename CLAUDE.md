@@ -130,6 +130,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 
 `scripts/_lib/shared.ts` には生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export。
 `scripts/_lib/snapshot-merge.ts` には日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）を分離し、`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化。
+`scripts/_lib/stats-aggregator.ts` には日米の過去統計生成スクリプトで共通する温度帯別リターン集計関数 `aggregateLevelReturns<K>` を分離し、`scripts/__tests__/stats-aggregator.test.ts` でユニットテスト化。
 
 ## 公開サイトとしての運用
 

@@ -21,10 +21,9 @@ import {
   SENTIMENT_RANGES,
   buildPeriodStats,
   fetchDailyCloses,
-  findForwardPrice,
-  getSentimentLevel,
   sleep,
 } from "./_lib/shared";
+import { aggregateLevelReturns } from "./_lib/stats-aggregator";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -66,23 +65,8 @@ async function main() {
   const nikkeiDates = [...nikkeiMap.keys()].sort();
   const usdJpyDates = [...usdJpyMap.keys()].sort();
 
-  type PeriodKey = "1m" | "3m" | "6m";
-  const levelReturns: Record<
-    string,
-    {
-      occurrences: number;
-      nikkei: Record<PeriodKey, number[]>;
-    }
-  > = {};
-
-  for (const { level } of SENTIMENT_RANGES) {
-    levelReturns[level] = {
-      occurrences: 0,
-      nikkei: { "1m": [], "3m": [], "6m": [] },
-    };
-  }
-
-  // 各日について、MA・モメンタム算出可能な範囲でスコア計算
+  // 各対象日のスコアを事前計算（MA・モメンタム算出可能な範囲）
+  const scoreMap = new Map<string, number>();
   for (let i = MA_WINDOW; i < nikkeiDates.length; i++) {
     const date = nikkeiDates[i];
     const nikkeiPrice = nikkeiMap.get(date);
@@ -95,7 +79,6 @@ async function main() {
       .filter((v): v is number => v != null);
     if (maWindow.length < MA_WINDOW) continue;
     const ma125 = maWindow.reduce((a, b) => a + b, 0) / maWindow.length;
-
     const c1 = normalizeNikkeiMaDeviation(nikkeiPrice, ma125);
 
     // USDJPY 50日モメンタム（同日のUSDJPYと50営業日前のUSDJPY）
@@ -110,44 +93,33 @@ async function main() {
       }
     }
 
-    // 利用可能な要素で平均
     const scores = [c1];
     if (c5 != null) scores.push(c5);
-    if (scores.length === 0) continue;
     const score = Math.round(
       scores.reduce((a, b) => a + b, 0) / scores.length
     );
-    const level = getSentimentLevel(score);
-    const entry = levelReturns[level];
-    entry.occurrences++;
-
-    for (const [period, days] of Object.entries(FORWARD_DAYS) as [
-      PeriodKey,
-      number,
-    ][]) {
-      const futurePrice = findForwardPrice(
-        nikkeiMap,
-        nikkeiDates,
-        date,
-        days
-      );
-      if (futurePrice != null) {
-        const ret = ((futurePrice - nikkeiPrice) / nikkeiPrice) * 100;
-        entry.nikkei[period].push(ret);
-      }
-    }
+    scoreMap.set(date, score);
   }
 
+  type PeriodKey = "1m" | "3m" | "6m";
+  const aggregated = aggregateLevelReturns<PeriodKey>({
+    dates: nikkeiDates.slice(MA_WINDOW),
+    scoreOf: (date) => scoreMap.get(date) ?? null,
+    priceMap: nikkeiMap,
+    priceDates: nikkeiDates,
+    forwardDays: FORWARD_DAYS,
+  });
+
   const levels = SENTIMENT_RANGES.map(({ level, scoreRange }) => {
-    const entry = levelReturns[level];
+    const entry = aggregated[level];
     return {
       level,
       scoreRange,
       occurrences: entry.occurrences,
       nikkei225: {
-        "1m": buildPeriodStats(entry.nikkei["1m"]),
-        "3m": buildPeriodStats(entry.nikkei["3m"]),
-        "6m": buildPeriodStats(entry.nikkei["6m"]),
+        "1m": buildPeriodStats(entry.returns["1m"]),
+        "3m": buildPeriodStats(entry.returns["3m"]),
+        "6m": buildPeriodStats(entry.returns["6m"]),
       },
     };
   });

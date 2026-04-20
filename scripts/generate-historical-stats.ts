@@ -14,10 +14,9 @@ import {
   SENTIMENT_RANGES,
   buildPeriodStats,
   estimateFearGreedFromVix,
-  findForwardPrice,
-  getSentimentLevel,
   sleep,
 } from "./_lib/shared";
+import { aggregateLevelReturns } from "./_lib/stats-aggregator";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -80,55 +79,29 @@ async function main() {
   // 日付インデックスを作成（将来リターン計算用）
   const sp500Dates = [...sp500Map.keys()].sort();
 
-  // 各温度帯のリターンを集計
   type PeriodKey = "1m" | "3m" | "6m";
-  const levelReturns: Record<
-    string,
-    {
-      occurrences: number;
-      sp500: Record<PeriodKey, number[]>;
-    }
-  > = {};
-
-  for (const { level } of SENTIMENT_RANGES) {
-    levelReturns[level] = {
-      occurrences: 0,
-      sp500: { "1m": [], "3m": [], "6m": [] },
-    };
-  }
-
-  for (const date of allDates) {
-    const vix = vixMap.get(date)!;
-    const score = estimateFearGreedFromVix(vix);
-    const level = getSentimentLevel(score);
-    const entry = levelReturns[level];
-    entry.occurrences++;
-
-    const sp500Price = sp500Map.get(date)!;
-
-    for (const [period, days] of Object.entries(FORWARD_DAYS) as [
-      PeriodKey,
-      number,
-    ][]) {
-      const futureSp500 = findForwardPrice(sp500Map, sp500Dates, date, days);
-      if (futureSp500 != null) {
-        const ret = ((futureSp500 - sp500Price) / sp500Price) * 100;
-        entry.sp500[period].push(ret);
-      }
-    }
-  }
+  const aggregated = aggregateLevelReturns<PeriodKey>({
+    dates: allDates,
+    scoreOf: (date) => {
+      const vix = vixMap.get(date);
+      return vix != null ? estimateFearGreedFromVix(vix) : null;
+    },
+    priceMap: sp500Map,
+    priceDates: sp500Dates,
+    forwardDays: FORWARD_DAYS,
+  });
 
   // 集計結果をJSON構造に変換
   const levels = SENTIMENT_RANGES.map(({ level, scoreRange }) => {
-    const entry = levelReturns[level];
+    const entry = aggregated[level];
     return {
       level,
       scoreRange,
       occurrences: entry.occurrences,
       sp500: {
-        "1m": buildPeriodStats(entry.sp500["1m"]),
-        "3m": buildPeriodStats(entry.sp500["3m"]),
-        "6m": buildPeriodStats(entry.sp500["6m"]),
+        "1m": buildPeriodStats(entry.returns["1m"]),
+        "3m": buildPeriodStats(entry.returns["3m"]),
+        "6m": buildPeriodStats(entry.returns["6m"]),
       },
     };
   });

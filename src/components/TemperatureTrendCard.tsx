@@ -21,24 +21,7 @@ import { TEMPERATURE_BANDS } from "./_trend/constants";
 import TemperatureLegend from "./_trend/TemperatureLegend";
 import PeriodSwitcher from "./_trend/PeriodSwitcher";
 import { formatXAxisDate } from "./_trend/formatXAxisDate";
-
-type Period = "1M" | "3M" | "6M" | "1Y";
-
-const PERIOD_DAYS: Record<Period, number> = {
-  "1M": 30,
-  "3M": 90,
-  "6M": 180,
-  "1Y": 365,
-};
-
-const PERIOD_LABELS: Record<Period, string> = {
-  "1M": "1ヶ月",
-  "3M": "3ヶ月",
-  "6M": "6ヶ月",
-  "1Y": "1年",
-};
-
-const PERIODS = Object.keys(PERIOD_DAYS) as readonly Period[];
+import { US_TREND_PERIODS, type UsTrendPeriod } from "./_trend/periods";
 
 interface Props {
   vixChart: ChartPoint[];
@@ -69,7 +52,7 @@ function CustomTooltip({
 }
 
 export default function TemperatureTrendCard({ vixChart, currentScore }: Props) {
-  const [period, setPeriod] = useState<Period>("3M");
+  const [period, setPeriod] = useState<UsTrendPeriod>("3M");
 
   const mergedData = useMemo(() => {
     const staticData = getStaticTemperatureHistory();
@@ -77,23 +60,22 @@ export default function TemperatureTrendCard({ vixChart, currentScore }: Props) 
   }, [vixChart]);
 
   const displayData = useMemo(() => {
-    const days = PERIOD_DAYS[period];
+    const days = US_TREND_PERIODS.days[period];
     return mergedData.slice(-days);
   }, [mergedData, period]);
 
   if (displayData.length === 0) return null;
 
   const lineColor = getSentimentColor(currentScore);
-  const tickInterval =
-    period === "1M" ? 6 : period === "3M" ? 14 : period === "6M" ? 30 : 60;
+  const tickInterval = US_TREND_PERIODS.tickIntervals[period];
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <h2 className="text-lg font-bold text-gray-700">🇺🇸 温度の推移（米国）</h2>
         <PeriodSwitcher
-          periods={PERIODS}
-          labels={PERIOD_LABELS}
+          periods={US_TREND_PERIODS.periods}
+          labels={US_TREND_PERIODS.labels}
           value={period}
           onChange={setPeriod}
         />

@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import { fetchAllMarketData } from "@/lib/market-data";
 import {
   getSentimentColor,
   getSentimentDescription,
@@ -7,8 +6,8 @@ import {
 } from "@/lib/sentiment";
 
 export const runtime = "nodejs";
-// 外部API（Yahoo Finance / CNN）を叩くため build 時のプリレンダーは禁止
-// 常にリクエスト時に実データで生成
+// クエリパラメータで渡されたスコアだけで描画するため外部データ依存なし。
+// ただし静的プリレンダーは意味がないので明示的に dynamic 化。
 export const dynamic = "force-dynamic";
 
 const SIZE = { width: 1200, height: 630 } as const;
@@ -39,27 +38,42 @@ async function loadGoogleFont(
   }
 }
 
-function formatJstDateLabel(): string {
-  const now = new Date();
-  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+function formatJstDateLabel(date: Date = new Date()): string {
+  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
   const month = jst.getUTCMonth() + 1;
   const day = jst.getUTCDate();
   const weekday = ["日", "月", "火", "水", "木", "金", "土"][jst.getUTCDay()];
   return `${month}/${day}(${weekday})`;
 }
 
-export async function GET() {
-  let japanScore: number | null = null;
-  let usScore: number | null = null;
-  try {
-    const data = await fetchAllMarketData();
-    japanScore = data.japanFearGreed?.score ?? null;
-    usScore = data.fearGreed?.score ?? null;
-  } catch (err) {
-    console.error("市場データ取得失敗 (og/daily):", err);
-  }
+/** "2026-04-20" → "4/20(月)" / パース不能なら null */
+function labelFromIsoDate(iso: string): string | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return null;
+  const [, y, mo, d] = m;
+  const date = new Date(Date.UTC(Number(y), Number(mo) - 1, Number(d)));
+  if (Number.isNaN(date.getTime())) return null;
+  const weekday = ["日", "月", "火", "水", "木", "金", "土"][date.getUTCDay()];
+  return `${Number(mo)}/${Number(d)}(${weekday})`;
+}
 
-  const dateLabel = formatJstDateLabel();
+/** 0-100 の整数に丸めて範囲外なら null */
+function parseScore(raw: string | null): number | null {
+  if (raw == null) return null;
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return null;
+  if (n < 0 || n > 100) return null;
+  return Math.round(n);
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const japanScore = parseScore(searchParams.get("jp"));
+  const usScore = parseScore(searchParams.get("us"));
+  const dateParam = searchParams.get("date");
+
+  const dateLabel =
+    (dateParam && labelFromIsoDate(dateParam)) || formatJstDateLabel();
   const japanLabel = japanScore != null ? getSentimentLevel(japanScore) : "—";
   const usLabel = usScore != null ? getSentimentLevel(usScore) : "—";
   const japanDesc =

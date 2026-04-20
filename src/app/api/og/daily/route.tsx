@@ -4,67 +4,19 @@ import {
   getSentimentDescription,
   getSentimentLevel,
 } from "@/lib/sentiment";
+import { OG_CHAR_SET, SIZE, THERMOMETER_SVG } from "./_constants";
+import { loadGoogleFont } from "./_lib/fonts";
+import {
+  formatJstDateLabel,
+  labelFromIsoDate,
+  parseScore,
+} from "./_lib/params";
+import ScoreCard from "./_components/ScoreCard";
 
 export const runtime = "nodejs";
 // クエリパラメータで渡されたスコアだけで描画するため外部データ依存なし。
 // ただし静的プリレンダーは意味がないので明示的に dynamic 化。
 export const dynamic = "force-dynamic";
-
-const SIZE = { width: 1200, height: 630 } as const;
-
-const THERMOMETER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-<path d="M16 2 C14 2 12.5 3.5 12.5 5.5 V18 C10.3 19.3 9 21.7 9 24.3 C9 28.2 12.1 31.3 16 31.3 C19.9 31.3 23 28.2 23 24.3 C23 21.7 21.7 19.3 19.5 18 V5.5 C19.5 3.5 18 2 16 2 Z" fill="#1f2937"/>
-<path d="M16 3.8 C14.7 3.8 13.8 4.7 13.8 6 V18.8 C11.9 19.8 10.6 21.8 10.6 24.3 C10.6 27.3 13 29.7 16 29.7 C19 29.7 21.4 27.3 21.4 24.3 C21.4 21.8 20.1 19.8 18.2 18.8 V6 C18.2 4.7 17.3 3.8 16 3.8 Z" fill="#ffffff"/>
-<circle cx="16" cy="24.3" r="3.8" fill="#ef4444"/>
-<rect x="14.7" y="12" width="2.6" height="12.5" fill="#ef4444"/>
-</svg>`;
-
-async function loadGoogleFont(
-  family: string,
-  text: string,
-): Promise<ArrayBuffer | null> {
-  try {
-    const url = `https://fonts.googleapis.com/css2?family=${family}&text=${encodeURIComponent(text)}`;
-    const cssRes = await fetch(url);
-    if (!cssRes.ok) return null;
-    const css = await cssRes.text();
-    const match = css.match(/src:\s*url\(([^)]+)\)\s*format/);
-    if (!match) return null;
-    const fontRes = await fetch(match[1]);
-    if (!fontRes.ok) return null;
-    return await fontRes.arrayBuffer();
-  } catch {
-    return null;
-  }
-}
-
-function formatJstDateLabel(date: Date = new Date()): string {
-  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-  const month = jst.getUTCMonth() + 1;
-  const day = jst.getUTCDate();
-  const weekday = ["日", "月", "火", "水", "木", "金", "土"][jst.getUTCDay()];
-  return `${month}/${day}(${weekday})`;
-}
-
-/** "2026-04-20" → "4/20(月)" / パース不能なら null */
-function labelFromIsoDate(iso: string): string | null {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  if (!m) return null;
-  const [, y, mo, d] = m;
-  const date = new Date(Date.UTC(Number(y), Number(mo) - 1, Number(d)));
-  if (Number.isNaN(date.getTime())) return null;
-  const weekday = ["日", "月", "火", "水", "木", "金", "土"][date.getUTCDay()];
-  return `${Number(mo)}/${Number(d)}(${weekday})`;
-}
-
-/** 0-100 の整数に丸めて範囲外なら null */
-function parseScore(raw: string | null): number | null {
-  if (raw == null) return null;
-  const n = Number(raw);
-  if (!Number.isFinite(n)) return null;
-  if (n < 0 || n > 100) return null;
-  return Math.round(n);
-}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -79,14 +31,13 @@ export async function GET(request: Request) {
   const japanDesc =
     japanScore != null ? getSentimentDescription(japanScore) : "";
   const usDesc = usScore != null ? getSentimentDescription(usScore) : "";
-  const japanColor = japanScore != null ? getSentimentColor(japanScore) : "#6b7280";
+  const japanColor =
+    japanScore != null ? getSentimentColor(japanScore) : "#6b7280";
   const usColor = usScore != null ? getSentimentColor(usScore) : "#6b7280";
 
-  const charSet =
-    "株温計今日の相場熱い冷たい日本米国市場の温度をひと目で前営業日引け時点寄り前チェック極寒冷え込み平温過熱沸騰総悲観弱気中立強気総楽観月火水木金土日";
   const [boldFont, mediumFont] = await Promise.all([
-    loadGoogleFont("Noto+Sans+JP:wght@900", charSet),
-    loadGoogleFont("Noto+Sans+JP:wght@500", charSet),
+    loadGoogleFont("Noto+Sans+JP:wght@900", OG_CHAR_SET),
+    loadGoogleFont("Noto+Sans+JP:wght@500", OG_CHAR_SET),
   ]);
 
   const fonts: {
@@ -138,13 +89,7 @@ export async function GET(request: Request) {
             width: "100%",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-            }}
-          >
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={svgDataUri} width={72} height={72} alt="thermometer" />
             <div
@@ -185,13 +130,7 @@ export async function GET(request: Request) {
           前営業日引け時点の市場温度
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: 32,
-            marginTop: 8,
-          }}
-        >
+        <div style={{ display: "flex", gap: 32, marginTop: 8 }}>
           <ScoreCard
             flag="🇯🇵"
             country="日本"
@@ -227,99 +166,5 @@ export async function GET(request: Request) {
       ...SIZE,
       fonts: fonts.length > 0 ? fonts : undefined,
     },
-  );
-}
-
-function ScoreCard({
-  flag,
-  country,
-  score,
-  level,
-  desc,
-  color,
-}: {
-  flag: string;
-  country: string;
-  score: number | null;
-  level: string;
-  desc: string;
-  color: string;
-}) {
-  return (
-    <div
-      style={{
-        width: 520,
-        height: 300,
-        display: "flex",
-        flexDirection: "column",
-        background: "#ffffff",
-        borderRadius: 24,
-        padding: 24,
-        boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-        borderTop: `8px solid ${color}`,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          height: 56,
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ fontSize: 48, marginRight: 12 }}>{flag}</div>
-        <div
-          style={{
-            fontSize: 36,
-            fontWeight: 500,
-            color: "#1f2937",
-          }}
-        >
-          {country}
-        </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          fontSize: 112,
-          fontWeight: 900,
-          color,
-          height: 120,
-          marginTop: 8,
-          flexShrink: 0,
-          letterSpacing: -4,
-          alignItems: "flex-start",
-        }}
-      >
-        {String(score ?? "—")}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          fontSize: 40,
-          fontWeight: 900,
-          color: "#111827",
-          height: 44,
-          flexShrink: 0,
-        }}
-      >
-        {level}
-      </div>
-      {desc ? (
-        <div
-          style={{
-            display: "flex",
-            fontSize: 22,
-            fontWeight: 500,
-            color: "#4b5563",
-            height: 28,
-            marginTop: 2,
-            flexShrink: 0,
-          }}
-        >
-          {`(${desc})`}
-        </div>
-      ) : null}
-    </div>
   );
 }

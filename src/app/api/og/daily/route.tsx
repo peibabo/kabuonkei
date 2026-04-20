@@ -7,8 +7,9 @@ import {
 } from "@/lib/sentiment";
 
 export const runtime = "nodejs";
-// Bot からの fetch に対してサーバー側の 15 分キャッシュと揃える
-export const revalidate = 900;
+// 外部API（Yahoo Finance / CNN）を叩くため build 時のプリレンダーは禁止
+// 常にリクエスト時に実データで生成
+export const dynamic = "force-dynamic";
 
 const SIZE = { width: 1200, height: 630 } as const;
 
@@ -155,7 +156,7 @@ export async function GET() {
               boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
             }}
           >
-            {dateLabel} 寄り前
+            {`${dateLabel} 寄り前`}
           </div>
         </div>
 
@@ -291,7 +292,7 @@ function ScoreCard({
             marginTop: 4,
           }}
         >
-          ({desc})
+          {`(${desc})`}
         </div>
       ) : null}
     </div>

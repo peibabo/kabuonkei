@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import FearGreedGauge from "./FearGreedGauge";
 import VolatilityCard from "./VolatilityCard";
 import IndicesCard from "./IndicesCard";
@@ -14,7 +12,11 @@ import SimilarDaysCard from "./SimilarDaysCard";
 import InvestorTradingCard from "./InvestorTradingCard";
 import ArbitrageBalanceCard from "./ArbitrageBalanceCard";
 import MarginTradingCard from "./MarginTradingCard";
-import type { MarketData } from "@/lib/types";
+import { useMarketData } from "./dashboard/useMarketData";
+import LoadingView from "./dashboard/LoadingView";
+import ErrorView from "./dashboard/ErrorView";
+import DashboardHeader from "./dashboard/DashboardHeader";
+import DashboardFooter from "./dashboard/DashboardFooter";
 import {
   getLatestInvestorTrading,
   getForeignInvestorNetHistory,
@@ -31,72 +33,15 @@ import {
 } from "@/lib/similar-days";
 
 export default function Dashboard() {
-  const [data, setData] = useState<MarketData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, loading, error } = useMarketData();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/market");
-        if (!res.ok) throw new Error("データの取得に失敗しました");
-        const json = await res.json();
-        setData(json);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "予期せぬエラーが発生しました"
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-    // 15分ごとに自動更新
-    const interval = setInterval(fetchData, 15 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">市場データを読み込み中...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center text-red-600">
-          <p className="text-xl font-bold mb-2">エラー</p>
-          <p>{error ?? "データを取得できませんでした"}</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <LoadingView />;
+  if (error || !data)
+    return <ErrorView message={error ?? "データを取得できませんでした"} />;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* ヘッダー */}
-      <header className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-          🌡 株温計
-        </h1>
-        <p className="text-gray-500 mt-2">今日の相場、熱い？冷たい？</p>
-        <p className="text-xs text-gray-400 mt-1">
-          最終更新: {data.lastUpdated}
-        </p>
-        <Link
-          href="/about"
-          className="inline-block mt-2 text-xs text-gray-500 hover:text-gray-800 underline"
-        >
-          これは何？
-        </Link>
-      </header>
+      <DashboardHeader lastUpdated={data.lastUpdated} />
 
       {/* メインゲージ（日本版 / 米国版 2列配置） */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -222,16 +167,7 @@ export default function Dashboard() {
         <CommodityCard data={data.commodities} />
       </div>
 
-      {/* フッター */}
-      <footer className="text-center text-xs text-gray-400 mt-12 py-6 border-t border-gray-200">
-        <p className="mb-2">
-          当サイトは投資助言を行うものではありません。過去の統計・類似日のリターンは過去データの集計であり、将来の運用成果を保証するものではありません。投資判断はご自身の責任でお願いします。
-        </p>
-        <p>
-          データソース: CNN Business, Yahoo Finance, JPX |{" "}
-          &copy; {new Date().getFullYear()} 株温計
-        </p>
-      </footer>
+      <DashboardFooter />
     </div>
   );
 }

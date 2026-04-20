@@ -134,7 +134,7 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 ## 公開サイトとしての運用
 
 ### ページ構成
-- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）
+- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離
 - `/about` — サイト説明（`src/app/about/page.tsx`）
 - `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記
 - `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）

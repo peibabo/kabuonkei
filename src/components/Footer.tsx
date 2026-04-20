@@ -14,6 +14,9 @@ export default function Footer() {
           <Link href="/about" className="hover:text-gray-900 hover:underline">
             株温計とは
           </Link>
+          <Link href="/widget" className="hover:text-gray-900 hover:underline">
+            ウィジェット
+          </Link>
           <Link href="/terms" className="hover:text-gray-900 hover:underline">
             利用規約
           </Link>

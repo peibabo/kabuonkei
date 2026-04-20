@@ -1,182 +1,37 @@
-export interface FearGreedData {
-  score: number;
-  rating: string;
-  previousClose: number;
-  oneWeekAgo: number;
-  oneMonthAgo: number;
-  oneYearAgo: number;
-  timestamp: string;
-}
-
-export interface IndexData {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
-}
-
-export interface ChartPoint {
-  date: string;
-  value: number;
-}
-
-export interface VolatilityData {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  chart: ChartPoint[];
-}
-
-export interface BondYieldData {
-  name: string;
-  yield: number;
-  change: number;
-  chart: ChartPoint[];
-}
-
-export interface ForexData {
-  pair: string;
-  name: string;
-  rate: number;
-  change: number;
-  changePercent: number;
-}
-
-export interface CommodityData {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  chart: ChartPoint[];
-}
-
-export interface MarketData {
-  fearGreed: FearGreedData;
-  japanFearGreed: JapanFearGreedData | null;
-  volatility: VolatilityData[];
-  indices: IndexData[];
-  bonds: BondYieldData;
-  forex: ForexData;
-  commodities: CommodityData[];
-  lastUpdated: string;
-}
-
-// --- 日本版 市場温度スコア ---
-
-export type JapanFearGreedComponentId =
-  | "nikkeiMa"
-  | "foreignFlow"
-  | "marginRatio"
-  | "arbitrage"
-  | "usdJpyMomentum";
-
-export interface JapanFearGreedComponent {
-  id: JapanFearGreedComponentId;
-  label: string;
-  score: number;
-  rawValue: number | null;
-  available: boolean;
-  note?: string;
-}
-
-export interface JapanFearGreedData {
-  score: number;
-  level: SentimentLevel;
-  components: JapanFearGreedComponent[];
-  availableCount: number;
-  generatedAt: string;
-}
-
-export type SentimentLevel = "極寒" | "冷え込み" | "平温" | "過熱" | "沸騰";
-
-export type SentimentDescription =
-  | "総悲観"
-  | "弱気"
-  | "中立"
-  | "強気"
-  | "総楽観";
-
-// --- 日本市場固有データ ---
-
-/** 投資主体別売買動向: 各主体の売買差引 */
-export interface InvestorTradingEntity {
-  name: string; // "海外投資家" | "個人" | "信託銀行" | "投資信託" | "事業法人"
-  netAmount: number; // 差引き（買越=正、売越=負）（億円）
-}
-
-/** 投資主体別売買動向: 週次データ */
-export interface InvestorTradingWeek {
-  weekLabel: string; // "2026年4月第2週"
-  startDate: string; // "2026-04-06"
-  endDate: string; // "2026-04-10"
-  entities: InvestorTradingEntity[];
-}
-
-/** 投資主体別売買動向: 全体 */
-export interface InvestorTradingData {
-  generatedAt: string;
-  weeks: InvestorTradingWeek[];
-}
-
-/** 裁定残: 日次データ */
-export interface ArbitrageBalanceDay {
-  date: string; // 報告日 "2026-04-14"
-  buyBalance: number; // 裁定買い残（百万株）
-  sellBalance: number; // 裁定売り残（百万株）
-}
-
-/** 裁定残: 全体 */
-export interface ArbitrageBalanceData {
-  generatedAt: string;
-  daily: ArbitrageBalanceDay[];
-}
-
-/** 信用取引残高: 週次データ */
-export interface MarginTradingWeek {
-  date: string; // 申込日 "2026-04-10"
-  buyBalance: number; // 信用買い残（億円）
-  sellBalance: number; // 信用売り残（億円）
-  ratio: number; // 信用倍率 = buyBalance / sellBalance
-}
-
-/** 信用取引残高: 全体 */
-export interface MarginTradingData {
-  generatedAt: string;
-  weekly: MarginTradingWeek[];
-}
-
-/** 日本市場データ: 投資主体別 + 裁定残 + 信用倍率をまとめた型 */
-export interface JapanMarketData {
-  investorTrading: InvestorTradingData;
-  arbitrageBalance: ArbitrageBalanceData;
-  marginTrading: MarginTradingData;
-}
-
-// --- 類似日検索 ---
-
-/** 過去の類似日検索用の1エントリ。日付・温度スコア・将来リターン */
-export interface SimilarDayEntry {
-  date: string; // "YYYY-MM-DD"
-  score: number;
-  return1m: number | null; // %、+は上昇・-は下落
-  return3m: number | null;
-  return6m: number | null;
-}
-
-/** 類似日検索結果（スコア差とイベントラベルを付加） */
-export interface SimilarDayMatch extends SimilarDayEntry {
-  scoreDiff: number;
-  eventLabel?: string;
-}
-
-/** 類似日データファイルの構造 */
-export interface SimilarDaysFile {
-  generatedAt: string;
-  dataRange: { from: string; to: string };
-  market: "japan" | "us";
-  note: string;
-  daily: SimilarDayEntry[];
-}
+/**
+ * 型定義の公開エントリポイント（barrel）。
+ *
+ * 実体はドメインごとに `src/lib/types/` 配下へ分割。import パスは `@/lib/types` のまま維持する。
+ * 依存方向: sentiment → japan-fear-greed, common → market（集約層）。
+ */
+export type {
+  ChartPoint,
+  IndexData,
+  VolatilityData,
+  BondYieldData,
+  ForexData,
+  CommodityData,
+} from "./types/common";
+export type { SentimentLevel, SentimentDescription } from "./types/sentiment";
+export type { FearGreedData } from "./types/us-fear-greed";
+export type {
+  JapanFearGreedComponentId,
+  JapanFearGreedComponent,
+  JapanFearGreedData,
+} from "./types/japan-fear-greed";
+export type {
+  InvestorTradingEntity,
+  InvestorTradingWeek,
+  InvestorTradingData,
+  ArbitrageBalanceDay,
+  ArbitrageBalanceData,
+  MarginTradingWeek,
+  MarginTradingData,
+  JapanMarketData,
+} from "./types/japan-market";
+export type {
+  SimilarDayEntry,
+  SimilarDayMatch,
+  SimilarDaysFile,
+} from "./types/similar-days";
+export type { MarketData } from "./types/market";

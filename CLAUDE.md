@@ -147,6 +147,21 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - `NEXT_PUBLIC_SITE_URL` — canonical / OGP / sitemap のベース URL
 - `NEXT_PUBLIC_GA_ID` — Google Analytics 4 の測定 ID
 - `GOOGLE_SITE_VERIFICATION` — Google Search Console サイト所有権確認コード
+- `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` — X（Twitter）Bot 投稿用（OAuth 1.0a User Context、Read and Write 権限）
+
+### X（Twitter）Bot — 朝の寄り前ブリーフィング
+- **目的**: 定常流入源として、平日毎朝 JST 7:30 に前営業日引け時点の日米温度＋類似日ナラティブを投稿
+- **投稿時刻**: 平日 JST 07:30（UTC 22:30, Sun-Thu）
+  - 9:00 以降だと日本市場が開いて「今日の温度」と言えない非対称が生じるため、寄り前時間帯に限定
+  - 日本版は `snapshot-japan-fg.yml`（平日17:00 JST）で取得済みのデータを反映 = **前営業日引け時点**
+  - 米国版は直前の米国引け（JST 5:00〜6:00）時点の VIX/F&G = 完全確定データ
+- **投稿内容**: テキスト中心。極端温度（score ≤ 20 or ≥ 80）時のみ動的生成画像（`/api/og/daily`）を添付
+- **投稿スクリプト**: `scripts/post-daily-temperature-tweet.ts`（`npm run post:daily-tweet`、`-- --dry-run` で投稿せず出力確認）
+- **動的OG画像**: `src/app/api/og/daily/route.tsx`（`ImageResponse` で日米温度を可視化した1200×630 PNG）
+- **自動実行**: `.github/workflows/post-daily-tweet.yml`（cron `30 22 * * 0-4`、手動 workflow_dispatch も可）
+- **必要な GitHub Secrets**: `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET`（Repository variable として `NEXT_PUBLIC_SITE_URL` も設定）
+- **Bot用 X アカウント作成と開発者申請は別作業**（X Developer Portal で Project+App を作り、OAuth 1.0a User Context の Read and Write 権限で 4 つのキーを発行）
+- **文字数安全弁**: `estimateWeightedLength()` で加重280字超過時は類似日行を自動省略
 
 `.env.example` を参照。本番は Vercel のプロジェクト設定で環境変数を投入する想定。
 

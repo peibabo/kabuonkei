@@ -190,8 +190,7 @@ export default function ShareSheet(props: ShareSheetProps) {
               width={400}
               height={400}
               alt="株温計 - 今日の市場温度"
-              className="rounded-md shadow-sm max-w-full h-auto"
-              style={{ maxHeight: 240 }}
+              className="rounded-md shadow-sm w-full max-w-[260px] aspect-square"
             />
           </div>
 

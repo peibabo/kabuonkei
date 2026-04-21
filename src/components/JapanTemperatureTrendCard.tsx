@@ -203,6 +203,8 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
         <p>
           <strong>簡易版（2要素）</strong>：日経225×125日MA乖離 + USDJPY
           50日モメンタムの平均で過去10年分を描画。
+        </p>
+        <p>
           <strong className="ml-1">本体（5要素）</strong>
           ：上記2要素＋海外投資家フロー・信用倍率・裁定残の5要素平均を平日JST17:00に日次記録し、蓄積次第やや太い線で上書き表示
           {hasFullSnapshots ? "中" : "（まだ記録なし）"}。

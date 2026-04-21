@@ -19,7 +19,7 @@ export default function TrendCardHeader<P extends string>({
   onChange,
 }: Props<P>) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+    <div className="flex flex-col gap-2 mb-4">
       <h2 className="text-lg font-bold text-gray-700">{title}</h2>
       <PeriodSwitcher
         periods={periods}

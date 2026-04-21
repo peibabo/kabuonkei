@@ -225,7 +225,7 @@ export default function ShareSheet(props: ShareSheetProps) {
           </div>
 
           <details className="mt-4 group">
-            <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-700 select-none list-none flex items-center gap-1">
+            <summary className="text-xs text-gray-500 hover:text-gray-700 select-none list-none flex items-center gap-1">
               <span className="group-open:rotate-90 transition-transform inline-block">
                 ▶
               </span>

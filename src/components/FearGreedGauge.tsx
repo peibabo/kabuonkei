@@ -6,10 +6,19 @@ import {
   getSentimentColor,
 } from "@/lib/sentiment";
 import type { FearGreedData, JapanFearGreedData } from "@/lib/types";
+import ShareButton from "./share/ShareButton";
 
-type Props =
+interface SharePartnerData {
+  /** もう一方の市場のスコア（共有文言で両方表示するため） */
+  partnerScore: number | null;
+  partnerLevel: string | null;
+}
+
+type Props = (
   | { market: "us"; data: FearGreedData; title?: string }
-  | { market: "jp"; data: JapanFearGreedData; title?: string };
+  | { market: "jp"; data: JapanFearGreedData; title?: string }
+) &
+  Partial<SharePartnerData>;
 
 const DEFAULT_TITLES = {
   us: "Fear & Greed Index",
@@ -27,16 +36,30 @@ export default function FearGreedGauge(props: Props) {
   const color = getSentimentColor(data.score);
   const gradientId = `gaugeGradient-${market}`;
 
+  const japanScore = market === "jp" ? data.score : props.partnerScore ?? null;
+  const usScore = market === "us" ? data.score : props.partnerScore ?? null;
+  const japanLevel = market === "jp" ? level : props.partnerLevel ?? null;
+  const usLevel = market === "us" ? level : props.partnerLevel ?? null;
+
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
-      <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
-        {title}
-        {isEstimated && (
-          <span className="block text-xs font-normal text-amber-500 mt-1">
-            VIXベース推定値
-          </span>
-        )}
-      </h2>
+      <div className="relative mb-4">
+        <h2 className="text-lg font-bold text-gray-700 text-center">
+          {title}
+          {isEstimated && (
+            <span className="block text-xs font-normal text-amber-500 mt-1">
+              VIXベース推定値
+            </span>
+          )}
+        </h2>
+        <ShareButton
+          market={market}
+          japanScore={japanScore}
+          usScore={usScore}
+          japanLevel={japanLevel}
+          usLevel={usLevel}
+        />
+      </div>
 
       {/* ゲージ（市場共通） */}
       <div className="relative w-64 h-40 mx-auto mb-4">

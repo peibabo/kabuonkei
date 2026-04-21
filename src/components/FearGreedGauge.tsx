@@ -36,6 +36,14 @@ export default function FearGreedGauge(props: Props) {
   const color = getSentimentColor(data.score);
   const gradientId = `gaugeGradient-${market}`;
 
+  const subtitleText =
+    market === "jp"
+      ? "5要素総合スコア"
+      : isEstimated
+        ? "VIXベース推定値"
+        : "CNN Fear & Greed";
+  const subtitleColorClass = isEstimated ? "text-amber-500" : "text-gray-400";
+
   const japanScore = market === "jp" ? data.score : props.partnerScore ?? null;
   const usScore = market === "us" ? data.score : props.partnerScore ?? null;
   const japanLevel = market === "jp" ? level : props.partnerLevel ?? null;
@@ -46,11 +54,11 @@ export default function FearGreedGauge(props: Props) {
       <div className="relative mb-4">
         <h2 className="text-lg font-bold text-gray-700 text-center">
           {title}
-          {isEstimated && (
-            <span className="block text-xs font-normal text-amber-500 mt-1">
-              VIXベース推定値
-            </span>
-          )}
+          <span
+            className={`block text-xs font-normal mt-1 ${subtitleColorClass}`}
+          >
+            {subtitleText}
+          </span>
         </h2>
         <ShareButton
           market={market}

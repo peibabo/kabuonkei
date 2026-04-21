@@ -62,6 +62,11 @@ describe("JapanFearGreedGauge", () => {
     expect(screen.getByText("🇯🇵 市場温度（日本）")).toBeInTheDocument();
   });
 
+  it("サブタイトルに「5要素総合スコア」を表示する", () => {
+    render(<FearGreedGauge market="jp" data={buildData()} />);
+    expect(screen.getByText("5要素総合スコア")).toBeInTheDocument();
+  });
+
   it("カスタムタイトルを渡せる", () => {
     render(<FearGreedGauge market="jp" data={buildData()} title="日本センチメント" />);
     expect(screen.getByText("日本センチメント")).toBeInTheDocument();

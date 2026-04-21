@@ -53,6 +53,12 @@ describe("FearGreedGauge", () => {
     // 過去データは非表示
     expect(screen.queryByText("前日")).not.toBeInTheDocument();
   });
+
+  it("通常値の場合はサブタイトルに「CNN Fear & Greed」を表示する", () => {
+    render(<FearGreedGauge market="us" data={mockFearGreedData} />);
+    expect(screen.getByText("CNN Fear & Greed")).toBeInTheDocument();
+    expect(screen.queryByText("VIXベース推定値")).not.toBeInTheDocument();
+  });
 });
 
 const mockIndicesData: IndexData[] = [

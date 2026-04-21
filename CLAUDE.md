@@ -138,14 +138,22 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 ### ページ構成
 - `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離
 - `/about` — サイト説明（`src/app/about/page.tsx`）
+- `/widget` — 埋め込みウィジェットの案内ページ（`src/app/widget/page.tsx`）。ライブプレビュー + コピー可能な embed HTML（`src/app/widget/_components/EmbedCodeBlock.tsx`）を表示。HTML 生成は純粋関数 `buildEmbedSnippet`（`src/app/widget/_lib/embed-snippet.ts`）に分離してユニットテスト対象化
 - `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記
 - `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）
-- `/about` `/terms` `/privacy` の外枠（`<main>` + 戻るリンク + `<h1>` + コンテンツ枠）は `src/components/StaticPageLayout.tsx` に共通化されており、各 page は `<StaticPageLayout title="...">` で本文のみを記述する
-- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）
+- `/about` `/widget` `/terms` `/privacy` の外枠（`<main>` + 戻るリンク + `<h1>` + コンテンツ枠）は `src/components/StaticPageLayout.tsx` に共通化されており、各 page は `<StaticPageLayout title="...">` で本文のみを記述する
+- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）。`/about` `/widget` `/terms` `/privacy` へのリンクを掲載
+
+### 埋め込みウィジェット画像 API
+- `/widget/today` — 400×400 PNG を動的生成する Route Handler（`src/app/widget/today/route.tsx`）。他サイトが `<img src>` で貼れる SEO 資産（被リンク獲得目的）。内部で `fetchAllMarketData()` を呼び、日米の最新スコアを描画
+- `export const revalidate = 900` の ISR に加え、`Cache-Control: public, s-maxage=900, stale-while-revalidate=3600` を付与して CDN/ブラウザで多層キャッシュ。大量アクセスでもオリジン到達は最小
+- レイアウトは `src/app/widget/today/_components/MiniScoreCard.tsx`（横長カード）を JP / US の 2 段で配置。定数（サイズ・フォントサブセット文字集合）は `src/app/widget/today/_constants.ts`
+- フォント取得は `buildNotoSansJpFonts`、ロゴ SVG は `THERMOMETER_SVG` を `/api/og/daily` と共有
+- embed HTML のリンクには `?ref=widget` が付与され、GA4 で埋め込み経由流入をセグメント計測可能
 
 ### SEO / 計測
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
-- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap は `/`, `/about`, `/terms`, `/privacy` の 4 ページ
+- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap は `/`, `/about`, `/widget`, `/terms`, `/privacy` の 5 ページ
 - **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
 - **OG 画像**: `src/app/opengraph-image.tsx` で動的生成（`ImageResponse` + Google Fonts の Noto Sans JP サブセットを fetch）。手動の PNG 配置は不要。フォント取得（`loadGoogleFont` / `buildNotoSansJpFonts`）と温度計アイコン SVG は `src/lib/og/{fonts,thermometer-svg}.ts` に共通化されており、`/api/og/daily` 側も同じモジュールを参照する
 

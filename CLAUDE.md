@@ -151,6 +151,16 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 - フォント取得は `buildNotoSansJpFonts`、ロゴ SVG は `THERMOMETER_SVG` を `/api/og/daily` と共有
 - embed HTML のリンクには `?ref=widget` が付与され、GA4 で埋め込み経由流入をセグメント計測可能
 
+### シェア UX（温度カード右上）
+- `FearGreedGauge` のタイトル行右上に **📤 共有ボタン**（`src/components/share/ShareButton.tsx`）を配置。日米それぞれから開ける
+- クリックで **シェアシート**（`src/components/share/ShareSheet.tsx`）を `createPortal` で body 直下に展開。PC は中央モーダル、モバイルはボトムドロワー（単一 Client Component で Tailwind `md:` ブレークポイントにより位置・形状切替）
+- シート内容: `/widget/today` プレビュー画像 + 4 つのアクション（🐦 Xで共有 / 🖼 画像を保存 / 🔗 URLをコピー / 📝 ブログに貼る）+ 埋め込みコード展開 + `/widget` への詳細リンク
+- X 共有文言は `buildShareText`（`src/lib/share-text.ts`）が純粋関数で生成。極端温度時は「⚠️ 極寒アラート」「🔥 沸騰アラート」のヘッダーに変化。クリックした市場（JP/US）の行を先頭に並べ、両スコアを含める
+- embed HTML は既存の `buildEmbedSnippet`（`src/app/widget/_lib/embed-snippet.ts`）を流用
+- a11y: `role="dialog"` + `aria-modal` + focus trap（Tab 循環）+ ESC / オーバーレイクリックで close + `body overflow:hidden` で scroll lock
+- GA4 イベント: `share_sheet_open`（シート開いた）と `share`（`method: twitter|url_copy|image_download|embed_copy` + `market: jp|us`）を `src/lib/analytics.ts` の `trackEvent()` 経由で送信
+- 共有 URL には `?ref=share&utm_source=x&utm_campaign=share_card` を付与して流入計測
+
 ### SEO / 計測
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
 - **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap は `/`, `/about`, `/widget`, `/terms`, `/privacy` の 5 ページ

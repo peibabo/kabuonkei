@@ -40,6 +40,9 @@ export default function WidgetPage() {
         <p className="mt-2 text-sm text-gray-600">
           サイズ: 400 × 400 px / 形式: PNG / 更新頻度: 約 15 分
         </p>
+        <p className="mt-1 text-xs text-gray-500">
+          本ウィジェットは株温計が公開データから独自計算した市場温度スコアを表示するもので、一次市場データ（価格・指数値等）を配信するものではありません。
+        </p>
       </section>
 
       <section>

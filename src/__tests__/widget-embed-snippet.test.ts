@@ -28,4 +28,16 @@ describe("buildEmbedSnippet", () => {
     expect(html).toContain('src="https://kabuonkei.com/widget/today"');
     expect(html).not.toContain("kabuonkei.com//widget");
   });
+
+  it("独自指標である旨のクレジット行を含む", () => {
+    const html = buildEmbedSnippet("https://kabuonkei.com");
+    expect(html).toContain("独自指標");
+    expect(html).toContain("公開データより計算");
+    expect(html).toContain("株温計");
+  });
+
+  it("クレジット行は株温計サイトへのリンクを含む（ref=widget_credit でトラッキング）", () => {
+    const html = buildEmbedSnippet("https://kabuonkei.com");
+    expect(html).toContain('href="https://kabuonkei.com/?ref=widget_credit"');
+  });
 });

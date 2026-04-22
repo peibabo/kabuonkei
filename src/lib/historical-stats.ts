@@ -5,6 +5,9 @@ import jpStatsData from "@/data/japan-historical-stats.json";
 
 export type Market = "us" | "jp";
 
+/** 日本版で選択可能な指数キー */
+export type JpIndexKey = "nikkei225" | "topix";
+
 /** 期間ごとの統計 */
 export interface PeriodStats {
   avgReturn: number;
@@ -49,6 +52,7 @@ interface RawJpLevel {
   scoreRange: [number, number];
   occurrences: number;
   nikkei225: IndexHistoricalStats;
+  topix?: IndexHistoricalStats;
 }
 
 interface RawUsFile {
@@ -64,7 +68,24 @@ interface RawJpFile {
   levels: RawJpLevel[];
 }
 
-export function getHistoricalStats(market: Market): HistoricalStats {
+/** JSON に指定指数が出力されているかの判定（未生成の旧ビルド対策） */
+export function hasJpIndex(indexKey: JpIndexKey): boolean {
+  if (indexKey === "nikkei225") return true;
+  const raw = jpStatsData as unknown as RawJpFile;
+  return raw.levels.every((l) => l.topix !== undefined);
+}
+
+/**
+ * 過去統計を正規化形状で取得する。
+ *
+ * - `market="us"` : S&P500 固定（indexKey は無視）
+ * - `market="jp"` : `indexKey` が `"topix"` かつ JSON に存在するとき TOPIX、それ以外は日経225
+ *   `indexKey` 省略時のデフォルトは `"nikkei225"`
+ */
+export function getHistoricalStats(
+  market: Market,
+  indexKey?: JpIndexKey
+): HistoricalStats {
   if (market === "us") {
     const raw = usStatsData as unknown as RawUsFile;
     return {
@@ -80,6 +101,14 @@ export function getHistoricalStats(market: Market): HistoricalStats {
     };
   }
   const raw = jpStatsData as unknown as RawJpFile;
+  const wantsTopix = indexKey === "topix";
+  const resolvedIndex: JpIndexKey =
+    wantsTopix && hasJpIndex("topix") ? "topix" : "nikkei225";
+  if (wantsTopix && resolvedIndex !== "topix") {
+    console.warn(
+      "[historical-stats] TOPIX データが JSON に存在しないため日経225 にフォールバックしました"
+    );
+  }
   return {
     market: "jp",
     generatedAt: raw.generatedAt,
@@ -89,21 +118,25 @@ export function getHistoricalStats(market: Market): HistoricalStats {
       level: l.level,
       scoreRange: l.scoreRange,
       occurrences: l.occurrences,
-      stats: l.nikkei225,
+      stats: resolvedIndex === "topix" && l.topix ? l.topix : l.nikkei225,
     })),
   };
 }
 
 export function getStatsForLevel(
   level: SentimentLevel,
-  market: Market
+  market: Market,
+  indexKey?: JpIndexKey
 ): SentimentLevelStats | undefined {
-  return getHistoricalStats(market).levels.find((l) => l.level === level);
+  return getHistoricalStats(market, indexKey).levels.find(
+    (l) => l.level === level
+  );
 }
 
 export function getStatsForScore(
   score: number,
-  market: Market
+  market: Market,
+  indexKey?: JpIndexKey
 ): SentimentLevelStats | undefined {
-  return getStatsForLevel(getSentimentLevel(score), market);
+  return getStatsForLevel(getSentimentLevel(score), market, indexKey);
 }

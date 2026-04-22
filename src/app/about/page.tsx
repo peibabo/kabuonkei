@@ -15,6 +15,9 @@ export default function AboutPage() {
         株温計（かぶおんけい）は、「今日の相場、熱い？冷たい？」を一目で把握できる日本語ダッシュボードです。
         日本市場と米国市場のセンチメント指標を 1 画面で俯瞰できるよう設計しています。
       </p>
+      <p className="mt-3 text-sm text-gray-600">
+        本サイトは、公開されている市場統計から独自に計算した「市場温度スコア（0-100）」を発表する個人運営の情報サイトです。価格データや指数値そのものを配信する商用データサービスではありません。
+      </p>
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
@@ -77,6 +80,9 @@ export default function AboutPage() {
           <li>CNN Fear &amp; Greed Index（米国版センチメント）</li>
           <li>日本取引所グループ JPX 公開データ（投資主体別売買動向・裁定残・信用残）</li>
         </ul>
+        <p className="mt-3 text-sm text-gray-600">
+          これらの公開データを参照し、<strong>独自の計算ロジックで市場温度スコアを算出</strong>して発表しています。本サイトは一次市場データの再配信サービスではありません。
+        </p>
       </section>
 
       <section>
@@ -84,7 +90,7 @@ export default function AboutPage() {
           運営
         </h2>
         <p>
-          株温計は個人によって運営されている非営利のサービスです。広告や有料機能は現時点で提供していません。
+          株温計は個人によって運営されている情報サイトです。公開データから独自計算したスコアや解説コンテンツを提供することが目的で、一次市場データ（価格・指数値等）を再配信する商用データサービスではありません。
         </p>
         <p className="mt-2 text-sm text-gray-600">
           ご利用に際しては{" "}

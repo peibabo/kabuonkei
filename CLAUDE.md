@@ -46,9 +46,13 @@
 - 生成スクリプト: `npm run generate:stats`（`scripts/generate-historical-stats.ts`）
 
 ### 日本版
-- `src/data/japan-historical-stats.json`: 日本版温度帯ごとの日経225将来リターン
+- `src/data/japan-historical-stats.json`: 日本版温度帯ごとの日経225・TOPIX 将来リターン
 - **簡易版**: C2/C3/C4の過去データが未整備のため、C1（日経225 vs 125日MA）+ C5（USDJPY 50日モメンタム）の2要素版で算出
+- 各温度帯に `nikkei225` と `topix` の両方の統計を並列保存。`topix` は optional（未生成の古いビルドに備える）
+- TOPIX は Yahoo Finance で指数シンボル（`^TPX` / `^TOPX`）が取得できないため、連動 ETF「NEXT FUNDS TOPIX連動型上場投信 (`1306.T`)」の日次終値を proxy として使用
 - 生成スクリプト: `npm run generate:japan-stats`（`scripts/generate-japan-historical-stats.ts`）
+- UI: `src/components/HistoricalStatsCard.tsx` の日本版カードに「日経平均 / TOPIX」切替タブ（`_trend/PeriodSwitcher` を再利用）。TOPIX 未生成時はタブを非表示
+- アクセサ: `getHistoricalStats(market, indexKey?)` / `getStatsForScore(score, market, indexKey?)`。`indexKey` は `"nikkei225" | "topix"`。米国版では無視される
 
 ### 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし

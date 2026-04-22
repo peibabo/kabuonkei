@@ -1,35 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
   getHistoricalStats,
   getStatsForScore,
+  hasJpIndex,
+  type JpIndexKey,
   type Market,
   type PeriodStats,
   type SentimentLevelStats,
 } from "@/lib/historical-stats";
 import { formatReturn } from "@/lib/format";
+import PeriodSwitcher from "@/components/_trend/PeriodSwitcher";
 
 interface Props {
   currentScore: number;
   market: Market;
 }
 
+const JP_INDEX_LABELS: Record<JpIndexKey, string> = {
+  nikkei225: "日経平均",
+  topix: "TOPIX",
+};
+
+const JP_INDEX_KEYS: readonly JpIndexKey[] = ["nikkei225", "topix"];
+
 const COPY: Record<
   Market,
-  { heading: string; subtitle: string; indexLabel: string; defaultFooter: string }
+  { heading: string; defaultFooter: string }
 > = {
   us: {
     heading: "🇺🇸 過去の統計（米国版温度）",
-    subtitle: "米国版温度が同じだったとき、S&P500 はどう動いた？",
-    indexLabel: "S&P500",
     defaultFooter:
       "VIXベースの温度推定による S&P500 の過去統計です。将来のリターンを保証するものではありません。",
   },
   jp: {
     heading: "🇯🇵 過去の統計（日本版温度）",
-    subtitle: "日本版温度が同じだったとき、日経平均はどう動いた？",
-    indexLabel: "日経平均",
     defaultFooter:
       "日本版温度の過去統計です。将来のリターンを保証するものではありません。",
   },
@@ -83,10 +90,12 @@ function HighlightMessage({
   stats,
   score,
   market,
+  indexLabel,
 }: {
   stats: SentimentLevelStats;
   score: number;
   market: Market;
+  indexLabel: string;
 }) {
   const color = getSentimentColor(score);
   const threeMonth = stats.stats["3m"];
@@ -94,7 +103,7 @@ function HighlightMessage({
     (threeMonth.winRate / 100) * threeMonth.sampleSize
   );
   const temperatureLabel = market === "us" ? "米国版温度" : "日本版温度";
-  const indexPhrase = market === "us" ? "S&P500が上昇" : "日経平均が上昇";
+  const indexPhrase = `${indexLabel}が上昇`;
 
   return (
     <div
@@ -125,22 +134,49 @@ function HighlightMessage({
 }
 
 export default function HistoricalStatsCard({ currentScore, market }: Props) {
-  const historicalStats = getHistoricalStats(market);
-  const currentStats = getStatsForScore(currentScore, market);
+  const [jpIndex, setJpIndex] = useState<JpIndexKey>("nikkei225");
+  const showJpIndexSwitcher = market === "jp" && hasJpIndex("topix");
+  const effectiveIndex: JpIndexKey = market === "jp" ? jpIndex : "nikkei225";
+
+  const historicalStats =
+    market === "us"
+      ? getHistoricalStats("us")
+      : getHistoricalStats("jp", effectiveIndex);
+  const currentStats =
+    market === "us"
+      ? getStatsForScore(currentScore, "us")
+      : getStatsForScore(currentScore, "jp", effectiveIndex);
   const currentLevel = getSentimentLevel(currentScore);
   const copy = COPY[market];
   const footerNote = historicalStats.note ?? copy.defaultFooter;
+  const indexLabel =
+    market === "us" ? "S&P500" : JP_INDEX_LABELS[effectiveIndex];
+  const subtitle =
+    market === "us"
+      ? "米国版温度が同じだったとき、S&P500 はどう動いた？"
+      : `日本版温度が同じだったとき、${indexLabel}はどう動いた？`;
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-lg font-bold text-gray-900 mb-1">{copy.heading}</h2>
-      <p className="text-sm text-gray-500 mb-4">{copy.subtitle}</p>
+      <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
+        <h2 className="text-lg font-bold text-gray-900">{copy.heading}</h2>
+        {showJpIndexSwitcher && (
+          <PeriodSwitcher<JpIndexKey>
+            periods={JP_INDEX_KEYS}
+            labels={JP_INDEX_LABELS}
+            value={jpIndex}
+            onChange={setJpIndex}
+          />
+        )}
+      </div>
+      <p className="text-sm text-gray-500 mb-4">{subtitle}</p>
 
       {currentStats && (
         <HighlightMessage
           stats={currentStats}
           score={currentScore}
           market={market}
+          indexLabel={indexLabel}
         />
       )}
 

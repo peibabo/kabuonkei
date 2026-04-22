@@ -3,6 +3,7 @@ import {
   getHistoricalStats,
   getStatsForLevel,
   getStatsForScore,
+  hasJpIndex,
   type Market,
 } from "@/lib/historical-stats";
 
@@ -88,6 +89,39 @@ describe("historical-stats", () => {
       const stats = getStatsForScore(90, market);
       expect(stats).toBeDefined();
       expect(stats!.level).toBe("沸騰");
+    });
+  });
+
+  describe("日本版の TOPIX 切替", () => {
+    it("TOPIX キーは JSON に存在する", () => {
+      expect(hasJpIndex("topix")).toBe(true);
+    });
+
+    it("nikkei225 は常に true", () => {
+      expect(hasJpIndex("nikkei225")).toBe(true);
+    });
+
+    it("indexKey 省略時は日経225（既存互換）", () => {
+      const defaultStats = getHistoricalStats("jp");
+      const nikkeiStats = getHistoricalStats("jp", "nikkei225");
+      expect(defaultStats.levels[0].stats).toEqual(nikkeiStats.levels[0].stats);
+    });
+
+    it("indexKey=topix で TOPIX データを返す", () => {
+      const nikkeiStats = getHistoricalStats("jp", "nikkei225");
+      const topixStats = getHistoricalStats("jp", "topix");
+      // TOPIX と日経225 は同スコアマップで集計しているが、指数特性が異なるためリターンは一致しない
+      expect(topixStats.levels).toHaveLength(5);
+      const cherryTopix = topixStats.levels[0].stats["3m"].avgReturn;
+      const cherryNikkei = nikkeiStats.levels[0].stats["3m"].avgReturn;
+      expect(cherryTopix).not.toBe(cherryNikkei);
+    });
+
+    it("米国市場では indexKey を指定しても S&P500 が返る", () => {
+      const plain = getHistoricalStats("us");
+      // 型システム上は JpIndexKey だが、ランタイムでは無視されることを確認
+      const withKey = getHistoricalStats("us", "topix" as never);
+      expect(withKey.levels[0].stats).toEqual(plain.levels[0].stats);
     });
   });
 });

@@ -39,7 +39,7 @@
 
 ## 過去統計データ
 
-温度計と統計対象市場を 1:1 で揃える方針（**米国版 = S&P500 / 日本版 = 日経225** の純粋分離）。クロス分析（米国温度×日本株など）は現状扱わない。
+温度計と統計対象市場を 1:1 で揃える方針（**米国版 = S&P500 / 日本版 = 日経225** の純粋分離）がメイン。クロス分析（米国温度×日経225 / 日本温度×S&P500）は**参考値として別カード**で補助提示する。
 
 ### 米国版
 - `src/data/historical-stats.json`: VIXベースの温度帯ごとに、S&P500 の将来リターン（1ヶ月/3ヶ月/6ヶ月）を事前計算した静的JSON
@@ -50,9 +50,18 @@
 - **簡易版**: C2/C3/C4の過去データが未整備のため、C1（日経225 vs 125日MA）+ C5（USDJPY 50日モメンタム）の2要素版で算出
 - 生成スクリプト: `npm run generate:japan-stats`（`scripts/generate-japan-historical-stats.ts`）
 
+### クロス分析（参考値）
+- `src/data/cross-historical-stats.json`: 温度計と対象市場を入れ替えた「参考値」の過去統計
+  - `directions.usTempJpIdx`: 米国温度（VIX 推定）× 日経225（^N225）
+  - `directions.jpTempUsIdx`: 日本温度（C1+C5 簡易 10年）× S&P500（^GSPC）
+- 生成スクリプト: `npm run generate:cross-stats`（`scripts/generate-cross-historical-stats.ts`）
+- アクセサ: `src/lib/cross-historical-stats.ts`（`getCrossHistoricalStats(direction)` / `getCrossStatsForScore(score, direction)` / `CROSS_DIRECTION_META`）。`direction` は `"usTempJpIdx" | "jpTempUsIdx"`
+- UI: `src/components/CrossStatsCard.tsx`（1カードに方向タブ 🇺🇸×🇯🇵 / 🇯🇵×🇺🇸 を置いた単独配置。Dashboard では `StatsSection` の直後）
+- **注意**: 温度と対象市場が異なるため、純粋分離の同市場統計より相関が弱い可能性あり。カード冒頭に参考値である旨の注釈を常時表示。日付結合は UTC 日付ベースの簡易結合で、厳密なイベントスタディではない
+
 ### 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
-- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データの4種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
+- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析の5種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
 
 ## 温度推移データ
 

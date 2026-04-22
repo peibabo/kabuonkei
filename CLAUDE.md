@@ -135,7 +135,7 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
   - **信用倍率**: 信用買い残・売り残（億円）と信用倍率（= 買残/売残）の週次データ。JPX「信用取引現在高」ページから取得
 - 生成スクリプト: `npm run generate:japan-market`（`scripts/generate-japan-market-data.ts`）
 - データソース: JPXの統計ページからExcel/CSVをダウンロードしてパース
-- **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週 水・金 JST 10:00 に自動実行（水は火曜 JPX 公表の裁定残・信用倍率、金は木曜 JPX 公表の投資主体別売買動向を翌朝取り込む）
+- **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週 水・木 JST 17:00 に自動実行。JPX の公表タイミングに合わせており、水 17:00 は同日 15:00 公表の「信用取引現在高」（信用倍率）、木 17:00 は同日 15:30 公表の「投資部門別売買状況」を当日中に取り込む。裁定残は毎営業日 16:00 に T+2 営業日分が公表されるのでどちらの回でも最新が取れる
 - これらの週次・日次データは日本版温度スコア（C2/C3/C4）の入力にもなる
 - 日本版温度の日次スナップショット（`snapshot:japan-fg`）もこのJSONを入力に使う
 

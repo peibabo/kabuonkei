@@ -53,6 +53,14 @@ export default function AboutPage() {
           <li>
             <strong>日本市場の需給</strong>: 投資主体別売買動向・裁定残・信用倍率（JPX 公開データ）
           </li>
+          <li>
+            <strong>
+              <Link href="/guide" className="underline hover:text-gray-900">
+                投資家タイプ別ガイド
+              </Link>
+            </strong>
+            : NISA積立 / 短期トレーダー / FIRE目指し の 3 タイプ別に、温度帯ごとの具体的なアクション指針を解説
+          </li>
         </ul>
       </section>
 

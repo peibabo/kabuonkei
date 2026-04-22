@@ -13,3 +13,18 @@ export function formatJstDateLabel(date: Date = new Date()): string {
   const weekday = WEEKDAYS[jst.getUTCDay()];
   return `${month}/${day}(${weekday})`;
 }
+
+/**
+ * Unix ミリ秒を JST に変換し、"M/D HH:MM JST" 形式のラベルを返す。
+ * null / undefined / NaN のときは "—" を返す。
+ * 例: 1713657300000 (2024-04-21 07:15 UTC) → "4/21 16:15 JST"
+ */
+export function formatJstDateTimeLabel(ms: number | null | undefined): string {
+  if (ms == null || !Number.isFinite(ms)) return "—";
+  const jst = new Date(ms + 9 * 60 * 60 * 1000);
+  const month = jst.getUTCMonth() + 1;
+  const day = jst.getUTCDate();
+  const hh = String(jst.getUTCHours()).padStart(2, "0");
+  const mm = String(jst.getUTCMinutes()).padStart(2, "0");
+  return `${month}/${day} ${hh}:${mm} JST`;
+}

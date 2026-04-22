@@ -80,7 +80,14 @@ describe("buildMarketData", () => {
   };
 
   const stubVolatility: VolatilityData[] = [
-    { symbol: "^VIX", name: "VIX", price: 18, change: 0, chart: [] },
+    {
+      symbol: "^VIX",
+      name: "VIX",
+      price: 18,
+      change: 0,
+      chart: [],
+      marketTime: null,
+    },
   ];
   const stubIndices: IndexData[] = [];
   const stubBonds: BondYieldData = {
@@ -88,6 +95,7 @@ describe("buildMarketData", () => {
     yield: 4.2,
     change: 0,
     chart: [],
+    marketTime: null,
   };
   const stubForex: ForexData = {
     pair: "USDJPY",
@@ -95,6 +103,7 @@ describe("buildMarketData", () => {
     rate: 150,
     change: 0,
     changePercent: 0,
+    marketTime: null,
   };
   const stubCommodities: CommodityData[] = [];
 

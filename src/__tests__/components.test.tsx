@@ -68,6 +68,7 @@ const mockIndicesData: IndexData[] = [
     price: 5234.18,
     change: 15.64,
     changePercent: 0.3,
+    marketTime: null,
   },
   {
     symbol: "^N225",
@@ -75,6 +76,7 @@ const mockIndicesData: IndexData[] = [
     price: 38500.0,
     change: 192.5,
     changePercent: 0.5,
+    marketTime: null,
   },
 ];
 
@@ -96,6 +98,7 @@ const mockCommodityData: CommodityData[] = [
     change: 12.3,
     changePercent: 0.53,
     chart: [],
+    marketTime: null,
   },
   {
     symbol: "CL=F",
@@ -104,6 +107,7 @@ const mockCommodityData: CommodityData[] = [
     change: -1.15,
     changePercent: -1.45,
     chart: [],
+    marketTime: null,
   },
   {
     symbol: "BTC-USD",
@@ -112,6 +116,7 @@ const mockCommodityData: CommodityData[] = [
     change: 1234.56,
     changePercent: 1.85,
     chart: [],
+    marketTime: null,
   },
 ];
 

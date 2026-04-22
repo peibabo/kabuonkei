@@ -4,6 +4,8 @@ export interface EventMeta {
   date: string; // "YYYY-MM-DD"
   label: string; // 短いラベル（類似日カードで従来表示されていた文言）
   oneLiner: string; // 1行の状況説明（カードヘッダ・OG画像向け）
+  /** 詳細ページ本文。Markdown 文字列。段落区切りは `\n\n`、強調は `**...**`。未設定なら詳細セクションは描画されない */
+  longDescription?: string;
 }
 
 /** イベントごとに事前計算した将来リターン（日米指数の%表示） */

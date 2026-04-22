@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import EventTrendChart from "@/components/EventTrendChart";
 import { getEventsMeta, getEventBySlug, getEnrichedEntry } from "@/lib/events";
@@ -152,6 +153,40 @@ export default async function EventPage({
   return (
     <StaticPageLayout title={`📅 ${event.label}（${event.date}）`}>
       <p className="text-base">{event.oneLiner}</p>
+
+      {event.longDescription && (
+        <section className="mt-4">
+          <h2 className="text-xl font-bold text-gray-900 mb-3">
+            当時の背景と市場心理
+          </h2>
+          <div className="text-base leading-relaxed text-gray-800">
+            <ReactMarkdown
+              components={{
+                p: ({ children }) => (
+                  <p className="mb-4 last:mb-0">{children}</p>
+                ),
+                strong: ({ children }) => (
+                  <strong className="font-semibold text-gray-900">
+                    {children}
+                  </strong>
+                ),
+                a: ({ href, children }) => (
+                  <a
+                    href={href}
+                    className="underline hover:text-gray-900"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {event.longDescription}
+            </ReactMarkdown>
+          </div>
+        </section>
+      )}
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-2 mb-3">

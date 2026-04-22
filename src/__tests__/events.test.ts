@@ -23,6 +23,15 @@ describe("getEventsMeta", () => {
     }
   });
 
+  it("each event has a non-empty longDescription (SEO 本文)", () => {
+    for (const e of getEventsMeta()) {
+      expect(e.longDescription, `event ${e.slug} missing longDescription`).toBeDefined();
+      expect(e.longDescription!.length).toBeGreaterThan(200);
+      // 3段落構成の想定（\n\n で区切り2箇所以上）
+      expect(e.longDescription!.split("\n\n").length).toBeGreaterThanOrEqual(3);
+    }
+  });
+
   it("slugs are unique", () => {
     const slugs = getEventsMeta().map((e) => e.slug);
     expect(new Set(slugs).size).toBe(slugs.length);

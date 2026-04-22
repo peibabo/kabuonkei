@@ -37,6 +37,17 @@ export default function AboutPage() {
             <strong>今日の類似日</strong>: 今日の温度に最も近かった過去日 TOP5 と、その日以降のリターンをナラティブで表示
           </li>
           <li>
+            <strong>
+              <Link
+                href="/events"
+                className="underline hover:text-gray-900"
+              >
+                主要イベント詳細ページ
+              </Link>
+            </strong>
+            : コロナショック・Brexit・令和のブラックマンデー等、14 件の主要市場イベントの当時の温度、前後の推移、その後のリターン、背景解説
+          </li>
+          <li>
             <strong>日本市場の需給</strong>: 投資主体別売買動向・裁定残・信用倍率（JPX 公開データ）
           </li>
         </ul>

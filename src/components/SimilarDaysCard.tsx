@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
 import type { SimilarDayMatch } from "@/lib/types";
 import { formatReturn, returnColorClass } from "@/lib/format";
@@ -43,13 +44,23 @@ function Headline({
       </p>
       <p className="text-xl md:text-2xl font-bold text-gray-900 mb-1">
         📅 {match.date}
-        {match.eventLabel && (
-          <span
-            className="ml-2 inline-block text-xs font-medium px-2 py-0.5 rounded-full align-middle"
+        {match.eventLabel && match.eventSlug ? (
+          <Link
+            href={`/events/${match.eventSlug}?ref=event_link`}
+            className="ml-2 inline-block text-xs font-medium px-2 py-0.5 rounded-full align-middle hover:underline"
             style={{ backgroundColor: `${color}20`, color }}
           >
-            {match.eventLabel}
-          </span>
+            {match.eventLabel} →
+          </Link>
+        ) : (
+          match.eventLabel && (
+            <span
+              className="ml-2 inline-block text-xs font-medium px-2 py-0.5 rounded-full align-middle"
+              style={{ backgroundColor: `${color}20`, color }}
+            >
+              {match.eventLabel}
+            </span>
+          )
         )}
       </p>
       <p className="text-xs text-gray-500 mb-3">
@@ -132,11 +143,19 @@ export default function SimilarDaysCard({
                     <tr key={m.date} className="border-b border-gray-50">
                       <td className="px-2 py-2 text-sm text-gray-700">
                         <div>{m.date}</div>
-                        {m.eventLabel && (
-                          <div className="text-xs text-gray-400">
-                            {m.eventLabel}
-                          </div>
-                        )}
+                        {m.eventLabel &&
+                          (m.eventSlug ? (
+                            <Link
+                              href={`/events/${m.eventSlug}?ref=event_link`}
+                              className="text-xs text-gray-500 hover:text-gray-800 hover:underline"
+                            >
+                              {m.eventLabel} →
+                            </Link>
+                          ) : (
+                            <div className="text-xs text-gray-400">
+                              {m.eventLabel}
+                            </div>
+                          ))}
                       </td>
                       <td className="px-2 py-2 text-center text-sm">
                         <span

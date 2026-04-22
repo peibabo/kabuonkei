@@ -53,7 +53,7 @@ const JAPAN_SIMILAR_PATH = resolve(
   "../src/data/japan-similar-days.json",
 );
 const US_SIMILAR_PATH = resolve(__dirname, "../src/data/us-similar-days.json");
-const MARKET_EVENTS_PATH = resolve(__dirname, "../src/data/market-events.json");
+const EVENTS_META_PATH = resolve(__dirname, "../src/data/events-meta.json");
 
 const DEFAULT_SITE_URL = "https://kabuonkei.com";
 const DAILY_OG_PATH = "/api/og/daily";
@@ -98,10 +98,16 @@ function formatReturn(value: number | null): string {
   return `${sign}${Math.round(value * 10) / 10}%`;
 }
 
-function formatSimilarLine(match: SimilarDayMatch): string {
+function formatSimilarLine(match: SimilarDayMatch, siteUrl?: string): string {
   const label = match.eventLabel ? ` ${match.eventLabel}` : "";
   const ret = `1M ${formatReturn(match.return1m)} / 3M ${formatReturn(match.return3m)} / 6M ${formatReturn(match.return6m)}`;
-  return `📅 似た日: ${match.date}${label} (${match.score})\n→ ${ret}`;
+  const lines = [`📅 似た日: ${match.date}${label} (${match.score})`, `→ ${ret}`];
+  if (siteUrl && match.eventSlug) {
+    lines.push(
+      `▶ ${siteUrl}/events/${match.eventSlug}?utm_source=x&utm_campaign=event_link`,
+    );
+  }
+  return lines.join("\n");
 }
 
 /** 投稿テンプレートを組み立て。日米欠損時はその行をスキップ */
@@ -128,7 +134,7 @@ export function buildTweetBody(ctx: TweetContext): string {
   const similar = ctx.japanSimilar ?? ctx.usSimilar;
   if (similar) {
     lines.push("");
-    lines.push(formatSimilarLine(similar));
+    lines.push(formatSimilarLine(similar, ctx.siteUrl));
   }
 
   lines.push("");
@@ -227,7 +233,33 @@ function loadSimilarDays(path: string): SimilarDayEntry[] {
 }
 
 function loadEvents(): Record<string, string> {
-  return JSON.parse(readFileSync(MARKET_EVENTS_PATH, "utf-8"));
+  const entries = JSON.parse(readFileSync(EVENTS_META_PATH, "utf-8")) as Array<{
+    date: string;
+    label: string;
+  }>;
+  const map: Record<string, string> = {};
+  for (const e of entries) map[e.date] = e.label;
+  return map;
+}
+
+function loadEventDateToSlug(): Record<string, string> {
+  const entries = JSON.parse(readFileSync(EVENTS_META_PATH, "utf-8")) as Array<{
+    date: string;
+    slug: string;
+  }>;
+  const map: Record<string, string> = {};
+  for (const e of entries) map[e.date] = e.slug;
+  return map;
+}
+
+/** SimilarDayMatch にイベントスラッグを注入（eventLabel 付き行のみ） */
+export function enrichMatchWithSlug(
+  match: SimilarDayMatch | null,
+  dateToSlug: Record<string, string>,
+): SimilarDayMatch | null {
+  if (match == null || !match.eventLabel) return match;
+  const slug = dateToSlug[match.date];
+  return slug ? { ...match, eventSlug: slug } : match;
 }
 
 async function fetchDailyOgImage(
@@ -316,7 +348,8 @@ async function main() {
   }
 
   const events = loadEvents();
-  const japanSimilar =
+  const dateToSlug = loadEventDateToSlug();
+  const japanSimilar = enrichMatchWithSlug(
     japanScore != null
       ? (findSimilarDays(
           japanScore,
@@ -324,8 +357,10 @@ async function main() {
           events,
           1,
         )[0] ?? null)
-      : null;
-  const usSimilar =
+      : null,
+    dateToSlug,
+  );
+  const usSimilar = enrichMatchWithSlug(
     usScore != null
       ? (findSimilarDays(
           usScore,
@@ -333,7 +368,9 @@ async function main() {
           events,
           1,
         )[0] ?? null)
-      : null;
+      : null,
+    dateToSlug,
+  );
 
   const ctx: TweetContext = {
     dateLabel,

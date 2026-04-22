@@ -34,4 +34,10 @@ export type {
   SimilarDayMatch,
   SimilarDaysFile,
 } from "./types/similar-days";
+export type {
+  EventMeta,
+  EnrichedReturns,
+  EventEnrichedEntry,
+  EventEnrichedFile,
+} from "./types/market-events";
 export type { MarketData } from "./types/market";

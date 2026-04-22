@@ -86,18 +86,41 @@ Recharts の ComposedChart で 簡易版=破線/グレー、本体版=実線/オ
 今日の温度スコアに最も近かった過去日を TOP5 抽出し、その日からの 1ヶ月/3ヶ月/6ヶ月リターンを併せて表示するナラティブ機能。再訪動機とSNS拡散を狙う。
 
 ### データ
-- `src/data/japan-similar-days.json`: 10年分の `{ date, score, return1m, return3m, return6m }` 配列（^N225ベース）
+- `src/data/japan-similar-days.json`: 11年分の `{ date, score, return1m, return3m, return6m }` 配列（^N225ベース）
 - `src/data/us-similar-days.json`: 同上（^GSPCベース）
-- `src/data/market-events.json`: 主要経済イベントの日付→ラベル辞書（コロナショック底、Brexit、令和のブラックマンデー等）
+- `src/data/events-meta.json`: 主要経済イベントのメタ辞書。各エントリは `{ slug, date, label, oneLiner }`。`/events/[slug]` 詳細ページと類似日カードのイベントラベル表示の両方で使用
+- `src/data/events-enriched.json`: 各イベント日から日経225 / S&P500 の 1M/3M/6M/1Y リターンを事前計算したもの。`scripts/generate-similar-days.ts` が同時出力する
 - スコア基準は温度推移と同じ: 日本=C1(125日MA)+C5(50日USDJPYモメンタム)、米国=VIXベース推定
 - 生成スクリプト: `npm run generate:similar-days`（`scripts/generate-similar-days.ts`）
 
 ### ライブラリ・UI
-- アクセサ: `src/lib/similar-days.ts`（`getJapanSimilarDays` / `getUsSimilarDays` / `getMarketEvents` / `findSimilarDays`）
-- UI: `src/components/SimilarDaysCard.tsx`（日本版/米国版共通、Dashboard で2列配置）
+- アクセサ: `src/lib/similar-days.ts`（`getJapanSimilarDays` / `getUsSimilarDays` / `getMarketEvents` / `findSimilarDays`）。`getMarketEvents` は `src/lib/events.ts::getEventsAsDateMap()` の薄いラッパー（旧 `market-events.json` は `events-meta.json` に統合済み）
+- イベント詳細ページ用アクセサ: `src/lib/events.ts`（`getEventsMeta` / `getEventBySlug` / `getEventsAsDateMap` / `getEnrichedEntry`）
+- UI: `src/components/SimilarDaysCard.tsx`（日本版/米国版共通、Dashboard で2列配置）。イベントラベル付き行は `/events/[slug]?ref=event_link` へのリンクとして描画
 - 検索ロジック: `findSimilarDays(currentScore, history, events, topN)`
   - スコア差が小さい順。同率ならイベントラベル付きを優先、さらに同率なら新しい日付を優先
   - `return3m` が null のエントリ（最近すぎて未到達）は除外
+- イベント詳細ページとの紐付けは `src/components/dashboard/SimilarDaysSection.tsx` で `date → slug` マップを注入して行う
+
+## イベント詳細ページ（`/events/[slug]`）
+
+主要な市場イベント（コロナショック / Brexit / 令和のブラックマンデー 等）各日について、その日の日米温度スコアと前後±90日の温度推移、1M/3M/6M/1Y の実リターンを表示する恒久 URL。SEO 資産化（「令和のブラックマンデー 温度」等のクエリ獲得）と類似日カードからの回遊を兼ねる。
+
+### データ
+- `src/data/events-meta.json`: 14イベントのメタ（`slug` / `date` / `label` / `oneLiner`）
+- `src/data/events-enriched.json`: 各イベントの 1M/3M/6M/1Y リターンを事前計算したもの。生成は `scripts/generate-similar-days.ts` が同時に出力する（Yahoo Finance から取得した N225 / S&P500 終値を使って `findPriceOnOrAfter` + `findForwardPrice` で計算）
+- 古いイベント（2015-08-24 のチャイナショック等）もカバーするため、`YEARS_BACK = 11` で過去データを取得
+
+### UI
+- ページ本体: `src/app/events/[slug]/page.tsx`（Server Component。`generateStaticParams` で14件を SSG）
+- OG 画像: `src/app/events/[slug]/opengraph-image.tsx`（`generateStaticParams` でイベントごとに静的生成、動的ルート分の `●` SSG）
+- チャート: `src/components/EventTrendChart.tsx`（`_trend/` の共通部品を再利用した Client Component）
+- レンジ切出: `src/lib/japan-temperature-history.ts` の `sliceByDaysAround<T extends { date: string }>(points, centerDate, days)`（日米履歴で共用の汎用版）
+
+### sitemap / 内部リンク
+- `src/app/sitemap.ts` がイベント14件の URL を `priority: 0.5` / `changeFrequency: yearly` で追加
+- 類似日カード（SimilarDaysCard）でイベントラベル付き行は `/events/[slug]?ref=event_link` リンクになる
+- X bot（`scripts/post-daily-temperature-tweet.ts`）は TOP1 類似日がイベント付きのときツイート文末にイベントページ URL（`?utm_source=x&utm_campaign=event_link`）を追加する
 
 ## 日本市場データ
 

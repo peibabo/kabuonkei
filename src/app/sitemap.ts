@@ -1,8 +1,16 @@
 import type { MetadataRoute } from "next";
+import { getEventsMeta } from "@/lib/events";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
   const now = new Date();
+
+  const eventRoutes: MetadataRoute.Sitemap = getEventsMeta().map((e) => ({
+    url: `${siteUrl}/events/${e.slug}`,
+    lastModified: now,
+    changeFrequency: "yearly",
+    priority: 0.5,
+  }));
 
   return [
     {
@@ -35,5 +43,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...eventRoutes,
   ];
 }

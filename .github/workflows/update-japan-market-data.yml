@@ -2,8 +2,9 @@ name: Update Japan Market Data
 
 on:
   schedule:
-    # 毎週金曜 午前9時 JST（UTC 0:00）
-    - cron: '0 0 * * 5'
+    # 水 10:00 JST = 火曜 JPX 公表の裁定残・信用倍率を翌朝取り込み
+    # 金 10:00 JST = 木曜 JPX 公表の投資主体別売買動向を翌朝取り込み
+    - cron: '0 1 * * 3,5'
   workflow_dispatch: # 手動実行も可能
 
 permissions:

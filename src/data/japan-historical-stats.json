@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-17",
+  "generatedAt": "2026-04-22",
   "dataRange": {
-    "from": "2016-04-17",
-    "to": "2026-04-17"
+    "from": "2016-04-22",
+    "to": "2026-04-22"
   },
-  "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。",
+  "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。 TOPIX は連動ETF(1306.T)の日次終値を proxy として同スコアで集計（指数特性の違いによる感度差の比較用）。",
   "levels": [
     {
       "level": "極寒",
@@ -30,6 +30,26 @@
           "avgReturn": 20.6,
           "medianReturn": 20.5,
           "winRate": 99.1,
+          "sampleSize": 111
+        }
+      },
+      "topix": {
+        "1m": {
+          "avgReturn": 4.5,
+          "medianReturn": 4.7,
+          "winRate": 90.1,
+          "sampleSize": 111
+        },
+        "3m": {
+          "avgReturn": 8.7,
+          "medianReturn": 7.3,
+          "winRate": 100,
+          "sampleSize": 111
+        },
+        "6m": {
+          "avgReturn": 14.9,
+          "medianReturn": 15,
+          "winRate": 97.3,
           "sampleSize": 111
         }
       }
@@ -60,6 +80,26 @@
           "winRate": 88.7,
           "sampleSize": 336
         }
+      },
+      "topix": {
+        "1m": {
+          "avgReturn": 1.7,
+          "medianReturn": 1.7,
+          "winRate": 65.2,
+          "sampleSize": 336
+        },
+        "3m": {
+          "avgReturn": 5.5,
+          "medianReturn": 4.4,
+          "winRate": 82.3,
+          "sampleSize": 334
+        },
+        "6m": {
+          "avgReturn": 8.6,
+          "medianReturn": 10,
+          "winRate": 83,
+          "sampleSize": 336
+        }
       }
     },
     {
@@ -73,8 +113,8 @@
         "1m": {
           "avgReturn": 0.7,
           "medianReturn": 0.7,
-          "winRate": 55.8,
-          "sampleSize": 665
+          "winRate": 55.9,
+          "sampleSize": 666
         },
         "3m": {
           "avgReturn": 3.1,
@@ -88,6 +128,26 @@
           "winRate": 59.5,
           "sampleSize": 664
         }
+      },
+      "topix": {
+        "1m": {
+          "avgReturn": 0.3,
+          "medianReturn": 0.4,
+          "winRate": 55.1,
+          "sampleSize": 666
+        },
+        "3m": {
+          "avgReturn": 2.5,
+          "medianReturn": 1.9,
+          "winRate": 59.2,
+          "sampleSize": 667
+        },
+        "6m": {
+          "avgReturn": 4.2,
+          "medianReturn": 2.8,
+          "winRate": 61,
+          "sampleSize": 664
+        }
       }
     },
     {
@@ -96,25 +156,45 @@
         61,
         80
       ],
-      "occurrences": 845,
+      "occurrences": 843,
       "nikkei225": {
         "1m": {
-          "avgReturn": 0.8,
+          "avgReturn": 0.7,
           "medianReturn": 1,
-          "winRate": 60.3,
-          "sampleSize": 837
+          "winRate": 60.2,
+          "sampleSize": 835
         },
         "3m": {
-          "avgReturn": 1.4,
+          "avgReturn": 1.3,
           "medianReturn": 0.5,
-          "winRate": 52.8,
-          "sampleSize": 801
+          "winRate": 52.6,
+          "sampleSize": 798
         },
         "6m": {
           "avgReturn": 3.9,
           "medianReturn": 0.7,
-          "winRate": 53.6,
+          "winRate": 53.5,
+          "sampleSize": 795
+        }
+      },
+      "topix": {
+        "1m": {
+          "avgReturn": -1.2,
+          "medianReturn": 0.8,
+          "winRate": 59.9,
+          "sampleSize": 835
+        },
+        "3m": {
+          "avgReturn": 0.8,
+          "medianReturn": 1.2,
+          "winRate": 56.9,
           "sampleSize": 798
+        },
+        "6m": {
+          "avgReturn": 3.1,
+          "medianReturn": 2.4,
+          "winRate": 60.1,
+          "sampleSize": 795
         }
       }
     },
@@ -124,25 +204,45 @@
         81,
         100
       ],
-      "occurrences": 349,
+      "occurrences": 350,
       "nikkei225": {
         "1m": {
           "avgReturn": 1.1,
           "medianReturn": 0.9,
-          "winRate": 56.9,
-          "sampleSize": 346
+          "winRate": 56.8,
+          "sampleSize": 345
         },
         "3m": {
-          "avgReturn": 2.7,
-          "medianReturn": 1,
-          "winRate": 56.6,
-          "sampleSize": 341
+          "avgReturn": 2.8,
+          "medianReturn": 1.1,
+          "winRate": 57,
+          "sampleSize": 344
         },
         "6m": {
-          "avgReturn": 5,
+          "avgReturn": 5.3,
           "medianReturn": 2.7,
-          "winRate": 63.5,
-          "sampleSize": 285
+          "winRate": 64,
+          "sampleSize": 289
+        }
+      },
+      "topix": {
+        "1m": {
+          "avgReturn": 1.5,
+          "medianReturn": 1.6,
+          "winRate": 67.4,
+          "sampleSize": 344
+        },
+        "3m": {
+          "avgReturn": -0.4,
+          "medianReturn": 3,
+          "winRate": 70,
+          "sampleSize": 343
+        },
+        "6m": {
+          "avgReturn": 0.7,
+          "medianReturn": 3.6,
+          "winRate": 68.1,
+          "sampleSize": 288
         }
       }
     }

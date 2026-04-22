@@ -3,7 +3,7 @@
  *
  * ^N225 と USDJPY=X の過去10年分データから C1（日経225 vs 125日MA）と
  * C5（USDJPY 50日モメンタム）の2要素簡易版スコアを算出し、
- * 各温度帯での日経225の将来リターンを集計する。
+ * 各温度帯での日経225および TOPIX の将来リターンを集計する。
  *
  * （C2/C3/C4 の過去データが存在しないため、簡易版で計算）
  *
@@ -24,6 +24,7 @@ import {
   sleep,
 } from "./_lib/shared";
 import { aggregateLevelReturns } from "./_lib/stats-aggregator";
+import type { IndexHistoricalStats } from "../src/lib/historical-stats";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -32,6 +33,52 @@ const YEARS_BACK = 10;
 const MA_WINDOW = 125;
 const MOMENTUM_WINDOW = 50;
 const FORWARD_DAYS = { "1m": 30, "3m": 90, "6m": 180 } as const;
+
+type PeriodKey = keyof typeof FORWARD_DAYS;
+
+function buildIndexStats(
+  returnsMap: Record<PeriodKey, number[]>
+): IndexHistoricalStats {
+  return {
+    "1m": buildPeriodStats(returnsMap["1m"]),
+    "3m": buildPeriodStats(returnsMap["3m"]),
+    "6m": buildPeriodStats(returnsMap["6m"]),
+  };
+}
+
+// TOPIX 指数本体（^TPX / ^TOPX）は Yahoo Finance v2 API で取得不可のため、
+// 代替として TOPIX 連動 ETF（野村 NEXT FUNDS「1306.T」）を使用。
+// 日次リターン・勝率ベースの集計ではトラッキングエラーは無視できる水準。
+const TOPIX_PROXY_SYMBOL = "1306.T";
+
+async function fetchTopixOrNull(
+  period1: string,
+  period2: string
+): Promise<Map<string, number> | null> {
+  try {
+    console.log(`取得中: ${TOPIX_PROXY_SYMBOL} (TOPIX 連動 ETF)...`);
+    const map = await fetchDailyCloses(
+      yahooFinance,
+      TOPIX_PROXY_SYMBOL,
+      period1,
+      period2
+    );
+    console.log(`  → ${map.size} 日分取得`);
+    if (map.size === 0) {
+      console.warn(
+        `⚠️  ${TOPIX_PROXY_SYMBOL} から価格データを取得できませんでした。TOPIX キーはスキップします。`
+      );
+      return null;
+    }
+    return map;
+  } catch (err) {
+    console.warn(
+      `⚠️  ${TOPIX_PROXY_SYMBOL} の取得に失敗しました。TOPIX キーはスキップして日経225のみで出力します。`,
+      err
+    );
+    return null;
+  }
+}
 
 async function main() {
   const endDate = new Date();
@@ -61,9 +108,13 @@ async function main() {
     period2
   );
   console.log(`  → ${usdJpyMap.size} 日分取得`);
+  await sleep(2000);
+
+  const topixMap = await fetchTopixOrNull(period1, period2);
 
   const nikkeiDates = [...nikkeiMap.keys()].sort();
   const usdJpyDates = [...usdJpyMap.keys()].sort();
+  const topixDates = topixMap ? [...topixMap.keys()].sort() : null;
 
   // 各対象日のスコアを事前計算（MA・モメンタム算出可能な範囲）
   const scoreMap = new Map<string, number>();
@@ -101,35 +152,60 @@ async function main() {
     scoreMap.set(date, score);
   }
 
-  type PeriodKey = "1m" | "3m" | "6m";
-  const aggregated = aggregateLevelReturns<PeriodKey>({
-    dates: nikkeiDates.slice(MA_WINDOW),
-    scoreOf: (date) => scoreMap.get(date) ?? null,
+  const scoreOf = (date: string) => scoreMap.get(date) ?? null;
+  const baseDates = nikkeiDates.slice(MA_WINDOW);
+
+  const nikkeiAggregated = aggregateLevelReturns<PeriodKey>({
+    dates: baseDates,
+    scoreOf,
     priceMap: nikkeiMap,
     priceDates: nikkeiDates,
     forwardDays: FORWARD_DAYS,
   });
 
+  const topixAggregated =
+    topixMap && topixDates
+      ? aggregateLevelReturns<PeriodKey>({
+          dates: baseDates,
+          scoreOf,
+          priceMap: topixMap,
+          priceDates: topixDates,
+          forwardDays: FORWARD_DAYS,
+        })
+      : null;
+
   const levels = SENTIMENT_RANGES.map(({ level, scoreRange }) => {
-    const entry = aggregated[level];
-    return {
+    const nikkeiEntry = nikkeiAggregated[level];
+    const topixEntry = topixAggregated ? topixAggregated[level] : null;
+    const levelOutput: {
+      level: typeof level;
+      scoreRange: typeof scoreRange;
+      occurrences: number;
+      nikkei225: IndexHistoricalStats;
+      topix?: IndexHistoricalStats;
+    } = {
       level,
       scoreRange,
-      occurrences: entry.occurrences,
-      nikkei225: {
-        "1m": buildPeriodStats(entry.returns["1m"]),
-        "3m": buildPeriodStats(entry.returns["3m"]),
-        "6m": buildPeriodStats(entry.returns["6m"]),
-      },
+      occurrences: nikkeiEntry.occurrences,
+      nikkei225: buildIndexStats(nikkeiEntry.returns),
     };
+    if (topixEntry) {
+      levelOutput.topix = buildIndexStats(topixEntry.returns);
+    }
+    return levelOutput;
   });
+
+  const noteBase =
+    "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。" +
+    "本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。";
+  const note = topixAggregated
+    ? `${noteBase} TOPIX は連動ETF(${TOPIX_PROXY_SYMBOL})の日次終値を proxy として同スコアで集計（指数特性の違いによる感度差の比較用）。`
+    : `${noteBase} 今回の生成では TOPIX 連動ETF(${TOPIX_PROXY_SYMBOL}) の取得に失敗したため、TOPIX キーはこの実行では含まれていません。`;
 
   const output = {
     generatedAt: new Date().toISOString().split("T")[0],
     dataRange: { from: period1, to: period2 },
-    note:
-      "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。" +
-      "本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。",
+    note,
     levels,
   };
 
@@ -147,6 +223,11 @@ async function main() {
     console.log(
       `  日経225 3ヶ月後: 平均${l.nikkei225["3m"].avgReturn > 0 ? "+" : ""}${l.nikkei225["3m"].avgReturn}%, 勝率${l.nikkei225["3m"].winRate}% (n=${l.nikkei225["3m"].sampleSize})`
     );
+    if (l.topix) {
+      console.log(
+        `  TOPIX   3ヶ月後: 平均${l.topix["3m"].avgReturn > 0 ? "+" : ""}${l.topix["3m"].avgReturn}%, 勝率${l.topix["3m"].winRate}% (n=${l.topix["3m"].sampleSize})`
+      );
+    }
   }
 }
 

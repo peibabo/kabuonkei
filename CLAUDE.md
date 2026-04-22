@@ -184,6 +184,7 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 - `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）
 - `/events` — 主要イベント14件のインデックスページ（`src/app/events/page.tsx`）。日付降順でカード表示、各カードから詳細ページ `/events/[slug]?ref=events_index` へ遷移。`StaticPageLayout` ベース
 - `/guide` — 投資家タイプ別ガイドのインデックスページ（`src/app/guide/page.tsx`）。`nisa-tsumitate` / `short-term-trader` / `fire-long-term` の 3 本をカード表示。各ガイドは単体 TSX（Markdown 化せず個別性重視）で `src/app/guide/[slug]/page.tsx`
+- Dashboard 内の `StatsSection` 直後に `PersonalizedHintCard`（`src/components/PersonalizedHintCard.tsx`）を配置し、タブ切替で現在温度に応じた「あなたのスタイル別の読み方」を表示 → 該当ガイドへ遷移（`?ref=persona_hint`）。ヒント文言は純粋データ `src/lib/persona-hints.ts`（`PERSONA_HINTS` マトリクス / `getPersonaHint(persona, score)` / `isExtremeScore(score)`）。極寒/沸騰時はカード枠を amber 強調 + 注意書きを表示。選択したペルソナは localStorage（`kabuonkei.persona`）で保持し次回訪問時に復元。タブ切替は GA4 `persona_select` イベントを送信
 - `/about` `/widget` `/terms` `/privacy` `/events` `/guide` の外枠（`<main>` + 戻るリンク + `<h1>` + コンテンツ枠）は `src/components/StaticPageLayout.tsx` に共通化されており、各 page は `<StaticPageLayout title="...">` で本文のみを記述する
 - 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）。`/about` `/events` `/guide` `/widget` `/terms` `/privacy` へのリンクを掲載
 

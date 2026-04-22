@@ -8,6 +8,7 @@ import DashboardFooter from "./dashboard/DashboardFooter";
 import TemperatureSection from "./dashboard/TemperatureSection";
 import TrendSection from "./dashboard/TrendSection";
 import StatsSection from "./dashboard/StatsSection";
+import PersonalizedHintCard from "./PersonalizedHintCard";
 import CrossStatsCard from "./CrossStatsCard";
 import SimilarDaysSection from "./dashboard/SimilarDaysSection";
 import JapanMarketSection from "./dashboard/JapanMarketSection";
@@ -36,6 +37,7 @@ export default function Dashboard() {
         usScore={usScore}
       />
       <StatsSection japanScore={japanScore} usScore={usScore} />
+      <PersonalizedHintCard japanScore={japanScore} usScore={usScore} />
       <CrossStatsCard japanScore={japanScore} usScore={usScore} />
       <SimilarDaysSection japanScore={japanScore} usScore={usScore} />
       <JapanMarketSection />

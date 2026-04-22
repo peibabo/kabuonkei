@@ -17,6 +17,9 @@ export default function Footer() {
           <Link href="/events" className="hover:text-gray-900 hover:underline">
             主要イベント一覧
           </Link>
+          <Link href="/guide" className="hover:text-gray-900 hover:underline">
+            投資家タイプ別ガイド
+          </Link>
           <Link href="/widget" className="hover:text-gray-900 hover:underline">
             ウィジェット
           </Link>

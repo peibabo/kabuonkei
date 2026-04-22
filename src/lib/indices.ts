@@ -28,6 +28,7 @@ export async function fetchVolatilityData(): Promise<VolatilityData[]> {
         price: Math.round(quote.price * 100) / 100,
         change: Math.round(quote.change * 100) / 100,
         chart,
+        marketTime: quote.marketTime,
       };
     })
   );
@@ -46,6 +47,7 @@ export async function fetchIndices(): Promise<IndexData[]> {
         price: Math.round(quote.price * 100) / 100,
         change: Math.round(quote.change * 100) / 100,
         changePercent: Math.round(quote.changePercent * 100) / 100,
+        marketTime: quote.marketTime,
       };
     })
   );
@@ -64,6 +66,7 @@ export async function fetchBondYield(): Promise<BondYieldData> {
     yield: quote ? Math.round(quote.price * 1000) / 1000 : 0,
     change: quote ? Math.round(quote.change * 1000) / 1000 : 0,
     chart,
+    marketTime: quote?.marketTime ?? null,
   };
 }
 
@@ -76,6 +79,7 @@ export async function fetchForex(): Promise<ForexData> {
     rate: quote ? Math.round(quote.price * 100) / 100 : 0,
     change: quote ? Math.round(quote.change * 100) / 100 : 0,
     changePercent: quote ? Math.round(quote.changePercent * 100) / 100 : 0,
+    marketTime: quote?.marketTime ?? null,
   };
 }
 
@@ -94,6 +98,7 @@ export async function fetchCommodities(): Promise<CommodityData[]> {
         change: Math.round(quote.change * 100) / 100,
         changePercent: Math.round(quote.changePercent * 100) / 100,
         chart,
+        marketTime: quote.marketTime,
       };
     })
   );

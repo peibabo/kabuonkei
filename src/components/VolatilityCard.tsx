@@ -2,6 +2,7 @@
 
 import MiniChart from "./MiniChart";
 import type { VolatilityData } from "@/lib/types";
+import { formatJstDateTimeLabel } from "@/lib/jst-date";
 
 interface Props {
   data: VolatilityData[];
@@ -14,7 +15,7 @@ export default function VolatilityCard({ data }: Props) {
       <div className="space-y-6">
         {data.map((item) => (
           <div key={item.symbol}>
-            <div className="flex justify-between items-baseline mb-2">
+            <div className="flex justify-between items-baseline mb-1">
               <span className="text-sm font-medium text-gray-600">
                 {item.name}
               </span>
@@ -31,6 +32,11 @@ export default function VolatilityCard({ data }: Props) {
                   {item.change.toFixed(2)}
                 </span>
               </div>
+            </div>
+            <div className="flex justify-end mb-2">
+              <span className="text-xs text-gray-400">
+                {formatJstDateTimeLabel(item.marketTime)}
+              </span>
             </div>
             <MiniChart
               data={item.chart}

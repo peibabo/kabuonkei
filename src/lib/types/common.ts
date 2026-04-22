@@ -4,6 +4,7 @@ export interface IndexData {
   price: number;
   change: number;
   changePercent: number;
+  marketTime: number | null;
 }
 
 export interface ChartPoint {
@@ -17,6 +18,7 @@ export interface VolatilityData {
   price: number;
   change: number;
   chart: ChartPoint[];
+  marketTime: number | null;
 }
 
 export interface BondYieldData {
@@ -24,6 +26,7 @@ export interface BondYieldData {
   yield: number;
   change: number;
   chart: ChartPoint[];
+  marketTime: number | null;
 }
 
 export interface ForexData {
@@ -32,6 +35,7 @@ export interface ForexData {
   rate: number;
   change: number;
   changePercent: number;
+  marketTime: number | null;
 }
 
 export interface CommodityData {
@@ -41,4 +45,5 @@ export interface CommodityData {
   change: number;
   changePercent: number;
   chart: ChartPoint[];
+  marketTime: number | null;
 }

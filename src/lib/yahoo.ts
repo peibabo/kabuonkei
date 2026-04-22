@@ -7,14 +7,27 @@ export const yahooFinance = new YahooFinance({
 
 export async function fetchQuote(
   symbol: string
-): Promise<{ price: number; change: number; changePercent: number } | null> {
+): Promise<{
+  price: number;
+  change: number;
+  changePercent: number;
+  marketTime: number | null;
+} | null> {
   try {
     const result = await yahooFinance.quote(symbol);
     if (!result || result.regularMarketPrice == null) return null;
+    const rawTime = result.regularMarketTime;
+    const marketTime =
+      rawTime instanceof Date
+        ? rawTime.getTime()
+        : typeof rawTime === "number"
+          ? rawTime * 1000
+          : null;
     return {
       price: result.regularMarketPrice ?? 0,
       change: result.regularMarketChange ?? 0,
       changePercent: result.regularMarketChangePercent ?? 0,
+      marketTime,
     };
   } catch {
     return null;

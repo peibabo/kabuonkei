@@ -2,6 +2,7 @@
 
 import MiniChart from "./MiniChart";
 import type { BondYieldData, ForexData } from "@/lib/types";
+import { formatJstDateTimeLabel } from "@/lib/jst-date";
 
 interface Props {
   bonds: BondYieldData;
@@ -15,7 +16,7 @@ export default function BondForexCard({ bonds, forex }: Props) {
 
       {/* 米国10年債 */}
       <div className="mb-6">
-        <div className="flex justify-between items-baseline mb-2">
+        <div className="flex justify-between items-baseline mb-1">
           <span className="text-sm font-medium text-gray-600">
             {bonds.name}
           </span>
@@ -33,12 +34,17 @@ export default function BondForexCard({ bonds, forex }: Props) {
             </span>
           </div>
         </div>
+        <div className="flex justify-end mb-2">
+          <span className="text-xs text-gray-400">
+            {formatJstDateTimeLabel(bonds.marketTime)}
+          </span>
+        </div>
         <MiniChart data={bonds.chart} color="#6366f1" />
       </div>
 
       {/* ドル円 */}
       <div>
-        <div className="flex justify-between items-baseline">
+        <div className="flex justify-between items-baseline mb-1">
           <span className="text-sm font-medium text-gray-600">
             {forex.name}（{forex.pair}）
           </span>
@@ -55,6 +61,11 @@ export default function BondForexCard({ bonds, forex }: Props) {
               {forex.changePercent.toFixed(2)}%
             </span>
           </div>
+        </div>
+        <div className="flex justify-end">
+          <span className="text-xs text-gray-400">
+            {formatJstDateTimeLabel(forex.marketTime)}
+          </span>
         </div>
       </div>
     </div>

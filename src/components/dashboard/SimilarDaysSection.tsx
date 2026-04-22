@@ -5,6 +5,17 @@ import {
   getMarketEvents,
   getUsSimilarDaysFile,
 } from "@/lib/similar-days";
+import { getEventsMeta } from "@/lib/events";
+import type { SimilarDayMatch } from "@/lib/types";
+
+function enrichWithSlug(
+  matches: SimilarDayMatch[],
+  dateToSlug: Map<string, string>,
+): SimilarDayMatch[] {
+  return matches.map((m) =>
+    m.eventLabel ? { ...m, eventSlug: dateToSlug.get(m.date) } : m,
+  );
+}
 
 export default function SimilarDaysSection({
   japanScore,
@@ -16,11 +27,19 @@ export default function SimilarDaysSection({
   const events = getMarketEvents();
   const japanFile = getJapanSimilarDaysFile();
   const usFile = getUsSimilarDaysFile();
-  const japanMatches =
+  const dateToSlug = new Map(
+    getEventsMeta().map((e) => [e.date, e.slug] as const),
+  );
+  const japanMatches = enrichWithSlug(
     japanScore != null
       ? findSimilarDays(japanScore, japanFile.daily, events, 5)
-      : [];
-  const usMatches = findSimilarDays(usScore, usFile.daily, events, 5);
+      : [],
+    dateToSlug,
+  );
+  const usMatches = enrichWithSlug(
+    findSimilarDays(usScore, usFile.daily, events, 5),
+    dateToSlug,
+  );
 
   if (japanMatches.length === 0 && usMatches.length === 0) return null;
 

@@ -7,10 +7,12 @@ export interface SimilarDayEntry {
   return6m: number | null;
 }
 
-/** 類似日検索結果（スコア差とイベントラベルを付加） */
+/** 類似日検索結果（スコア差・イベントラベル・イベントスラッグを付加） */
 export interface SimilarDayMatch extends SimilarDayEntry {
   scoreDiff: number;
   eventLabel?: string;
+  /** event label が付いた日のイベント詳細ページ (`/events/[slug]`) への slug */
+  eventSlug?: string;
 }
 
 /** 類似日データファイルの構造 */

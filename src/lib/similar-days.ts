@@ -1,7 +1,7 @@
 import japanData from "@/data/japan-similar-days.json";
 import usData from "@/data/us-similar-days.json";
-import eventData from "@/data/market-events.json";
 import type { SimilarDayEntry, SimilarDaysFile } from "./types";
+import { getEventsAsDateMap } from "./events";
 
 export { findSimilarDays } from "./similar-days/find";
 
@@ -21,6 +21,7 @@ export function getUsSimilarDaysFile(): SimilarDaysFile {
   return usData as SimilarDaysFile;
 }
 
+/** 類似日カード向けに `date → ラベル` の辞書を返す。実体は `events-meta.json`。 */
 export function getMarketEvents(): Record<string, string> {
-  return eventData as Record<string, string>;
+  return getEventsAsDateMap();
 }

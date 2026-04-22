@@ -143,11 +143,6 @@
     "generatedAt": "2026-04-22",
     "daily": [
       {
-        "date": "2026-04-06",
-        "buyBalance": 1331.5,
-        "sellBalance": 76.1
-      },
-      {
         "date": "2026-04-07",
         "buyBalance": 1308.7,
         "sellBalance": 68.6
@@ -191,18 +186,17 @@
         "date": "2026-04-17",
         "buyBalance": 1308.7,
         "sellBalance": 39.7
+      },
+      {
+        "date": "2026-04-20",
+        "buyBalance": 1251,
+        "sellBalance": 37.1
       }
     ]
   },
   "marginTrading": {
     "generatedAt": "2026-04-22",
     "weekly": [
-      {
-        "date": "2026-03-13",
-        "buyBalance": 57194.9,
-        "sellBalance": 10012.3,
-        "ratio": 5.71
-      },
       {
         "date": "2026-03-19",
         "buyBalance": 58025.8,
@@ -226,6 +220,12 @@
         "buyBalance": 51565.1,
         "sellBalance": 9733.1,
         "ratio": 5.3
+      },
+      {
+        "date": "2026-04-17",
+        "buyBalance": 54859.7,
+        "sellBalance": 9434.4,
+        "ratio": 5.81
       }
     ]
   }

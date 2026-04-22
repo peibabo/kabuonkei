@@ -84,9 +84,12 @@ interface Props {
   currentScore: number;
 }
 
+// 簡易版は背景の文脈データなのでグレーに固定し、本体5要素版（温度色）と視覚的に区別する
+const SIMPLE_SERIES_COLOR = "#9ca3af";
+
 export default function JapanTemperatureTrendCard({ currentScore }: Props) {
   const [period, setPeriod] = useState<JpTrendPeriod>("3M");
-  const lineColor = getSentimentColor(currentScore);
+  const fullLineColor = getSentimentColor(currentScore);
 
   const allSimple = useMemo(() => getSimpleHistory(), []);
   const allFull = useMemo(() => getFullSnapshots(), []);
@@ -156,8 +159,8 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
         >
           <defs>
             <linearGradient id="japanTemperatureGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={lineColor} stopOpacity={0.2} />
-              <stop offset="95%" stopColor={lineColor} stopOpacity={0} />
+              <stop offset="5%" stopColor={SIMPLE_SERIES_COLOR} stopOpacity={0.15} />
+              <stop offset="95%" stopColor={SIMPLE_SERIES_COLOR} stopOpacity={0} />
             </linearGradient>
           </defs>
 
@@ -171,24 +174,22 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
           <YAxis {...TREND_Y_AXIS_PROPS} />
           <Tooltip content={<CustomTooltip />} />
 
-          {/* 簡易版: 温度色の実線 + グラデーション塗り（米国版と同じ描画） */}
           <Area
             type="monotone"
             dataKey="simpleScore"
-            stroke={lineColor}
-            strokeWidth={2}
+            stroke={SIMPLE_SERIES_COLOR}
+            strokeWidth={1.5}
             fill="url(#japanTemperatureGradient)"
             connectNulls
             isAnimationActive={false}
             name="simple"
           />
-          {/* フル版: 温度色のやや太い実線（スナップショット蓄積後に上から重ねる） */}
           <Line
             type="monotone"
             dataKey="fullScore"
-            stroke={lineColor}
+            stroke={fullLineColor}
             strokeWidth={2.5}
-            dot={{ r: 2, fill: lineColor }}
+            dot={{ r: 2, fill: fullLineColor }}
             connectNulls
             isAnimationActive={false}
             name="full"

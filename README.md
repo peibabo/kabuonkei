@@ -56,7 +56,7 @@ npm run build
 npm run generate:stats                      # 米国版 温度帯別リターン
 npm run generate:japan-stats                # 日本版 温度帯別リターン
 npm run generate:temperature-history        # 米国版 温度推移
-npm run generate:japan-temperature-history  # 日本版 温度推移
+npm run generate:japan-temperature-history  # 日本版 温度推移（平日17:00 JSTにも自動再生成）
 npm run generate:similar-days               # 類似日検索データ（日本/米国両方）
 
 # X Bot（平日 JST 7:30 に GitHub Actions から実行される）

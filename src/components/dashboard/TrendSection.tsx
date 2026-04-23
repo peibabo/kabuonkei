@@ -12,7 +12,7 @@ export default function TrendSection({
   usScore: number;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <JapanTemperatureTrendCard currentScore={japanScore} />
       <TemperatureTrendCard vixChart={vixChart} currentScore={usScore} />
     </div>

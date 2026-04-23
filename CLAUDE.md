@@ -197,7 +197,14 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 ## 公開サイトとしての運用
 
 ### ページ構成
-- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離
+- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離。本体は **6 章構成** で、各章を `DashboardSection`（`src/components/dashboard/DashboardSection.tsx` — `<section aria-labelledby>` + `h2` 見出し + 説明文 + `space-y-6` 内部間隔を担う共通ラッパー）で包む：
+  1. 🌡️ **今の温度** — `TemperatureSection` + `SimilarDaysSection`（「今日の温度 → 似た日 → その後のリターン」ナラティブを最速で完成させるペア配置）
+  2. 📈 **温度の推移** — `TrendSection`
+  3. 📊 **過去の傾向** — `StatsSection`
+  4. 👤 **あなたへのヒント** — `PersonalizedHintCard`
+  5. 🔍 **詳しく見る** — `CrossStatsCard` + `SectorHeatmapCard`（深掘り分析）
+  6. 📉 **市場の生データ** — `JapanMarketSection` + `MarketDataSection`
+  各子セクションコンポーネントは外側の `mb-X` を持たず、親 `DashboardSection` の `mb-10` + `space-y-6` で章間/章内のスペーシングを統一する
 - `/about` — サイト説明（`src/app/about/page.tsx`）
 - `/widget` — 埋め込みウィジェットの案内ページ（`src/app/widget/page.tsx`）。ライブプレビュー + コピー可能な embed HTML（`src/app/widget/_components/EmbedCodeBlock.tsx`）を表示。HTML 生成は純粋関数 `buildEmbedSnippet`（`src/app/widget/_lib/embed-snippet.ts`）に分離してユニットテスト対象化
 - `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記

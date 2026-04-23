@@ -11,7 +11,7 @@ export default function TemperatureSection({
 }) {
   const usLevelLabel = getSentimentLevel(fearGreed.score);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {japanFearGreed && (
         <FearGreedGauge
           market="jp"

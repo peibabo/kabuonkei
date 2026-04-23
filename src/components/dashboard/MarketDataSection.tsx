@@ -24,15 +24,15 @@ export default function MarketDataSection({
   commodities: CommodityData[];
 }) {
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <VolatilityCard data={volatility} />
         <IndicesCard data={indices} />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <BondForexCard bonds={bonds} forex={forex} />
         <CommodityCard data={commodities} />
       </div>
-    </>
+    </div>
   );
 }

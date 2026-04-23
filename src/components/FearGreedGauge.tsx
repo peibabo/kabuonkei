@@ -7,6 +7,7 @@ import {
 } from "@/lib/sentiment";
 import type { FearGreedData, JapanFearGreedData } from "@/lib/types";
 import ShareButton from "./share/ShareButton";
+import HistoricalPercentileBadge from "./HistoricalPercentileBadge";
 
 interface SharePartnerData {
   /** もう一方の市場のスコア（共有文言で両方表示するため） */
@@ -116,6 +117,7 @@ export default function FearGreedGauge(props: Props) {
           {level}
         </div>
         <div className="text-base text-gray-500 mt-0.5">（{description}）</div>
+        <HistoricalPercentileBadge score={data.score} market={market} />
       </div>
 
       {/* 下部詳細（市場別） */}

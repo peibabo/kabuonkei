@@ -25,11 +25,14 @@ jobs:
       - run: npm run generate:japan-temperature-history
       - run: npm run generate:similar-days
       - run: npm run generate:cross-stats
+      # score-distribution は japan-temperature-history.json を読み込むため、
+      # 上記 generate:japan-temperature-history の後で実行する必要がある
+      - run: npm run generate:score-distribution
       - name: Commit and push if changed
         run: |
           git diff --quiet src/data/ && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/cross-historical-stats.json
+          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/cross-historical-stats.json src/data/score-distribution.json
           git commit -m "chore: 統計データを更新（$(date +%Y-%m-%d)）"
           git push

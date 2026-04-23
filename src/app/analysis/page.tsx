@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
+import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 
 export const metadata: Metadata = {
   title: "分析記事",
@@ -27,7 +28,16 @@ interface AnalysisArticle {
 
 export default function AnalysisIndexPage() {
   const marginAnalysis = getMarginRatioAnalysis();
+  const vixAnalysis = getVixSp500Analysis();
   const articles: AnalysisArticle[] = [
+    {
+      slug: "vix-threshold-sp500",
+      icon: "📈",
+      title: "VIX が 30 を超えた日、その後 S&P500 はどう動いたか？— 過去20年の検証",
+      description:
+        "「VIX 30 超え＝パニック＝危険」は本当か？ 過去約 20 年 5000 取引日で、VIX 水準ごとの S&P500・日経225 の翌 1 / 3 / 6 ヶ月リターンを集計。米国恐怖 × 日本版温度のクロス市場ビューも併載。",
+      dateLabel: `最終更新: ${vixAnalysis.generatedAt}`,
+    },
     {
       slug: "margin-ratio-temperature",
       icon: "📊",

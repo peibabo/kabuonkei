@@ -214,16 +214,16 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 
 **重要**: 金商法リスクを下げるため、徹頭徹尾「研究 / シミュレーション」として framing する（"今月◯買え" ではなく "ルールに基づけば理論上このようになっていた"）。`/terms` 第 9 条に「バックテスト・シミュレーション結果の表示について」を明記し、ページ冒頭には赤枠の常時免責バナーを置く。
 
-**ポジショニング（トーン設計）**: 絶対リターンでは過去10年とも 100% 株の buy & hold に大差で劣後する（JP -115pp / US -139pp）。これを隠さず、ページ冒頭の amber ブロック（`#for-whom`）で「買い持ちに勝つ戦略ではなく、暴落で売ってしまう人が仕組みで持ち続けるための補助輪」と明言する。読者セグメンテーション（= 絶対リターン目当ての人には「素直にインデックス買い持ちをしてください」と離脱を促す）で信頼性を確保する方針。Dashboard ミニカードと OG 画像も同トーンで統一（最大DD 改善を主役、α は補助情報）。
+**ポジショニング（トーン設計）**: 過去約10年のバックテストで、温度ルールは**月次積立（DCA）を日米ともに明確に上回る**（JP α vs DCA = +38.3pp / US α vs DCA = +42.1pp、2026-04-23 時点）。一括買い持ちには依然として劣後する（JP α = -68.4pp / US α = -93.4pp）が、**最大DD は買い持ちより浅い**（JP +4.3pp / US +4.8pp 改善）。読者セグメンテーションは (1) NISA 積立勢には「積立より有利な選択肢」として提示、(2) 一括投入可能な人には「買い持ちに劣る」と正直に記載、(3) 中間的な入れ方を探す人を明示ターゲット。Dashboard ミニカードと OG 画像は「**積立 (DCA) 比 +38pp / +42pp**」を主役に、maxDD 情報は補助扱いで統一。
 
-**3 戦略比較（一括買い持ち / 月次積立 / 温度ルール）**: サイトの主要読者（NISA 積立勢）が**自分のやり方との差分で温度ルールを評価できる**よう、月次積立（DCA）ベンチマークを simulator に組み込み、チャート 3 本・統計表 4 列（温度 / 一括 / 積立 / 温度 vs 積立）で並列表示する。結果として JP α vs DCA = -8.9pp / US α vs DCA = -4pp と小さく、「**NISA 積立できる人は温度ルールに切り替えても実利はほぼない**」が新しい結論。この事実を `#for-whom` ブロックでも正直に書き、記事の target 読者を「まとまった現金を一括投入できずにいる人」だけに絞る。`scripts/_lib/portfolio-sim.ts::simulatePortfolio` は `DailyPoint.benchmarkDca` と `PortfolioStats.dcaReturn/dcaCagr/dcaMaxDrawdown/dcaSharpe/alphaVsDca` を生成し、`startState` の `dcaMonthlyContribution / dcaRemainingContributions` で差分モードにも対応。
+**3 戦略比較（一括買い持ち / 月次積立 / 温度ルール）**: サイトの主要読者（NISA 積立勢）が**自分のやり方との差分で温度ルールを評価できる**よう、月次積立（DCA）ベンチマークを simulator に組み込み、チャート 3 本・統計表 4 列（温度 / 一括 / 積立 / 温度 vs 積立）で並列表示する。`scripts/_lib/portfolio-sim.ts::simulatePortfolio` は `DailyPoint.benchmarkDca` と `PortfolioStats.dcaReturn/dcaCagr/dcaMaxDrawdown/dcaSharpe/alphaVsDca` を生成し、`startState` の `dcaMonthlyContribution / dcaRemainingContributions` で差分モードにも対応。**ルール選定**: 初期バージョンの sym 60/40（平温で現金40%）は DCA に -8.9pp 負けていたため、`scripts/explore-portfolio-rules.ts`（調査スクリプト、永続化なし）で配分シフト・非対称・極端帯トリガー・温度連動 DCA の 4 系統を網羅テストし、`sym 80/20`（平温で株80%保持、極寒で100%、沸騰で50%）に差し替えた経緯がある。再探索したい場合はこの script を再実行する。
 
-### ルール（固定）
+### ルール（固定、sym 80/20）
 - 対象: 日本 = ^N225 + 現金（日本版温度 = C1+C5 で駆動）/ 米国 = ^GSPC + 現金（VIX→温度で駆動）
 - リバランス: **月次**、各月第一営業日に温度帯を判定して目標配分へ移動
-- 配分表（ニュートラル 60/40・振れ幅 ±30%）: 極寒=株90% / 冷え込み=75% / 平温=60% / 過熱=45% / 沸騰=30%
+- 配分表（ニュートラル 80/20・非対称）: 極寒=株100% / 冷え込み=90% / 平温=80% / 過熱=65% / 沸騰=50%
 - 現金金利 / 手数料 / 税金 / スリッページ = すべて 0 固定（記事で明記）
-- ベンチマーク: 100% 株の buy & hold（同じ銘柄）
+- ベンチマーク: (1) 100% 株の buy & hold（同じ銘柄）、(2) 月次積立（DCA、同じ初期 100 を月数 N で等額按分）
 - バックテスト期間: 2016-04-22（日本温度履歴の起点）〜 最新
 
 ### データ層
@@ -233,13 +233,13 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 - 純粋関数: `scripts/_lib/portfolio-sim.ts`（`simulatePortfolio` / `DEFAULT_PORTFOLIO_RULE` / `computeStats` / `computeMaxDrawdown` / `computeSharpe`）
 - ユニットテスト: `scripts/__tests__/portfolio-sim.test.ts`（リバランス発火 / NAV 保全 / 差分モード連続性）
 - アクセサ: `src/lib/portfolio.ts`（`getPortfolioHistory` / `slicePortfolioDailyByDays` / `resolveBandByScore`、`PortfolioCashYieldScenario` 型）
-- **現金金利感度分析**: 同じルールで `cashYield` を 0% / 1% / 3% に差し替えた 3 シナリオを `cashYieldSensitivity[]` に格納。記事の「現金金利シナリオの感度分析」セクションで一覧表示し、MMF/短期金利を仮定したときの相対改善を可視化（3% 想定で JP Sharpe 0.84 > ベンチ 0.71 に逆転する等）
+- **現金金利感度分析**: 同じルールで `cashYield` を 0% / 1% / 3% に差し替えた 3 シナリオを `cashYieldSensitivity[]` に格納。記事の「現金金利シナリオの感度分析」セクションで一覧表示し、MMF/短期金利を仮定したときの相対改善を可視化（sym 80/20 では現金比率が平均 20% 程度なので影響は小さめだが、3% 想定で CAGR +1.0〜1.2pp / Sharpe +0.05〜0.07 改善する）
 
 ### UI
 - ページ本体: `src/app/portfolio/page.tsx`（Server Component、`StaticPageLayout` ベース、`buildArticleJsonLd` で Article JSON-LD 埋込、目次 + 赤枠免責バナー + ルール表 + `PortfolioBody` + 手法 + バイアス + 関連リンク）
 - Client 本体: `src/components/portfolio/PortfolioBody.tsx`（日米タブ / 1Y・5Y・10Y 切替 / 現在配分カード / NAV 推移チャート（ComposedChart、ポートフォリオ = 温度色実線、ベンチマーク = グレー破線）/ 統計テーブル（totalReturn / CAGR / maxDD / Sharpe + ベンチ比）/ リバランス履歴（直近 12 件 + 展開）/ `InvestingBooksCTA placement="portfolio"`）
-- Dashboard ミニカード: `src/components/PortfolioTeaserCard.tsx` を Dashboard 第 5 章「🔍 詳しく見る」末尾に配置。日米配分・α・最大DDを要約し `/portfolio?ref=dashboard_teaser` へ誘導。片方が極寒/沸騰時は amber 強調
-- OG 画像: `src/app/portfolio/opengraph-image.tsx`（青系、日米 NAV・α・最大DD を並列表示、`buildNotoSansJpFonts` + `THERMOMETER_SVG` 共用）
+- Dashboard ミニカード: `src/components/PortfolioTeaserCard.tsx` を Dashboard 第 5 章「🔍 詳しく見る」末尾に配置。日米配分・α vs DCA（主役）・最大DD 改善（補助）を要約し `/portfolio?ref=dashboard_teaser` へ誘導。片方が極寒/沸騰時は amber 強調
+- OG 画像: `src/app/portfolio/opengraph-image.tsx`（青系、日米の「積立 比 +Xpp」を主見出しに、温度 / 積立 / 最大DD を並列表示、`buildNotoSansJpFonts` + `THERMOMETER_SVG` 共用）
 - GA4 イベント: `portfolio_view` / `portfolio_market_switch` / `portfolio_period_switch` / `portfolio_teaser_click`
 
 ### SEO 配線

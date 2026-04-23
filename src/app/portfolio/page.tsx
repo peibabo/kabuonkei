@@ -9,7 +9,7 @@ import { buildArticleJsonLd } from "@/lib/article-jsonld";
 const ARTICLE_PATH = "/portfolio";
 const ARTICLE_TITLE = "温度連動バーチャルポートフォリオ（シミュレーション）";
 const ARTICLE_DESCRIPTION =
-  "買い持ちに勝つ戦略ではなく、暴落で売ってしまいがちな人が感情ではなく仕組みでポジションを保つための「補助輪」を検証した研究。日経225・S&P500 で温度スコアに応じて株/現金配分を月次に切り替えた場合の過去10年バックテスト + 日次ライブ追跡を公開。";
+  "温度スコアに応じて株/現金配分を月次に切り替えるルールが、過去約10年で月次積立（DCA）を JP +38pp / US +42pp 上回った検証。NISA 積立勢向けに、日経225・S&P500 で株温計を使った逆張り型リバランスの過去10年バックテスト + 日次ライブ追跡を公開。";
 const PUBLISHED_AT = "2026-04-23";
 
 export const metadata: Metadata = {
@@ -87,50 +87,55 @@ export default function PortfolioPage() {
           className="bg-amber-50 border border-amber-300 rounded-xl p-5 not-prose scroll-mt-16"
         >
           <h2 className="text-lg font-bold text-amber-900 mb-2">
-            📖 この記事は誰のためのものか（先に読んでください）
+            📖 結論を先に（先に読んでください）
           </h2>
           <p className="text-base text-gray-800 leading-relaxed mb-3">
-            結論を先に書きます。過去10年の日米市場では、
-            <strong>どの 3 戦略を比べても「100% 株を買ってひたすら持つ」が最強だった</strong>
-            というのが数字上の事実です。温度ルールは他の 2 戦略と比べて以下のような位置にいます。
+            温度ルールは過去約10年で、<strong>NISA 積立型（月次 DCA）を日米ともに明確に上回りました</strong>。
           </p>
           <ul className="list-disc pl-6 space-y-2 text-base text-gray-800 mb-4">
             <li>
-              <strong>vs 一括買い持ち（初日に全額投入）</strong>:
-              温度ルールは累計リターンで大きく劣後（JP α{" "}
-              {jpStats.alpha.toFixed(0)}pp / US α {usStats.alpha.toFixed(0)}pp）。
-              ただし<strong>最大ドローダウンは 9〜10pp 浅く</strong>、暴落耐性は上
+              <strong>vs 月次積立（NISA 積立投資の典型）</strong>: 温度ルールが
+              <strong>
+                {" "}JP +{jpStats.alphaVsDca.toFixed(1)}pp / US +{usStats.alphaVsDca.toFixed(1)}pp
+              </strong>
+              上回る。毎月定額で機械的に買うより、<strong>温度を見て株/現金比率を切り替えるほうが有利</strong>だったのが過去10年の事実
             </li>
             <li>
-              <strong>vs 月次積立（NISA 積立投資の典型）</strong>:
-              実は<strong>これが一番近い相手</strong>で、累計リターン差はたった
-              <strong>
-                {" "}JP {jpStats.alphaVsDca.toFixed(1)}pp / US{" "}
-                {usStats.alphaVsDca.toFixed(1)}pp
-              </strong>
-              しかない。しかも最大DD は <strong>JP でやや有利 / US でほぼ同等〜やや不利</strong>
-              。<strong>NISA 積立をしている人にとって、温度ルールへの切替はほぼ意味がありません</strong>
+              <strong>vs 一括買い持ち（初日に全額投入）</strong>:
+              累計リターンでは依然として大きく劣後（JP α{" "}
+              {jpStats.alpha.toFixed(0)}pp / US α {usStats.alpha.toFixed(0)}pp）。
+              ただし<strong>最大ドローダウンは買い持ちより
+              {" "}{(jpStats.benchmarkMaxDrawdown - jpStats.maxDrawdown).toFixed(1)}pp 〜 {(usStats.benchmarkMaxDrawdown - usStats.maxDrawdown).toFixed(1)}pp 浅い</strong>。
+              「まとまった現金を今すぐ全額一括投入するのは怖い」という人には合理的な代替案
+            </li>
+            <li>
+              <strong>積立に対する最大DD</strong>: 温度ルールの最大DD は JP で積立より{" "}
+              {(jpStats.maxDrawdown - jpStats.dcaMaxDrawdown).toFixed(1)}pp / US で{" "}
+              {(usStats.maxDrawdown - usStats.dcaMaxDrawdown).toFixed(1)}pp 深い。
+              リターン改善と引き換えに、暴落時の下落幅は積立よりやや大きくなる（株比率が高くなる場面があるため）
             </li>
           </ul>
           <p className="text-base text-gray-800 leading-relaxed mb-3">
-            つまりこのルールが
-            <strong>意味を持つ可能性があるのは次の条件に全部当てはまる人だけ</strong>
-            です:
+            このルールが<strong>特に向いている人</strong>:
           </p>
           <ul className="list-disc pl-6 space-y-1 text-base text-gray-800 mb-3">
             <li>
-              まとまった現金（例: 退職金、副業収入、相続）が手元にあって、<strong>一括投入したいけど怖くてできない</strong>
+              すでに NISA 積立をしている・これから始めようとしている人 →{" "}
+              <strong>積立額を完全固定にせず、温度で「積立超え」を狙う選択肢</strong>
+              として検討できる
             </li>
             <li>
-              NISA 積立のような <strong>毎月自動投入の仕組みには今は乗っていない</strong>
+              まとまった現金があり、一括投入と完全積立の中間的な入れ方を探している人
             </li>
             <li>
-              過去に一度でも<strong>暴落で売った or 買うのを躊躇した経験</strong>がある
+              株温計の温度スコアを単なる情報として見るだけでなく、
+              <strong>行動に落とせる「ルール」</strong>として使いたい人
             </li>
           </ul>
           <p className="text-base text-gray-800 leading-relaxed">
-            <strong>NISA 積立ができる方は、それが今も昔もベストプラクティスです</strong>
-            。続きを読む前にまず積立設定を見直すことをお勧めします。積立も検討したうえで「一括で持ってる現金の配分判断に補助輪が欲しい」という方のみ、温度ルールの細かい数字を追う価値があります。
+            ただし、これは<strong>過去10年のバックテスト結果</strong>であり、
+            将来の成績を保証するものではありません。また現金金利 0% / 手数料 0 / 税金 0 の理論値であり、
+            実運用では売買コストと税金が影響します。詳細な手法とバイアスは下の「データと手法」「バックテストのバイアス」を必ずご確認ください。
           </p>
         </section>
 
@@ -191,12 +196,12 @@ export default function PortfolioPage() {
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3 text-gray-600">
-            過去10年は両市場とも強い上昇相場だったため、絶対リターンでは<strong>「一括買い持ち &gt; 月次積立 &gt; 温度ルール」</strong>
-            の順で並びました。温度ルールと月次積立の差は JP{" "}
-            {Math.abs(jpStats.alphaVsDca).toFixed(1)}pp / US{" "}
-            {Math.abs(usStats.alphaVsDca).toFixed(1)}pp と小さいため、
-            <strong>NISA 積立をしている人が温度ルールに切り替える実利は過去10年ではほぼゼロ</strong>
-            でした。
+            絶対リターンの順序は<strong>「一括買い持ち &gt; 温度ルール &gt; 月次積立」</strong>。
+            過去約10年で温度ルールは<strong>月次積立（DCA）を JP +{jpStats.alphaVsDca.toFixed(1)}pp / US +{usStats.alphaVsDca.toFixed(1)}pp 上回りました</strong>。
+            最大ドローダウンは一括買い持ちより浅く（JP で{" "}
+            {(jpStats.benchmarkMaxDrawdown - jpStats.maxDrawdown).toFixed(1)}pp / US で{" "}
+            {(usStats.benchmarkMaxDrawdown - usStats.maxDrawdown).toFixed(1)}pp 改善）、
+            積立よりはやや深いという「中間」の位置付けです。
           </p>
         </section>
 
@@ -206,7 +211,8 @@ export default function PortfolioPage() {
           </h2>
           <p className="text-base leading-relaxed">
             毎月第一営業日に、その時点の温度スコアをもとに下の配分表に従って株 : 現金を再配分します。
-            配分は「ニュートラル 60 : 40 を基準に、温度に応じて ±30% の範囲で振る」ルール設定です。
+            配分は「ニュートラル 80 : 20 を基準に、温度に応じて振る」ルール設定（<strong>sym 80/20</strong>）。
+            平温時は株 80% を保ち、極寒時はフル投資（100%）、沸騰時は株 50% まで減らします。
           </p>
           <div className="overflow-x-auto not-prose mt-3">
             <table className="w-full text-base border border-gray-200 rounded-lg">

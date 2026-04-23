@@ -129,11 +129,11 @@ export interface SimulateResult {
 
 export const DEFAULT_PORTFOLIO_RULE: PortfolioRule = {
   bands: [
-    { level: "極寒", scoreRange: [0, 20], equityRatio: 0.9 },
-    { level: "冷え込み", scoreRange: [21, 40], equityRatio: 0.75 },
-    { level: "平温", scoreRange: [41, 60], equityRatio: 0.6 },
-    { level: "過熱", scoreRange: [61, 80], equityRatio: 0.45 },
-    { level: "沸騰", scoreRange: [81, 100], equityRatio: 0.3 },
+    { level: "極寒", scoreRange: [0, 20], equityRatio: 1.0 },
+    { level: "冷え込み", scoreRange: [21, 40], equityRatio: 0.9 },
+    { level: "平温", scoreRange: [41, 60], equityRatio: 0.8 },
+    { level: "過熱", scoreRange: [61, 80], equityRatio: 0.65 },
+    { level: "沸騰", scoreRange: [81, 100], equityRatio: 0.5 },
   ],
   rebalance: "monthly-first-business-day",
   cashYield: 0,

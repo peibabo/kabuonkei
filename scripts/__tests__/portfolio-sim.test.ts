@@ -108,27 +108,27 @@ describe("simulatePortfolio — 基礎", () => {
     ["2026-04-01", 130],
   ]);
 
-  it("初月リバランスで 60/40 → NAV は株価変動に 60% 連動", () => {
+  it("初月リバランスで 80/20 → NAV は株価変動に 80% 連動", () => {
     const result = simulatePortfolio({
       priceMap,
       priceDates,
-      scoreOf: () => 50, // 平温固定 → 60% 株
+      scoreOf: () => 50, // 平温固定 → 80% 株（sym 80/20 ルール）
       rule: DEFAULT_PORTFOLIO_RULE,
     });
-    // 初日に 60/40 にリバランス → NAV=100, equity=60/100=0.6 unit, cash=40
-    // 2月初 (price=110): NAV = 0.6 * 110 + 40 = 106
+    // 初日に 80/20 にリバランス → NAV=100, equity=80/100=0.8 unit, cash=20
+    // 2月初 (price=110): NAV = 0.8 * 110 + 20 = 108
     const febFirst = result.daily.find((d) => d.date === "2026-02-02");
     expect(febFirst).toBeDefined();
-    // ただし 2月初もリバランス日。target=0.6 のまま → NAV 保全
-    expect(febFirst!.nav).toBeCloseTo(106, 1);
+    // ただし 2月初もリバランス日。target=0.8 のまま → NAV 保全
+    expect(febFirst!.nav).toBeCloseTo(108, 1);
   });
 
   it("NAV 保全: リバランス前後で NAV は変化しない", () => {
     // スコアを変えてリバランスの比率を変えるケース
     const scoreByDate = new Map<string, number>([
-      ["2026-01-05", 50], // 平温 → 60%
-      ["2026-02-02", 10], // 極寒 → 90%
-      ["2026-03-02", 50], // 平温 → 60%
+      ["2026-01-05", 50], // 平温 → 80%
+      ["2026-02-02", 10], // 極寒 → 100%
+      ["2026-03-02", 50], // 平温 → 80%
     ]);
     const result = simulatePortfolio({
       priceMap,
@@ -137,12 +137,12 @@ describe("simulatePortfolio — 基礎", () => {
       rule: DEFAULT_PORTFOLIO_RULE,
     });
     // trades.navBefore が、リバランス直後の NAV と一致することを間接的に確認
-    // 2月初のトレード: price=110, 直前の株 unit=0.6, cash=40 → navBefore = 106
+    // 2月初のトレード: price=110, 直前の株 unit=0.8, cash=20 → navBefore = 108
     const feb = result.trades.find((t) => t.date === "2026-02-02");
     expect(feb).toBeDefined();
-    expect(feb!.navBefore).toBeCloseTo(106, 1);
+    expect(feb!.navBefore).toBeCloseTo(108, 1);
     expect(feb!.band).toBe("極寒");
-    expect(feb!.toEquityRatio).toBeCloseTo(0.9, 5);
+    expect(feb!.toEquityRatio).toBeCloseTo(1.0, 5);
   });
 
   it("リバランスは月初のみで発火する", () => {

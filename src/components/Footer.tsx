@@ -33,7 +33,7 @@ export default function Footer() {
             プライバシーポリシー
           </Link>
         </nav>
-        <p className="text-xs text-gray-400">© 2026 株温計</p>
+        <p className="text-xs text-gray-400">© 2026 リブラボ / 株温計</p>
       </div>
     </footer>
   );

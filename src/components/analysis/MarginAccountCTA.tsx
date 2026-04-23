@@ -7,9 +7,13 @@ interface BrokerItem {
   name: string;
   tagline: string;
   strength: string;
-  // TODO: ASP (A8 / もしも / バリューコマース など) 登録後に実 URL を差し替える。
-  // 差し替え時は id をキーにして1箇所で置換可能。
-  placeholderHref: string;
+  /**
+   * 暫定で各証券会社の公式サイト (トップページ) に直リンク。
+   * サイトの PV が伸びたら ASP (A8 / もしも / バリューコマース / TCS / アクセストレード 等) に
+   * 登録し、ここを成果計測付きのアフィリエイト URL に差し替える。
+   * 差し替え時は id をキーにすれば 1 箇所で置換可能。
+   */
+  href: string;
 }
 
 const BROKERS: BrokerItem[] = [
@@ -18,21 +22,21 @@ const BROKERS: BrokerItem[] = [
     name: "松井証券",
     tagline: "低金利信用取引・一日信用",
     strength: "信用取引の金利（買方金利）業界最低水準クラス。デイトレ向けの「一日信用」は金利0%",
-    placeholderHref: "#", // TODO: ASP 登録後に差し替え
+    href: "https://www.matsui.co.jp/", // 暫定: PV が伸びたら ASP 経由 URL に差し替え
   },
   {
     id: "gmo",
     name: "GMOクリック証券",
     tagline: "信用取引・CFDが強い",
     strength: "信用取引手数料無料（条件付き）。プロ向けツールも無料で使える",
-    placeholderHref: "#", // TODO: ASP 登録後に差し替え
+    href: "https://www.click-sec.com/", // 暫定: PV が伸びたら ASP 経由 URL に差し替え
   },
   {
     id: "sbi",
     name: "SBI証券",
     tagline: "大手・総合力",
     strength: "銘柄数・IPO 取扱・NISA 連携で国内 No.1。メイン口座との併用もしやすい",
-    placeholderHref: "#", // TODO: ASP 登録後に差し替え
+    href: "https://www.sbisec.co.jp/", // 暫定: PV が伸びたら ASP 経由 URL に差し替え
   },
 ];
 
@@ -42,7 +46,10 @@ interface Props {
 
 export default function MarginAccountCTA({ placement }: Props) {
   function handleClick(brokerId: BrokerItem["id"]) {
-    trackEvent("affiliate_click", {
+    // イベント名は将来アフィリエイトに切り替わっても同じ指標で追跡できるよう
+    // "broker_cta_click" に固定。クリック後の遷移先が直リンクか ASP 経由かは
+    // 別途ダッシュボードのフィルタ（or URL の utm）で判別する想定。
+    trackEvent("broker_cta_click", {
       article: "margin-ratio-temperature",
       broker: brokerId,
       placement,
@@ -54,23 +61,20 @@ export default function MarginAccountCTA({ placement }: Props) {
       aria-labelledby="margin-cta-heading"
       className="bg-amber-50 border border-amber-200 rounded-xl p-5 my-8"
     >
-      <p className="text-[11px] text-amber-900/70 mb-2">
-        ※本カード内のリンクには広告（アフィリエイト）が含まれます（PR）
-      </p>
       <h3 id="margin-cta-heading" className="text-base font-bold text-gray-900 mb-1">
         信用取引口座を比較する
       </h3>
       <p className="text-sm text-gray-700 mb-4 leading-relaxed">
-        信用倍率を踏まえた売買を検討している方へ。信用取引はメイン口座とは別のサブ口座で開設する人が多く、金利・手数料・ツールで差がつきます。
+        信用倍率を踏まえた売買を検討している方へ。信用取引はメイン口座とは別のサブ口座で開設する人が多く、金利・手数料・ツールで差がつきます。リンク先は各社の公式サイトです。
       </p>
       <ul className="space-y-3 list-none pl-0">
         {BROKERS.map((b) => (
           <li key={b.id}>
             <a
-              href={b.placeholderHref}
-              rel="sponsored nofollow noopener noreferrer"
+              href={b.href}
+              rel="noopener noreferrer"
               target="_blank"
-              data-affiliate-placeholder={b.id}
+              data-broker={b.id}
               onClick={() => handleClick(b.id)}
               className="block bg-white rounded-lg px-4 py-3 border border-amber-200 hover:border-amber-400 hover:shadow-sm transition"
             >

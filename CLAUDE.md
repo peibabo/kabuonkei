@@ -184,7 +184,7 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 - `src/app/analysis/page.tsx`: 記事インデックス（`StaticPageLayout` ベース、ハンド書きカード配列）
 - `src/app/analysis/margin-ratio-temperature/page.tsx`: 記事本体（Server Component、`<Script type="application/ld+json">` で JSON-LD 埋め込み、目次・用語解説・`MarginRatioAnalysisBody` 埋め込み・示唆・手法・関連リンクで構成）
 - `src/components/analysis/MarginRatioAnalysisBody.tsx`: Client Component。`PeriodSwitcher<1m|3m|6m>` で期間切替、quartile 表・2D ヒートマップ (`heatmapCellStyle` 流用、`LOW_SAMPLE_THRESHOLD = 10`)・1D マージナル表（信用倍率版 / 温度版）を描画。最新比率 ≥ 5 または温度 ≤ 20/≥81 のとき上部に動的 boost アラートカード。マウント時に GA4 `analysis_view` を送信
-- `src/components/analysis/MarginAccountCTA.tsx`: Client Component。信用取引口座（松井/GMOクリック/SBI）の比較カード。**プレースホルダ仕様**: `href="#"` + `data-affiliate-placeholder="..."` + TODO コメントで、ASP 登録後に URL を差し替える構造。リンクには `rel="sponsored nofollow noopener noreferrer"` を最初から付与。「※PR」表示 + GA4 `affiliate_click(article, broker, placement)` イベントを送信
+- `src/components/analysis/MarginAccountCTA.tsx`: Client Component。信用取引口座（松井/GMOクリック/SBI）の比較カード。**暫定仕様**: 各証券会社の公式サイトへ直リンク（`href` は top-level domain、`rel="noopener noreferrer"`）。PV が伸びたら ASP (A8 / もしも / バリューコマース / TCS / アクセストレード 等) 登録後にアフィリエイト URL へ差し替える前提。差し替え時に `rel` へ `sponsored nofollow` を加え、カード上部に「※PR / 広告」表示を復活させる。GA4 イベントは直リンク/アフィどちらでも共通の `broker_cta_click(article, broker, placement)` を使用してヒストリカル計測の継続性を確保
 - `/analysis/margin-ratio-temperature/opengraph-image.tsx`: 静的 OG 画像。`buildNotoSansJpFonts` + `THERMOMETER_SVG` を `/api/og/daily` と共通利用。最新比率・中央値・サンプル数を描画
 - `/terms` に第8条「広告・アフィリエイトリンクの表示」セクションを追加済み（景表法・JSTA ガイドライン対応）
 - Footer / `/guide/short-term-trader` / `/guide/fire-long-term` から内部リンクを追加（トピッククラスタ形成）

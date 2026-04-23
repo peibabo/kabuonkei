@@ -12,7 +12,7 @@ export interface ArticleJsonLdInput {
   dateModified: string; // ISO date
   /** OG 画像の絶対 URL */
   imageUrl?: string;
-  /** author は運営組織としての "株温計" を既定にする */
+  /** 個別記事の著者名。既定は "ao"（運営者ペンネーム） */
   authorName?: string;
 }
 
@@ -38,13 +38,13 @@ export function buildArticleJsonLd(input: ArticleJsonLdInput): string {
     datePublished: input.datePublished,
     dateModified: input.dateModified,
     author: {
-      "@type": "Organization",
-      name: input.authorName ?? "株温計",
+      "@type": "Person",
+      name: input.authorName ?? "ao",
       url: SITE_ORIGIN,
     },
     publisher: {
       "@type": "Organization",
-      name: "株温計",
+      name: "リブラボ",
       url: SITE_ORIGIN,
     },
   };

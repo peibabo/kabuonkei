@@ -1,0 +1,2509 @@
+{
+  "generatedAt": "2026-04-23",
+  "dataRange": {
+    "from": "2016-04-23",
+    "to": "2026-04-23"
+  },
+  "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。TOPIX-17 連動 ETF（NEXT FUNDS シリーズ 1617〜1633）の日次終値を各業種の proxy として使用。業種区分は東証 33 業種ではなく TOPIX-17 ベース。サンプル数が少ない温度帯は参考値として扱うこと。",
+  "sectors": [
+    {
+      "code": "1617",
+      "symbol": "1617.T",
+      "name": "食品",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.8,
+              "medianReturn": 2.3,
+              "winRate": 78.4,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 4.7,
+              "medianReturn": 4,
+              "winRate": 83.8,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 5.3,
+              "medianReturn": 4.1,
+              "winRate": 66.7,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.6,
+              "medianReturn": 1.5,
+              "winRate": 70.2,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 3.5,
+              "medianReturn": 3.2,
+              "winRate": 71.3,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 2.9,
+              "medianReturn": 3.4,
+              "winRate": 63.4,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0,
+              "medianReturn": 0,
+              "winRate": 50.2,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 0.8,
+              "medianReturn": 0.8,
+              "winRate": 55,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 0.8,
+              "medianReturn": 1.6,
+              "winRate": 57.2,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.1,
+              "medianReturn": -0.3,
+              "winRate": 47.2,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": -0.5,
+              "medianReturn": 0.1,
+              "winRate": 50.1,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 1.5,
+              "medianReturn": 1.9,
+              "winRate": 57.6,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.1,
+              "medianReturn": 1.1,
+              "winRate": 62.7,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 3.5,
+              "medianReturn": 3.4,
+              "winRate": 87.8,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 6.5,
+              "medianReturn": 6.6,
+              "winRate": 81.5,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1618",
+      "symbol": "1618.T",
+      "name": "エネルギー資源",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.6,
+              "medianReturn": 3.5,
+              "winRate": 75.7,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 3.9,
+              "medianReturn": 4,
+              "winRate": 68.5,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 9.8,
+              "medianReturn": 9.7,
+              "winRate": 70.3,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.2,
+              "medianReturn": 1.2,
+              "winRate": 55.4,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 4.2,
+              "medianReturn": 1.8,
+              "winRate": 56.6,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 9.2,
+              "medianReturn": 8.1,
+              "winRate": 73.2,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0,
+              "medianReturn": 0.8,
+              "winRate": 54.1,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 2.8,
+              "medianReturn": 0.6,
+              "winRate": 50.8,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 7.3,
+              "medianReturn": 6.3,
+              "winRate": 62.7,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.5,
+              "medianReturn": 1,
+              "winRate": 55.8,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 2.3,
+              "medianReturn": 0.9,
+              "winRate": 54.1,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 6.4,
+              "medianReturn": 0.9,
+              "winRate": 51.7,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 4.9,
+              "medianReturn": 4.7,
+              "winRate": 80.5,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 12.7,
+              "medianReturn": 14,
+              "winRate": 77.8,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 13,
+              "medianReturn": 8.6,
+              "winRate": 58.9,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1619",
+      "symbol": "1619.T",
+      "name": "建設・資材",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 4.2,
+              "medianReturn": 3.9,
+              "winRate": 91,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 8,
+              "medianReturn": 7.2,
+              "winRate": 97.3,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 12.5,
+              "medianReturn": 12.1,
+              "winRate": 84.7,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.1,
+              "medianReturn": 2.2,
+              "winRate": 68.8,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 6,
+              "medianReturn": 5.2,
+              "winRate": 77.8,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 7.7,
+              "medianReturn": 9,
+              "winRate": 72.9,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0,
+              "medianReturn": 0.2,
+              "winRate": 51.3,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.7,
+              "medianReturn": 1.4,
+              "winRate": 57,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 3.2,
+              "medianReturn": 1.8,
+              "winRate": 54.2,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0,
+              "medianReturn": 0.5,
+              "winRate": 56.4,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.7,
+              "winRate": 55.1,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 3.3,
+              "medianReturn": 2.4,
+              "winRate": 59.6,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.7,
+              "medianReturn": 2.2,
+              "winRate": 72,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 5,
+              "medianReturn": 3.3,
+              "winRate": 72.3,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 8.1,
+              "medianReturn": 5.5,
+              "winRate": 76.3,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1620",
+      "symbol": "1620.T",
+      "name": "素材・化学",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 4.1,
+              "medianReturn": 4.6,
+              "winRate": 86.5,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 7.7,
+              "medianReturn": 7.5,
+              "winRate": 90.1,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 10.4,
+              "medianReturn": 11.2,
+              "winRate": 82,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.4,
+              "medianReturn": 1.6,
+              "winRate": 67.6,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 4.5,
+              "medianReturn": 5.1,
+              "winRate": 73.7,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 5.6,
+              "medianReturn": 6.9,
+              "winRate": 76.2,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.8,
+              "winRate": 55.3,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.5,
+              "medianReturn": 1.9,
+              "winRate": 56.7,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 2.3,
+              "medianReturn": 1,
+              "winRate": 53.3,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.1,
+              "medianReturn": 0.4,
+              "winRate": 54.9,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": -0.6,
+              "medianReturn": -0.7,
+              "winRate": 47.6,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 1,
+              "medianReturn": -0.4,
+              "winRate": 48.3,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.5,
+              "medianReturn": 1.8,
+              "winRate": 68.8,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 3.6,
+              "medianReturn": 2.8,
+              "winRate": 68.5,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 5.8,
+              "medianReturn": 3,
+              "winRate": 73.2,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1621",
+      "symbol": "1621.T",
+      "name": "医薬品",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.9,
+              "medianReturn": 2,
+              "winRate": 73,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 4.5,
+              "medianReturn": 2.7,
+              "winRate": 70.3,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 3.7,
+              "medianReturn": 4.4,
+              "winRate": 67.6,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.6,
+              "medianReturn": 1.2,
+              "winRate": 60.4,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 3.6,
+              "medianReturn": 2.5,
+              "winRate": 65.3,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 6.3,
+              "medianReturn": 7.6,
+              "winRate": 74.1,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.2,
+              "winRate": 51.9,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.3,
+              "medianReturn": 1,
+              "winRate": 55.6,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 1.8,
+              "medianReturn": 1.8,
+              "winRate": 57.1,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.2,
+              "medianReturn": 0.5,
+              "winRate": 54.9,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.5,
+              "winRate": 52.9,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 2.1,
+              "medianReturn": 2.6,
+              "winRate": 64.2,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.6,
+              "medianReturn": 1,
+              "winRate": 58.9,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 3.1,
+              "medianReturn": 2.8,
+              "winRate": 64.1,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 3.7,
+              "medianReturn": 3.2,
+              "winRate": 66.6,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1622",
+      "symbol": "1622.T",
+      "name": "自動車・輸送機",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 3.1,
+              "medianReturn": 3.7,
+              "winRate": 73,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 5.2,
+              "medianReturn": 4.3,
+              "winRate": 83.8,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 11.9,
+              "medianReturn": 10.1,
+              "winRate": 86.5,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.9,
+              "medianReturn": 0.7,
+              "winRate": 55.1,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 4.5,
+              "medianReturn": 2.5,
+              "winRate": 63.2,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 6.3,
+              "medianReturn": 7.1,
+              "winRate": 74.7,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.3,
+              "medianReturn": -0.2,
+              "winRate": 48.1,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.9,
+              "medianReturn": -0.1,
+              "winRate": 49.2,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 4,
+              "medianReturn": 2.5,
+              "winRate": 55.1,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.4,
+              "winRate": 53.5,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.2,
+              "medianReturn": 0.8,
+              "winRate": 53.4,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 2.7,
+              "medianReturn": -0.5,
+              "winRate": 48.1,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.6,
+              "medianReturn": 1.1,
+              "winRate": 58.6,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 3.1,
+              "medianReturn": 4.4,
+              "winRate": 63.8,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 1.5,
+              "medianReturn": 2.5,
+              "winRate": 56.1,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1623",
+      "symbol": "1623.T",
+      "name": "鉄鋼・非鉄",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 5,
+              "medianReturn": 6.7,
+              "winRate": 81.1,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 12.1,
+              "medianReturn": 12.9,
+              "winRate": 90.1,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 22.6,
+              "medianReturn": 19,
+              "winRate": 85.6,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.2,
+              "medianReturn": 1.9,
+              "winRate": 61.3,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 4.7,
+              "medianReturn": 3.3,
+              "winRate": 62.3,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 7.8,
+              "medianReturn": 4.9,
+              "winRate": 64.3,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.1,
+              "medianReturn": 1,
+              "winRate": 55.8,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.6,
+              "medianReturn": 1.3,
+              "winRate": 53.4,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 3.3,
+              "medianReturn": 0.2,
+              "winRate": 50.5,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.8,
+              "medianReturn": 0.8,
+              "winRate": 56,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 1.3,
+              "medianReturn": 1.3,
+              "winRate": 53.6,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 6,
+              "medianReturn": 2.7,
+              "winRate": 56.7,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 4.7,
+              "medianReturn": 4.5,
+              "winRate": 77.6,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 12.3,
+              "medianReturn": 7.5,
+              "winRate": 75.2,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 13.6,
+              "medianReturn": 6.2,
+              "winRate": 65.9,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1624",
+      "symbol": "1624.T",
+      "name": "機械",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 6.1,
+              "medianReturn": 7.6,
+              "winRate": 81.1,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 14.4,
+              "medianReturn": 13.6,
+              "winRate": 95.5,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 22.2,
+              "medianReturn": 22.6,
+              "winRate": 94.6,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.2,
+              "medianReturn": 3,
+              "winRate": 66.4,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 7,
+              "medianReturn": 6.3,
+              "winRate": 73.4,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 11.1,
+              "medianReturn": 12.6,
+              "winRate": 81.5,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.5,
+              "medianReturn": 1,
+              "winRate": 55.9,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 3,
+              "medianReturn": 2.6,
+              "winRate": 61,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 5.2,
+              "medianReturn": 4.2,
+              "winRate": 61,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.4,
+              "medianReturn": 0.7,
+              "winRate": 56.3,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.2,
+              "medianReturn": 0.5,
+              "winRate": 51.8,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 3.5,
+              "medianReturn": 1.3,
+              "winRate": 54.3,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.9,
+              "medianReturn": 1.7,
+              "winRate": 66.2,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 5,
+              "medianReturn": 4,
+              "winRate": 68.2,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 5.6,
+              "medianReturn": 4.1,
+              "winRate": 60.3,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1625",
+      "symbol": "1625.T",
+      "name": "電機・精密",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 5.9,
+              "medianReturn": 7.1,
+              "winRate": 84.7,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 12.4,
+              "medianReturn": 11.9,
+              "winRate": 96.4,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 20.5,
+              "medianReturn": 21,
+              "winRate": 96.4,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2,
+              "medianReturn": 2.4,
+              "winRate": 65.5,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 6.9,
+              "medianReturn": 5.8,
+              "winRate": 79.6,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 12.4,
+              "medianReturn": 14.4,
+              "winRate": 83.3,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.6,
+              "medianReturn": 1,
+              "winRate": 58.5,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 3.7,
+              "medianReturn": 4.2,
+              "winRate": 65.1,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 6.6,
+              "medianReturn": 6.3,
+              "winRate": 64.9,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.1,
+              "medianReturn": 1.7,
+              "winRate": 62.6,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 1.6,
+              "medianReturn": 1.7,
+              "winRate": 58.6,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 4.2,
+              "medianReturn": 1.4,
+              "winRate": 55.7,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.9,
+              "medianReturn": 1,
+              "winRate": 59.2,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 3.4,
+              "medianReturn": 2.9,
+              "winRate": 67.1,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 7.6,
+              "medianReturn": 5.1,
+              "winRate": 67.2,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1626",
+      "symbol": "1626.T",
+      "name": "情報通信・サービスその他",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 5,
+              "medianReturn": 4.5,
+              "winRate": 91,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 10,
+              "medianReturn": 9.4,
+              "winRate": 100,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 17.4,
+              "medianReturn": 17.7,
+              "winRate": 100,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2,
+              "medianReturn": 1.8,
+              "winRate": 67.6,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 6.1,
+              "medianReturn": 6.1,
+              "winRate": 88.9,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 9.7,
+              "medianReturn": 9,
+              "winRate": 95.2,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.6,
+              "medianReturn": 0.7,
+              "winRate": 58.9,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 3,
+              "medianReturn": 3,
+              "winRate": 64,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 4.5,
+              "medianReturn": 4.7,
+              "winRate": 69.9,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.6,
+              "medianReturn": 1.3,
+              "winRate": 61.6,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.9,
+              "medianReturn": 1.3,
+              "winRate": 56.9,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 2.5,
+              "medianReturn": 1.8,
+              "winRate": 59.7,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.5,
+              "medianReturn": -0.4,
+              "winRate": 43.4,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": -1.2,
+              "medianReturn": -0.9,
+              "winRate": 41.7,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 2.6,
+              "medianReturn": 2,
+              "winRate": 63.8,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1627",
+      "symbol": "1627.T",
+      "name": "電力・ガス",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.1,
+              "medianReturn": 1,
+              "winRate": 55,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 2.3,
+              "medianReturn": 0.6,
+              "winRate": 54.1,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 6.7,
+              "medianReturn": 9.3,
+              "winRate": 55,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2,
+              "medianReturn": 1.4,
+              "winRate": 62.8,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 3.9,
+              "medianReturn": 3.5,
+              "winRate": 64.7,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 5.7,
+              "medianReturn": 3.4,
+              "winRate": 57.7,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.1,
+              "medianReturn": -0.1,
+              "winRate": 48.1,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 2.1,
+              "medianReturn": 1.6,
+              "winRate": 57,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 2.7,
+              "medianReturn": 0.4,
+              "winRate": 50.5,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.1,
+              "medianReturn": -0.7,
+              "winRate": 44.3,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": -0.1,
+              "medianReturn": -1.2,
+              "winRate": 42.9,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 2.6,
+              "medianReturn": 0.3,
+              "winRate": 50.3,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.5,
+              "medianReturn": 1.9,
+              "winRate": 56,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 4.3,
+              "medianReturn": 6,
+              "winRate": 63.3,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 5.7,
+              "medianReturn": 7,
+              "winRate": 66.9,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1628",
+      "symbol": "1628.T",
+      "name": "運輸・物流",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.7,
+              "medianReturn": 2,
+              "winRate": 71.2,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 3.8,
+              "medianReturn": 2.8,
+              "winRate": 78.4,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 5.6,
+              "medianReturn": 7.5,
+              "winRate": 72.1,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.4,
+              "medianReturn": 1.7,
+              "winRate": 63.7,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 3.5,
+              "medianReturn": 3.8,
+              "winRate": 75.4,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 3,
+              "medianReturn": 4,
+              "winRate": 71.7,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.7,
+              "winRate": 55.9,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.2,
+              "medianReturn": 1.7,
+              "winRate": 63.6,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 1.3,
+              "medianReturn": 2.2,
+              "winRate": 63.3,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.1,
+              "medianReturn": -0.1,
+              "winRate": 48.6,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": -0.2,
+              "medianReturn": 0.5,
+              "winRate": 52.5,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 1.4,
+              "medianReturn": 2.7,
+              "winRate": 66,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.2,
+              "medianReturn": 0.1,
+              "winRate": 50.7,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 0.7,
+              "medianReturn": 0.6,
+              "winRate": 52.8,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 1.8,
+              "medianReturn": 2.2,
+              "winRate": 67.2,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1629",
+      "symbol": "1629.T",
+      "name": "商社・卸売",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 4.8,
+              "medianReturn": 4.9,
+              "winRate": 81.1,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 8.2,
+              "medianReturn": 7.4,
+              "winRate": 99.1,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 19.1,
+              "medianReturn": 17.9,
+              "winRate": 88.3,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2,
+              "medianReturn": 2,
+              "winRate": 64.9,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 6.1,
+              "medianReturn": 5.3,
+              "winRate": 79.6,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 11.8,
+              "medianReturn": 11,
+              "winRate": 77.4,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.6,
+              "medianReturn": 0.9,
+              "winRate": 55.9,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 4.6,
+              "medianReturn": 4.1,
+              "winRate": 67.9,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 8.4,
+              "medianReturn": 8.2,
+              "winRate": 71.1,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.9,
+              "medianReturn": 1,
+              "winRate": 57.4,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 2.9,
+              "medianReturn": 3.6,
+              "winRate": 62.9,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 7.9,
+              "medianReturn": 9.1,
+              "winRate": 67.9,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 3.5,
+              "medianReturn": 3.8,
+              "winRate": 76.4,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 2.8,
+              "medianReturn": 5.2,
+              "winRate": 78.7,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 2.2,
+              "medianReturn": 3.2,
+              "winRate": 66.9,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1630",
+      "symbol": "1630.T",
+      "name": "小売",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 4.3,
+              "medianReturn": 3.3,
+              "winRate": 88.3,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 8.3,
+              "medianReturn": 8.2,
+              "winRate": 88.3,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 11,
+              "medianReturn": 11.8,
+              "winRate": 88.3,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.3,
+              "medianReturn": 2.2,
+              "winRate": 76.5,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 5.9,
+              "medianReturn": 6.6,
+              "winRate": 81.1,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 7.2,
+              "medianReturn": 8.7,
+              "winRate": 85.4,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.2,
+              "medianReturn": 0.4,
+              "winRate": 54.7,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.4,
+              "medianReturn": 2.5,
+              "winRate": 64.2,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 1.8,
+              "medianReturn": 3.6,
+              "winRate": 61,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0,
+              "medianReturn": 0.3,
+              "winRate": 54.7,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.9,
+              "medianReturn": 2.3,
+              "winRate": 61.9,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 4.1,
+              "medianReturn": 6.1,
+              "winRate": 72.5,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.9,
+              "medianReturn": 1,
+              "winRate": 58.9,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 1.4,
+              "medianReturn": 1,
+              "winRate": 58.6,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 5.5,
+              "medianReturn": 5.7,
+              "winRate": 81.2,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1631",
+      "symbol": "1631.T",
+      "name": "銀行",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 3.4,
+              "medianReturn": 4.1,
+              "winRate": 73,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 6.6,
+              "medianReturn": 2.2,
+              "winRate": 64,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 11.9,
+              "medianReturn": 12.8,
+              "winRate": 65.8,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.6,
+              "medianReturn": 1.6,
+              "winRate": 58.6,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 4.9,
+              "medianReturn": 1,
+              "winRate": 54.2,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 7.3,
+              "medianReturn": 6.5,
+              "winRate": 69.9,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.2,
+              "medianReturn": 0.2,
+              "winRate": 50.8,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 1.2,
+              "medianReturn": 0.2,
+              "winRate": 50.5,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 3.8,
+              "medianReturn": 2.7,
+              "winRate": 55.9,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.9,
+              "medianReturn": 1,
+              "winRate": 57,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 2.4,
+              "medianReturn": 1.8,
+              "winRate": 54.9,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 7.4,
+              "medianReturn": 7.3,
+              "winRate": 67,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 3.9,
+              "medianReturn": 3.8,
+              "winRate": 74.9,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 9.3,
+              "medianReturn": 8.8,
+              "winRate": 77.6,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 10.6,
+              "medianReturn": 4.1,
+              "winRate": 67.2,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1632",
+      "symbol": "1632.T",
+      "name": "金融(除く銀行)",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 3.3,
+              "medianReturn": 3,
+              "winRate": 73.9,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 6.4,
+              "medianReturn": 5.8,
+              "winRate": 83.8,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 11.9,
+              "medianReturn": 12.9,
+              "winRate": 92.8,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.8,
+              "medianReturn": 2,
+              "winRate": 63.4,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 5.9,
+              "medianReturn": 4.8,
+              "winRate": 71.9,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 8.6,
+              "medianReturn": 8.3,
+              "winRate": 78,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.3,
+              "medianReturn": 0.3,
+              "winRate": 51.9,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 2.5,
+              "medianReturn": 2.3,
+              "winRate": 60.7,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 4.9,
+              "medianReturn": 4.6,
+              "winRate": 63.1,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.1,
+              "medianReturn": 1.1,
+              "winRate": 57.1,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 1.4,
+              "medianReturn": 2.4,
+              "winRate": 59.3,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 5.1,
+              "medianReturn": 3.9,
+              "winRate": 70.9,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.2,
+              "medianReturn": 2,
+              "winRate": 64.4,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 6.2,
+              "medianReturn": 6.2,
+              "winRate": 77.8,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 8.8,
+              "medianReturn": 7.2,
+              "winRate": 90.2,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "1633",
+      "symbol": "1633.T",
+      "name": "不動産",
+      "levels": [
+        {
+          "level": "極寒",
+          "scoreRange": [
+            0,
+            20
+          ],
+          "occurrences": 111,
+          "stats": {
+            "1m": {
+              "avgReturn": 3.2,
+              "medianReturn": 2.1,
+              "winRate": 80.2,
+              "sampleSize": 111
+            },
+            "3m": {
+              "avgReturn": 3.5,
+              "medianReturn": 3.1,
+              "winRate": 65.8,
+              "sampleSize": 111
+            },
+            "6m": {
+              "avgReturn": 9.6,
+              "medianReturn": 8.3,
+              "winRate": 82.9,
+              "sampleSize": 111
+            }
+          }
+        },
+        {
+          "level": "冷え込み",
+          "scoreRange": [
+            21,
+            40
+          ],
+          "occurrences": 336,
+          "stats": {
+            "1m": {
+              "avgReturn": 1.8,
+              "medianReturn": 2.3,
+              "winRate": 67,
+              "sampleSize": 336
+            },
+            "3m": {
+              "avgReturn": 4.6,
+              "medianReturn": 4.7,
+              "winRate": 71.6,
+              "sampleSize": 334
+            },
+            "6m": {
+              "avgReturn": 6.3,
+              "medianReturn": 6.7,
+              "winRate": 69.3,
+              "sampleSize": 336
+            }
+          }
+        },
+        {
+          "level": "平温",
+          "scoreRange": [
+            41,
+            60
+          ],
+          "occurrences": 677,
+          "stats": {
+            "1m": {
+              "avgReturn": -0.1,
+              "medianReturn": 0.2,
+              "winRate": 51.1,
+              "sampleSize": 667
+            },
+            "3m": {
+              "avgReturn": 2,
+              "medianReturn": 2.5,
+              "winRate": 60.4,
+              "sampleSize": 667
+            },
+            "6m": {
+              "avgReturn": 3.6,
+              "medianReturn": 3.8,
+              "winRate": 62.7,
+              "sampleSize": 664
+            }
+          }
+        },
+        {
+          "level": "過熱",
+          "scoreRange": [
+            61,
+            80
+          ],
+          "occurrences": 843,
+          "stats": {
+            "1m": {
+              "avgReturn": 0.2,
+              "medianReturn": 0.2,
+              "winRate": 51.3,
+              "sampleSize": 835
+            },
+            "3m": {
+              "avgReturn": 0.7,
+              "medianReturn": 1.6,
+              "winRate": 57,
+              "sampleSize": 798
+            },
+            "6m": {
+              "avgReturn": 3.3,
+              "medianReturn": 3.3,
+              "winRate": 59.9,
+              "sampleSize": 795
+            }
+          }
+        },
+        {
+          "level": "沸騰",
+          "scoreRange": [
+            81,
+            100
+          ],
+          "occurrences": 349,
+          "stats": {
+            "1m": {
+              "avgReturn": 2.3,
+              "medianReturn": 1.5,
+              "winRate": 63.6,
+              "sampleSize": 343
+            },
+            "3m": {
+              "avgReturn": 4.8,
+              "medianReturn": 4.8,
+              "winRate": 68.8,
+              "sampleSize": 343
+            },
+            "6m": {
+              "avgReturn": 6.4,
+              "medianReturn": 3.8,
+              "winRate": 65.5,
+              "sampleSize": 287
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

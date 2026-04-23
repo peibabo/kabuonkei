@@ -64,6 +64,16 @@
 - UI: `src/components/CrossStatsCard.tsx`（1カードに方向タブ 🇺🇸×🇯🇵 / 🇯🇵×🇺🇸 を置いた単独配置。Dashboard では `StatsSection` の直後）
 - **注意**: 温度と対象市場が異なるため、純粋分離の同市場統計より相関が弱い可能性あり。カード冒頭に参考値である旨の注釈を常時表示。日付結合は UTC 日付ベースの簡易結合で、厳密なイベントスタディではない
 
+### 温度×セクター ヒートマップ（日本版）
+- `src/data/japan-sector-heatmap.json`: 日本版温度スコア × TOPIX-17 連動 ETF 17本（NEXT FUNDS `1617.T`〜`1633.T`）の将来リターン（1M/3M/6M）を事前計算した静的 JSON
+- **業種粒度**: 東証 33 業種ではなく **TOPIX-17 ベース**（食品 / エネルギー資源 / 建設・資材 / 素材・化学 / 医薬品 / 自動車・輸送機 / 鉄鋼・非鉄 / 機械 / 電機・精密 / 情報通信・サービスその他 / 電力・ガス / 運輸・物流 / 商社・卸売 / 小売 / 銀行 / 金融(除く銀行) / 不動産）。33 業種は ETF カバレッジ不足 + UI 過密で採用せず
+- **スコア**: `japan-historical-stats.json` と同じ C1(日経225 vs 125日MA)+C5(USDJPY 50日モメンタム)の 2要素簡易版（整合性のため同ロジックを `scripts/generate-japan-sector-heatmap.ts` にコピー）
+- 生成スクリプト: `npm run generate:sector-heatmap`（`scripts/generate-japan-sector-heatmap.ts`）。`aggregateLevelReturns` を各セクターで 1 回ずつ呼び出す実装（17 回）
+- データ構造: sector-major（`sectors[].levels[]`）— 温度帯 TOP N セクター抽出が容易
+- アクセサ: `src/lib/japan-sector-heatmap.ts`（`getJapanSectorHeatmap()` / `getSectorStatsForScore(score, sectorCode, period)` / `getTopSectorsForScore(score, period, limit=5)` — avgReturn 降順ランキング）
+- UI: `src/components/SectorHeatmapCard.tsx` を Dashboard の `CrossStatsCard` 直後にフル幅配置。1M/3M/6M の `PeriodSwitcher`（デフォルト 3M）、現在温度帯 TOP3 ピル、17×5 ヒートマップ表（日本式配色: 正=red / 負=green を alpha で強度表現）、現在温度帯の列を ring-1 で強調、サンプル数 30 未満の温度帯は薄色（参考値）
+- 既知の制約: TOPIX-17 連動 ETF を proxy として使用（指数本体は Yahoo Finance で取得不可）。極寒帯はサンプル数 111 日 × 各 ETF = 参考値として扱うこと
+
 ### 歴史的位置づけ表示（Score Percentile）
 - `src/data/score-distribution.json`: 過去10年の温度スコア分布（市場別にソート済み配列）
   - `us.scores`: VIX 10年から `estimateFearGreedFromVix` で推定した温度スコア配列
@@ -75,7 +85,7 @@
 
 ### 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
-- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析・スコア分布の6種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
+- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析・セクターヒートマップ・スコア分布の7種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
 
 ## 温度推移データ
 

@@ -85,6 +85,54 @@ export default function PortfolioPage() {
           </p>
         </div>
 
+        <div
+          id="scope"
+          role="note"
+          className="bg-blue-50 border border-blue-200 rounded-xl p-4 not-prose"
+        >
+          <p className="text-sm font-semibold text-blue-900 mb-2">
+            📍 このページの位置付け
+          </p>
+          <p className="text-base text-gray-800 leading-relaxed mb-2">
+            このページは、株温計の温度スコアを「ポートフォリオ運用ルール」に落とし込んだ
+            <strong>1 つの応用実験</strong>の検証記事です。
+            <strong>株温計本体の価値はこのページだけに還元されません。</strong>
+          </p>
+          <p className="text-base text-gray-800 leading-relaxed mb-2">
+            温度スコアは本来、次のような<strong>多面的な使い方</strong>を想定しています:
+          </p>
+          <ul className="list-disc pl-6 space-y-1 text-base text-gray-800 mb-2">
+            <li>
+              <Link href="/" className="underline hover:text-gray-900">
+                ダッシュボード
+              </Link>
+              で「今の市場はどのくらい熱い / 冷たいか」を 5 秒で把握する（共通語彙としての温度）
+            </li>
+            <li>
+              <strong>類似日ナラティブ</strong>: 現在のスコアに近い過去日と、その後のリターンを対比して判断の補助線にする
+            </li>
+            <li>
+              <Link href="/events" className="underline hover:text-gray-900">
+                主要イベント一覧
+              </Link>
+              : 過去の暴落 / 高値圏を温度で振り返って文脈を得る
+            </li>
+            <li>
+              <strong>心理ブレーキ</strong>: 沸騰時に追加投資したい衝動 / 極寒時に投げ売りしたい衝動を一瞬止める
+            </li>
+            <li>
+              <Link href="/guide" className="underline hover:text-gray-900">
+                投資家タイプ別ガイド
+              </Link>
+              : 温度帯に応じた「あなたのスタイルでの読み方」
+            </li>
+          </ul>
+          <p className="text-base text-gray-800 leading-relaxed">
+            このページで検証したのはその中でも<strong>最も機械的で定量化しやすい用途</strong>（= 配分ルール）ですが、
+            それだけが株温計のすべてではない、という前提でお読みください。
+          </p>
+        </div>
+
         <section
           id="for-whom"
           className="bg-amber-50 border border-amber-300 rounded-xl p-5 not-prose scroll-mt-16"
@@ -462,9 +510,17 @@ export default function PortfolioPage() {
               <strong>執行コストを無視</strong>: 現実には売買手数料・スプレッド・スリッページが発生します。月次リバランスは年 12 回程度なので低頻度ですが、ゼロではありません
             </li>
             <li>
-              <strong>サンプル期間の制約</strong>: 日本温度履歴の起点が {history.dataRange.from} のため、10 年程度のバックテストです。リーマンショックなどより古い暴落局面は含まれません。
-              またこの 10 年は<strong>日米とも強い右肩上がり相場</strong>だったため、「株比率を高く保つ戦略」が結果的に有利になりやすい環境でした。
-              横ばい相場や長期下落相場では、同じルールが逆に機能する可能性があります
+              <strong>サンプル期間の制約</strong>: 日本温度履歴の起点が {history.dataRange.from} のため、10 年程度のバックテストです。リーマンショックなどより古い暴落局面は含まれません
+            </li>
+            <li>
+              <strong className="text-amber-800">相場レジーム依存（温度信号の寄与が US でマイナスだった理由）</strong>:
+              過去10年は日米とも強い右肩上がり相場で、特に米国は調整らしい調整が限定的でした。
+              <strong>「過熱 / 沸騰で株比率を下げる」系のルールは、このような一本調子の上昇相場では構造的に不利</strong>です
+              （下げる直前に現金化できなければ、上がり続ける間に買い戻しの機会を失う）。
+              したがって温度信号の純寄与度が米国で -8pp となったのは、温度計そのものの本質的な弱点というより、
+              <strong>「10 年強気相場」というレジームに対するこのルール設計の相性</strong>の話でもあります。
+              リーマン級の長期下落や、1990 年代日本のような横ばい相場を含む期間では、
+              同じ温度信号の寄与が逆転する可能性があります（が、それを検証するデータは本サイトにはまだありません）
             </li>
             <li>
               <strong>温度スコア自体の過剰最適化リスク</strong>: 株温計のスコア（特に日本版 C1+C5）は現在の相場特性をもとに閾値が設計されています。<strong>将来も同じ働きをする保証はありません</strong>
@@ -473,22 +529,50 @@ export default function PortfolioPage() {
         </section>
 
         <section id="related" className="scroll-mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">関連リンク</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
+            関連リンク — 株温計の他の使い方
+          </h2>
+          <p className="text-base leading-relaxed mb-3 text-gray-600">
+            冒頭でも書いた通り、このページは株温計の応用 1 実験です。株温計の本来の価値は、
+            <strong>毎日の温度把握・過去との比較・行動抑制</strong>といったコア機能にあります。以下で試してみてください。
+          </p>
+          <h3 className="text-lg font-bold text-gray-900 mt-4 mb-2">
+            📊 コア機能（まずここ）
+          </h3>
           <ul className="list-disc pl-6 space-y-2 text-base">
             <li>
-              <Link href="/" className="underline hover:text-gray-900">
-                今日の日米温度を見る
+              <Link href="/" className="underline hover:text-gray-900 font-semibold">
+                ダッシュボード（今日の日米温度）
               </Link>{" "}
-              — ポートフォリオが次回リバランスでどう動くかの参考に
+              — 現在のスコア + 類似日 TOP5 + 温度推移チャートを毎日チェック。
+              ポートフォリオルールを使わなくても「自分の心理の体温計」として機能します
             </li>
+            <li>
+              <Link href="/events" className="underline hover:text-gray-900 font-semibold">
+                主要イベント一覧（14 件）
+              </Link>{" "}
+              — コロナショック / 令和のブラックマンデー / Brexit 等、過去の大型イベントを温度付きで振り返り、
+              現在との距離感を測る
+            </li>
+            <li>
+              <Link href="/guide" className="underline hover:text-gray-900 font-semibold">
+                投資家タイプ別ガイド（NISA / 短期 / FIRE）
+              </Link>{" "}
+              — あなたのスタイルに合わせて、温度帯ごとの具体的な読み方を解説
+            </li>
+          </ul>
+          <h3 className="text-lg font-bold text-gray-900 mt-4 mb-2">
+            🔬 分析記事（温度を使った他の実験）
+          </h3>
+          <ul className="list-disc pl-6 space-y-2 text-base">
             <li>
               <Link
                 href="/analysis/vix-threshold-sp500"
                 className="underline hover:text-gray-900"
               >
-                VIX × S&amp;P500 × 株温計
+                VIX × S&amp;P500 × 日経225
               </Link>{" "}
-              — 温度ベースの逆張りの過去検証
+              — VIX バンド別の前方リターン検証（過去20年）
             </li>
             <li>
               <Link

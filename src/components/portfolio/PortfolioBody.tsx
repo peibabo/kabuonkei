@@ -410,7 +410,7 @@ function TradeLog({ section }: { section: PortfolioSection }) {
 
 export default function PortfolioBody({ history }: Props) {
   const [market, setMarket] = useState<PortfolioMarket>("jp");
-  const [period, setPeriod] = useState<PortfolioPeriod>("5Y");
+  const [period, setPeriod] = useState<PortfolioPeriod>("10Y");
 
   useEffect(() => {
     trackEvent("portfolio_view", {});
@@ -542,10 +542,8 @@ export default function PortfolioBody({ history }: Props) {
               name="温度ルール"
               type="monotone"
               dataKey="nav"
-              stroke={
-                currentScore != null ? getSentimentColor(currentScore) : "#6b7280"
-              }
-              strokeWidth={2}
+              stroke="#dc2626"
+              strokeWidth={2.5}
               dot={false}
             />
             <Line

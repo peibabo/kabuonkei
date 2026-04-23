@@ -56,6 +56,7 @@ function CustomTooltip({
       date: string;
       nav: number;
       benchmark: number;
+      benchmarkDca?: number;
       equityRatio: number;
       score: number | null;
     };
@@ -75,13 +76,19 @@ function CustomTooltip({
     <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 text-xs">
       <p className="text-gray-500 mb-1">{d.date}</p>
       <p>
-        <span className="text-gray-500">ポートフォリオ</span>{" "}
+        <span className="text-gray-500">温度ルール</span>{" "}
         <span className="font-semibold">{d.nav.toFixed(1)}</span>
       </p>
       <p>
-        <span className="text-gray-500">ベンチマーク</span>{" "}
+        <span className="text-gray-500">一括買い持ち</span>{" "}
         <span className="font-semibold">{d.benchmark.toFixed(1)}</span>
       </p>
+      {d.benchmarkDca != null && (
+        <p>
+          <span className="text-gray-500">月次積立</span>{" "}
+          <span className="font-semibold">{d.benchmarkDca.toFixed(1)}</span>
+        </p>
+      )}
       <p>
         <span className="text-gray-500">株比率</span>{" "}
         <span className="font-semibold">
@@ -122,22 +129,28 @@ function AllocationBar({ equityRatio }: { equityRatio: number }) {
 
 function StatsTable({ section }: { section: PortfolioSection }) {
   const s = section.stats;
+  const ddVsDca = s.maxDrawdown - s.dcaMaxDrawdown;
+  const cagrVsDca = s.cagr - s.dcaCagr;
+  const sharpeVsDca = s.sharpe - s.dcaSharpe;
   return (
     <div className="overflow-x-auto not-prose">
-      <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[420px]">
+      <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[680px]">
         <thead className="bg-gray-50">
           <tr>
             <th className="px-3 py-2 text-left font-semibold text-gray-700">
               指標
             </th>
             <th className="px-3 py-2 text-right font-semibold text-gray-700">
-              ポートフォリオ
+              温度ルール
             </th>
             <th className="px-3 py-2 text-right font-semibold text-gray-700">
-              ベンチマーク
+              一括買い持ち
             </th>
             <th className="px-3 py-2 text-right font-semibold text-gray-700">
-              差
+              月次積立（NISA 積立型）
+            </th>
+            <th className="px-3 py-2 text-right font-semibold text-gray-700">
+              温度 vs 積立
             </th>
           </tr>
         </thead>
@@ -154,8 +167,15 @@ function StatsTable({ section }: { section: PortfolioSection }) {
             >
               {formatPct(s.benchmarkReturn)}
             </td>
-            <td className={`text-right font-mono ${returnColorClass(s.alpha)}`}>
-              {formatPct(s.alpha)} pp
+            <td
+              className={`text-right font-mono ${returnColorClass(s.dcaReturn)}`}
+            >
+              {formatPct(s.dcaReturn)}
+            </td>
+            <td
+              className={`text-right font-mono ${returnColorClass(s.alphaVsDca)}`}
+            >
+              {formatPct(s.alphaVsDca)} pp
             </td>
           </tr>
           <tr>
@@ -169,9 +189,14 @@ function StatsTable({ section }: { section: PortfolioSection }) {
               {formatPct(s.benchmarkCagr)}
             </td>
             <td
-              className={`text-right font-mono ${returnColorClass(s.cagr - s.benchmarkCagr)}`}
+              className={`text-right font-mono ${returnColorClass(s.dcaCagr)}`}
             >
-              {formatPct(s.cagr - s.benchmarkCagr)} pp
+              {formatPct(s.dcaCagr)}
+            </td>
+            <td
+              className={`text-right font-mono ${returnColorClass(cagrVsDca)}`}
+            >
+              {formatPct(cagrVsDca)} pp
             </td>
           </tr>
           <tr>
@@ -182,10 +207,16 @@ function StatsTable({ section }: { section: PortfolioSection }) {
             <td className="text-right font-mono text-green-600">
               {s.benchmarkMaxDrawdown.toFixed(2)}%
             </td>
+            <td className="text-right font-mono text-green-600">
+              {s.dcaMaxDrawdown.toFixed(2)}%
+            </td>
             <td
-              className={`text-right font-mono ${returnColorClass(s.maxDrawdown - s.benchmarkMaxDrawdown)}`}
+              className={`text-right font-mono ${
+                ddVsDca >= 0 ? "text-red-500" : "text-green-600"
+              }`}
             >
-              {formatPct(s.maxDrawdown - s.benchmarkMaxDrawdown)} pp
+              {ddVsDca >= 0 ? "+" : ""}
+              {ddVsDca.toFixed(2)} pp
             </td>
           </tr>
           <tr>
@@ -194,18 +225,22 @@ function StatsTable({ section }: { section: PortfolioSection }) {
             <td className="text-right font-mono">
               {s.benchmarkSharpe.toFixed(2)}
             </td>
+            <td className="text-right font-mono">{s.dcaSharpe.toFixed(2)}</td>
             <td
               className={`text-right font-mono ${
-                s.sharpe - s.benchmarkSharpe >= 0
-                  ? "text-red-500"
-                  : "text-green-600"
+                sharpeVsDca >= 0 ? "text-red-500" : "text-green-600"
               }`}
             >
-              {(s.sharpe - s.benchmarkSharpe).toFixed(2)}
+              {sharpeVsDca >= 0 ? "+" : ""}
+              {sharpeVsDca.toFixed(2)}
             </td>
           </tr>
         </tbody>
       </table>
+      <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+        <strong>月次積立（DCA）</strong>: 初期 100 を N ヶ月で等額按分し、毎月第一営業日にその月分を株へ投入（NISA 積立投資の典型パターンを模擬）。
+        累計で 100 を全額投入する点で、他 2 戦略と元手を揃えて比較できます。
+      </p>
     </div>
   );
 }
@@ -504,7 +539,7 @@ export default function PortfolioBody({ history }: Props) {
               verticalAlign="top"
             />
             <Line
-              name="ポートフォリオ"
+              name="温度ルール"
               type="monotone"
               dataKey="nav"
               stroke={
@@ -514,7 +549,7 @@ export default function PortfolioBody({ history }: Props) {
               dot={false}
             />
             <Line
-              name="ベンチマーク"
+              name="一括買い持ち"
               type="monotone"
               dataKey="benchmark"
               stroke="#9ca3af"
@@ -522,11 +557,21 @@ export default function PortfolioBody({ history }: Props) {
               strokeDasharray="4 4"
               dot={false}
             />
+            <Line
+              name="月次積立"
+              type="monotone"
+              dataKey="benchmarkDca"
+              stroke="#0ea5e9"
+              strokeWidth={1.5}
+              strokeDasharray="2 3"
+              dot={false}
+            />
           </ComposedChart>
         </ResponsiveContainer>
         <p className="text-[11px] text-gray-500 mt-2">
-          ポートフォリオ = 温度ルールで {section.equitySymbol} と現金を月次に再配分 /
-          ベンチマーク = {section.equitySymbol} の 100% buy &amp; hold
+          温度ルール = {section.equitySymbol} と現金を月次にリバランス /
+          一括買い持ち = 初日に {section.equitySymbol} を全額購入し保有 /
+          月次積立 = 同額を N ヶ月に按分して毎月投入（NISA 積立型）
         </p>
       </section>
 

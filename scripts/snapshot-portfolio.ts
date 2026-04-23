@@ -48,6 +48,7 @@ interface PortfolioSectionJson {
     cashRatio: number;
     nav: number;
     benchmark: number;
+    benchmarkDca?: number;
   };
   endState: SimulatorStartState;
   /** 現金金利の感度分析。日次 append ではそのまま保持する（月次フル再生成で更新） */
@@ -123,6 +124,7 @@ async function appendSection(
       cashRatio: Math.round((1 - last.equityRatio) * 10000) / 10000,
       nav: last.nav,
       benchmark: last.benchmark,
+      benchmarkDca: last.benchmarkDca,
     },
     endState: result.endState,
   };

@@ -50,12 +50,17 @@ interface PortfolioSectionJson {
     cashRatio: number;
     nav: number;
     benchmark: number;
+    benchmarkDca: number;
   };
   endState: {
     equityUnits: number;
     cash: number;
     benchmarkUnits: number;
     lastEquityRatio: number;
+    dcaUnits?: number;
+    dcaCash?: number;
+    dcaMonthlyContribution?: number;
+    dcaRemainingContributions?: number;
   };
   /**
    * 現金金利の感度分析（0% / 1% / 3% の 3 シナリオ）。
@@ -146,6 +151,7 @@ function buildSection(
       cashRatio: Math.round((1 - last.equityRatio) * 10000) / 10000,
       nav: last.nav,
       benchmark: last.benchmark,
+      benchmarkDca: last.benchmarkDca,
     },
     endState: result.endState,
     cashYieldSensitivity,
@@ -193,10 +199,10 @@ async function main() {
   );
   console.log(`✓ JP: ${jpSection.daily.length} 日, trades=${jpSection.trades.length}`);
   console.log(
-    `   totalReturn=${jpSection.stats.totalReturn}% / benchmark=${jpSection.stats.benchmarkReturn}% / alpha=${jpSection.stats.alpha}pp`
+    `   totalReturn=${jpSection.stats.totalReturn}% / bench(lump)=${jpSection.stats.benchmarkReturn}% / bench(DCA)=${jpSection.stats.dcaReturn}% / α vs lump=${jpSection.stats.alpha}pp / α vs DCA=${jpSection.stats.alphaVsDca}pp`
   );
   console.log(
-    `   cagr=${jpSection.stats.cagr}% / maxDD=${jpSection.stats.maxDrawdown}% / sharpe=${jpSection.stats.sharpe}`
+    `   cagr=${jpSection.stats.cagr}% / maxDD=${jpSection.stats.maxDrawdown}% (lump ${jpSection.stats.benchmarkMaxDrawdown}% / DCA ${jpSection.stats.dcaMaxDrawdown}%) / sharpe=${jpSection.stats.sharpe}`
   );
 
   // 米国版ポートフォリオ: ^GSPC + VIX推定スコア
@@ -211,10 +217,10 @@ async function main() {
   );
   console.log(`✓ US: ${usSection.daily.length} 日, trades=${usSection.trades.length}`);
   console.log(
-    `   totalReturn=${usSection.stats.totalReturn}% / benchmark=${usSection.stats.benchmarkReturn}% / alpha=${usSection.stats.alpha}pp`
+    `   totalReturn=${usSection.stats.totalReturn}% / bench(lump)=${usSection.stats.benchmarkReturn}% / bench(DCA)=${usSection.stats.dcaReturn}% / α vs lump=${usSection.stats.alpha}pp / α vs DCA=${usSection.stats.alphaVsDca}pp`
   );
   console.log(
-    `   cagr=${usSection.stats.cagr}% / maxDD=${usSection.stats.maxDrawdown}% / sharpe=${usSection.stats.sharpe}`
+    `   cagr=${usSection.stats.cagr}% / maxDD=${usSection.stats.maxDrawdown}% (lump ${usSection.stats.benchmarkMaxDrawdown}% / DCA ${usSection.stats.dcaMaxDrawdown}%) / sharpe=${usSection.stats.sharpe}`
   );
 
   const output: PortfolioHistoryJson = {

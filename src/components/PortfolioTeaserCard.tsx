@@ -54,10 +54,12 @@ export default function PortfolioTeaserCard() {
       </div>
 
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-        温度スコアに応じて株/現金比率を月次に切り替え、<strong>下落局面を抑制する</strong>
-        耐震型シミュレーション。<span className="text-gray-500">
-        買い持ちに勝つ戦略ではなく、暴落で売りたくなる人が仕組みで持ち続けるための
-        「補助輪」</span>として検証した研究です。
+        温度スコアに応じて株/現金比率を月次に切り替える耐震型シミュレーション。
+        <span className="text-gray-500">
+        一括買い持ち / 月次積立（NISA 積立型） / 温度ルール の 3 戦略比較を公開中。
+        結論: 過去10年では<strong className="text-gray-700">積立が温度ルールとほぼ同等</strong>だったので、
+        NISA 積立で十分です。
+        </span>
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

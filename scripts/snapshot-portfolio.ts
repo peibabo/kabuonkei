@@ -28,6 +28,12 @@ import { getSentimentLevel } from "../src/lib/sentiment";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
+interface CashYieldScenarioJson {
+  cashYield: number;
+  label: string;
+  stats: PortfolioStats;
+}
+
 interface PortfolioSectionJson {
   equitySymbol: string;
   displayName: string;
@@ -44,6 +50,8 @@ interface PortfolioSectionJson {
     benchmark: number;
   };
   endState: SimulatorStartState;
+  /** 現金金利の感度分析。日次 append ではそのまま保持する（月次フル再生成で更新） */
+  cashYieldSensitivity?: CashYieldScenarioJson[];
 }
 
 interface PortfolioHistoryJson {

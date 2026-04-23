@@ -8,6 +8,10 @@ import { trackEvent } from "@/lib/analytics";
 /**
  * Dashboard 第 5 章（詳しく見る）に配置するポートフォリオ導線カード。
  * 最新 NAV と ベンチマーク比、現在配分を要約表示し、/portfolio へ誘導する。
+ *
+ * 表示順は「耐震性（最大DD 改善）→ 配分 → α」の順。
+ * このルールは強気相場ではリターンで負けやすく、α を全面に出すと読者が
+ * 一瞬で離脱するため、リスク抑制という勝ち筋を先頭に置く。
  */
 export default function PortfolioTeaserCard() {
   const history = useMemo(() => getPortfolioHistory(), []);
@@ -24,6 +28,12 @@ export default function PortfolioTeaserCard() {
   const containerClass = hasExtreme
     ? "bg-amber-50 border border-amber-300 rounded-2xl shadow-md p-6"
     : "bg-white rounded-2xl shadow-md p-6";
+
+  // ベンチマークのドローダウンに対する改善幅（正なら「抑制できた」= 良い）
+  const jpDdImprovement =
+    jp.stats.benchmarkMaxDrawdown - jp.stats.maxDrawdown;
+  const usDdImprovement =
+    us.stats.benchmarkMaxDrawdown - us.stats.maxDrawdown;
 
   return (
     <div className={containerClass}>
@@ -44,48 +54,67 @@ export default function PortfolioTeaserCard() {
       </div>
 
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-        温度スコアに応じて株/現金比率を月次に切り替えるシミュレーション。過去10年のバックテストとライブ追跡を公開中。
+        温度スコアに応じて株/現金比率を月次に切り替え、<strong>下落局面を抑制する</strong>
+        耐震型シミュレーション。過去10年のバックテストとライブ追跡を公開中。
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
           <div className="text-xs text-gray-500 mb-1">🇯🇵 日本版</div>
-          <div className="text-sm">
+          <div className="text-sm font-semibold text-emerald-700">
+            最大DD 改善{" "}
+            <span className="font-bold">
+              +{jpDdImprovement.toFixed(1)}pp
+            </span>
+          </div>
+          <div className="text-[11px] text-gray-500 mt-0.5">
+            ポートフォリオ {jp.stats.maxDrawdown.toFixed(1)}% vs ベンチ{" "}
+            {jp.stats.benchmarkMaxDrawdown.toFixed(1)}%
+          </div>
+          <div className="text-sm mt-2">
             株 <strong>{(jp.current.equityRatio * 100).toFixed(0)}%</strong>{" "}
             / 現金 {(jp.current.cashRatio * 100).toFixed(0)}%
             <span className="ml-2 text-gray-400">（{jpBand}）</span>
           </div>
-          <div className="text-xs text-gray-500 mt-1">
-            α vs 買い持ち:{" "}
+          <div className="text-[11px] text-gray-400 mt-1">
+            累計 α vs 買い持ち:{" "}
             <span
               className={
-                jp.stats.alpha >= 0 ? "text-red-500" : "text-green-600"
+                jp.stats.alpha >= 0 ? "text-red-500" : "text-gray-500"
               }
             >
               {jp.stats.alpha >= 0 ? "+" : ""}
               {jp.stats.alpha.toFixed(1)}pp
-            </span>{" "}
-            / 最大DD {jp.stats.maxDrawdown.toFixed(1)}%
+            </span>
           </div>
         </div>
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
           <div className="text-xs text-gray-500 mb-1">🇺🇸 米国版</div>
-          <div className="text-sm">
+          <div className="text-sm font-semibold text-emerald-700">
+            最大DD 改善{" "}
+            <span className="font-bold">
+              +{usDdImprovement.toFixed(1)}pp
+            </span>
+          </div>
+          <div className="text-[11px] text-gray-500 mt-0.5">
+            ポートフォリオ {us.stats.maxDrawdown.toFixed(1)}% vs ベンチ{" "}
+            {us.stats.benchmarkMaxDrawdown.toFixed(1)}%
+          </div>
+          <div className="text-sm mt-2">
             株 <strong>{(us.current.equityRatio * 100).toFixed(0)}%</strong>{" "}
             / 現金 {(us.current.cashRatio * 100).toFixed(0)}%
             <span className="ml-2 text-gray-400">（{usBand}）</span>
           </div>
-          <div className="text-xs text-gray-500 mt-1">
-            α vs 買い持ち:{" "}
+          <div className="text-[11px] text-gray-400 mt-1">
+            累計 α vs 買い持ち:{" "}
             <span
               className={
-                us.stats.alpha >= 0 ? "text-red-500" : "text-green-600"
+                us.stats.alpha >= 0 ? "text-red-500" : "text-gray-500"
               }
             >
               {us.stats.alpha >= 0 ? "+" : ""}
               {us.stats.alpha.toFixed(1)}pp
-            </span>{" "}
-            / 最大DD {us.stats.maxDrawdown.toFixed(1)}%
+            </span>
           </div>
         </div>
       </div>

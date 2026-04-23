@@ -28,6 +28,14 @@ const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 // 日本温度履歴の起点に合わせる（C1 に 125 日 MA が必要なため）
 const START_DATE = "2016-04-22";
 
+interface CashYieldScenarioJson {
+  /** 年率現金金利（%） */
+  cashYield: number;
+  /** ラベル（"現金 0%" / "MMF 1%" / "短期金利 3%" 等） */
+  label: string;
+  stats: PortfolioStats;
+}
+
 interface PortfolioSectionJson {
   equitySymbol: string;
   displayName: string;
@@ -49,6 +57,12 @@ interface PortfolioSectionJson {
     benchmarkUnits: number;
     lastEquityRatio: number;
   };
+  /**
+   * 現金金利の感度分析（0% / 1% / 3% の 3 シナリオ）。
+   * モデルは本体 stats と同じ現金金利 = 0 前提で動くが、感度表で
+   * 「MMF / 短期金利を仮定するとどれくらい改善するか」を併記する。
+   */
+  cashYieldSensitivity: CashYieldScenarioJson[];
 }
 
 interface PortfolioHistoryJson {
@@ -71,6 +85,12 @@ interface PortfolioHistoryJson {
   };
 }
 
+const CASH_YIELD_SCENARIOS: Array<{ yield: number; label: string }> = [
+  { yield: 0, label: "現金 0%（本体モデル）" },
+  { yield: 0.01, label: "MMF 相当 1%" },
+  { yield: 0.03, label: "短期金利 3%" },
+];
+
 function buildSection(
   equitySymbol: string,
   displayName: string,
@@ -91,6 +111,24 @@ function buildSection(
     startDate: filteredDates[0],
   });
 
+  // 感度分析: 同じルールで現金金利だけを差し替えて 3 シナリオを計算
+  const cashYieldSensitivity: CashYieldScenarioJson[] = CASH_YIELD_SCENARIOS.map(
+    (s) => {
+      const scenarioResult = simulatePortfolio({
+        priceMap,
+        priceDates: filteredDates,
+        scoreOf,
+        rule: { ...DEFAULT_PORTFOLIO_RULE, cashYield: s.yield },
+        startDate: filteredDates[0],
+      });
+      return {
+        cashYield: s.yield,
+        label: s.label,
+        stats: scenarioResult.stats,
+      };
+    }
+  );
+
   const last = result.daily[result.daily.length - 1];
   const latestScore = last.score;
   const band = latestScore != null ? getSentimentLevel(latestScore) : "—";
@@ -110,6 +148,7 @@ function buildSection(
       benchmark: last.benchmark,
     },
     endState: result.endState,
+    cashYieldSensitivity,
   };
 }
 

@@ -23,6 +23,9 @@ export default function Footer() {
           <Link href="/analysis" className="hover:text-gray-900 hover:underline">
             分析記事
           </Link>
+          <Link href="/portfolio" className="hover:text-gray-900 hover:underline">
+            温度連動ポートフォリオ
+          </Link>
           <Link href="/widget" className="hover:text-gray-900 hover:underline">
             ウィジェット
           </Link>

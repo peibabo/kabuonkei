@@ -37,11 +37,15 @@ jobs:
       # vix-sp500 は japan-temperature-history.json を読むため、
       # generate:japan-temperature-history の後に置く必要がある
       - run: npm run generate:vix-sp500
+      # portfolio-history は japan-temperature-history.json を読むため、
+      # generate:japan-temperature-history の後に置く必要がある。月次で全再生成
+      # することで、差分 append モードで累積した小さなズレをリセットする
+      - run: npm run generate:portfolio-history
       - name: Commit and push if changed
         run: |
           git diff --quiet src/data/ && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/cross-historical-stats.json src/data/japan-sector-heatmap.json src/data/score-distribution.json src/data/margin-ratio-history.json src/data/margin-ratio-analysis.json src/data/vix-sp500-analysis.json
+          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/cross-historical-stats.json src/data/japan-sector-heatmap.json src/data/score-distribution.json src/data/margin-ratio-history.json src/data/margin-ratio-analysis.json src/data/vix-sp500-analysis.json src/data/portfolio-history.json
           git commit -m "chore: 統計データを更新（$(date +%Y-%m-%d)）"
           git push

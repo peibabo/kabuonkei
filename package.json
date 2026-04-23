@@ -21,7 +21,9 @@
     "generate:margin-history": "npx tsx scripts/backfill-margin-ratio-history.ts",
     "generate:margin-analysis": "npx tsx scripts/generate-margin-ratio-analysis.ts",
     "generate:vix-sp500": "npx tsx scripts/generate-vix-sp500-analysis.ts",
+    "generate:portfolio-history": "npx tsx scripts/generate-portfolio-history.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts",
+    "snapshot:portfolio": "npx tsx scripts/snapshot-portfolio.ts",
     "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts"
   },
   "dependencies": {

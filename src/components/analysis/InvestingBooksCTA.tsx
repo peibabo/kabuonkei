@@ -40,14 +40,23 @@ const BOOKS: BookItem[] = [
 ];
 
 interface Props {
-  placement: "middle_cta" | "bottom_cta" | "boost_banner";
+  placement:
+    | "middle_cta"
+    | "bottom_cta"
+    | "boost_banner"
+    | "portfolio";
+  /** GA4 イベントの article キー。省略時は "vix-threshold-sp500"（既存記事向けの後方互換） */
+  article?: string;
 }
 
-export default function InvestingBooksCTA({ placement }: Props) {
+export default function InvestingBooksCTA({
+  placement,
+  article = "vix-threshold-sp500",
+}: Props) {
   function handleClick(bookId: BookItem["id"]) {
     // 直リンク / アフィどちらでも共通イベント名を使い、ヒストリカル計測を継続させる
     trackEvent("book_cta_click", {
-      article: "vix-threshold-sp500",
+      article,
       book: bookId,
       placement,
     });

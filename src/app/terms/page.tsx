@@ -124,7 +124,39 @@ export default function TermsPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          第 9 条（お問い合わせ）
+          第 9 条（バックテスト・シミュレーション結果の表示について）
+        </h2>
+        <p>
+          当サイトの一部ページ（例:{" "}
+          <code className="text-sm">/portfolio</code>{" "}
+          温度連動バーチャルポートフォリオ）では、<strong>過去の公開データに特定のルールを当てはめたバックテスト結果・シミュレーション NAV</strong>
+          を表示することがあります。これらの情報には以下の制約があります。
+        </p>
+        <ul className="list-disc pl-6 space-y-2 mt-3 text-sm">
+          <li>
+            実際の<strong>執行コスト（売買手数料・スプレッド・スリッページ）</strong>・<strong>税金</strong>・<strong>約定の確実性</strong>は一切考慮していません
+          </li>
+          <li>
+            ルック・アヘッド・バイアス、サバイバーシップ・バイアスなど、バックテスト一般の限界を完全に排除することはできません
+          </li>
+          <li>
+            <strong>過去の成績は、将来の運用成果を保証するものではありません</strong>
+          </li>
+          <li>
+            「今月の理論配分は株 XX% / 現金 XX%」のような表示があっても、それは当サイトのルールに基づく計算上の数値であり、<strong>特定の金融商品の売買・保有比率を推奨するものではありません</strong>
+          </li>
+          <li>
+            実際の投資判断・ポートフォリオ構築は、利用者自身のリスク許容度・税務状況・投資目的に応じて、<strong>ご自身の責任でお決めください</strong>
+          </li>
+        </ul>
+        <p className="mt-3 text-sm">
+          バックテストを含む分析ページは、運営者が公開する<strong>独立した研究・情報提供</strong>として位置付けられています。第 2 条の免責事項が合わせて適用されます。
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          第 10 条（お問い合わせ）
         </h2>
         <p>
           本規約に関するお問い合わせ、コンテンツの転載許諾、その他のご連絡は下記までお願いします。

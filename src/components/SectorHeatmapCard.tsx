@@ -8,6 +8,7 @@ import {
 } from "@/lib/japan-sector-heatmap";
 import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import { formatReturn } from "@/lib/format";
+import { heatmapCellStyle } from "@/lib/heatmap-colors";
 import PeriodSwitcher from "@/components/_trend/PeriodSwitcher";
 
 interface Props {
@@ -23,21 +24,6 @@ const PERIOD_LABELS: Record<SectorPeriodKey, string> = {
 
 /** サンプル数がこの値未満の温度帯は薄色 + 注意表示にする */
 const LOW_SAMPLE_THRESHOLD = 30;
-
-/** ヒートマップセルの背景色（日本式: 正=赤 / 負=緑）を強度付きで返す */
-function heatmapCellStyle(
-  avgReturn: number,
-  maxAbs: number,
-  isLowSample: boolean
-): React.CSSProperties {
-  if (maxAbs === 0) return {};
-  const intensity = Math.min(Math.abs(avgReturn) / maxAbs, 1);
-  // 0.06 〜 0.55 の alpha にマップ。サンプル薄のセルは更に半減
-  const alpha =
-    (0.06 + intensity * 0.49) * (isLowSample ? 0.4 : 1);
-  const rgb = avgReturn >= 0 ? "220, 38, 38" : "34, 197, 94";
-  return { backgroundColor: `rgba(${rgb}, ${alpha})` };
-}
 
 function computeMaxAbsReturn(
   sectors: ReturnType<typeof getJapanSectorHeatmap>["sectors"],

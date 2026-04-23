@@ -152,6 +152,15 @@ export default function ShortTermTraderGuidePage() {
             で暴落・反発パターンを時系列で確認
           </li>
           <li>
+            <Link
+              href="/analysis/margin-ratio-temperature"
+              className="underline hover:text-gray-900"
+            >
+              信用倍率 × 株温計 — 過去10年の検証
+            </Link>
+            で需給と温度のクロス集計を深掘り
+          </li>
+          <li>
             <Link href="/guide" className="underline hover:text-gray-900">
               他の投資家タイプ別ガイド
             </Link>

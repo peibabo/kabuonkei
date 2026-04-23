@@ -1,0 +1,7249 @@
+{
+  "generatedAt": "2026-04-23",
+  "dataRange": {
+    "from": "2002-08-02",
+    "to": "2026-04-17"
+  },
+  "sources": {
+    "consolidated": "https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rq1-att/tvdivq0000015969.xls",
+    "weeklyCount": 3
+  },
+  "weekly": [
+    {
+      "date": "2002-08-02",
+      "buyBalance": 15702.8,
+      "sellBalance": 10048.4,
+      "ratio": 1.56
+    },
+    {
+      "date": "2002-08-09",
+      "buyBalance": 15142.7,
+      "sellBalance": 10568,
+      "ratio": 1.43
+    },
+    {
+      "date": "2002-08-16",
+      "buyBalance": 15233.5,
+      "sellBalance": 9996.8,
+      "ratio": 1.52
+    },
+    {
+      "date": "2002-08-23",
+      "buyBalance": 15073.6,
+      "sellBalance": 10058.6,
+      "ratio": 1.5
+    },
+    {
+      "date": "2002-08-30",
+      "buyBalance": 15314.6,
+      "sellBalance": 9513.6,
+      "ratio": 1.61
+    },
+    {
+      "date": "2002-09-06",
+      "buyBalance": 14905.9,
+      "sellBalance": 9592.6,
+      "ratio": 1.55
+    },
+    {
+      "date": "2002-09-13",
+      "buyBalance": 14414.4,
+      "sellBalance": 9718.4,
+      "ratio": 1.48
+    },
+    {
+      "date": "2002-09-20",
+      "buyBalance": 13857.7,
+      "sellBalance": 8320.2,
+      "ratio": 1.67
+    },
+    {
+      "date": "2002-09-27",
+      "buyBalance": 13477.4,
+      "sellBalance": 7923.5,
+      "ratio": 1.7
+    },
+    {
+      "date": "2002-10-04",
+      "buyBalance": 13563.4,
+      "sellBalance": 7401.6,
+      "ratio": 1.83
+    },
+    {
+      "date": "2002-10-11",
+      "buyBalance": 12782,
+      "sellBalance": 6976.8,
+      "ratio": 1.83
+    },
+    {
+      "date": "2002-10-18",
+      "buyBalance": 12293.3,
+      "sellBalance": 7479.7,
+      "ratio": 1.64
+    },
+    {
+      "date": "2002-10-25",
+      "buyBalance": 12190.8,
+      "sellBalance": 7452.5,
+      "ratio": 1.64
+    },
+    {
+      "date": "2002-11-01",
+      "buyBalance": 11980.9,
+      "sellBalance": 7591.4,
+      "ratio": 1.58
+    },
+    {
+      "date": "2002-11-08",
+      "buyBalance": 11694.4,
+      "sellBalance": 7523.3,
+      "ratio": 1.55
+    },
+    {
+      "date": "2002-11-15",
+      "buyBalance": 11006.8,
+      "sellBalance": 6896.2,
+      "ratio": 1.6
+    },
+    {
+      "date": "2002-11-22",
+      "buyBalance": 9721.9,
+      "sellBalance": 7092.1,
+      "ratio": 1.37
+    },
+    {
+      "date": "2002-11-29",
+      "buyBalance": 9099.1,
+      "sellBalance": 7553.1,
+      "ratio": 1.2
+    },
+    {
+      "date": "2002-12-06",
+      "buyBalance": 8989.6,
+      "sellBalance": 7338.1,
+      "ratio": 1.23
+    },
+    {
+      "date": "2002-12-13",
+      "buyBalance": 9104.3,
+      "sellBalance": 7146.8,
+      "ratio": 1.27
+    },
+    {
+      "date": "2002-12-20",
+      "buyBalance": 9023.7,
+      "sellBalance": 6514.9,
+      "ratio": 1.39
+    },
+    {
+      "date": "2002-12-27",
+      "buyBalance": 8729.4,
+      "sellBalance": 6715.5,
+      "ratio": 1.3
+    },
+    {
+      "date": "2003-01-10",
+      "buyBalance": 8418.3,
+      "sellBalance": 7044.7,
+      "ratio": 1.19
+    },
+    {
+      "date": "2003-01-17",
+      "buyBalance": 8100,
+      "sellBalance": 7482.5,
+      "ratio": 1.08
+    },
+    {
+      "date": "2003-01-24",
+      "buyBalance": 8196.3,
+      "sellBalance": 7570,
+      "ratio": 1.08
+    },
+    {
+      "date": "2003-01-31",
+      "buyBalance": 8717.7,
+      "sellBalance": 7210.9,
+      "ratio": 1.21
+    },
+    {
+      "date": "2003-02-07",
+      "buyBalance": 8753.8,
+      "sellBalance": 7248.3,
+      "ratio": 1.21
+    },
+    {
+      "date": "2003-02-14",
+      "buyBalance": 8613.5,
+      "sellBalance": 7696.5,
+      "ratio": 1.12
+    },
+    {
+      "date": "2003-02-21",
+      "buyBalance": 9168.6,
+      "sellBalance": 7890.3,
+      "ratio": 1.16
+    },
+    {
+      "date": "2003-02-28",
+      "buyBalance": 9422.7,
+      "sellBalance": 7577.1,
+      "ratio": 1.24
+    },
+    {
+      "date": "2003-03-07",
+      "buyBalance": 9680.4,
+      "sellBalance": 7631.2,
+      "ratio": 1.27
+    },
+    {
+      "date": "2003-03-14",
+      "buyBalance": 9633.6,
+      "sellBalance": 7532.9,
+      "ratio": 1.28
+    },
+    {
+      "date": "2003-03-20",
+      "buyBalance": 9229.4,
+      "sellBalance": 7111,
+      "ratio": 1.3
+    },
+    {
+      "date": "2003-03-28",
+      "buyBalance": 8846.8,
+      "sellBalance": 6869.9,
+      "ratio": 1.29
+    },
+    {
+      "date": "2003-04-04",
+      "buyBalance": 9119.8,
+      "sellBalance": 7448.2,
+      "ratio": 1.22
+    },
+    {
+      "date": "2003-04-11",
+      "buyBalance": 9469.4,
+      "sellBalance": 7433.2,
+      "ratio": 1.27
+    },
+    {
+      "date": "2003-04-18",
+      "buyBalance": 9538.9,
+      "sellBalance": 7454.8,
+      "ratio": 1.28
+    },
+    {
+      "date": "2003-04-25",
+      "buyBalance": 9689.4,
+      "sellBalance": 7463,
+      "ratio": 1.3
+    },
+    {
+      "date": "2003-05-02",
+      "buyBalance": 9517.7,
+      "sellBalance": 7611.7,
+      "ratio": 1.25
+    },
+    {
+      "date": "2003-05-09",
+      "buyBalance": 9406.4,
+      "sellBalance": 7917.6,
+      "ratio": 1.19
+    },
+    {
+      "date": "2003-05-16",
+      "buyBalance": 9583.6,
+      "sellBalance": 8066.7,
+      "ratio": 1.19
+    },
+    {
+      "date": "2003-05-23",
+      "buyBalance": 9836.6,
+      "sellBalance": 8023.2,
+      "ratio": 1.23
+    },
+    {
+      "date": "2003-05-30",
+      "buyBalance": 9692.8,
+      "sellBalance": 8323.4,
+      "ratio": 1.16
+    },
+    {
+      "date": "2003-06-06",
+      "buyBalance": 9668,
+      "sellBalance": 8917.8,
+      "ratio": 1.08
+    },
+    {
+      "date": "2003-06-13",
+      "buyBalance": 10015.2,
+      "sellBalance": 9444.5,
+      "ratio": 1.06
+    },
+    {
+      "date": "2003-06-20",
+      "buyBalance": 10242.6,
+      "sellBalance": 8932.6,
+      "ratio": 1.15
+    },
+    {
+      "date": "2003-06-27",
+      "buyBalance": 10821.7,
+      "sellBalance": 8764.6,
+      "ratio": 1.23
+    },
+    {
+      "date": "2003-07-04",
+      "buyBalance": 11250,
+      "sellBalance": 9231.1,
+      "ratio": 1.22
+    },
+    {
+      "date": "2003-07-11",
+      "buyBalance": 12897.2,
+      "sellBalance": 8961.1,
+      "ratio": 1.44
+    },
+    {
+      "date": "2003-07-18",
+      "buyBalance": 13044.7,
+      "sellBalance": 8729,
+      "ratio": 1.49
+    },
+    {
+      "date": "2003-07-25",
+      "buyBalance": 13376.9,
+      "sellBalance": 8870.2,
+      "ratio": 1.51
+    },
+    {
+      "date": "2003-08-01",
+      "buyBalance": 13926.2,
+      "sellBalance": 8726.5,
+      "ratio": 1.6
+    },
+    {
+      "date": "2003-08-08",
+      "buyBalance": 14374.4,
+      "sellBalance": 8608.4,
+      "ratio": 1.67
+    },
+    {
+      "date": "2003-08-15",
+      "buyBalance": 13853.6,
+      "sellBalance": 8945.2,
+      "ratio": 1.55
+    },
+    {
+      "date": "2003-08-22",
+      "buyBalance": 14207,
+      "sellBalance": 9483.5,
+      "ratio": 1.5
+    },
+    {
+      "date": "2003-08-29",
+      "buyBalance": 15082.6,
+      "sellBalance": 9517.2,
+      "ratio": 1.58
+    },
+    {
+      "date": "2003-09-05",
+      "buyBalance": 15920.9,
+      "sellBalance": 10068,
+      "ratio": 1.58
+    },
+    {
+      "date": "2003-09-12",
+      "buyBalance": 17182.6,
+      "sellBalance": 10182.7,
+      "ratio": 1.69
+    },
+    {
+      "date": "2003-09-19",
+      "buyBalance": 17728.9,
+      "sellBalance": 10060.2,
+      "ratio": 1.76
+    },
+    {
+      "date": "2003-09-26",
+      "buyBalance": 18941.3,
+      "sellBalance": 8720.5,
+      "ratio": 2.17
+    },
+    {
+      "date": "2003-10-03",
+      "buyBalance": 19452.9,
+      "sellBalance": 9035.5,
+      "ratio": 2.15
+    },
+    {
+      "date": "2003-10-10",
+      "buyBalance": 20332.4,
+      "sellBalance": 9375.1,
+      "ratio": 2.17
+    },
+    {
+      "date": "2003-10-17",
+      "buyBalance": 21829,
+      "sellBalance": 9667.5,
+      "ratio": 2.26
+    },
+    {
+      "date": "2003-10-24",
+      "buyBalance": 22897.1,
+      "sellBalance": 8681.8,
+      "ratio": 2.64
+    },
+    {
+      "date": "2003-10-31",
+      "buyBalance": 23332.8,
+      "sellBalance": 8767,
+      "ratio": 2.66
+    },
+    {
+      "date": "2003-11-07",
+      "buyBalance": 23293.4,
+      "sellBalance": 8883.8,
+      "ratio": 2.62
+    },
+    {
+      "date": "2003-11-14",
+      "buyBalance": 22204.4,
+      "sellBalance": 8609.3,
+      "ratio": 2.58
+    },
+    {
+      "date": "2003-11-21",
+      "buyBalance": 20863.2,
+      "sellBalance": 8422.1,
+      "ratio": 2.48
+    },
+    {
+      "date": "2003-11-28",
+      "buyBalance": 20757.6,
+      "sellBalance": 8676.2,
+      "ratio": 2.39
+    },
+    {
+      "date": "2003-12-05",
+      "buyBalance": 20703.9,
+      "sellBalance": 9158.2,
+      "ratio": 2.26
+    },
+    {
+      "date": "2003-12-12",
+      "buyBalance": 20613,
+      "sellBalance": 9006.9,
+      "ratio": 2.29
+    },
+    {
+      "date": "2003-12-19",
+      "buyBalance": 19958.8,
+      "sellBalance": 9022.8,
+      "ratio": 2.21
+    },
+    {
+      "date": "2003-12-26",
+      "buyBalance": 19519,
+      "sellBalance": 8681.3,
+      "ratio": 2.25
+    },
+    {
+      "date": "2004-01-09",
+      "buyBalance": 19545,
+      "sellBalance": 9607.9,
+      "ratio": 2.03
+    },
+    {
+      "date": "2004-01-16",
+      "buyBalance": 20582.6,
+      "sellBalance": 9616.8,
+      "ratio": 2.14
+    },
+    {
+      "date": "2004-01-23",
+      "buyBalance": 21058.5,
+      "sellBalance": 9928.8,
+      "ratio": 2.12
+    },
+    {
+      "date": "2004-01-30",
+      "buyBalance": 22175.3,
+      "sellBalance": 9452.6,
+      "ratio": 2.35
+    },
+    {
+      "date": "2004-02-06",
+      "buyBalance": 22830.3,
+      "sellBalance": 9216.6,
+      "ratio": 2.48
+    },
+    {
+      "date": "2004-02-13",
+      "buyBalance": 22936.4,
+      "sellBalance": 9565.1,
+      "ratio": 2.4
+    },
+    {
+      "date": "2004-02-20",
+      "buyBalance": 22618.6,
+      "sellBalance": 9409.7,
+      "ratio": 2.4
+    },
+    {
+      "date": "2004-02-27",
+      "buyBalance": 22174.7,
+      "sellBalance": 9888.2,
+      "ratio": 2.24
+    },
+    {
+      "date": "2004-03-05",
+      "buyBalance": 21291.9,
+      "sellBalance": 10924.3,
+      "ratio": 1.95
+    },
+    {
+      "date": "2004-03-12",
+      "buyBalance": 22822.8,
+      "sellBalance": 10402.6,
+      "ratio": 2.19
+    },
+    {
+      "date": "2004-03-19",
+      "buyBalance": 23441.8,
+      "sellBalance": 10169.6,
+      "ratio": 2.31
+    },
+    {
+      "date": "2004-03-26",
+      "buyBalance": 23554,
+      "sellBalance": 9902.5,
+      "ratio": 2.38
+    },
+    {
+      "date": "2004-04-02",
+      "buyBalance": 24734.3,
+      "sellBalance": 9384.4,
+      "ratio": 2.64
+    },
+    {
+      "date": "2004-04-09",
+      "buyBalance": 26015,
+      "sellBalance": 9525.8,
+      "ratio": 2.73
+    },
+    {
+      "date": "2004-04-16",
+      "buyBalance": 28478.9,
+      "sellBalance": 9457.4,
+      "ratio": 3.01
+    },
+    {
+      "date": "2004-04-23",
+      "buyBalance": 28887.6,
+      "sellBalance": 9735.4,
+      "ratio": 2.97
+    },
+    {
+      "date": "2004-04-30",
+      "buyBalance": 30054.1,
+      "sellBalance": 9194.1,
+      "ratio": 3.27
+    },
+    {
+      "date": "2004-05-07",
+      "buyBalance": 30932.9,
+      "sellBalance": 9304.5,
+      "ratio": 3.32
+    },
+    {
+      "date": "2004-05-14",
+      "buyBalance": 29986.3,
+      "sellBalance": 8970.8,
+      "ratio": 3.34
+    },
+    {
+      "date": "2004-05-21",
+      "buyBalance": 28595.3,
+      "sellBalance": 9212.5,
+      "ratio": 3.1
+    },
+    {
+      "date": "2004-05-28",
+      "buyBalance": 28275.8,
+      "sellBalance": 9642.6,
+      "ratio": 2.93
+    },
+    {
+      "date": "2004-06-04",
+      "buyBalance": 29128.4,
+      "sellBalance": 9825.1,
+      "ratio": 2.96
+    },
+    {
+      "date": "2004-06-11",
+      "buyBalance": 29046.4,
+      "sellBalance": 10640.3,
+      "ratio": 2.73
+    },
+    {
+      "date": "2004-06-18",
+      "buyBalance": 30281.8,
+      "sellBalance": 10486.2,
+      "ratio": 2.89
+    },
+    {
+      "date": "2004-06-25",
+      "buyBalance": 29541.5,
+      "sellBalance": 10219.8,
+      "ratio": 2.89
+    },
+    {
+      "date": "2004-07-02",
+      "buyBalance": 29934.9,
+      "sellBalance": 10222.9,
+      "ratio": 2.93
+    },
+    {
+      "date": "2004-07-09",
+      "buyBalance": 30446.2,
+      "sellBalance": 10004.3,
+      "ratio": 3.04
+    },
+    {
+      "date": "2004-07-16",
+      "buyBalance": 30605.1,
+      "sellBalance": 10079.9,
+      "ratio": 3.04
+    },
+    {
+      "date": "2004-07-23",
+      "buyBalance": 30821.1,
+      "sellBalance": 9863.6,
+      "ratio": 3.12
+    },
+    {
+      "date": "2004-07-30",
+      "buyBalance": 29484.2,
+      "sellBalance": 10327.1,
+      "ratio": 2.86
+    },
+    {
+      "date": "2004-08-06",
+      "buyBalance": 29064.6,
+      "sellBalance": 9922.3,
+      "ratio": 2.93
+    },
+    {
+      "date": "2004-08-13",
+      "buyBalance": 29298.3,
+      "sellBalance": 9788.3,
+      "ratio": 2.99
+    },
+    {
+      "date": "2004-08-20",
+      "buyBalance": 28981,
+      "sellBalance": 10161.8,
+      "ratio": 2.85
+    },
+    {
+      "date": "2004-08-27",
+      "buyBalance": 28987,
+      "sellBalance": 10623.5,
+      "ratio": 2.73
+    },
+    {
+      "date": "2004-09-03",
+      "buyBalance": 29382.3,
+      "sellBalance": 11097.6,
+      "ratio": 2.65
+    },
+    {
+      "date": "2004-09-10",
+      "buyBalance": 29540.9,
+      "sellBalance": 11292.4,
+      "ratio": 2.62
+    },
+    {
+      "date": "2004-09-17",
+      "buyBalance": 29132,
+      "sellBalance": 11179.6,
+      "ratio": 2.61
+    },
+    {
+      "date": "2004-09-24",
+      "buyBalance": 28786,
+      "sellBalance": 10869.8,
+      "ratio": 2.65
+    },
+    {
+      "date": "2004-10-01",
+      "buyBalance": 27176.3,
+      "sellBalance": 11146,
+      "ratio": 2.44
+    },
+    {
+      "date": "2004-10-08",
+      "buyBalance": 25641.1,
+      "sellBalance": 11197.1,
+      "ratio": 2.29
+    },
+    {
+      "date": "2004-10-15",
+      "buyBalance": 25509.9,
+      "sellBalance": 10712.2,
+      "ratio": 2.38
+    },
+    {
+      "date": "2004-10-22",
+      "buyBalance": 25465.6,
+      "sellBalance": 10845.1,
+      "ratio": 2.35
+    },
+    {
+      "date": "2004-10-29",
+      "buyBalance": 25050.7,
+      "sellBalance": 11189.3,
+      "ratio": 2.24
+    },
+    {
+      "date": "2004-11-05",
+      "buyBalance": 24197.6,
+      "sellBalance": 11663.4,
+      "ratio": 2.07
+    },
+    {
+      "date": "2004-11-12",
+      "buyBalance": 24096.6,
+      "sellBalance": 11917.3,
+      "ratio": 2.02
+    },
+    {
+      "date": "2004-11-19",
+      "buyBalance": 23768.9,
+      "sellBalance": 12200.7,
+      "ratio": 1.95
+    },
+    {
+      "date": "2004-11-26",
+      "buyBalance": 24277.1,
+      "sellBalance": 11680.3,
+      "ratio": 2.08
+    },
+    {
+      "date": "2004-12-03",
+      "buyBalance": 24263.3,
+      "sellBalance": 12423.3,
+      "ratio": 1.95
+    },
+    {
+      "date": "2004-12-10",
+      "buyBalance": 25110.9,
+      "sellBalance": 12407.4,
+      "ratio": 2.02
+    },
+    {
+      "date": "2004-12-17",
+      "buyBalance": 24134.2,
+      "sellBalance": 12281.1,
+      "ratio": 1.97
+    },
+    {
+      "date": "2004-12-24",
+      "buyBalance": 23338.7,
+      "sellBalance": 12281.8,
+      "ratio": 1.9
+    },
+    {
+      "date": "2004-12-30",
+      "buyBalance": 23178.7,
+      "sellBalance": 12160.1,
+      "ratio": 1.91
+    },
+    {
+      "date": "2005-01-07",
+      "buyBalance": 23724.3,
+      "sellBalance": 12500.5,
+      "ratio": 1.9
+    },
+    {
+      "date": "2005-01-14",
+      "buyBalance": 24618.1,
+      "sellBalance": 12677.4,
+      "ratio": 1.94
+    },
+    {
+      "date": "2005-01-21",
+      "buyBalance": 25818.6,
+      "sellBalance": 12435,
+      "ratio": 2.08
+    },
+    {
+      "date": "2005-01-28",
+      "buyBalance": 26596.2,
+      "sellBalance": 12741.5,
+      "ratio": 2.09
+    },
+    {
+      "date": "2005-02-04",
+      "buyBalance": 27127.9,
+      "sellBalance": 12892,
+      "ratio": 2.1
+    },
+    {
+      "date": "2005-02-10",
+      "buyBalance": 27227.7,
+      "sellBalance": 13394.7,
+      "ratio": 2.03
+    },
+    {
+      "date": "2005-02-18",
+      "buyBalance": 27159.4,
+      "sellBalance": 13366.5,
+      "ratio": 2.03
+    },
+    {
+      "date": "2005-02-25",
+      "buyBalance": 27810.6,
+      "sellBalance": 13408.4,
+      "ratio": 2.07
+    },
+    {
+      "date": "2005-03-04",
+      "buyBalance": 28269.1,
+      "sellBalance": 13946.4,
+      "ratio": 2.03
+    },
+    {
+      "date": "2005-03-11",
+      "buyBalance": 28928.7,
+      "sellBalance": 13543.2,
+      "ratio": 2.14
+    },
+    {
+      "date": "2005-03-18",
+      "buyBalance": 30090.6,
+      "sellBalance": 13117.5,
+      "ratio": 2.29
+    },
+    {
+      "date": "2005-03-25",
+      "buyBalance": 30897.5,
+      "sellBalance": 12834.1,
+      "ratio": 2.41
+    },
+    {
+      "date": "2005-04-01",
+      "buyBalance": 30979.8,
+      "sellBalance": 11791.4,
+      "ratio": 2.63
+    },
+    {
+      "date": "2005-04-08",
+      "buyBalance": 30572.3,
+      "sellBalance": 12384.3,
+      "ratio": 2.47
+    },
+    {
+      "date": "2005-04-15",
+      "buyBalance": 31563.2,
+      "sellBalance": 11742.7,
+      "ratio": 2.69
+    },
+    {
+      "date": "2005-04-22",
+      "buyBalance": 31909.3,
+      "sellBalance": 11916.6,
+      "ratio": 2.68
+    },
+    {
+      "date": "2005-05-06",
+      "buyBalance": 31665,
+      "sellBalance": 11964.9,
+      "ratio": 2.65
+    },
+    {
+      "date": "2005-05-13",
+      "buyBalance": 32645.5,
+      "sellBalance": 12243.1,
+      "ratio": 2.67
+    },
+    {
+      "date": "2005-05-20",
+      "buyBalance": 31677.1,
+      "sellBalance": 12402.1,
+      "ratio": 2.55
+    },
+    {
+      "date": "2005-05-27",
+      "buyBalance": 31391.7,
+      "sellBalance": 12760.1,
+      "ratio": 2.46
+    },
+    {
+      "date": "2005-06-03",
+      "buyBalance": 31155.5,
+      "sellBalance": 13178,
+      "ratio": 2.36
+    },
+    {
+      "date": "2005-06-10",
+      "buyBalance": 31143.5,
+      "sellBalance": 13348.6,
+      "ratio": 2.33
+    },
+    {
+      "date": "2005-06-17",
+      "buyBalance": 30637,
+      "sellBalance": 13490.9,
+      "ratio": 2.27
+    },
+    {
+      "date": "2005-06-24",
+      "buyBalance": 30336.2,
+      "sellBalance": 13723.3,
+      "ratio": 2.21
+    },
+    {
+      "date": "2005-07-01",
+      "buyBalance": 30045.6,
+      "sellBalance": 14011,
+      "ratio": 2.14
+    },
+    {
+      "date": "2005-07-08",
+      "buyBalance": 30020.8,
+      "sellBalance": 14329.9,
+      "ratio": 2.09
+    },
+    {
+      "date": "2005-07-15",
+      "buyBalance": 29315.4,
+      "sellBalance": 14918,
+      "ratio": 1.97
+    },
+    {
+      "date": "2005-07-22",
+      "buyBalance": 29733.9,
+      "sellBalance": 14751.5,
+      "ratio": 2.02
+    },
+    {
+      "date": "2005-07-29",
+      "buyBalance": 29312,
+      "sellBalance": 15172.5,
+      "ratio": 1.93
+    },
+    {
+      "date": "2005-08-05",
+      "buyBalance": 28720,
+      "sellBalance": 14921.2,
+      "ratio": 1.92
+    },
+    {
+      "date": "2005-08-12",
+      "buyBalance": 27845.7,
+      "sellBalance": 16147.6,
+      "ratio": 1.72
+    },
+    {
+      "date": "2005-08-19",
+      "buyBalance": 29093.4,
+      "sellBalance": 15928.5,
+      "ratio": 1.83
+    },
+    {
+      "date": "2005-08-26",
+      "buyBalance": 29298,
+      "sellBalance": 15930.6,
+      "ratio": 1.84
+    },
+    {
+      "date": "2005-09-02",
+      "buyBalance": 29803,
+      "sellBalance": 16301.5,
+      "ratio": 1.83
+    },
+    {
+      "date": "2005-09-09",
+      "buyBalance": 30076.3,
+      "sellBalance": 16686.2,
+      "ratio": 1.8
+    },
+    {
+      "date": "2005-09-16",
+      "buyBalance": 30438.4,
+      "sellBalance": 16829.3,
+      "ratio": 1.81
+    },
+    {
+      "date": "2005-09-22",
+      "buyBalance": 30940.2,
+      "sellBalance": 16955.3,
+      "ratio": 1.82
+    },
+    {
+      "date": "2005-09-30",
+      "buyBalance": 31892.6,
+      "sellBalance": 16530.7,
+      "ratio": 1.93
+    },
+    {
+      "date": "2005-10-07",
+      "buyBalance": 34711.9,
+      "sellBalance": 15825.6,
+      "ratio": 2.19
+    },
+    {
+      "date": "2005-10-14",
+      "buyBalance": 35665.2,
+      "sellBalance": 16528.8,
+      "ratio": 2.16
+    },
+    {
+      "date": "2005-10-21",
+      "buyBalance": 37111.8,
+      "sellBalance": 16081.6,
+      "ratio": 2.31
+    },
+    {
+      "date": "2005-10-28",
+      "buyBalance": 37370.5,
+      "sellBalance": 16687.6,
+      "ratio": 2.24
+    },
+    {
+      "date": "2005-11-04",
+      "buyBalance": 37637.2,
+      "sellBalance": 16933.3,
+      "ratio": 2.22
+    },
+    {
+      "date": "2005-11-11",
+      "buyBalance": 40028.7,
+      "sellBalance": 16647.6,
+      "ratio": 2.4
+    },
+    {
+      "date": "2005-11-18",
+      "buyBalance": 41009.5,
+      "sellBalance": 16797.4,
+      "ratio": 2.44
+    },
+    {
+      "date": "2005-11-25",
+      "buyBalance": 42828.7,
+      "sellBalance": 16463.4,
+      "ratio": 2.6
+    },
+    {
+      "date": "2005-12-02",
+      "buyBalance": 44121.1,
+      "sellBalance": 16862.3,
+      "ratio": 2.62
+    },
+    {
+      "date": "2005-12-09",
+      "buyBalance": 47526.7,
+      "sellBalance": 16419.9,
+      "ratio": 2.89
+    },
+    {
+      "date": "2005-12-16",
+      "buyBalance": 50946.9,
+      "sellBalance": 16250,
+      "ratio": 3.14
+    },
+    {
+      "date": "2005-12-22",
+      "buyBalance": 50670.1,
+      "sellBalance": 16262.8,
+      "ratio": 3.12
+    },
+    {
+      "date": "2005-12-30",
+      "buyBalance": 52314.5,
+      "sellBalance": 15134.3,
+      "ratio": 3.46
+    },
+    {
+      "date": "2006-01-06",
+      "buyBalance": 54541.7,
+      "sellBalance": 15790.1,
+      "ratio": 3.45
+    },
+    {
+      "date": "2006-01-13",
+      "buyBalance": 57662.4,
+      "sellBalance": 15931.1,
+      "ratio": 3.62
+    },
+    {
+      "date": "2006-01-20",
+      "buyBalance": 56091.7,
+      "sellBalance": 15147.4,
+      "ratio": 3.7
+    },
+    {
+      "date": "2006-01-27",
+      "buyBalance": 54906.5,
+      "sellBalance": 16083.9,
+      "ratio": 3.41
+    },
+    {
+      "date": "2006-02-03",
+      "buyBalance": 57011.7,
+      "sellBalance": 16092.5,
+      "ratio": 3.54
+    },
+    {
+      "date": "2006-02-10",
+      "buyBalance": 59836.2,
+      "sellBalance": 15909.5,
+      "ratio": 3.76
+    },
+    {
+      "date": "2006-02-17",
+      "buyBalance": 56181.6,
+      "sellBalance": 15691.1,
+      "ratio": 3.58
+    },
+    {
+      "date": "2006-02-24",
+      "buyBalance": 53062.1,
+      "sellBalance": 15757.7,
+      "ratio": 3.37
+    },
+    {
+      "date": "2006-03-03",
+      "buyBalance": 54475.1,
+      "sellBalance": 15728.8,
+      "ratio": 3.46
+    },
+    {
+      "date": "2006-03-10",
+      "buyBalance": 54475.2,
+      "sellBalance": 15956.1,
+      "ratio": 3.41
+    },
+    {
+      "date": "2006-03-17",
+      "buyBalance": 54844.2,
+      "sellBalance": 16460.8,
+      "ratio": 3.33
+    },
+    {
+      "date": "2006-03-24",
+      "buyBalance": 54677.8,
+      "sellBalance": 16046.4,
+      "ratio": 3.41
+    },
+    {
+      "date": "2006-03-31",
+      "buyBalance": 53693,
+      "sellBalance": 15801.1,
+      "ratio": 3.4
+    },
+    {
+      "date": "2006-04-07",
+      "buyBalance": 53239.5,
+      "sellBalance": 16765.8,
+      "ratio": 3.18
+    },
+    {
+      "date": "2006-04-14",
+      "buyBalance": 57097.6,
+      "sellBalance": 16242.5,
+      "ratio": 3.52
+    },
+    {
+      "date": "2006-04-21",
+      "buyBalance": 56258,
+      "sellBalance": 16915.7,
+      "ratio": 3.33
+    },
+    {
+      "date": "2006-04-28",
+      "buyBalance": 57353.5,
+      "sellBalance": 16383.4,
+      "ratio": 3.5
+    },
+    {
+      "date": "2006-05-12",
+      "buyBalance": 57754.2,
+      "sellBalance": 16635.1,
+      "ratio": 3.47
+    },
+    {
+      "date": "2006-05-19",
+      "buyBalance": 57683.8,
+      "sellBalance": 16603.3,
+      "ratio": 3.47
+    },
+    {
+      "date": "2006-05-26",
+      "buyBalance": 56977.5,
+      "sellBalance": 15446.3,
+      "ratio": 3.69
+    },
+    {
+      "date": "2006-06-02",
+      "buyBalance": 52830.5,
+      "sellBalance": 15625.6,
+      "ratio": 3.38
+    },
+    {
+      "date": "2006-06-09",
+      "buyBalance": 49390.4,
+      "sellBalance": 15616.1,
+      "ratio": 3.16
+    },
+    {
+      "date": "2006-06-16",
+      "buyBalance": 48218.9,
+      "sellBalance": 15067,
+      "ratio": 3.2
+    },
+    {
+      "date": "2006-06-23",
+      "buyBalance": 48498.7,
+      "sellBalance": 14852.6,
+      "ratio": 3.27
+    },
+    {
+      "date": "2006-06-30",
+      "buyBalance": 47163.4,
+      "sellBalance": 15249.3,
+      "ratio": 3.09
+    },
+    {
+      "date": "2006-07-07",
+      "buyBalance": 47042.7,
+      "sellBalance": 15504.1,
+      "ratio": 3.03
+    },
+    {
+      "date": "2006-07-14",
+      "buyBalance": 46289.3,
+      "sellBalance": 15364.4,
+      "ratio": 3.01
+    },
+    {
+      "date": "2006-07-21",
+      "buyBalance": 43286.9,
+      "sellBalance": 14822.3,
+      "ratio": 2.92
+    },
+    {
+      "date": "2006-07-28",
+      "buyBalance": 41248.8,
+      "sellBalance": 15411.3,
+      "ratio": 2.68
+    },
+    {
+      "date": "2006-08-04",
+      "buyBalance": 40744.8,
+      "sellBalance": 15291.4,
+      "ratio": 2.66
+    },
+    {
+      "date": "2006-08-11",
+      "buyBalance": 40234.5,
+      "sellBalance": 15537.2,
+      "ratio": 2.59
+    },
+    {
+      "date": "2006-08-18",
+      "buyBalance": 39298.1,
+      "sellBalance": 16327.9,
+      "ratio": 2.41
+    },
+    {
+      "date": "2006-08-25",
+      "buyBalance": 40430.6,
+      "sellBalance": 16274.4,
+      "ratio": 2.48
+    },
+    {
+      "date": "2006-09-01",
+      "buyBalance": 40225.2,
+      "sellBalance": 15950.4,
+      "ratio": 2.52
+    },
+    {
+      "date": "2006-09-08",
+      "buyBalance": 41835.8,
+      "sellBalance": 16159.7,
+      "ratio": 2.59
+    },
+    {
+      "date": "2006-09-15",
+      "buyBalance": 41597.3,
+      "sellBalance": 15854.5,
+      "ratio": 2.62
+    },
+    {
+      "date": "2006-09-22",
+      "buyBalance": 41626,
+      "sellBalance": 15284.5,
+      "ratio": 2.72
+    },
+    {
+      "date": "2006-09-29",
+      "buyBalance": 39032.3,
+      "sellBalance": 15643.9,
+      "ratio": 2.5
+    },
+    {
+      "date": "2006-10-06",
+      "buyBalance": 37435.3,
+      "sellBalance": 16611.5,
+      "ratio": 2.25
+    },
+    {
+      "date": "2006-10-13",
+      "buyBalance": 36202.9,
+      "sellBalance": 16453.2,
+      "ratio": 2.2
+    },
+    {
+      "date": "2006-10-20",
+      "buyBalance": 36228.7,
+      "sellBalance": 16260.8,
+      "ratio": 2.23
+    },
+    {
+      "date": "2006-10-27",
+      "buyBalance": 36694.4,
+      "sellBalance": 16447.1,
+      "ratio": 2.23
+    },
+    {
+      "date": "2006-11-02",
+      "buyBalance": 37712.7,
+      "sellBalance": 15927.7,
+      "ratio": 2.37
+    },
+    {
+      "date": "2006-11-10",
+      "buyBalance": 37919.8,
+      "sellBalance": 15717.8,
+      "ratio": 2.41
+    },
+    {
+      "date": "2006-11-17",
+      "buyBalance": 37539.6,
+      "sellBalance": 15447.4,
+      "ratio": 2.43
+    },
+    {
+      "date": "2006-11-24",
+      "buyBalance": 36806.4,
+      "sellBalance": 15557.2,
+      "ratio": 2.37
+    },
+    {
+      "date": "2006-12-01",
+      "buyBalance": 35999.8,
+      "sellBalance": 16007.9,
+      "ratio": 2.25
+    },
+    {
+      "date": "2006-12-08",
+      "buyBalance": 36535.4,
+      "sellBalance": 15813.4,
+      "ratio": 2.31
+    },
+    {
+      "date": "2006-12-15",
+      "buyBalance": 35932,
+      "sellBalance": 16193.9,
+      "ratio": 2.22
+    },
+    {
+      "date": "2006-12-22",
+      "buyBalance": 36203.9,
+      "sellBalance": 16032,
+      "ratio": 2.26
+    },
+    {
+      "date": "2006-12-29",
+      "buyBalance": 36123.6,
+      "sellBalance": 14921.7,
+      "ratio": 2.42
+    },
+    {
+      "date": "2007-01-12",
+      "buyBalance": 36778.1,
+      "sellBalance": 15709.5,
+      "ratio": 2.34
+    },
+    {
+      "date": "2007-01-19",
+      "buyBalance": 36623.6,
+      "sellBalance": 16095.7,
+      "ratio": 2.28
+    },
+    {
+      "date": "2007-01-26",
+      "buyBalance": 37083.7,
+      "sellBalance": 15946.8,
+      "ratio": 2.33
+    },
+    {
+      "date": "2007-02-02",
+      "buyBalance": 36982.9,
+      "sellBalance": 16538.7,
+      "ratio": 2.24
+    },
+    {
+      "date": "2007-02-09",
+      "buyBalance": 38121.5,
+      "sellBalance": 16870.5,
+      "ratio": 2.26
+    },
+    {
+      "date": "2007-02-16",
+      "buyBalance": 37800.6,
+      "sellBalance": 16732.1,
+      "ratio": 2.26
+    },
+    {
+      "date": "2007-02-23",
+      "buyBalance": 38104.5,
+      "sellBalance": 17035.9,
+      "ratio": 2.24
+    },
+    {
+      "date": "2007-03-02",
+      "buyBalance": 40461.3,
+      "sellBalance": 16178,
+      "ratio": 2.5
+    },
+    {
+      "date": "2007-03-09",
+      "buyBalance": 42657.1,
+      "sellBalance": 15729.7,
+      "ratio": 2.71
+    },
+    {
+      "date": "2007-03-16",
+      "buyBalance": 44305.9,
+      "sellBalance": 14942.9,
+      "ratio": 2.97
+    },
+    {
+      "date": "2007-03-23",
+      "buyBalance": 43098.7,
+      "sellBalance": 14947.1,
+      "ratio": 2.88
+    },
+    {
+      "date": "2007-03-30",
+      "buyBalance": 43747,
+      "sellBalance": 14293,
+      "ratio": 3.06
+    },
+    {
+      "date": "2007-04-06",
+      "buyBalance": 42762.4,
+      "sellBalance": 14541.5,
+      "ratio": 2.94
+    },
+    {
+      "date": "2007-04-13",
+      "buyBalance": 42963.3,
+      "sellBalance": 14796,
+      "ratio": 2.9
+    },
+    {
+      "date": "2007-04-20",
+      "buyBalance": 42044.6,
+      "sellBalance": 14379.3,
+      "ratio": 2.92
+    },
+    {
+      "date": "2007-04-27",
+      "buyBalance": 40484.5,
+      "sellBalance": 14610.2,
+      "ratio": 2.77
+    },
+    {
+      "date": "2007-05-11",
+      "buyBalance": 41942.8,
+      "sellBalance": 15272,
+      "ratio": 2.75
+    },
+    {
+      "date": "2007-05-18",
+      "buyBalance": 41384.3,
+      "sellBalance": 14824.1,
+      "ratio": 2.79
+    },
+    {
+      "date": "2007-05-25",
+      "buyBalance": 40974.3,
+      "sellBalance": 14738.3,
+      "ratio": 2.78
+    },
+    {
+      "date": "2007-06-01",
+      "buyBalance": 39651.1,
+      "sellBalance": 15718,
+      "ratio": 2.52
+    },
+    {
+      "date": "2007-06-08",
+      "buyBalance": 42333.3,
+      "sellBalance": 15307.1,
+      "ratio": 2.77
+    },
+    {
+      "date": "2007-06-15",
+      "buyBalance": 41610.6,
+      "sellBalance": 15298.2,
+      "ratio": 2.72
+    },
+    {
+      "date": "2007-06-22",
+      "buyBalance": 41979.7,
+      "sellBalance": 15597.9,
+      "ratio": 2.69
+    },
+    {
+      "date": "2007-06-29",
+      "buyBalance": 42189,
+      "sellBalance": 15268.1,
+      "ratio": 2.76
+    },
+    {
+      "date": "2007-07-06",
+      "buyBalance": 41669.3,
+      "sellBalance": 15190.4,
+      "ratio": 2.74
+    },
+    {
+      "date": "2007-07-13",
+      "buyBalance": 41636.3,
+      "sellBalance": 14887.6,
+      "ratio": 2.8
+    },
+    {
+      "date": "2007-07-20",
+      "buyBalance": 41753.9,
+      "sellBalance": 14776.3,
+      "ratio": 2.83
+    },
+    {
+      "date": "2007-07-27",
+      "buyBalance": 43312.1,
+      "sellBalance": 14339.3,
+      "ratio": 3.02
+    },
+    {
+      "date": "2007-08-03",
+      "buyBalance": 43805.4,
+      "sellBalance": 13830.3,
+      "ratio": 3.17
+    },
+    {
+      "date": "2007-08-10",
+      "buyBalance": 42779.4,
+      "sellBalance": 13326.4,
+      "ratio": 3.21
+    },
+    {
+      "date": "2007-08-17",
+      "buyBalance": 41462.3,
+      "sellBalance": 12625.1,
+      "ratio": 3.28
+    },
+    {
+      "date": "2007-08-24",
+      "buyBalance": 38892.9,
+      "sellBalance": 12673.2,
+      "ratio": 3.07
+    },
+    {
+      "date": "2007-08-31",
+      "buyBalance": 37648.4,
+      "sellBalance": 12756,
+      "ratio": 2.95
+    },
+    {
+      "date": "2007-09-07",
+      "buyBalance": 37761.3,
+      "sellBalance": 12593.6,
+      "ratio": 3
+    },
+    {
+      "date": "2007-09-14",
+      "buyBalance": 36026,
+      "sellBalance": 13179.8,
+      "ratio": 2.73
+    },
+    {
+      "date": "2007-09-21",
+      "buyBalance": 34629.6,
+      "sellBalance": 12839.1,
+      "ratio": 2.7
+    },
+    {
+      "date": "2007-09-28",
+      "buyBalance": 33988.3,
+      "sellBalance": 13164.6,
+      "ratio": 2.58
+    },
+    {
+      "date": "2007-10-05",
+      "buyBalance": 33773.5,
+      "sellBalance": 13197.6,
+      "ratio": 2.56
+    },
+    {
+      "date": "2007-10-12",
+      "buyBalance": 33771.5,
+      "sellBalance": 13272.7,
+      "ratio": 2.54
+    },
+    {
+      "date": "2007-10-19",
+      "buyBalance": 35340.2,
+      "sellBalance": 13000.1,
+      "ratio": 2.72
+    },
+    {
+      "date": "2007-10-26",
+      "buyBalance": 35755.9,
+      "sellBalance": 12789.2,
+      "ratio": 2.8
+    },
+    {
+      "date": "2007-11-02",
+      "buyBalance": 36104.7,
+      "sellBalance": 12926.7,
+      "ratio": 2.79
+    },
+    {
+      "date": "2007-11-09",
+      "buyBalance": 35674.1,
+      "sellBalance": 12556.7,
+      "ratio": 2.84
+    },
+    {
+      "date": "2007-11-16",
+      "buyBalance": 34501.8,
+      "sellBalance": 12359.8,
+      "ratio": 2.79
+    },
+    {
+      "date": "2007-11-22",
+      "buyBalance": 33198.1,
+      "sellBalance": 12462.9,
+      "ratio": 2.66
+    },
+    {
+      "date": "2007-11-30",
+      "buyBalance": 31479.4,
+      "sellBalance": 12876.5,
+      "ratio": 2.44
+    },
+    {
+      "date": "2007-12-07",
+      "buyBalance": 30562.4,
+      "sellBalance": 13268.7,
+      "ratio": 2.3
+    },
+    {
+      "date": "2007-12-14",
+      "buyBalance": 32002.5,
+      "sellBalance": 12387.5,
+      "ratio": 2.58
+    },
+    {
+      "date": "2007-12-21",
+      "buyBalance": 31005.6,
+      "sellBalance": 11922.3,
+      "ratio": 2.6
+    },
+    {
+      "date": "2007-12-28",
+      "buyBalance": 29926.1,
+      "sellBalance": 11222,
+      "ratio": 2.67
+    },
+    {
+      "date": "2008-01-11",
+      "buyBalance": 29123.8,
+      "sellBalance": 11587.3,
+      "ratio": 2.51
+    },
+    {
+      "date": "2008-01-18",
+      "buyBalance": 26136.6,
+      "sellBalance": 11081.9,
+      "ratio": 2.36
+    },
+    {
+      "date": "2008-01-25",
+      "buyBalance": 23727.4,
+      "sellBalance": 11312.6,
+      "ratio": 2.1
+    },
+    {
+      "date": "2008-02-01",
+      "buyBalance": 23323.7,
+      "sellBalance": 11134.8,
+      "ratio": 2.09
+    },
+    {
+      "date": "2008-02-08",
+      "buyBalance": 23738.1,
+      "sellBalance": 10959.7,
+      "ratio": 2.17
+    },
+    {
+      "date": "2008-02-15",
+      "buyBalance": 22593.6,
+      "sellBalance": 11672.9,
+      "ratio": 1.94
+    },
+    {
+      "date": "2008-02-22",
+      "buyBalance": 23345.1,
+      "sellBalance": 11473.4,
+      "ratio": 2.03
+    },
+    {
+      "date": "2008-02-29",
+      "buyBalance": 23646.8,
+      "sellBalance": 11521.2,
+      "ratio": 2.05
+    },
+    {
+      "date": "2008-03-07",
+      "buyBalance": 24138,
+      "sellBalance": 11637.3,
+      "ratio": 2.07
+    },
+    {
+      "date": "2008-03-14",
+      "buyBalance": 23547.1,
+      "sellBalance": 10914.4,
+      "ratio": 2.16
+    },
+    {
+      "date": "2008-03-21",
+      "buyBalance": 22508.9,
+      "sellBalance": 10620.8,
+      "ratio": 2.12
+    },
+    {
+      "date": "2008-03-28",
+      "buyBalance": 21806.1,
+      "sellBalance": 10538.5,
+      "ratio": 2.07
+    },
+    {
+      "date": "2008-04-04",
+      "buyBalance": 20222.5,
+      "sellBalance": 11229.3,
+      "ratio": 1.8
+    },
+    {
+      "date": "2008-04-11",
+      "buyBalance": 20121.1,
+      "sellBalance": 11363.3,
+      "ratio": 1.77
+    },
+    {
+      "date": "2008-04-18",
+      "buyBalance": 19207,
+      "sellBalance": 11637,
+      "ratio": 1.65
+    },
+    {
+      "date": "2008-04-25",
+      "buyBalance": 18309.5,
+      "sellBalance": 12348.3,
+      "ratio": 1.48
+    },
+    {
+      "date": "2008-05-02",
+      "buyBalance": 17223.6,
+      "sellBalance": 12706.5,
+      "ratio": 1.36
+    },
+    {
+      "date": "2008-05-09",
+      "buyBalance": 18228.3,
+      "sellBalance": 12528,
+      "ratio": 1.46
+    },
+    {
+      "date": "2008-05-16",
+      "buyBalance": 17710.8,
+      "sellBalance": 12729.5,
+      "ratio": 1.39
+    },
+    {
+      "date": "2008-05-23",
+      "buyBalance": 19536.7,
+      "sellBalance": 12403.8,
+      "ratio": 1.58
+    },
+    {
+      "date": "2008-05-30",
+      "buyBalance": 18978.2,
+      "sellBalance": 12663.4,
+      "ratio": 1.5
+    },
+    {
+      "date": "2008-06-06",
+      "buyBalance": 19562.5,
+      "sellBalance": 12495.7,
+      "ratio": 1.57
+    },
+    {
+      "date": "2008-06-13",
+      "buyBalance": 21026.9,
+      "sellBalance": 11720.3,
+      "ratio": 1.79
+    },
+    {
+      "date": "2008-06-20",
+      "buyBalance": 21614.6,
+      "sellBalance": 11939.4,
+      "ratio": 1.81
+    },
+    {
+      "date": "2008-06-27",
+      "buyBalance": 22065.5,
+      "sellBalance": 11704.1,
+      "ratio": 1.89
+    },
+    {
+      "date": "2008-07-04",
+      "buyBalance": 21830.3,
+      "sellBalance": 11489.6,
+      "ratio": 1.9
+    },
+    {
+      "date": "2008-07-11",
+      "buyBalance": 21467.3,
+      "sellBalance": 11738.5,
+      "ratio": 1.83
+    },
+    {
+      "date": "2008-07-18",
+      "buyBalance": 21356.4,
+      "sellBalance": 11259,
+      "ratio": 1.9
+    },
+    {
+      "date": "2008-07-25",
+      "buyBalance": 20760.7,
+      "sellBalance": 11137.5,
+      "ratio": 1.86
+    },
+    {
+      "date": "2008-08-01",
+      "buyBalance": 21276.1,
+      "sellBalance": 11048.1,
+      "ratio": 1.93
+    },
+    {
+      "date": "2008-08-08",
+      "buyBalance": 20433.8,
+      "sellBalance": 10994.8,
+      "ratio": 1.86
+    },
+    {
+      "date": "2008-08-15",
+      "buyBalance": 20322.3,
+      "sellBalance": 10781.6,
+      "ratio": 1.88
+    },
+    {
+      "date": "2008-08-22",
+      "buyBalance": 20520,
+      "sellBalance": 10664.5,
+      "ratio": 1.92
+    },
+    {
+      "date": "2008-08-29",
+      "buyBalance": 19384.9,
+      "sellBalance": 11405.2,
+      "ratio": 1.7
+    },
+    {
+      "date": "2008-09-05",
+      "buyBalance": 19288.9,
+      "sellBalance": 10473.8,
+      "ratio": 1.84
+    },
+    {
+      "date": "2008-09-12",
+      "buyBalance": 18810.3,
+      "sellBalance": 10967.5,
+      "ratio": 1.72
+    },
+    {
+      "date": "2008-09-19",
+      "buyBalance": 17980.5,
+      "sellBalance": 9804.2,
+      "ratio": 1.83
+    },
+    {
+      "date": "2008-09-26",
+      "buyBalance": 18154.7,
+      "sellBalance": 9356.1,
+      "ratio": 1.94
+    },
+    {
+      "date": "2008-10-03",
+      "buyBalance": 17585.4,
+      "sellBalance": 8655.5,
+      "ratio": 2.03
+    },
+    {
+      "date": "2008-10-10",
+      "buyBalance": 14089.1,
+      "sellBalance": 7806.1,
+      "ratio": 1.8
+    },
+    {
+      "date": "2008-10-17",
+      "buyBalance": 13938.8,
+      "sellBalance": 8156.7,
+      "ratio": 1.71
+    },
+    {
+      "date": "2008-10-24",
+      "buyBalance": 14114.1,
+      "sellBalance": 7923.4,
+      "ratio": 1.78
+    },
+    {
+      "date": "2008-10-31",
+      "buyBalance": 11915.2,
+      "sellBalance": 8315.8,
+      "ratio": 1.43
+    },
+    {
+      "date": "2008-11-07",
+      "buyBalance": 12013.8,
+      "sellBalance": 8586.4,
+      "ratio": 1.4
+    },
+    {
+      "date": "2008-11-14",
+      "buyBalance": 12529.3,
+      "sellBalance": 8523.7,
+      "ratio": 1.47
+    },
+    {
+      "date": "2008-11-21",
+      "buyBalance": 12147.1,
+      "sellBalance": 8614.9,
+      "ratio": 1.41
+    },
+    {
+      "date": "2008-11-28",
+      "buyBalance": 11502,
+      "sellBalance": 9267.2,
+      "ratio": 1.24
+    },
+    {
+      "date": "2008-12-05",
+      "buyBalance": 11328.9,
+      "sellBalance": 9316.3,
+      "ratio": 1.22
+    },
+    {
+      "date": "2008-12-12",
+      "buyBalance": 10835.5,
+      "sellBalance": 9552.5,
+      "ratio": 1.13
+    },
+    {
+      "date": "2008-12-19",
+      "buyBalance": 10465.2,
+      "sellBalance": 9503.4,
+      "ratio": 1.1
+    },
+    {
+      "date": "2008-12-30",
+      "buyBalance": 10085,
+      "sellBalance": 9161,
+      "ratio": 1.1
+    },
+    {
+      "date": "2009-01-09",
+      "buyBalance": 10278.4,
+      "sellBalance": 9419.3,
+      "ratio": 1.09
+    },
+    {
+      "date": "2009-01-16",
+      "buyBalance": 10995.2,
+      "sellBalance": 8760.6,
+      "ratio": 1.26
+    },
+    {
+      "date": "2009-01-23",
+      "buyBalance": 11487.1,
+      "sellBalance": 8872.4,
+      "ratio": 1.29
+    },
+    {
+      "date": "2009-01-30",
+      "buyBalance": 10824.1,
+      "sellBalance": 9267.2,
+      "ratio": 1.17
+    },
+    {
+      "date": "2009-02-06",
+      "buyBalance": 10652.3,
+      "sellBalance": 9521.8,
+      "ratio": 1.12
+    },
+    {
+      "date": "2009-02-13",
+      "buyBalance": 10838.5,
+      "sellBalance": 9291.2,
+      "ratio": 1.17
+    },
+    {
+      "date": "2009-02-20",
+      "buyBalance": 11069.1,
+      "sellBalance": 8920,
+      "ratio": 1.24
+    },
+    {
+      "date": "2009-02-27",
+      "buyBalance": 10599.4,
+      "sellBalance": 9141.9,
+      "ratio": 1.16
+    },
+    {
+      "date": "2009-03-06",
+      "buyBalance": 11092.2,
+      "sellBalance": 8902.4,
+      "ratio": 1.25
+    },
+    {
+      "date": "2009-03-13",
+      "buyBalance": 10631.3,
+      "sellBalance": 8961.5,
+      "ratio": 1.19
+    },
+    {
+      "date": "2009-03-19",
+      "buyBalance": 9978.2,
+      "sellBalance": 9020.9,
+      "ratio": 1.11
+    },
+    {
+      "date": "2009-03-27",
+      "buyBalance": 8987.2,
+      "sellBalance": 9944.3,
+      "ratio": 0.9
+    },
+    {
+      "date": "2009-04-03",
+      "buyBalance": 9062.5,
+      "sellBalance": 10289.7,
+      "ratio": 0.88
+    },
+    {
+      "date": "2009-04-10",
+      "buyBalance": 9537.2,
+      "sellBalance": 10250.9,
+      "ratio": 0.93
+    },
+    {
+      "date": "2009-04-17",
+      "buyBalance": 10186.3,
+      "sellBalance": 9751.3,
+      "ratio": 1.04
+    },
+    {
+      "date": "2009-04-24",
+      "buyBalance": 10837.4,
+      "sellBalance": 9524,
+      "ratio": 1.14
+    },
+    {
+      "date": "2009-05-01",
+      "buyBalance": 10231.8,
+      "sellBalance": 9731.2,
+      "ratio": 1.05
+    },
+    {
+      "date": "2009-05-15",
+      "buyBalance": 11020.8,
+      "sellBalance": 9687.8,
+      "ratio": 1.14
+    },
+    {
+      "date": "2009-05-22",
+      "buyBalance": 11788.8,
+      "sellBalance": 9717,
+      "ratio": 1.21
+    },
+    {
+      "date": "2009-05-29",
+      "buyBalance": 11950.6,
+      "sellBalance": 10178.9,
+      "ratio": 1.17
+    },
+    {
+      "date": "2009-06-05",
+      "buyBalance": 12514.4,
+      "sellBalance": 10091.1,
+      "ratio": 1.24
+    },
+    {
+      "date": "2009-06-12",
+      "buyBalance": 12778.8,
+      "sellBalance": 10194.8,
+      "ratio": 1.25
+    },
+    {
+      "date": "2009-06-19",
+      "buyBalance": 14982.1,
+      "sellBalance": 9468.5,
+      "ratio": 1.58
+    },
+    {
+      "date": "2009-06-26",
+      "buyBalance": 15096.3,
+      "sellBalance": 9035.9,
+      "ratio": 1.67
+    },
+    {
+      "date": "2009-07-03",
+      "buyBalance": 15576.5,
+      "sellBalance": 9188.4,
+      "ratio": 1.7
+    },
+    {
+      "date": "2009-07-10",
+      "buyBalance": 15901.2,
+      "sellBalance": 8972.7,
+      "ratio": 1.77
+    },
+    {
+      "date": "2009-07-17",
+      "buyBalance": 15398.8,
+      "sellBalance": 9309.7,
+      "ratio": 1.65
+    },
+    {
+      "date": "2009-07-24",
+      "buyBalance": 14474.7,
+      "sellBalance": 9590.8,
+      "ratio": 1.51
+    },
+    {
+      "date": "2009-07-31",
+      "buyBalance": 14131.9,
+      "sellBalance": 9751.4,
+      "ratio": 1.45
+    },
+    {
+      "date": "2009-08-07",
+      "buyBalance": 14102.3,
+      "sellBalance": 9718.9,
+      "ratio": 1.45
+    },
+    {
+      "date": "2009-08-14",
+      "buyBalance": 14179.3,
+      "sellBalance": 9737.8,
+      "ratio": 1.46
+    },
+    {
+      "date": "2009-08-21",
+      "buyBalance": 15511.2,
+      "sellBalance": 9271.7,
+      "ratio": 1.67
+    },
+    {
+      "date": "2009-08-28",
+      "buyBalance": 15288.5,
+      "sellBalance": 9482.1,
+      "ratio": 1.61
+    },
+    {
+      "date": "2009-09-04",
+      "buyBalance": 16206.1,
+      "sellBalance": 9182.9,
+      "ratio": 1.76
+    },
+    {
+      "date": "2009-09-11",
+      "buyBalance": 16085.4,
+      "sellBalance": 9473.2,
+      "ratio": 1.7
+    },
+    {
+      "date": "2009-09-18",
+      "buyBalance": 16236.9,
+      "sellBalance": 8999.2,
+      "ratio": 1.8
+    },
+    {
+      "date": "2009-10-02",
+      "buyBalance": 16344.8,
+      "sellBalance": 8212.5,
+      "ratio": 1.99
+    },
+    {
+      "date": "2009-10-09",
+      "buyBalance": 16184.7,
+      "sellBalance": 8699.9,
+      "ratio": 1.86
+    },
+    {
+      "date": "2009-10-16",
+      "buyBalance": 16294.7,
+      "sellBalance": 8696.2,
+      "ratio": 1.87
+    },
+    {
+      "date": "2009-10-23",
+      "buyBalance": 16636.3,
+      "sellBalance": 8528,
+      "ratio": 1.95
+    },
+    {
+      "date": "2009-10-30",
+      "buyBalance": 16925.1,
+      "sellBalance": 8171.6,
+      "ratio": 2.07
+    },
+    {
+      "date": "2009-11-06",
+      "buyBalance": 17171.6,
+      "sellBalance": 8024.1,
+      "ratio": 2.14
+    },
+    {
+      "date": "2009-11-13",
+      "buyBalance": 16902.2,
+      "sellBalance": 7500.8,
+      "ratio": 2.25
+    },
+    {
+      "date": "2009-11-20",
+      "buyBalance": 16398.8,
+      "sellBalance": 7452.9,
+      "ratio": 2.2
+    },
+    {
+      "date": "2009-11-27",
+      "buyBalance": 16470.4,
+      "sellBalance": 7196.3,
+      "ratio": 2.29
+    },
+    {
+      "date": "2009-12-04",
+      "buyBalance": 14890.7,
+      "sellBalance": 8269,
+      "ratio": 1.8
+    },
+    {
+      "date": "2009-12-11",
+      "buyBalance": 14923.4,
+      "sellBalance": 8610.4,
+      "ratio": 1.73
+    },
+    {
+      "date": "2009-12-18",
+      "buyBalance": 14876.5,
+      "sellBalance": 8340.5,
+      "ratio": 1.78
+    },
+    {
+      "date": "2009-12-25",
+      "buyBalance": 14356.1,
+      "sellBalance": 7934,
+      "ratio": 1.81
+    },
+    {
+      "date": "2009-12-30",
+      "buyBalance": 14299.6,
+      "sellBalance": 7681.2,
+      "ratio": 1.86
+    },
+    {
+      "date": "2010-01-08",
+      "buyBalance": 13513.2,
+      "sellBalance": 8844,
+      "ratio": 1.53
+    },
+    {
+      "date": "2010-01-15",
+      "buyBalance": 13522.1,
+      "sellBalance": 9154.8,
+      "ratio": 1.48
+    },
+    {
+      "date": "2010-01-22",
+      "buyBalance": 14808.4,
+      "sellBalance": 9238.3,
+      "ratio": 1.6
+    },
+    {
+      "date": "2010-01-29",
+      "buyBalance": 15781.6,
+      "sellBalance": 7998.9,
+      "ratio": 1.97
+    },
+    {
+      "date": "2010-02-05",
+      "buyBalance": 16272.1,
+      "sellBalance": 7332,
+      "ratio": 2.22
+    },
+    {
+      "date": "2010-02-12",
+      "buyBalance": 16269.4,
+      "sellBalance": 7342,
+      "ratio": 2.22
+    },
+    {
+      "date": "2010-02-19",
+      "buyBalance": 16126.7,
+      "sellBalance": 7440.2,
+      "ratio": 2.17
+    },
+    {
+      "date": "2010-02-26",
+      "buyBalance": 16201.1,
+      "sellBalance": 7380.2,
+      "ratio": 2.2
+    },
+    {
+      "date": "2010-03-05",
+      "buyBalance": 15683.1,
+      "sellBalance": 7653.9,
+      "ratio": 2.05
+    },
+    {
+      "date": "2010-03-12",
+      "buyBalance": 15234.6,
+      "sellBalance": 7826,
+      "ratio": 1.95
+    },
+    {
+      "date": "2010-03-19",
+      "buyBalance": 15065.9,
+      "sellBalance": 7986.4,
+      "ratio": 1.89
+    },
+    {
+      "date": "2010-03-26",
+      "buyBalance": 14692.2,
+      "sellBalance": 8250.5,
+      "ratio": 1.78
+    },
+    {
+      "date": "2010-04-02",
+      "buyBalance": 14288.8,
+      "sellBalance": 8528.9,
+      "ratio": 1.68
+    },
+    {
+      "date": "2010-04-09",
+      "buyBalance": 14910.2,
+      "sellBalance": 8603.2,
+      "ratio": 1.73
+    },
+    {
+      "date": "2010-04-16",
+      "buyBalance": 15467.5,
+      "sellBalance": 8850.6,
+      "ratio": 1.75
+    },
+    {
+      "date": "2010-04-23",
+      "buyBalance": 16602.7,
+      "sellBalance": 8473.3,
+      "ratio": 1.96
+    },
+    {
+      "date": "2010-04-30",
+      "buyBalance": 17212.9,
+      "sellBalance": 8188.1,
+      "ratio": 2.1
+    },
+    {
+      "date": "2010-05-14",
+      "buyBalance": 19122.5,
+      "sellBalance": 7287.2,
+      "ratio": 2.62
+    },
+    {
+      "date": "2010-05-21",
+      "buyBalance": 19635.6,
+      "sellBalance": 6569.2,
+      "ratio": 2.99
+    },
+    {
+      "date": "2010-05-28",
+      "buyBalance": 19498.6,
+      "sellBalance": 6480.9,
+      "ratio": 3.01
+    },
+    {
+      "date": "2010-06-04",
+      "buyBalance": 19663.8,
+      "sellBalance": 6357.1,
+      "ratio": 3.09
+    },
+    {
+      "date": "2010-06-11",
+      "buyBalance": 20005.2,
+      "sellBalance": 6247,
+      "ratio": 3.2
+    },
+    {
+      "date": "2010-06-18",
+      "buyBalance": 19883.8,
+      "sellBalance": 6481,
+      "ratio": 3.07
+    },
+    {
+      "date": "2010-06-25",
+      "buyBalance": 20288.2,
+      "sellBalance": 6337.9,
+      "ratio": 3.2
+    },
+    {
+      "date": "2010-07-02",
+      "buyBalance": 19836.2,
+      "sellBalance": 6120.5,
+      "ratio": 3.24
+    },
+    {
+      "date": "2010-07-09",
+      "buyBalance": 19356.4,
+      "sellBalance": 6287.7,
+      "ratio": 3.08
+    },
+    {
+      "date": "2010-07-16",
+      "buyBalance": 19416.9,
+      "sellBalance": 6617.9,
+      "ratio": 2.93
+    },
+    {
+      "date": "2010-07-23",
+      "buyBalance": 19291.6,
+      "sellBalance": 6317.1,
+      "ratio": 3.05
+    },
+    {
+      "date": "2010-07-30",
+      "buyBalance": 18771.8,
+      "sellBalance": 6372.3,
+      "ratio": 2.95
+    },
+    {
+      "date": "2010-08-06",
+      "buyBalance": 18310.3,
+      "sellBalance": 6200.7,
+      "ratio": 2.95
+    },
+    {
+      "date": "2010-08-13",
+      "buyBalance": 18772.6,
+      "sellBalance": 5776,
+      "ratio": 3.25
+    },
+    {
+      "date": "2010-08-20",
+      "buyBalance": 18611.1,
+      "sellBalance": 5892.9,
+      "ratio": 3.16
+    },
+    {
+      "date": "2010-08-27",
+      "buyBalance": 18464.6,
+      "sellBalance": 5861.2,
+      "ratio": 3.15
+    },
+    {
+      "date": "2010-09-03",
+      "buyBalance": 18018.5,
+      "sellBalance": 6189.6,
+      "ratio": 2.91
+    },
+    {
+      "date": "2010-09-10",
+      "buyBalance": 17574.1,
+      "sellBalance": 6509.8,
+      "ratio": 2.7
+    },
+    {
+      "date": "2010-09-17",
+      "buyBalance": 16588.2,
+      "sellBalance": 6872.2,
+      "ratio": 2.41
+    },
+    {
+      "date": "2010-09-24",
+      "buyBalance": 16457.9,
+      "sellBalance": 6605.6,
+      "ratio": 2.49
+    },
+    {
+      "date": "2010-10-01",
+      "buyBalance": 16135.7,
+      "sellBalance": 6648.6,
+      "ratio": 2.43
+    },
+    {
+      "date": "2010-10-08",
+      "buyBalance": 15110,
+      "sellBalance": 7004.9,
+      "ratio": 2.16
+    },
+    {
+      "date": "2010-10-15",
+      "buyBalance": 15424,
+      "sellBalance": 7448.2,
+      "ratio": 2.07
+    },
+    {
+      "date": "2010-10-22",
+      "buyBalance": 15120.9,
+      "sellBalance": 6727.2,
+      "ratio": 2.25
+    },
+    {
+      "date": "2010-10-29",
+      "buyBalance": 14924.8,
+      "sellBalance": 6203,
+      "ratio": 2.41
+    },
+    {
+      "date": "2010-11-05",
+      "buyBalance": 13556.3,
+      "sellBalance": 6662.1,
+      "ratio": 2.03
+    },
+    {
+      "date": "2010-11-12",
+      "buyBalance": 13258.2,
+      "sellBalance": 7007.9,
+      "ratio": 1.89
+    },
+    {
+      "date": "2010-11-19",
+      "buyBalance": 12733.8,
+      "sellBalance": 7365.9,
+      "ratio": 1.73
+    },
+    {
+      "date": "2010-11-26",
+      "buyBalance": 13094.4,
+      "sellBalance": 7286.2,
+      "ratio": 1.8
+    },
+    {
+      "date": "2010-12-03",
+      "buyBalance": 13072.1,
+      "sellBalance": 7661.2,
+      "ratio": 1.71
+    },
+    {
+      "date": "2010-12-10",
+      "buyBalance": 13040.4,
+      "sellBalance": 7951.4,
+      "ratio": 1.64
+    },
+    {
+      "date": "2010-12-17",
+      "buyBalance": 13261.3,
+      "sellBalance": 8013.4,
+      "ratio": 1.65
+    },
+    {
+      "date": "2010-12-24",
+      "buyBalance": 13679.2,
+      "sellBalance": 7802.8,
+      "ratio": 1.75
+    },
+    {
+      "date": "2010-12-30",
+      "buyBalance": 13932.7,
+      "sellBalance": 7595.4,
+      "ratio": 1.83
+    },
+    {
+      "date": "2011-01-07",
+      "buyBalance": 13884.1,
+      "sellBalance": 8273.1,
+      "ratio": 1.68
+    },
+    {
+      "date": "2011-01-14",
+      "buyBalance": 14548,
+      "sellBalance": 8565.6,
+      "ratio": 1.7
+    },
+    {
+      "date": "2011-01-21",
+      "buyBalance": 15659.3,
+      "sellBalance": 7936.2,
+      "ratio": 1.97
+    },
+    {
+      "date": "2011-01-28",
+      "buyBalance": 15810.4,
+      "sellBalance": 7926.8,
+      "ratio": 1.99
+    },
+    {
+      "date": "2011-02-04",
+      "buyBalance": 15774.5,
+      "sellBalance": 7967.9,
+      "ratio": 1.98
+    },
+    {
+      "date": "2011-02-10",
+      "buyBalance": 15896.5,
+      "sellBalance": 7913,
+      "ratio": 2.01
+    },
+    {
+      "date": "2011-02-18",
+      "buyBalance": 15739.8,
+      "sellBalance": 8113.2,
+      "ratio": 1.94
+    },
+    {
+      "date": "2011-02-25",
+      "buyBalance": 17130.7,
+      "sellBalance": 7393.7,
+      "ratio": 2.32
+    },
+    {
+      "date": "2011-03-04",
+      "buyBalance": 17472.2,
+      "sellBalance": 7675.2,
+      "ratio": 2.28
+    },
+    {
+      "date": "2011-03-11",
+      "buyBalance": 18855.5,
+      "sellBalance": 7186.9,
+      "ratio": 2.62
+    },
+    {
+      "date": "2011-03-18",
+      "buyBalance": 14010,
+      "sellBalance": 5748.3,
+      "ratio": 2.44
+    },
+    {
+      "date": "2011-03-25",
+      "buyBalance": 14937.5,
+      "sellBalance": 6185,
+      "ratio": 2.42
+    },
+    {
+      "date": "2011-04-01",
+      "buyBalance": 14621.4,
+      "sellBalance": 6408.5,
+      "ratio": 2.28
+    },
+    {
+      "date": "2011-04-08",
+      "buyBalance": 14716.4,
+      "sellBalance": 6787.3,
+      "ratio": 2.17
+    },
+    {
+      "date": "2011-04-15",
+      "buyBalance": 15211.2,
+      "sellBalance": 6484.6,
+      "ratio": 2.35
+    },
+    {
+      "date": "2011-04-22",
+      "buyBalance": 15243.2,
+      "sellBalance": 6656.3,
+      "ratio": 2.29
+    },
+    {
+      "date": "2011-04-28",
+      "buyBalance": 15020.9,
+      "sellBalance": 6871.4,
+      "ratio": 2.19
+    },
+    {
+      "date": "2011-05-13",
+      "buyBalance": 16015.6,
+      "sellBalance": 6395,
+      "ratio": 2.5
+    },
+    {
+      "date": "2011-05-20",
+      "buyBalance": 16412.6,
+      "sellBalance": 6347.6,
+      "ratio": 2.59
+    },
+    {
+      "date": "2011-05-27",
+      "buyBalance": 16502.3,
+      "sellBalance": 6229,
+      "ratio": 2.65
+    },
+    {
+      "date": "2011-06-03",
+      "buyBalance": 16742.5,
+      "sellBalance": 6030.6,
+      "ratio": 2.78
+    },
+    {
+      "date": "2011-06-10",
+      "buyBalance": 16636.1,
+      "sellBalance": 6167.2,
+      "ratio": 2.7
+    },
+    {
+      "date": "2011-06-17",
+      "buyBalance": 16992.6,
+      "sellBalance": 5709.5,
+      "ratio": 2.98
+    },
+    {
+      "date": "2011-06-24",
+      "buyBalance": 16387.9,
+      "sellBalance": 6109.5,
+      "ratio": 2.68
+    },
+    {
+      "date": "2011-07-01",
+      "buyBalance": 15611.8,
+      "sellBalance": 6565.2,
+      "ratio": 2.38
+    },
+    {
+      "date": "2011-07-08",
+      "buyBalance": 14981.5,
+      "sellBalance": 7099.1,
+      "ratio": 2.11
+    },
+    {
+      "date": "2011-07-15",
+      "buyBalance": 15378.3,
+      "sellBalance": 6516.1,
+      "ratio": 2.36
+    },
+    {
+      "date": "2011-07-22",
+      "buyBalance": 15328.3,
+      "sellBalance": 6639.6,
+      "ratio": 2.31
+    },
+    {
+      "date": "2011-07-29",
+      "buyBalance": 15902.7,
+      "sellBalance": 6079.1,
+      "ratio": 2.62
+    },
+    {
+      "date": "2011-08-05",
+      "buyBalance": 16406.9,
+      "sellBalance": 5580.8,
+      "ratio": 2.94
+    },
+    {
+      "date": "2011-08-12",
+      "buyBalance": 16577.5,
+      "sellBalance": 5127.1,
+      "ratio": 3.23
+    },
+    {
+      "date": "2011-08-19",
+      "buyBalance": 16546.2,
+      "sellBalance": 5184.8,
+      "ratio": 3.19
+    },
+    {
+      "date": "2011-08-26",
+      "buyBalance": 16204.5,
+      "sellBalance": 5215.2,
+      "ratio": 3.11
+    },
+    {
+      "date": "2011-09-02",
+      "buyBalance": 16069.2,
+      "sellBalance": 5790.7,
+      "ratio": 2.78
+    },
+    {
+      "date": "2011-09-09",
+      "buyBalance": 16031,
+      "sellBalance": 6284.7,
+      "ratio": 2.55
+    },
+    {
+      "date": "2011-09-16",
+      "buyBalance": 15321.4,
+      "sellBalance": 5560.7,
+      "ratio": 2.76
+    },
+    {
+      "date": "2011-09-22",
+      "buyBalance": 15411.1,
+      "sellBalance": 5386.2,
+      "ratio": 2.86
+    },
+    {
+      "date": "2011-09-30",
+      "buyBalance": 14408.1,
+      "sellBalance": 5211.4,
+      "ratio": 2.76
+    },
+    {
+      "date": "2011-10-07",
+      "buyBalance": 14293.5,
+      "sellBalance": 5327.3,
+      "ratio": 2.68
+    },
+    {
+      "date": "2011-10-14",
+      "buyBalance": 14141.7,
+      "sellBalance": 5326.8,
+      "ratio": 2.65
+    },
+    {
+      "date": "2011-10-21",
+      "buyBalance": 14326.1,
+      "sellBalance": 5198.4,
+      "ratio": 2.76
+    },
+    {
+      "date": "2011-10-28",
+      "buyBalance": 13850.8,
+      "sellBalance": 5733.3,
+      "ratio": 2.42
+    },
+    {
+      "date": "2011-11-04",
+      "buyBalance": 14163.2,
+      "sellBalance": 5407.5,
+      "ratio": 2.62
+    },
+    {
+      "date": "2011-11-11",
+      "buyBalance": 14060.2,
+      "sellBalance": 5136.3,
+      "ratio": 2.74
+    },
+    {
+      "date": "2011-11-18",
+      "buyBalance": 14294.8,
+      "sellBalance": 5256,
+      "ratio": 2.72
+    },
+    {
+      "date": "2011-11-25",
+      "buyBalance": 14337.3,
+      "sellBalance": 4911.6,
+      "ratio": 2.92
+    },
+    {
+      "date": "2011-12-02",
+      "buyBalance": 13701.1,
+      "sellBalance": 5158.7,
+      "ratio": 2.66
+    },
+    {
+      "date": "2011-12-09",
+      "buyBalance": 13909.8,
+      "sellBalance": 5249.9,
+      "ratio": 2.65
+    },
+    {
+      "date": "2011-12-16",
+      "buyBalance": 14325.1,
+      "sellBalance": 5305.2,
+      "ratio": 2.7
+    },
+    {
+      "date": "2011-12-22",
+      "buyBalance": 14291.8,
+      "sellBalance": 5135.8,
+      "ratio": 2.78
+    },
+    {
+      "date": "2011-12-30",
+      "buyBalance": 13855,
+      "sellBalance": 4940.8,
+      "ratio": 2.8
+    },
+    {
+      "date": "2012-01-06",
+      "buyBalance": 13499.9,
+      "sellBalance": 5246.3,
+      "ratio": 2.57
+    },
+    {
+      "date": "2012-01-13",
+      "buyBalance": 13206,
+      "sellBalance": 5503.2,
+      "ratio": 2.4
+    },
+    {
+      "date": "2012-01-20",
+      "buyBalance": 12199,
+      "sellBalance": 5699.8,
+      "ratio": 2.14
+    },
+    {
+      "date": "2012-01-27",
+      "buyBalance": 11975.2,
+      "sellBalance": 5829,
+      "ratio": 2.05
+    },
+    {
+      "date": "2012-02-03",
+      "buyBalance": 11818,
+      "sellBalance": 5972.6,
+      "ratio": 1.98
+    },
+    {
+      "date": "2012-02-10",
+      "buyBalance": 11891.1,
+      "sellBalance": 6204.1,
+      "ratio": 1.92
+    },
+    {
+      "date": "2012-02-17",
+      "buyBalance": 11549,
+      "sellBalance": 6617.3,
+      "ratio": 1.75
+    },
+    {
+      "date": "2012-02-24",
+      "buyBalance": 11875.4,
+      "sellBalance": 7185.4,
+      "ratio": 1.65
+    },
+    {
+      "date": "2012-03-02",
+      "buyBalance": 12129.8,
+      "sellBalance": 6990.5,
+      "ratio": 1.74
+    },
+    {
+      "date": "2012-03-09",
+      "buyBalance": 12261.7,
+      "sellBalance": 7058.6,
+      "ratio": 1.74
+    },
+    {
+      "date": "2012-03-16",
+      "buyBalance": 12626.3,
+      "sellBalance": 6962.1,
+      "ratio": 1.81
+    },
+    {
+      "date": "2012-03-23",
+      "buyBalance": 13645.6,
+      "sellBalance": 6610.9,
+      "ratio": 2.06
+    },
+    {
+      "date": "2012-03-30",
+      "buyBalance": 13892.9,
+      "sellBalance": 6085.3,
+      "ratio": 2.28
+    },
+    {
+      "date": "2012-04-06",
+      "buyBalance": 14569.7,
+      "sellBalance": 5955.8,
+      "ratio": 2.45
+    },
+    {
+      "date": "2012-04-13",
+      "buyBalance": 14870.4,
+      "sellBalance": 5782.1,
+      "ratio": 2.57
+    },
+    {
+      "date": "2012-04-20",
+      "buyBalance": 15172.4,
+      "sellBalance": 5554,
+      "ratio": 2.73
+    },
+    {
+      "date": "2012-04-27",
+      "buyBalance": 15249.1,
+      "sellBalance": 5410.4,
+      "ratio": 2.82
+    },
+    {
+      "date": "2012-05-11",
+      "buyBalance": 15524.9,
+      "sellBalance": 4867.5,
+      "ratio": 3.19
+    },
+    {
+      "date": "2012-05-18",
+      "buyBalance": 15267.8,
+      "sellBalance": 4294.5,
+      "ratio": 3.56
+    },
+    {
+      "date": "2012-05-25",
+      "buyBalance": 15491,
+      "sellBalance": 4388.5,
+      "ratio": 3.53
+    },
+    {
+      "date": "2012-06-01",
+      "buyBalance": 15291.5,
+      "sellBalance": 4566.4,
+      "ratio": 3.35
+    },
+    {
+      "date": "2012-06-08",
+      "buyBalance": 14983.1,
+      "sellBalance": 4814.1,
+      "ratio": 3.11
+    },
+    {
+      "date": "2012-06-15",
+      "buyBalance": 14822.1,
+      "sellBalance": 4816.5,
+      "ratio": 3.08
+    },
+    {
+      "date": "2012-06-22",
+      "buyBalance": 15003.2,
+      "sellBalance": 5022.3,
+      "ratio": 2.99
+    },
+    {
+      "date": "2012-06-29",
+      "buyBalance": 15003.7,
+      "sellBalance": 5102.6,
+      "ratio": 2.94
+    },
+    {
+      "date": "2012-07-06",
+      "buyBalance": 15020.2,
+      "sellBalance": 5411,
+      "ratio": 2.78
+    },
+    {
+      "date": "2012-07-13",
+      "buyBalance": 15267.5,
+      "sellBalance": 5201.7,
+      "ratio": 2.94
+    },
+    {
+      "date": "2012-07-20",
+      "buyBalance": 15217.7,
+      "sellBalance": 5023.9,
+      "ratio": 3.03
+    },
+    {
+      "date": "2012-07-27",
+      "buyBalance": 14943.8,
+      "sellBalance": 4789,
+      "ratio": 3.12
+    },
+    {
+      "date": "2012-08-03",
+      "buyBalance": 14993.5,
+      "sellBalance": 4611.1,
+      "ratio": 3.25
+    },
+    {
+      "date": "2012-08-10",
+      "buyBalance": 14390.5,
+      "sellBalance": 4929.7,
+      "ratio": 2.92
+    },
+    {
+      "date": "2012-08-17",
+      "buyBalance": 14098.3,
+      "sellBalance": 5310.2,
+      "ratio": 2.65
+    },
+    {
+      "date": "2012-08-24",
+      "buyBalance": 14030.9,
+      "sellBalance": 5122.1,
+      "ratio": 2.74
+    },
+    {
+      "date": "2012-08-31",
+      "buyBalance": 14067,
+      "sellBalance": 4967.7,
+      "ratio": 2.83
+    },
+    {
+      "date": "2012-09-07",
+      "buyBalance": 13980,
+      "sellBalance": 4945.8,
+      "ratio": 2.83
+    },
+    {
+      "date": "2012-09-14",
+      "buyBalance": 13252.5,
+      "sellBalance": 5104,
+      "ratio": 2.6
+    },
+    {
+      "date": "2012-09-21",
+      "buyBalance": 13088.9,
+      "sellBalance": 5163.4,
+      "ratio": 2.53
+    },
+    {
+      "date": "2012-09-28",
+      "buyBalance": 12963.7,
+      "sellBalance": 4949.2,
+      "ratio": 2.62
+    },
+    {
+      "date": "2012-10-05",
+      "buyBalance": 12733.4,
+      "sellBalance": 4945.3,
+      "ratio": 2.57
+    },
+    {
+      "date": "2012-10-12",
+      "buyBalance": 13020,
+      "sellBalance": 4828.8,
+      "ratio": 2.7
+    },
+    {
+      "date": "2012-10-19",
+      "buyBalance": 12074.8,
+      "sellBalance": 5347.7,
+      "ratio": 2.26
+    },
+    {
+      "date": "2012-10-26",
+      "buyBalance": 12436.5,
+      "sellBalance": 5333.4,
+      "ratio": 2.33
+    },
+    {
+      "date": "2012-11-02",
+      "buyBalance": 12273.8,
+      "sellBalance": 5373.4,
+      "ratio": 2.28
+    },
+    {
+      "date": "2012-11-09",
+      "buyBalance": 12847.1,
+      "sellBalance": 5034.9,
+      "ratio": 2.55
+    },
+    {
+      "date": "2012-11-16",
+      "buyBalance": 12522.8,
+      "sellBalance": 5246.8,
+      "ratio": 2.39
+    },
+    {
+      "date": "2012-11-22",
+      "buyBalance": 12051.5,
+      "sellBalance": 5715.3,
+      "ratio": 2.11
+    },
+    {
+      "date": "2012-11-30",
+      "buyBalance": 12156.2,
+      "sellBalance": 5774.4,
+      "ratio": 2.11
+    },
+    {
+      "date": "2012-12-07",
+      "buyBalance": 12346.7,
+      "sellBalance": 5950.5,
+      "ratio": 2.07
+    },
+    {
+      "date": "2012-12-14",
+      "buyBalance": 12307.4,
+      "sellBalance": 6008.9,
+      "ratio": 2.05
+    },
+    {
+      "date": "2012-12-21",
+      "buyBalance": 12627,
+      "sellBalance": 6064.6,
+      "ratio": 2.08
+    },
+    {
+      "date": "2012-12-28",
+      "buyBalance": 13308.9,
+      "sellBalance": 5634.2,
+      "ratio": 2.36
+    },
+    {
+      "date": "2013-01-11",
+      "buyBalance": 15046.4,
+      "sellBalance": 5961.2,
+      "ratio": 2.52
+    },
+    {
+      "date": "2013-01-18",
+      "buyBalance": 15713.4,
+      "sellBalance": 6137.8,
+      "ratio": 2.56
+    },
+    {
+      "date": "2013-01-25",
+      "buyBalance": 16432.4,
+      "sellBalance": 6091,
+      "ratio": 2.7
+    },
+    {
+      "date": "2013-02-01",
+      "buyBalance": 17237.1,
+      "sellBalance": 6101.7,
+      "ratio": 2.82
+    },
+    {
+      "date": "2013-02-08",
+      "buyBalance": 19041.2,
+      "sellBalance": 5961.4,
+      "ratio": 3.19
+    },
+    {
+      "date": "2013-02-15",
+      "buyBalance": 19300.1,
+      "sellBalance": 5708.3,
+      "ratio": 3.38
+    },
+    {
+      "date": "2013-02-22",
+      "buyBalance": 19808.5,
+      "sellBalance": 6032.3,
+      "ratio": 3.28
+    },
+    {
+      "date": "2013-03-01",
+      "buyBalance": 20174.6,
+      "sellBalance": 6092.2,
+      "ratio": 3.31
+    },
+    {
+      "date": "2013-03-08",
+      "buyBalance": 20770.3,
+      "sellBalance": 6351.7,
+      "ratio": 3.27
+    },
+    {
+      "date": "2013-03-15",
+      "buyBalance": 22191.8,
+      "sellBalance": 6148.8,
+      "ratio": 3.61
+    },
+    {
+      "date": "2013-03-22",
+      "buyBalance": 23952,
+      "sellBalance": 5675.9,
+      "ratio": 4.22
+    },
+    {
+      "date": "2013-03-29",
+      "buyBalance": 24179.3,
+      "sellBalance": 5394.9,
+      "ratio": 4.48
+    },
+    {
+      "date": "2013-04-05",
+      "buyBalance": 22663.6,
+      "sellBalance": 5526,
+      "ratio": 4.1
+    },
+    {
+      "date": "2013-04-12",
+      "buyBalance": 23113.6,
+      "sellBalance": 6037.7,
+      "ratio": 3.83
+    },
+    {
+      "date": "2013-04-19",
+      "buyBalance": 26115.3,
+      "sellBalance": 5521.1,
+      "ratio": 4.73
+    },
+    {
+      "date": "2013-04-26",
+      "buyBalance": 26338.3,
+      "sellBalance": 5796.5,
+      "ratio": 4.54
+    },
+    {
+      "date": "2013-05-02",
+      "buyBalance": 27130.5,
+      "sellBalance": 5666.4,
+      "ratio": 4.79
+    },
+    {
+      "date": "2013-05-10",
+      "buyBalance": 27735.9,
+      "sellBalance": 6385.3,
+      "ratio": 4.34
+    },
+    {
+      "date": "2013-05-17",
+      "buyBalance": 28681.2,
+      "sellBalance": 6090.9,
+      "ratio": 4.71
+    },
+    {
+      "date": "2013-05-24",
+      "buyBalance": 31010.6,
+      "sellBalance": 5253.4,
+      "ratio": 5.9
+    },
+    {
+      "date": "2013-05-31",
+      "buyBalance": 31719.1,
+      "sellBalance": 5202.9,
+      "ratio": 6.1
+    },
+    {
+      "date": "2013-06-07",
+      "buyBalance": 29321.3,
+      "sellBalance": 4427.3,
+      "ratio": 6.62
+    },
+    {
+      "date": "2013-06-14",
+      "buyBalance": 30099.1,
+      "sellBalance": 4242.7,
+      "ratio": 7.09
+    },
+    {
+      "date": "2013-06-21",
+      "buyBalance": 30380.6,
+      "sellBalance": 4480.6,
+      "ratio": 6.78
+    },
+    {
+      "date": "2013-06-28",
+      "buyBalance": 27757.9,
+      "sellBalance": 4959.2,
+      "ratio": 5.6
+    },
+    {
+      "date": "2013-07-05",
+      "buyBalance": 28576.8,
+      "sellBalance": 5238.8,
+      "ratio": 5.45
+    },
+    {
+      "date": "2013-07-12",
+      "buyBalance": 29124.2,
+      "sellBalance": 5349.7,
+      "ratio": 5.44
+    },
+    {
+      "date": "2013-07-19",
+      "buyBalance": 29241.4,
+      "sellBalance": 5579.4,
+      "ratio": 5.24
+    },
+    {
+      "date": "2013-07-26",
+      "buyBalance": 30258,
+      "sellBalance": 5494.7,
+      "ratio": 5.51
+    },
+    {
+      "date": "2013-08-02",
+      "buyBalance": 29338,
+      "sellBalance": 5350.7,
+      "ratio": 5.48
+    },
+    {
+      "date": "2013-08-09",
+      "buyBalance": 30201.7,
+      "sellBalance": 4816.6,
+      "ratio": 6.27
+    },
+    {
+      "date": "2013-08-16",
+      "buyBalance": 29992.3,
+      "sellBalance": 4829.3,
+      "ratio": 6.21
+    },
+    {
+      "date": "2013-08-23",
+      "buyBalance": 29606.2,
+      "sellBalance": 4936,
+      "ratio": 6
+    },
+    {
+      "date": "2013-08-30",
+      "buyBalance": 29615.2,
+      "sellBalance": 4894.7,
+      "ratio": 6.05
+    },
+    {
+      "date": "2013-09-06",
+      "buyBalance": 28875,
+      "sellBalance": 5187.6,
+      "ratio": 5.57
+    },
+    {
+      "date": "2013-09-13",
+      "buyBalance": 29199.2,
+      "sellBalance": 5743.6,
+      "ratio": 5.08
+    },
+    {
+      "date": "2013-09-20",
+      "buyBalance": 28683.5,
+      "sellBalance": 6108.4,
+      "ratio": 4.7
+    },
+    {
+      "date": "2013-09-27",
+      "buyBalance": 28699.4,
+      "sellBalance": 5958.5,
+      "ratio": 4.82
+    },
+    {
+      "date": "2013-10-04",
+      "buyBalance": 29873.9,
+      "sellBalance": 5552,
+      "ratio": 5.38
+    },
+    {
+      "date": "2013-10-11",
+      "buyBalance": 29346,
+      "sellBalance": 5615.8,
+      "ratio": 5.23
+    },
+    {
+      "date": "2013-10-18",
+      "buyBalance": 29352.4,
+      "sellBalance": 5610.2,
+      "ratio": 5.23
+    },
+    {
+      "date": "2013-10-25",
+      "buyBalance": 30984.9,
+      "sellBalance": 5310.9,
+      "ratio": 5.83
+    },
+    {
+      "date": "2013-11-01",
+      "buyBalance": 30004.9,
+      "sellBalance": 5565,
+      "ratio": 5.39
+    },
+    {
+      "date": "2013-11-08",
+      "buyBalance": 29898.6,
+      "sellBalance": 5566.7,
+      "ratio": 5.37
+    },
+    {
+      "date": "2013-11-15",
+      "buyBalance": 27138.8,
+      "sellBalance": 6423.6,
+      "ratio": 4.22
+    },
+    {
+      "date": "2013-11-22",
+      "buyBalance": 27084.2,
+      "sellBalance": 6404.5,
+      "ratio": 4.23
+    },
+    {
+      "date": "2013-11-29",
+      "buyBalance": 28234.6,
+      "sellBalance": 6548.1,
+      "ratio": 4.31
+    },
+    {
+      "date": "2013-12-06",
+      "buyBalance": 30037.4,
+      "sellBalance": 6078.2,
+      "ratio": 4.94
+    },
+    {
+      "date": "2013-12-13",
+      "buyBalance": 30772.1,
+      "sellBalance": 5971,
+      "ratio": 5.15
+    },
+    {
+      "date": "2013-12-20",
+      "buyBalance": 30225,
+      "sellBalance": 6028.5,
+      "ratio": 5.01
+    },
+    {
+      "date": "2013-12-27",
+      "buyBalance": 30663.5,
+      "sellBalance": 5970.3,
+      "ratio": 5.14
+    },
+    {
+      "date": "2014-01-10",
+      "buyBalance": 32433.5,
+      "sellBalance": 5969.6,
+      "ratio": 5.43
+    },
+    {
+      "date": "2014-01-17",
+      "buyBalance": 32615.9,
+      "sellBalance": 6036.7,
+      "ratio": 5.4
+    },
+    {
+      "date": "2014-01-24",
+      "buyBalance": 34672.6,
+      "sellBalance": 6030.1,
+      "ratio": 5.75
+    },
+    {
+      "date": "2014-01-31",
+      "buyBalance": 35241.8,
+      "sellBalance": 5337.5,
+      "ratio": 6.6
+    },
+    {
+      "date": "2014-02-07",
+      "buyBalance": 32155.3,
+      "sellBalance": 4776.3,
+      "ratio": 6.73
+    },
+    {
+      "date": "2014-02-14",
+      "buyBalance": 32678,
+      "sellBalance": 5112.8,
+      "ratio": 6.39
+    },
+    {
+      "date": "2014-02-21",
+      "buyBalance": 31797.8,
+      "sellBalance": 5569.8,
+      "ratio": 5.71
+    },
+    {
+      "date": "2014-02-28",
+      "buyBalance": 32350.7,
+      "sellBalance": 5323.8,
+      "ratio": 6.08
+    },
+    {
+      "date": "2014-03-07",
+      "buyBalance": 31156.2,
+      "sellBalance": 5832.4,
+      "ratio": 5.34
+    },
+    {
+      "date": "2014-03-14",
+      "buyBalance": 33189.4,
+      "sellBalance": 4892,
+      "ratio": 6.78
+    },
+    {
+      "date": "2014-03-20",
+      "buyBalance": 32505.2,
+      "sellBalance": 5042.1,
+      "ratio": 6.45
+    },
+    {
+      "date": "2014-03-28",
+      "buyBalance": 31277.4,
+      "sellBalance": 4872.3,
+      "ratio": 6.42
+    },
+    {
+      "date": "2014-04-04",
+      "buyBalance": 29897.1,
+      "sellBalance": 5436.1,
+      "ratio": 5.5
+    },
+    {
+      "date": "2014-04-11",
+      "buyBalance": 31486.2,
+      "sellBalance": 4690.5,
+      "ratio": 6.71
+    },
+    {
+      "date": "2014-04-18",
+      "buyBalance": 30321.2,
+      "sellBalance": 4910.4,
+      "ratio": 6.17
+    },
+    {
+      "date": "2014-04-25",
+      "buyBalance": 30103.5,
+      "sellBalance": 5280.4,
+      "ratio": 5.7
+    },
+    {
+      "date": "2014-05-02",
+      "buyBalance": 29412.1,
+      "sellBalance": 5354.2,
+      "ratio": 5.49
+    },
+    {
+      "date": "2014-05-09",
+      "buyBalance": 29848.3,
+      "sellBalance": 5109.6,
+      "ratio": 5.84
+    },
+    {
+      "date": "2014-05-16",
+      "buyBalance": 29664.7,
+      "sellBalance": 5135.9,
+      "ratio": 5.78
+    },
+    {
+      "date": "2014-05-23",
+      "buyBalance": 28362.9,
+      "sellBalance": 5467.8,
+      "ratio": 5.19
+    },
+    {
+      "date": "2014-05-30",
+      "buyBalance": 27729.7,
+      "sellBalance": 6070,
+      "ratio": 4.57
+    },
+    {
+      "date": "2014-06-06",
+      "buyBalance": 26897.8,
+      "sellBalance": 6633.2,
+      "ratio": 4.06
+    },
+    {
+      "date": "2014-06-13",
+      "buyBalance": 27401.2,
+      "sellBalance": 6645.6,
+      "ratio": 4.12
+    },
+    {
+      "date": "2014-06-20",
+      "buyBalance": 27148.8,
+      "sellBalance": 7242.6,
+      "ratio": 3.75
+    },
+    {
+      "date": "2014-06-27",
+      "buyBalance": 27408.6,
+      "sellBalance": 6499.7,
+      "ratio": 4.22
+    },
+    {
+      "date": "2014-07-04",
+      "buyBalance": 27009.2,
+      "sellBalance": 6866.1,
+      "ratio": 3.93
+    },
+    {
+      "date": "2014-07-11",
+      "buyBalance": 27539.9,
+      "sellBalance": 6487.8,
+      "ratio": 4.24
+    },
+    {
+      "date": "2014-07-18",
+      "buyBalance": 26979,
+      "sellBalance": 6648.5,
+      "ratio": 4.06
+    },
+    {
+      "date": "2014-07-25",
+      "buyBalance": 26475.5,
+      "sellBalance": 6659.9,
+      "ratio": 3.98
+    },
+    {
+      "date": "2014-08-01",
+      "buyBalance": 26732.5,
+      "sellBalance": 6492.5,
+      "ratio": 4.12
+    },
+    {
+      "date": "2014-08-08",
+      "buyBalance": 28265.5,
+      "sellBalance": 5754.8,
+      "ratio": 4.91
+    },
+    {
+      "date": "2014-08-15",
+      "buyBalance": 27650.7,
+      "sellBalance": 5896.2,
+      "ratio": 4.69
+    },
+    {
+      "date": "2014-08-22",
+      "buyBalance": 27237,
+      "sellBalance": 6367.4,
+      "ratio": 4.28
+    },
+    {
+      "date": "2014-08-29",
+      "buyBalance": 27963.8,
+      "sellBalance": 6413.2,
+      "ratio": 4.36
+    },
+    {
+      "date": "2014-09-05",
+      "buyBalance": 27749.3,
+      "sellBalance": 6494.5,
+      "ratio": 4.27
+    },
+    {
+      "date": "2014-09-12",
+      "buyBalance": 27206.8,
+      "sellBalance": 6828.6,
+      "ratio": 3.98
+    },
+    {
+      "date": "2014-09-19",
+      "buyBalance": 26880.1,
+      "sellBalance": 7455.7,
+      "ratio": 3.61
+    },
+    {
+      "date": "2014-09-26",
+      "buyBalance": 27245.8,
+      "sellBalance": 6935.1,
+      "ratio": 3.93
+    },
+    {
+      "date": "2014-10-03",
+      "buyBalance": 28617,
+      "sellBalance": 6163.1,
+      "ratio": 4.64
+    },
+    {
+      "date": "2014-10-10",
+      "buyBalance": 29546.2,
+      "sellBalance": 5690.3,
+      "ratio": 5.19
+    },
+    {
+      "date": "2014-10-17",
+      "buyBalance": 30495.3,
+      "sellBalance": 5438.7,
+      "ratio": 5.61
+    },
+    {
+      "date": "2014-10-24",
+      "buyBalance": 30143.8,
+      "sellBalance": 5394.5,
+      "ratio": 5.59
+    },
+    {
+      "date": "2014-10-31",
+      "buyBalance": 27623.2,
+      "sellBalance": 6462.5,
+      "ratio": 4.27
+    },
+    {
+      "date": "2014-11-07",
+      "buyBalance": 27292.2,
+      "sellBalance": 6513.4,
+      "ratio": 4.19
+    },
+    {
+      "date": "2014-11-14",
+      "buyBalance": 26618.6,
+      "sellBalance": 7112.1,
+      "ratio": 3.74
+    },
+    {
+      "date": "2014-11-21",
+      "buyBalance": 27571.7,
+      "sellBalance": 6969.4,
+      "ratio": 3.96
+    },
+    {
+      "date": "2014-11-28",
+      "buyBalance": 28057.1,
+      "sellBalance": 7103.3,
+      "ratio": 3.95
+    },
+    {
+      "date": "2014-12-05",
+      "buyBalance": 28632,
+      "sellBalance": 7514,
+      "ratio": 3.81
+    },
+    {
+      "date": "2014-12-12",
+      "buyBalance": 30275.4,
+      "sellBalance": 6908.5,
+      "ratio": 4.38
+    },
+    {
+      "date": "2014-12-19",
+      "buyBalance": 30145,
+      "sellBalance": 6288.3,
+      "ratio": 4.79
+    },
+    {
+      "date": "2014-12-30",
+      "buyBalance": 29648.7,
+      "sellBalance": 6090,
+      "ratio": 4.87
+    },
+    {
+      "date": "2015-01-09",
+      "buyBalance": 31377.5,
+      "sellBalance": 5945.3,
+      "ratio": 5.28
+    },
+    {
+      "date": "2015-01-16",
+      "buyBalance": 32310,
+      "sellBalance": 5647.6,
+      "ratio": 5.72
+    },
+    {
+      "date": "2015-01-23",
+      "buyBalance": 31246.4,
+      "sellBalance": 5972.3,
+      "ratio": 5.23
+    },
+    {
+      "date": "2015-01-30",
+      "buyBalance": 31144.1,
+      "sellBalance": 6206.4,
+      "ratio": 5.02
+    },
+    {
+      "date": "2015-02-06",
+      "buyBalance": 30554.1,
+      "sellBalance": 6242.2,
+      "ratio": 4.89
+    },
+    {
+      "date": "2015-02-13",
+      "buyBalance": 29539.3,
+      "sellBalance": 6741.7,
+      "ratio": 4.38
+    },
+    {
+      "date": "2015-02-20",
+      "buyBalance": 28527.5,
+      "sellBalance": 7451.3,
+      "ratio": 3.83
+    },
+    {
+      "date": "2015-02-27",
+      "buyBalance": 28231.7,
+      "sellBalance": 8000.4,
+      "ratio": 3.53
+    },
+    {
+      "date": "2015-03-06",
+      "buyBalance": 28691.3,
+      "sellBalance": 8078.1,
+      "ratio": 3.55
+    },
+    {
+      "date": "2015-03-13",
+      "buyBalance": 28943,
+      "sellBalance": 7863.4,
+      "ratio": 3.68
+    },
+    {
+      "date": "2015-03-20",
+      "buyBalance": 29726.8,
+      "sellBalance": 7788.5,
+      "ratio": 3.82
+    },
+    {
+      "date": "2015-03-27",
+      "buyBalance": 30380.1,
+      "sellBalance": 7171.5,
+      "ratio": 4.24
+    },
+    {
+      "date": "2015-04-03",
+      "buyBalance": 29821,
+      "sellBalance": 7493.9,
+      "ratio": 3.98
+    },
+    {
+      "date": "2015-04-10",
+      "buyBalance": 29480.7,
+      "sellBalance": 7913.6,
+      "ratio": 3.73
+    },
+    {
+      "date": "2015-04-17",
+      "buyBalance": 30116.3,
+      "sellBalance": 7995.7,
+      "ratio": 3.77
+    },
+    {
+      "date": "2015-04-24",
+      "buyBalance": 29380.3,
+      "sellBalance": 8556.8,
+      "ratio": 3.43
+    },
+    {
+      "date": "2015-05-01",
+      "buyBalance": 29858.5,
+      "sellBalance": 7332.4,
+      "ratio": 4.07
+    },
+    {
+      "date": "2015-05-15",
+      "buyBalance": 29927.6,
+      "sellBalance": 7584.8,
+      "ratio": 3.95
+    },
+    {
+      "date": "2015-05-22",
+      "buyBalance": 28878,
+      "sellBalance": 8263.6,
+      "ratio": 3.49
+    },
+    {
+      "date": "2015-05-29",
+      "buyBalance": 28866.9,
+      "sellBalance": 8683.9,
+      "ratio": 3.32
+    },
+    {
+      "date": "2015-06-05",
+      "buyBalance": 29907.1,
+      "sellBalance": 8460.5,
+      "ratio": 3.53
+    },
+    {
+      "date": "2015-06-12",
+      "buyBalance": 31127.5,
+      "sellBalance": 8044.2,
+      "ratio": 3.87
+    },
+    {
+      "date": "2015-06-19",
+      "buyBalance": 32247.1,
+      "sellBalance": 7785.3,
+      "ratio": 4.14
+    },
+    {
+      "date": "2015-06-26",
+      "buyBalance": 31645.2,
+      "sellBalance": 8076.3,
+      "ratio": 3.92
+    },
+    {
+      "date": "2015-07-03",
+      "buyBalance": 32398,
+      "sellBalance": 7479.9,
+      "ratio": 4.33
+    },
+    {
+      "date": "2015-07-10",
+      "buyBalance": 34440.1,
+      "sellBalance": 6433.5,
+      "ratio": 5.35
+    },
+    {
+      "date": "2015-07-17",
+      "buyBalance": 32478.7,
+      "sellBalance": 7545.4,
+      "ratio": 4.3
+    },
+    {
+      "date": "2015-07-24",
+      "buyBalance": 33718.7,
+      "sellBalance": 7133.4,
+      "ratio": 4.73
+    },
+    {
+      "date": "2015-07-31",
+      "buyBalance": 33943.6,
+      "sellBalance": 7062.3,
+      "ratio": 4.81
+    },
+    {
+      "date": "2015-08-07",
+      "buyBalance": 33472.3,
+      "sellBalance": 7111.3,
+      "ratio": 4.71
+    },
+    {
+      "date": "2015-08-14",
+      "buyBalance": 34028.2,
+      "sellBalance": 6957.6,
+      "ratio": 4.89
+    },
+    {
+      "date": "2015-08-21",
+      "buyBalance": 35870.7,
+      "sellBalance": 6424.3,
+      "ratio": 5.58
+    },
+    {
+      "date": "2015-08-28",
+      "buyBalance": 33049.6,
+      "sellBalance": 5552,
+      "ratio": 5.95
+    },
+    {
+      "date": "2015-09-04",
+      "buyBalance": 34046.1,
+      "sellBalance": 5509.4,
+      "ratio": 6.18
+    },
+    {
+      "date": "2015-09-11",
+      "buyBalance": 32949.8,
+      "sellBalance": 5660.9,
+      "ratio": 5.82
+    },
+    {
+      "date": "2015-09-18",
+      "buyBalance": 33004.7,
+      "sellBalance": 5543.2,
+      "ratio": 5.95
+    },
+    {
+      "date": "2015-10-02",
+      "buyBalance": 32538.4,
+      "sellBalance": 5461,
+      "ratio": 5.96
+    },
+    {
+      "date": "2015-10-09",
+      "buyBalance": 31533.8,
+      "sellBalance": 6043.6,
+      "ratio": 5.22
+    },
+    {
+      "date": "2015-10-16",
+      "buyBalance": 31855.3,
+      "sellBalance": 6099.2,
+      "ratio": 5.22
+    },
+    {
+      "date": "2015-10-23",
+      "buyBalance": 30820.3,
+      "sellBalance": 6367.7,
+      "ratio": 4.84
+    },
+    {
+      "date": "2015-10-30",
+      "buyBalance": 31002.7,
+      "sellBalance": 6385.6,
+      "ratio": 4.86
+    },
+    {
+      "date": "2015-11-06",
+      "buyBalance": 31058.4,
+      "sellBalance": 6615.3,
+      "ratio": 4.69
+    },
+    {
+      "date": "2015-11-13",
+      "buyBalance": 31144.3,
+      "sellBalance": 6818,
+      "ratio": 4.57
+    },
+    {
+      "date": "2015-11-20",
+      "buyBalance": 30025.4,
+      "sellBalance": 7110.9,
+      "ratio": 4.22
+    },
+    {
+      "date": "2015-11-27",
+      "buyBalance": 30698.1,
+      "sellBalance": 7080.9,
+      "ratio": 4.34
+    },
+    {
+      "date": "2015-12-04",
+      "buyBalance": 31939.8,
+      "sellBalance": 6742.7,
+      "ratio": 4.74
+    },
+    {
+      "date": "2015-12-11",
+      "buyBalance": 32882.3,
+      "sellBalance": 6410,
+      "ratio": 5.13
+    },
+    {
+      "date": "2015-12-18",
+      "buyBalance": 32464.6,
+      "sellBalance": 6274.4,
+      "ratio": 5.17
+    },
+    {
+      "date": "2015-12-25",
+      "buyBalance": 32005.7,
+      "sellBalance": 6342.3,
+      "ratio": 5.05
+    },
+    {
+      "date": "2015-12-30",
+      "buyBalance": 30610.5,
+      "sellBalance": 6010.8,
+      "ratio": 5.09
+    },
+    {
+      "date": "2016-01-08",
+      "buyBalance": 32731.4,
+      "sellBalance": 5634.1,
+      "ratio": 5.81
+    },
+    {
+      "date": "2016-01-15",
+      "buyBalance": 32038.6,
+      "sellBalance": 5302.8,
+      "ratio": 6.04
+    },
+    {
+      "date": "2016-01-22",
+      "buyBalance": 29692.2,
+      "sellBalance": 5150.5,
+      "ratio": 5.76
+    },
+    {
+      "date": "2016-01-29",
+      "buyBalance": 29115.1,
+      "sellBalance": 5576.4,
+      "ratio": 5.22
+    },
+    {
+      "date": "2016-02-05",
+      "buyBalance": 29330.8,
+      "sellBalance": 5591.8,
+      "ratio": 5.25
+    },
+    {
+      "date": "2016-02-12",
+      "buyBalance": 26798,
+      "sellBalance": 5125.2,
+      "ratio": 5.23
+    },
+    {
+      "date": "2016-02-19",
+      "buyBalance": 25270.4,
+      "sellBalance": 5322.4,
+      "ratio": 4.75
+    },
+    {
+      "date": "2016-02-26",
+      "buyBalance": 24872.8,
+      "sellBalance": 5414.6,
+      "ratio": 4.59
+    },
+    {
+      "date": "2016-03-04",
+      "buyBalance": 24497.6,
+      "sellBalance": 6237.9,
+      "ratio": 3.93
+    },
+    {
+      "date": "2016-03-11",
+      "buyBalance": 25680.8,
+      "sellBalance": 5952.8,
+      "ratio": 4.31
+    },
+    {
+      "date": "2016-03-18",
+      "buyBalance": 27052.1,
+      "sellBalance": 5692.4,
+      "ratio": 4.75
+    },
+    {
+      "date": "2016-03-25",
+      "buyBalance": 26789.8,
+      "sellBalance": 6392.7,
+      "ratio": 4.19
+    },
+    {
+      "date": "2016-04-01",
+      "buyBalance": 27555.6,
+      "sellBalance": 5564.3,
+      "ratio": 4.95
+    },
+    {
+      "date": "2016-04-08",
+      "buyBalance": 26912,
+      "sellBalance": 5786.9,
+      "ratio": 4.65
+    },
+    {
+      "date": "2016-04-15",
+      "buyBalance": 25815.4,
+      "sellBalance": 6646.9,
+      "ratio": 3.88
+    },
+    {
+      "date": "2016-04-22",
+      "buyBalance": 24624.5,
+      "sellBalance": 7346.2,
+      "ratio": 3.35
+    },
+    {
+      "date": "2016-04-28",
+      "buyBalance": 24997.9,
+      "sellBalance": 6708.8,
+      "ratio": 3.73
+    },
+    {
+      "date": "2016-05-13",
+      "buyBalance": 26046.5,
+      "sellBalance": 6377,
+      "ratio": 4.08
+    },
+    {
+      "date": "2016-05-20",
+      "buyBalance": 25331.3,
+      "sellBalance": 6677,
+      "ratio": 3.79
+    },
+    {
+      "date": "2016-05-27",
+      "buyBalance": 24899.3,
+      "sellBalance": 6970.4,
+      "ratio": 3.57
+    },
+    {
+      "date": "2016-06-03",
+      "buyBalance": 25426.5,
+      "sellBalance": 6777.5,
+      "ratio": 3.75
+    },
+    {
+      "date": "2016-06-10",
+      "buyBalance": 25549.8,
+      "sellBalance": 6843.3,
+      "ratio": 3.73
+    },
+    {
+      "date": "2016-06-17",
+      "buyBalance": 24476.3,
+      "sellBalance": 6107.4,
+      "ratio": 4.01
+    },
+    {
+      "date": "2016-06-24",
+      "buyBalance": 23686.6,
+      "sellBalance": 5490,
+      "ratio": 4.31
+    },
+    {
+      "date": "2016-07-01",
+      "buyBalance": 22872.4,
+      "sellBalance": 5947.6,
+      "ratio": 3.85
+    },
+    {
+      "date": "2016-07-08",
+      "buyBalance": 23217.5,
+      "sellBalance": 5739.8,
+      "ratio": 4.05
+    },
+    {
+      "date": "2016-07-15",
+      "buyBalance": 21485.5,
+      "sellBalance": 6773.5,
+      "ratio": 3.17
+    },
+    {
+      "date": "2016-07-22",
+      "buyBalance": 22186.2,
+      "sellBalance": 6708.6,
+      "ratio": 3.31
+    },
+    {
+      "date": "2016-07-29",
+      "buyBalance": 21550.6,
+      "sellBalance": 6447.5,
+      "ratio": 3.34
+    },
+    {
+      "date": "2016-08-05",
+      "buyBalance": 22419.8,
+      "sellBalance": 6055.9,
+      "ratio": 3.7
+    },
+    {
+      "date": "2016-08-12",
+      "buyBalance": 21616.9,
+      "sellBalance": 6572.3,
+      "ratio": 3.29
+    },
+    {
+      "date": "2016-08-19",
+      "buyBalance": 22317.1,
+      "sellBalance": 6698.4,
+      "ratio": 3.33
+    },
+    {
+      "date": "2016-08-26",
+      "buyBalance": 22528.6,
+      "sellBalance": 7203.5,
+      "ratio": 3.13
+    },
+    {
+      "date": "2016-09-02",
+      "buyBalance": 21509.4,
+      "sellBalance": 7425.9,
+      "ratio": 2.9
+    },
+    {
+      "date": "2016-09-09",
+      "buyBalance": 21714.7,
+      "sellBalance": 7588.3,
+      "ratio": 2.86
+    },
+    {
+      "date": "2016-09-16",
+      "buyBalance": 22412.3,
+      "sellBalance": 7377.6,
+      "ratio": 3.04
+    },
+    {
+      "date": "2016-09-23",
+      "buyBalance": 21743.4,
+      "sellBalance": 7576.2,
+      "ratio": 2.87
+    },
+    {
+      "date": "2016-09-30",
+      "buyBalance": 22073.2,
+      "sellBalance": 6933.4,
+      "ratio": 3.18
+    },
+    {
+      "date": "2016-10-07",
+      "buyBalance": 21522.2,
+      "sellBalance": 7293.7,
+      "ratio": 2.95
+    },
+    {
+      "date": "2016-10-14",
+      "buyBalance": 21832.5,
+      "sellBalance": 7356.7,
+      "ratio": 2.97
+    },
+    {
+      "date": "2016-10-21",
+      "buyBalance": 21482.7,
+      "sellBalance": 7775.6,
+      "ratio": 2.76
+    },
+    {
+      "date": "2016-10-28",
+      "buyBalance": 21182,
+      "sellBalance": 8373.4,
+      "ratio": 2.53
+    },
+    {
+      "date": "2016-11-04",
+      "buyBalance": 21949.6,
+      "sellBalance": 7203.9,
+      "ratio": 3.05
+    },
+    {
+      "date": "2016-11-11",
+      "buyBalance": 20448.7,
+      "sellBalance": 7522.1,
+      "ratio": 2.72
+    },
+    {
+      "date": "2016-11-18",
+      "buyBalance": 20580.3,
+      "sellBalance": 8655.4,
+      "ratio": 2.38
+    },
+    {
+      "date": "2016-11-25",
+      "buyBalance": 20400.3,
+      "sellBalance": 9323.7,
+      "ratio": 2.19
+    },
+    {
+      "date": "2016-12-02",
+      "buyBalance": 20828.9,
+      "sellBalance": 9332.6,
+      "ratio": 2.23
+    },
+    {
+      "date": "2016-12-09",
+      "buyBalance": 21046.4,
+      "sellBalance": 9766.4,
+      "ratio": 2.15
+    },
+    {
+      "date": "2016-12-16",
+      "buyBalance": 21144.2,
+      "sellBalance": 9898.9,
+      "ratio": 2.14
+    },
+    {
+      "date": "2016-12-22",
+      "buyBalance": 21226.5,
+      "sellBalance": 9691.8,
+      "ratio": 2.19
+    },
+    {
+      "date": "2016-12-30",
+      "buyBalance": 20938.4,
+      "sellBalance": 8855.1,
+      "ratio": 2.36
+    },
+    {
+      "date": "2017-01-06",
+      "buyBalance": 21061.7,
+      "sellBalance": 9272.4,
+      "ratio": 2.27
+    },
+    {
+      "date": "2017-01-13",
+      "buyBalance": 21669.4,
+      "sellBalance": 9181.8,
+      "ratio": 2.36
+    },
+    {
+      "date": "2017-01-20",
+      "buyBalance": 21954.8,
+      "sellBalance": 9142.1,
+      "ratio": 2.4
+    },
+    {
+      "date": "2017-01-27",
+      "buyBalance": 22157.2,
+      "sellBalance": 9234.8,
+      "ratio": 2.4
+    },
+    {
+      "date": "2017-02-03",
+      "buyBalance": 23428,
+      "sellBalance": 8955.8,
+      "ratio": 2.62
+    },
+    {
+      "date": "2017-02-10",
+      "buyBalance": 23351.8,
+      "sellBalance": 9353.8,
+      "ratio": 2.5
+    },
+    {
+      "date": "2017-02-17",
+      "buyBalance": 24139.5,
+      "sellBalance": 9439.1,
+      "ratio": 2.56
+    },
+    {
+      "date": "2017-02-24",
+      "buyBalance": 24399.4,
+      "sellBalance": 9410.4,
+      "ratio": 2.59
+    },
+    {
+      "date": "2017-03-03",
+      "buyBalance": 24651.8,
+      "sellBalance": 9584.3,
+      "ratio": 2.57
+    },
+    {
+      "date": "2017-03-10",
+      "buyBalance": 24793.3,
+      "sellBalance": 9554.2,
+      "ratio": 2.6
+    },
+    {
+      "date": "2017-03-17",
+      "buyBalance": 25465.4,
+      "sellBalance": 9583,
+      "ratio": 2.66
+    },
+    {
+      "date": "2017-03-24",
+      "buyBalance": 26147.5,
+      "sellBalance": 9389.2,
+      "ratio": 2.78
+    },
+    {
+      "date": "2017-03-31",
+      "buyBalance": 26256.4,
+      "sellBalance": 8587.2,
+      "ratio": 3.06
+    },
+    {
+      "date": "2017-04-07",
+      "buyBalance": 25864,
+      "sellBalance": 8274.8,
+      "ratio": 3.13
+    },
+    {
+      "date": "2017-04-14",
+      "buyBalance": 25433.9,
+      "sellBalance": 8146.6,
+      "ratio": 3.12
+    },
+    {
+      "date": "2017-04-21",
+      "buyBalance": 25168.8,
+      "sellBalance": 8437.9,
+      "ratio": 2.98
+    },
+    {
+      "date": "2017-04-28",
+      "buyBalance": 23948.5,
+      "sellBalance": 8959.9,
+      "ratio": 2.67
+    },
+    {
+      "date": "2017-05-12",
+      "buyBalance": 23261.5,
+      "sellBalance": 9678.6,
+      "ratio": 2.4
+    },
+    {
+      "date": "2017-05-19",
+      "buyBalance": 23968.8,
+      "sellBalance": 9527.8,
+      "ratio": 2.52
+    },
+    {
+      "date": "2017-05-26",
+      "buyBalance": 24512.2,
+      "sellBalance": 10201.3,
+      "ratio": 2.4
+    },
+    {
+      "date": "2017-06-02",
+      "buyBalance": 24138.7,
+      "sellBalance": 10315.2,
+      "ratio": 2.34
+    },
+    {
+      "date": "2017-06-09",
+      "buyBalance": 24736.7,
+      "sellBalance": 9886,
+      "ratio": 2.5
+    },
+    {
+      "date": "2017-06-16",
+      "buyBalance": 25297,
+      "sellBalance": 9546.6,
+      "ratio": 2.65
+    },
+    {
+      "date": "2017-06-23",
+      "buyBalance": 25421.7,
+      "sellBalance": 10045.3,
+      "ratio": 2.53
+    },
+    {
+      "date": "2017-06-30",
+      "buyBalance": 25488.8,
+      "sellBalance": 9578.2,
+      "ratio": 2.66
+    },
+    {
+      "date": "2017-07-07",
+      "buyBalance": 25964.3,
+      "sellBalance": 9541.7,
+      "ratio": 2.72
+    },
+    {
+      "date": "2017-07-14",
+      "buyBalance": 26097.9,
+      "sellBalance": 9566,
+      "ratio": 2.73
+    },
+    {
+      "date": "2017-07-21",
+      "buyBalance": 26210.9,
+      "sellBalance": 9506.2,
+      "ratio": 2.76
+    },
+    {
+      "date": "2017-07-28",
+      "buyBalance": 26639.5,
+      "sellBalance": 9437.1,
+      "ratio": 2.82
+    },
+    {
+      "date": "2017-08-04",
+      "buyBalance": 26368.5,
+      "sellBalance": 9417.9,
+      "ratio": 2.8
+    },
+    {
+      "date": "2017-08-10",
+      "buyBalance": 26612.7,
+      "sellBalance": 9302.5,
+      "ratio": 2.86
+    },
+    {
+      "date": "2017-08-18",
+      "buyBalance": 27069.6,
+      "sellBalance": 9002,
+      "ratio": 3.01
+    },
+    {
+      "date": "2017-08-25",
+      "buyBalance": 27183.3,
+      "sellBalance": 9531.9,
+      "ratio": 2.85
+    },
+    {
+      "date": "2017-09-01",
+      "buyBalance": 27090.1,
+      "sellBalance": 9374.9,
+      "ratio": 2.89
+    },
+    {
+      "date": "2017-09-08",
+      "buyBalance": 26858.9,
+      "sellBalance": 9138.6,
+      "ratio": 2.94
+    },
+    {
+      "date": "2017-09-15",
+      "buyBalance": 25939,
+      "sellBalance": 10111.7,
+      "ratio": 2.57
+    },
+    {
+      "date": "2017-09-22",
+      "buyBalance": 25829.8,
+      "sellBalance": 11077.5,
+      "ratio": 2.33
+    },
+    {
+      "date": "2017-09-29",
+      "buyBalance": 25929.9,
+      "sellBalance": 9928,
+      "ratio": 2.61
+    },
+    {
+      "date": "2017-10-06",
+      "buyBalance": 25813.5,
+      "sellBalance": 10140.1,
+      "ratio": 2.55
+    },
+    {
+      "date": "2017-10-13",
+      "buyBalance": 25812.1,
+      "sellBalance": 10509.4,
+      "ratio": 2.46
+    },
+    {
+      "date": "2017-10-20",
+      "buyBalance": 25728.9,
+      "sellBalance": 10670.7,
+      "ratio": 2.41
+    },
+    {
+      "date": "2017-10-27",
+      "buyBalance": 25948.8,
+      "sellBalance": 11019.1,
+      "ratio": 2.35
+    },
+    {
+      "date": "2017-11-02",
+      "buyBalance": 26888.1,
+      "sellBalance": 10837.7,
+      "ratio": 2.48
+    },
+    {
+      "date": "2017-11-10",
+      "buyBalance": 27896.8,
+      "sellBalance": 10454.8,
+      "ratio": 2.67
+    },
+    {
+      "date": "2017-11-17",
+      "buyBalance": 28331.1,
+      "sellBalance": 10272.2,
+      "ratio": 2.76
+    },
+    {
+      "date": "2017-11-24",
+      "buyBalance": 29073.2,
+      "sellBalance": 10498.4,
+      "ratio": 2.77
+    },
+    {
+      "date": "2017-12-01",
+      "buyBalance": 29886.5,
+      "sellBalance": 10154.9,
+      "ratio": 2.94
+    },
+    {
+      "date": "2017-12-08",
+      "buyBalance": 30173,
+      "sellBalance": 10126.3,
+      "ratio": 2.98
+    },
+    {
+      "date": "2017-12-15",
+      "buyBalance": 31160,
+      "sellBalance": 9753.5,
+      "ratio": 3.19
+    },
+    {
+      "date": "2017-12-22",
+      "buyBalance": 30922,
+      "sellBalance": 9971.6,
+      "ratio": 3.1
+    },
+    {
+      "date": "2017-12-29",
+      "buyBalance": 30213,
+      "sellBalance": 8921.6,
+      "ratio": 3.39
+    },
+    {
+      "date": "2018-01-12",
+      "buyBalance": 31013.3,
+      "sellBalance": 9781.9,
+      "ratio": 3.17
+    },
+    {
+      "date": "2018-01-19",
+      "buyBalance": 31382.3,
+      "sellBalance": 9996.1,
+      "ratio": 3.14
+    },
+    {
+      "date": "2018-01-26",
+      "buyBalance": 32921.6,
+      "sellBalance": 9941.8,
+      "ratio": 3.31
+    },
+    {
+      "date": "2018-02-02",
+      "buyBalance": 34304.6,
+      "sellBalance": 9363.5,
+      "ratio": 3.66
+    },
+    {
+      "date": "2018-02-09",
+      "buyBalance": 34098,
+      "sellBalance": 7719.4,
+      "ratio": 4.42
+    },
+    {
+      "date": "2018-02-16",
+      "buyBalance": 33555.9,
+      "sellBalance": 8147.2,
+      "ratio": 4.12
+    },
+    {
+      "date": "2018-02-23",
+      "buyBalance": 34462.6,
+      "sellBalance": 9521,
+      "ratio": 3.62
+    },
+    {
+      "date": "2018-03-02",
+      "buyBalance": 36162.5,
+      "sellBalance": 7916.9,
+      "ratio": 4.57
+    },
+    {
+      "date": "2018-03-09",
+      "buyBalance": 35776.1,
+      "sellBalance": 8512.4,
+      "ratio": 4.2
+    },
+    {
+      "date": "2018-03-16",
+      "buyBalance": 36024.2,
+      "sellBalance": 8633.1,
+      "ratio": 4.17
+    },
+    {
+      "date": "2018-03-23",
+      "buyBalance": 36759.3,
+      "sellBalance": 9402.8,
+      "ratio": 3.91
+    },
+    {
+      "date": "2018-03-30",
+      "buyBalance": 35570,
+      "sellBalance": 7348.8,
+      "ratio": 4.84
+    },
+    {
+      "date": "2018-04-06",
+      "buyBalance": 35918.3,
+      "sellBalance": 7604.1,
+      "ratio": 4.72
+    },
+    {
+      "date": "2018-04-13",
+      "buyBalance": 35503.3,
+      "sellBalance": 7724.6,
+      "ratio": 4.6
+    },
+    {
+      "date": "2018-04-20",
+      "buyBalance": 34575.2,
+      "sellBalance": 7865.3,
+      "ratio": 4.4
+    },
+    {
+      "date": "2018-04-27",
+      "buyBalance": 33934.5,
+      "sellBalance": 7638.2,
+      "ratio": 4.44
+    },
+    {
+      "date": "2018-05-11",
+      "buyBalance": 33630.6,
+      "sellBalance": 8135.6,
+      "ratio": 4.13
+    },
+    {
+      "date": "2018-05-18",
+      "buyBalance": 33086.3,
+      "sellBalance": 8232.7,
+      "ratio": 4.02
+    },
+    {
+      "date": "2018-05-25",
+      "buyBalance": 34245.2,
+      "sellBalance": 8242.4,
+      "ratio": 4.15
+    },
+    {
+      "date": "2018-06-01",
+      "buyBalance": 34695.1,
+      "sellBalance": 8062.2,
+      "ratio": 4.3
+    },
+    {
+      "date": "2018-06-08",
+      "buyBalance": 33678.8,
+      "sellBalance": 8352,
+      "ratio": 4.03
+    },
+    {
+      "date": "2018-06-15",
+      "buyBalance": 33525.7,
+      "sellBalance": 8530.1,
+      "ratio": 3.93
+    },
+    {
+      "date": "2018-06-22",
+      "buyBalance": 33494.9,
+      "sellBalance": 8461.4,
+      "ratio": 3.96
+    },
+    {
+      "date": "2018-06-29",
+      "buyBalance": 33196.2,
+      "sellBalance": 7571.8,
+      "ratio": 4.38
+    },
+    {
+      "date": "2018-07-06",
+      "buyBalance": 32191.2,
+      "sellBalance": 7310.8,
+      "ratio": 4.4
+    },
+    {
+      "date": "2018-07-13",
+      "buyBalance": 30889.4,
+      "sellBalance": 7737.8,
+      "ratio": 3.99
+    },
+    {
+      "date": "2018-07-20",
+      "buyBalance": 30677.2,
+      "sellBalance": 7910.9,
+      "ratio": 3.88
+    },
+    {
+      "date": "2018-07-27",
+      "buyBalance": 29848.9,
+      "sellBalance": 7987.3,
+      "ratio": 3.74
+    },
+    {
+      "date": "2018-08-03",
+      "buyBalance": 30142.4,
+      "sellBalance": 7727,
+      "ratio": 3.9
+    },
+    {
+      "date": "2018-08-10",
+      "buyBalance": 30265.4,
+      "sellBalance": 8082,
+      "ratio": 3.74
+    },
+    {
+      "date": "2018-08-17",
+      "buyBalance": 30118.1,
+      "sellBalance": 7691.7,
+      "ratio": 3.92
+    },
+    {
+      "date": "2018-08-24",
+      "buyBalance": 29729,
+      "sellBalance": 8379,
+      "ratio": 3.55
+    },
+    {
+      "date": "2018-08-31",
+      "buyBalance": 29328.7,
+      "sellBalance": 8466.9,
+      "ratio": 3.46
+    },
+    {
+      "date": "2018-09-07",
+      "buyBalance": 30748.4,
+      "sellBalance": 8264.6,
+      "ratio": 3.72
+    },
+    {
+      "date": "2018-09-14",
+      "buyBalance": 29594.9,
+      "sellBalance": 8951.3,
+      "ratio": 3.31
+    },
+    {
+      "date": "2018-09-21",
+      "buyBalance": 27973.4,
+      "sellBalance": 10673.4,
+      "ratio": 2.62
+    },
+    {
+      "date": "2018-09-28",
+      "buyBalance": 27815.4,
+      "sellBalance": 9291.2,
+      "ratio": 2.99
+    },
+    {
+      "date": "2018-10-05",
+      "buyBalance": 28938.4,
+      "sellBalance": 9015.3,
+      "ratio": 3.21
+    },
+    {
+      "date": "2018-10-12",
+      "buyBalance": 30595.8,
+      "sellBalance": 7844.4,
+      "ratio": 3.9
+    },
+    {
+      "date": "2018-10-19",
+      "buyBalance": 31700.4,
+      "sellBalance": 7529.5,
+      "ratio": 4.21
+    },
+    {
+      "date": "2018-10-26",
+      "buyBalance": 31460.1,
+      "sellBalance": 7203.3,
+      "ratio": 4.37
+    },
+    {
+      "date": "2018-11-02",
+      "buyBalance": 30038.5,
+      "sellBalance": 7153,
+      "ratio": 4.2
+    },
+    {
+      "date": "2018-11-09",
+      "buyBalance": 29906,
+      "sellBalance": 7549,
+      "ratio": 3.96
+    },
+    {
+      "date": "2018-11-16",
+      "buyBalance": 30274.7,
+      "sellBalance": 7430.9,
+      "ratio": 4.07
+    },
+    {
+      "date": "2018-11-22",
+      "buyBalance": 29971.8,
+      "sellBalance": 7531.1,
+      "ratio": 3.98
+    },
+    {
+      "date": "2018-11-30",
+      "buyBalance": 29105.6,
+      "sellBalance": 7954.3,
+      "ratio": 3.66
+    },
+    {
+      "date": "2018-12-07",
+      "buyBalance": 30275.1,
+      "sellBalance": 7618.7,
+      "ratio": 3.97
+    },
+    {
+      "date": "2018-12-14",
+      "buyBalance": 29738.5,
+      "sellBalance": 7428.5,
+      "ratio": 4
+    },
+    {
+      "date": "2018-12-21",
+      "buyBalance": 28259.1,
+      "sellBalance": 7800.7,
+      "ratio": 3.62
+    },
+    {
+      "date": "2018-12-28",
+      "buyBalance": 24780.4,
+      "sellBalance": 6539.9,
+      "ratio": 3.79
+    },
+    {
+      "date": "2019-01-11",
+      "buyBalance": 24605.5,
+      "sellBalance": 7360,
+      "ratio": 3.34
+    },
+    {
+      "date": "2019-01-18",
+      "buyBalance": 24521.2,
+      "sellBalance": 7457.5,
+      "ratio": 3.29
+    },
+    {
+      "date": "2019-01-25",
+      "buyBalance": 24633.6,
+      "sellBalance": 7609.1,
+      "ratio": 3.24
+    },
+    {
+      "date": "2019-02-01",
+      "buyBalance": 24539.6,
+      "sellBalance": 7732.9,
+      "ratio": 3.17
+    },
+    {
+      "date": "2019-02-08",
+      "buyBalance": 25006.8,
+      "sellBalance": 7877.3,
+      "ratio": 3.17
+    },
+    {
+      "date": "2019-02-15",
+      "buyBalance": 24317,
+      "sellBalance": 8525,
+      "ratio": 2.85
+    },
+    {
+      "date": "2019-02-22",
+      "buyBalance": 23842.4,
+      "sellBalance": 9275.7,
+      "ratio": 2.57
+    },
+    {
+      "date": "2019-03-01",
+      "buyBalance": 23692.2,
+      "sellBalance": 8766.7,
+      "ratio": 2.7
+    },
+    {
+      "date": "2019-03-08",
+      "buyBalance": 24617,
+      "sellBalance": 8870.4,
+      "ratio": 2.78
+    },
+    {
+      "date": "2019-03-15",
+      "buyBalance": 24117.5,
+      "sellBalance": 9307.1,
+      "ratio": 2.59
+    },
+    {
+      "date": "2019-03-22",
+      "buyBalance": 23907.9,
+      "sellBalance": 10636.1,
+      "ratio": 2.25
+    },
+    {
+      "date": "2019-03-29",
+      "buyBalance": 23558.7,
+      "sellBalance": 8552.5,
+      "ratio": 2.75
+    },
+    {
+      "date": "2019-04-05",
+      "buyBalance": 21695.7,
+      "sellBalance": 9299.6,
+      "ratio": 2.33
+    },
+    {
+      "date": "2019-04-12",
+      "buyBalance": 21842.9,
+      "sellBalance": 9340.6,
+      "ratio": 2.34
+    },
+    {
+      "date": "2019-04-19",
+      "buyBalance": 21190.8,
+      "sellBalance": 9771.7,
+      "ratio": 2.17
+    },
+    {
+      "date": "2019-04-26",
+      "buyBalance": 20781.9,
+      "sellBalance": 8974.3,
+      "ratio": 2.32
+    },
+    {
+      "date": "2019-05-10",
+      "buyBalance": 22232,
+      "sellBalance": 8439.2,
+      "ratio": 2.63
+    },
+    {
+      "date": "2019-05-17",
+      "buyBalance": 22000,
+      "sellBalance": 8529.9,
+      "ratio": 2.58
+    },
+    {
+      "date": "2019-05-24",
+      "buyBalance": 22395.8,
+      "sellBalance": 8630.7,
+      "ratio": 2.59
+    },
+    {
+      "date": "2019-05-31",
+      "buyBalance": 22849.7,
+      "sellBalance": 8479.6,
+      "ratio": 2.69
+    },
+    {
+      "date": "2019-06-07",
+      "buyBalance": 21961.4,
+      "sellBalance": 8795.1,
+      "ratio": 2.5
+    },
+    {
+      "date": "2019-06-14",
+      "buyBalance": 21984.9,
+      "sellBalance": 9099.2,
+      "ratio": 2.42
+    },
+    {
+      "date": "2019-06-21",
+      "buyBalance": 21762.4,
+      "sellBalance": 9693.9,
+      "ratio": 2.24
+    },
+    {
+      "date": "2019-06-28",
+      "buyBalance": 21663.8,
+      "sellBalance": 8953.8,
+      "ratio": 2.42
+    },
+    {
+      "date": "2019-07-05",
+      "buyBalance": 21112.4,
+      "sellBalance": 9550.7,
+      "ratio": 2.21
+    },
+    {
+      "date": "2019-07-12",
+      "buyBalance": 21707.3,
+      "sellBalance": 9514.3,
+      "ratio": 2.28
+    },
+    {
+      "date": "2019-07-19",
+      "buyBalance": 21995.9,
+      "sellBalance": 9288,
+      "ratio": 2.37
+    },
+    {
+      "date": "2019-07-26",
+      "buyBalance": 21950.6,
+      "sellBalance": 9523.3,
+      "ratio": 2.3
+    },
+    {
+      "date": "2019-08-02",
+      "buyBalance": 23144.3,
+      "sellBalance": 8902.7,
+      "ratio": 2.6
+    },
+    {
+      "date": "2019-08-09",
+      "buyBalance": 23624.1,
+      "sellBalance": 8631.3,
+      "ratio": 2.74
+    },
+    {
+      "date": "2019-08-16",
+      "buyBalance": 23795,
+      "sellBalance": 8755.6,
+      "ratio": 2.72
+    },
+    {
+      "date": "2019-08-23",
+      "buyBalance": 23433.1,
+      "sellBalance": 9370.7,
+      "ratio": 2.5
+    },
+    {
+      "date": "2019-08-30",
+      "buyBalance": 22832,
+      "sellBalance": 9001.5,
+      "ratio": 2.54
+    },
+    {
+      "date": "2019-09-06",
+      "buyBalance": 22090.8,
+      "sellBalance": 9594.5,
+      "ratio": 2.3
+    },
+    {
+      "date": "2019-09-13",
+      "buyBalance": 20748.2,
+      "sellBalance": 11048.5,
+      "ratio": 1.88
+    },
+    {
+      "date": "2019-09-20",
+      "buyBalance": 20506.4,
+      "sellBalance": 11261.9,
+      "ratio": 1.82
+    },
+    {
+      "date": "2019-09-27",
+      "buyBalance": 20926.4,
+      "sellBalance": 9962.5,
+      "ratio": 2.1
+    },
+    {
+      "date": "2019-10-04",
+      "buyBalance": 21516,
+      "sellBalance": 9021.7,
+      "ratio": 2.38
+    },
+    {
+      "date": "2019-10-11",
+      "buyBalance": 21403.8,
+      "sellBalance": 9114.7,
+      "ratio": 2.35
+    },
+    {
+      "date": "2019-10-18",
+      "buyBalance": 20828.6,
+      "sellBalance": 9548.3,
+      "ratio": 2.18
+    },
+    {
+      "date": "2019-10-25",
+      "buyBalance": 20860.1,
+      "sellBalance": 9878.5,
+      "ratio": 2.11
+    },
+    {
+      "date": "2019-11-01",
+      "buyBalance": 20719,
+      "sellBalance": 9809.6,
+      "ratio": 2.11
+    },
+    {
+      "date": "2019-11-08",
+      "buyBalance": 20812.1,
+      "sellBalance": 9912.3,
+      "ratio": 2.1
+    },
+    {
+      "date": "2019-11-15",
+      "buyBalance": 21234,
+      "sellBalance": 9913.7,
+      "ratio": 2.14
+    },
+    {
+      "date": "2019-11-22",
+      "buyBalance": 21944.3,
+      "sellBalance": 9783.6,
+      "ratio": 2.24
+    },
+    {
+      "date": "2019-11-29",
+      "buyBalance": 22169.4,
+      "sellBalance": 10153.7,
+      "ratio": 2.18
+    },
+    {
+      "date": "2019-12-06",
+      "buyBalance": 22561.5,
+      "sellBalance": 10287.6,
+      "ratio": 2.19
+    },
+    {
+      "date": "2019-12-13",
+      "buyBalance": 22209,
+      "sellBalance": 10492.9,
+      "ratio": 2.12
+    },
+    {
+      "date": "2019-12-20",
+      "buyBalance": 22736.6,
+      "sellBalance": 10124,
+      "ratio": 2.25
+    },
+    {
+      "date": "2019-12-27",
+      "buyBalance": 22236.1,
+      "sellBalance": 8920.6,
+      "ratio": 2.49
+    },
+    {
+      "date": "2020-01-10",
+      "buyBalance": 22742.8,
+      "sellBalance": 8950.6,
+      "ratio": 2.54
+    },
+    {
+      "date": "2020-01-17",
+      "buyBalance": 23584.3,
+      "sellBalance": 8921.9,
+      "ratio": 2.64
+    },
+    {
+      "date": "2020-01-24",
+      "buyBalance": 24399.4,
+      "sellBalance": 8817.2,
+      "ratio": 2.77
+    },
+    {
+      "date": "2020-01-31",
+      "buyBalance": 24637.4,
+      "sellBalance": 8706.6,
+      "ratio": 2.83
+    },
+    {
+      "date": "2020-02-07",
+      "buyBalance": 23677.5,
+      "sellBalance": 9405.9,
+      "ratio": 2.52
+    },
+    {
+      "date": "2020-02-14",
+      "buyBalance": 23963.3,
+      "sellBalance": 9218.4,
+      "ratio": 2.6
+    },
+    {
+      "date": "2020-02-21",
+      "buyBalance": 23934.4,
+      "sellBalance": 9383.4,
+      "ratio": 2.55
+    },
+    {
+      "date": "2020-02-28",
+      "buyBalance": 23479.8,
+      "sellBalance": 7436,
+      "ratio": 3.16
+    },
+    {
+      "date": "2020-03-06",
+      "buyBalance": 23721.6,
+      "sellBalance": 7485.6,
+      "ratio": 3.17
+    },
+    {
+      "date": "2020-03-13",
+      "buyBalance": 19681.1,
+      "sellBalance": 7503.2,
+      "ratio": 2.62
+    },
+    {
+      "date": "2020-03-19",
+      "buyBalance": 18440.8,
+      "sellBalance": 8182.2,
+      "ratio": 2.25
+    },
+    {
+      "date": "2020-03-27",
+      "buyBalance": 17540.5,
+      "sellBalance": 10825.2,
+      "ratio": 1.62
+    },
+    {
+      "date": "2020-04-03",
+      "buyBalance": 18015.8,
+      "sellBalance": 7269.9,
+      "ratio": 2.48
+    },
+    {
+      "date": "2020-04-10",
+      "buyBalance": 17947.5,
+      "sellBalance": 7971.3,
+      "ratio": 2.25
+    },
+    {
+      "date": "2020-04-17",
+      "buyBalance": 18526.2,
+      "sellBalance": 8321.1,
+      "ratio": 2.23
+    },
+    {
+      "date": "2020-04-24",
+      "buyBalance": 19212.2,
+      "sellBalance": 7919.3,
+      "ratio": 2.43
+    },
+    {
+      "date": "2020-05-01",
+      "buyBalance": 19200.7,
+      "sellBalance": 7762.5,
+      "ratio": 2.47
+    },
+    {
+      "date": "2020-05-15",
+      "buyBalance": 20231.7,
+      "sellBalance": 8026.8,
+      "ratio": 2.52
+    },
+    {
+      "date": "2020-05-22",
+      "buyBalance": 20442.7,
+      "sellBalance": 8320.3,
+      "ratio": 2.46
+    },
+    {
+      "date": "2020-05-29",
+      "buyBalance": 20136.9,
+      "sellBalance": 8774,
+      "ratio": 2.3
+    },
+    {
+      "date": "2020-06-05",
+      "buyBalance": 20041,
+      "sellBalance": 9413.7,
+      "ratio": 2.13
+    },
+    {
+      "date": "2020-06-12",
+      "buyBalance": 21080.3,
+      "sellBalance": 8992.8,
+      "ratio": 2.34
+    },
+    {
+      "date": "2020-06-19",
+      "buyBalance": 21482.6,
+      "sellBalance": 9136.5,
+      "ratio": 2.35
+    },
+    {
+      "date": "2020-06-26",
+      "buyBalance": 22154.8,
+      "sellBalance": 10267.6,
+      "ratio": 2.16
+    },
+    {
+      "date": "2020-07-03",
+      "buyBalance": 21949.3,
+      "sellBalance": 9164.4,
+      "ratio": 2.4
+    },
+    {
+      "date": "2020-07-10",
+      "buyBalance": 22746.6,
+      "sellBalance": 8833.8,
+      "ratio": 2.57
+    },
+    {
+      "date": "2020-07-17",
+      "buyBalance": 22246,
+      "sellBalance": 8927.5,
+      "ratio": 2.49
+    },
+    {
+      "date": "2020-07-22",
+      "buyBalance": 21988.3,
+      "sellBalance": 8799.5,
+      "ratio": 2.5
+    },
+    {
+      "date": "2020-07-31",
+      "buyBalance": 22716.2,
+      "sellBalance": 8532.6,
+      "ratio": 2.66
+    },
+    {
+      "date": "2020-08-07",
+      "buyBalance": 22547.8,
+      "sellBalance": 8871.9,
+      "ratio": 2.54
+    },
+    {
+      "date": "2020-08-14",
+      "buyBalance": 21249.3,
+      "sellBalance": 9503.8,
+      "ratio": 2.24
+    },
+    {
+      "date": "2020-08-21",
+      "buyBalance": 22293.6,
+      "sellBalance": 9388.6,
+      "ratio": 2.37
+    },
+    {
+      "date": "2020-08-28",
+      "buyBalance": 22823.9,
+      "sellBalance": 9007.3,
+      "ratio": 2.53
+    },
+    {
+      "date": "2020-09-04",
+      "buyBalance": 23521.9,
+      "sellBalance": 9211.4,
+      "ratio": 2.55
+    },
+    {
+      "date": "2020-09-11",
+      "buyBalance": 23864.1,
+      "sellBalance": 9905.8,
+      "ratio": 2.41
+    },
+    {
+      "date": "2020-09-18",
+      "buyBalance": 23826.2,
+      "sellBalance": 10120.5,
+      "ratio": 2.35
+    },
+    {
+      "date": "2020-09-25",
+      "buyBalance": 24412.6,
+      "sellBalance": 10412.9,
+      "ratio": 2.34
+    },
+    {
+      "date": "2020-10-02",
+      "buyBalance": 24816,
+      "sellBalance": 7958.1,
+      "ratio": 3.12
+    },
+    {
+      "date": "2020-10-09",
+      "buyBalance": 24626.1,
+      "sellBalance": 8283.5,
+      "ratio": 2.97
+    },
+    {
+      "date": "2020-10-16",
+      "buyBalance": 25565.4,
+      "sellBalance": 8283.1,
+      "ratio": 3.09
+    },
+    {
+      "date": "2020-10-23",
+      "buyBalance": 25587.1,
+      "sellBalance": 8417.9,
+      "ratio": 3.04
+    },
+    {
+      "date": "2020-10-30",
+      "buyBalance": 25641.2,
+      "sellBalance": 7491.5,
+      "ratio": 3.42
+    },
+    {
+      "date": "2020-11-06",
+      "buyBalance": 24318.7,
+      "sellBalance": 7973.1,
+      "ratio": 3.05
+    },
+    {
+      "date": "2020-11-13",
+      "buyBalance": 24346.4,
+      "sellBalance": 8565.6,
+      "ratio": 2.84
+    },
+    {
+      "date": "2020-11-20",
+      "buyBalance": 24288.5,
+      "sellBalance": 8524.1,
+      "ratio": 2.85
+    },
+    {
+      "date": "2020-11-27",
+      "buyBalance": 23879.8,
+      "sellBalance": 9051.6,
+      "ratio": 2.64
+    },
+    {
+      "date": "2020-12-04",
+      "buyBalance": 25028.7,
+      "sellBalance": 9042.7,
+      "ratio": 2.77
+    },
+    {
+      "date": "2020-12-11",
+      "buyBalance": 24946.1,
+      "sellBalance": 8979.6,
+      "ratio": 2.78
+    },
+    {
+      "date": "2020-12-18",
+      "buyBalance": 25032.5,
+      "sellBalance": 9103.2,
+      "ratio": 2.75
+    },
+    {
+      "date": "2020-12-25",
+      "buyBalance": 24951.1,
+      "sellBalance": 9091.3,
+      "ratio": 2.74
+    },
+    {
+      "date": "2020-12-30",
+      "buyBalance": 24052,
+      "sellBalance": 7976.6,
+      "ratio": 3.02
+    },
+    {
+      "date": "2021-01-08",
+      "buyBalance": 24124.2,
+      "sellBalance": 8594,
+      "ratio": 2.81
+    },
+    {
+      "date": "2021-01-15",
+      "buyBalance": 25162.5,
+      "sellBalance": 8456.4,
+      "ratio": 2.98
+    },
+    {
+      "date": "2021-01-22",
+      "buyBalance": 26105.3,
+      "sellBalance": 8371.8,
+      "ratio": 3.12
+    },
+    {
+      "date": "2021-01-29",
+      "buyBalance": 27695.9,
+      "sellBalance": 7736.6,
+      "ratio": 3.58
+    },
+    {
+      "date": "2021-02-05",
+      "buyBalance": 27381.9,
+      "sellBalance": 8404.4,
+      "ratio": 3.26
+    },
+    {
+      "date": "2021-02-12",
+      "buyBalance": 27264.2,
+      "sellBalance": 8879.4,
+      "ratio": 3.07
+    },
+    {
+      "date": "2021-02-19",
+      "buyBalance": 28183.8,
+      "sellBalance": 9106.6,
+      "ratio": 3.09
+    },
+    {
+      "date": "2021-02-26",
+      "buyBalance": 29743.4,
+      "sellBalance": 7734.8,
+      "ratio": 3.85
+    },
+    {
+      "date": "2021-03-05",
+      "buyBalance": 29841.9,
+      "sellBalance": 8089,
+      "ratio": 3.69
+    },
+    {
+      "date": "2021-03-12",
+      "buyBalance": 29599.5,
+      "sellBalance": 8367.2,
+      "ratio": 3.54
+    },
+    {
+      "date": "2021-03-19",
+      "buyBalance": 30440.2,
+      "sellBalance": 8967.8,
+      "ratio": 3.39
+    },
+    {
+      "date": "2021-03-26",
+      "buyBalance": 30796.5,
+      "sellBalance": 9781.9,
+      "ratio": 3.15
+    },
+    {
+      "date": "2021-04-02",
+      "buyBalance": 30726.1,
+      "sellBalance": 7629.3,
+      "ratio": 4.03
+    },
+    {
+      "date": "2021-04-09",
+      "buyBalance": 31672.2,
+      "sellBalance": 7235,
+      "ratio": 4.38
+    },
+    {
+      "date": "2021-04-16",
+      "buyBalance": 31976.5,
+      "sellBalance": 7329.4,
+      "ratio": 4.36
+    },
+    {
+      "date": "2021-04-23",
+      "buyBalance": 33005.8,
+      "sellBalance": 7072,
+      "ratio": 4.67
+    },
+    {
+      "date": "2021-04-30",
+      "buyBalance": 32941.2,
+      "sellBalance": 6742.7,
+      "ratio": 4.89
+    },
+    {
+      "date": "2021-05-14",
+      "buyBalance": 33361,
+      "sellBalance": 6422.1,
+      "ratio": 5.19
+    },
+    {
+      "date": "2021-05-21",
+      "buyBalance": 32874.2,
+      "sellBalance": 6830.6,
+      "ratio": 4.81
+    },
+    {
+      "date": "2021-05-28",
+      "buyBalance": 32076.6,
+      "sellBalance": 7582.4,
+      "ratio": 4.23
+    },
+    {
+      "date": "2021-06-04",
+      "buyBalance": 33054.1,
+      "sellBalance": 7886.9,
+      "ratio": 4.19
+    },
+    {
+      "date": "2021-06-11",
+      "buyBalance": 33759.2,
+      "sellBalance": 7863,
+      "ratio": 4.29
+    },
+    {
+      "date": "2021-06-18",
+      "buyBalance": 34120.3,
+      "sellBalance": 7707.7,
+      "ratio": 4.43
+    },
+    {
+      "date": "2021-06-25",
+      "buyBalance": 33643.4,
+      "sellBalance": 8049.1,
+      "ratio": 4.18
+    },
+    {
+      "date": "2021-07-02",
+      "buyBalance": 34385.9,
+      "sellBalance": 7174.7,
+      "ratio": 4.79
+    },
+    {
+      "date": "2021-07-09",
+      "buyBalance": 36041.3,
+      "sellBalance": 6727.5,
+      "ratio": 5.36
+    },
+    {
+      "date": "2021-07-16",
+      "buyBalance": 35320.3,
+      "sellBalance": 6775,
+      "ratio": 5.21
+    },
+    {
+      "date": "2021-07-21",
+      "buyBalance": 35614.2,
+      "sellBalance": 6585.9,
+      "ratio": 5.41
+    },
+    {
+      "date": "2021-07-30",
+      "buyBalance": 35519.1,
+      "sellBalance": 6548.8,
+      "ratio": 5.42
+    },
+    {
+      "date": "2021-08-06",
+      "buyBalance": 34381,
+      "sellBalance": 6829.7,
+      "ratio": 5.03
+    },
+    {
+      "date": "2021-08-13",
+      "buyBalance": 34115.6,
+      "sellBalance": 7248.6,
+      "ratio": 4.71
+    },
+    {
+      "date": "2021-08-20",
+      "buyBalance": 34572.4,
+      "sellBalance": 6922.9,
+      "ratio": 4.99
+    },
+    {
+      "date": "2021-08-27",
+      "buyBalance": 33685.9,
+      "sellBalance": 8432.8,
+      "ratio": 3.99
+    },
+    {
+      "date": "2021-09-03",
+      "buyBalance": 32766.7,
+      "sellBalance": 7965.7,
+      "ratio": 4.11
+    },
+    {
+      "date": "2021-09-10",
+      "buyBalance": 32596.7,
+      "sellBalance": 8590.7,
+      "ratio": 3.79
+    },
+    {
+      "date": "2021-09-17",
+      "buyBalance": 33034.1,
+      "sellBalance": 9207.6,
+      "ratio": 3.59
+    },
+    {
+      "date": "2021-09-24",
+      "buyBalance": 32998.9,
+      "sellBalance": 9277.1,
+      "ratio": 3.56
+    },
+    {
+      "date": "2021-10-01",
+      "buyBalance": 35365.6,
+      "sellBalance": 7029,
+      "ratio": 5.03
+    },
+    {
+      "date": "2021-10-08",
+      "buyBalance": 35140.6,
+      "sellBalance": 7034,
+      "ratio": 5
+    },
+    {
+      "date": "2021-10-15",
+      "buyBalance": 34826.3,
+      "sellBalance": 7163.4,
+      "ratio": 4.86
+    },
+    {
+      "date": "2021-10-22",
+      "buyBalance": 35546.2,
+      "sellBalance": 7722.8,
+      "ratio": 4.6
+    },
+    {
+      "date": "2021-10-29",
+      "buyBalance": 35961.5,
+      "sellBalance": 6682,
+      "ratio": 5.38
+    },
+    {
+      "date": "2021-11-05",
+      "buyBalance": 35063.4,
+      "sellBalance": 7123.9,
+      "ratio": 4.92
+    },
+    {
+      "date": "2021-11-12",
+      "buyBalance": 34724.8,
+      "sellBalance": 7356.2,
+      "ratio": 4.72
+    },
+    {
+      "date": "2021-11-19",
+      "buyBalance": 35793.7,
+      "sellBalance": 7473.4,
+      "ratio": 4.79
+    },
+    {
+      "date": "2021-11-26",
+      "buyBalance": 37402,
+      "sellBalance": 7839.4,
+      "ratio": 4.77
+    },
+    {
+      "date": "2021-12-03",
+      "buyBalance": 36488.1,
+      "sellBalance": 6955,
+      "ratio": 5.25
+    },
+    {
+      "date": "2021-12-10",
+      "buyBalance": 35879.9,
+      "sellBalance": 7795.9,
+      "ratio": 4.6
+    },
+    {
+      "date": "2021-12-17",
+      "buyBalance": 35169.3,
+      "sellBalance": 7492.5,
+      "ratio": 4.69
+    },
+    {
+      "date": "2021-12-24",
+      "buyBalance": 34344.5,
+      "sellBalance": 7989.4,
+      "ratio": 4.3
+    },
+    {
+      "date": "2021-12-30",
+      "buyBalance": 33576.8,
+      "sellBalance": 6473.6,
+      "ratio": 5.19
+    },
+    {
+      "date": "2022-01-07",
+      "buyBalance": 33647.3,
+      "sellBalance": 6789.1,
+      "ratio": 4.96
+    },
+    {
+      "date": "2022-01-14",
+      "buyBalance": 34398.5,
+      "sellBalance": 6854.3,
+      "ratio": 5.02
+    },
+    {
+      "date": "2022-01-21",
+      "buyBalance": 34173.5,
+      "sellBalance": 6497.9,
+      "ratio": 5.26
+    },
+    {
+      "date": "2022-01-28",
+      "buyBalance": 33436.1,
+      "sellBalance": 6634.5,
+      "ratio": 5.04
+    },
+    {
+      "date": "2022-02-04",
+      "buyBalance": 33198.3,
+      "sellBalance": 7005,
+      "ratio": 4.74
+    },
+    {
+      "date": "2022-02-10",
+      "buyBalance": 32874.9,
+      "sellBalance": 7563.4,
+      "ratio": 4.35
+    },
+    {
+      "date": "2022-02-18",
+      "buyBalance": 32658.2,
+      "sellBalance": 7899.7,
+      "ratio": 4.13
+    },
+    {
+      "date": "2022-02-25",
+      "buyBalance": 32379.6,
+      "sellBalance": 6935.7,
+      "ratio": 4.67
+    },
+    {
+      "date": "2022-03-04",
+      "buyBalance": 33522.5,
+      "sellBalance": 6835,
+      "ratio": 4.9
+    },
+    {
+      "date": "2022-03-11",
+      "buyBalance": 32067.5,
+      "sellBalance": 7402,
+      "ratio": 4.33
+    },
+    {
+      "date": "2022-03-18",
+      "buyBalance": 30400,
+      "sellBalance": 8532.4,
+      "ratio": 3.56
+    },
+    {
+      "date": "2022-03-25",
+      "buyBalance": 29503.5,
+      "sellBalance": 9758.9,
+      "ratio": 3.02
+    },
+    {
+      "date": "2022-04-01",
+      "buyBalance": 29569.7,
+      "sellBalance": 7198.4,
+      "ratio": 4.11
+    },
+    {
+      "date": "2022-04-08",
+      "buyBalance": 30740.3,
+      "sellBalance": 6619.7,
+      "ratio": 4.64
+    },
+    {
+      "date": "2022-04-15",
+      "buyBalance": 30609.1,
+      "sellBalance": 6687.2,
+      "ratio": 4.58
+    },
+    {
+      "date": "2022-04-22",
+      "buyBalance": 30970.2,
+      "sellBalance": 6795.5,
+      "ratio": 4.56
+    },
+    {
+      "date": "2022-04-28",
+      "buyBalance": 30760.9,
+      "sellBalance": 6459.3,
+      "ratio": 4.76
+    },
+    {
+      "date": "2022-05-13",
+      "buyBalance": 30963.5,
+      "sellBalance": 6451.8,
+      "ratio": 4.8
+    },
+    {
+      "date": "2022-05-20",
+      "buyBalance": 30813.3,
+      "sellBalance": 6946.6,
+      "ratio": 4.44
+    },
+    {
+      "date": "2022-05-27",
+      "buyBalance": 30589.4,
+      "sellBalance": 7744.8,
+      "ratio": 3.95
+    },
+    {
+      "date": "2022-06-03",
+      "buyBalance": 30318.2,
+      "sellBalance": 7938.4,
+      "ratio": 3.82
+    },
+    {
+      "date": "2022-06-10",
+      "buyBalance": 30713.7,
+      "sellBalance": 7930.5,
+      "ratio": 3.87
+    },
+    {
+      "date": "2022-06-17",
+      "buyBalance": 32327.4,
+      "sellBalance": 6979.3,
+      "ratio": 4.63
+    },
+    {
+      "date": "2022-06-24",
+      "buyBalance": 31308.2,
+      "sellBalance": 7725.6,
+      "ratio": 4.05
+    },
+    {
+      "date": "2022-07-01",
+      "buyBalance": 31861.4,
+      "sellBalance": 6810,
+      "ratio": 4.68
+    },
+    {
+      "date": "2022-07-08",
+      "buyBalance": 30265.6,
+      "sellBalance": 7124.2,
+      "ratio": 4.25
+    },
+    {
+      "date": "2022-07-15",
+      "buyBalance": 30264.2,
+      "sellBalance": 7364.9,
+      "ratio": 4.11
+    },
+    {
+      "date": "2022-07-22",
+      "buyBalance": 28740.6,
+      "sellBalance": 8138.3,
+      "ratio": 3.53
+    },
+    {
+      "date": "2022-07-29",
+      "buyBalance": 28928.6,
+      "sellBalance": 8080.1,
+      "ratio": 3.58
+    },
+    {
+      "date": "2022-08-05",
+      "buyBalance": 28934.6,
+      "sellBalance": 8264.3,
+      "ratio": 3.5
+    },
+    {
+      "date": "2022-08-12",
+      "buyBalance": 28429,
+      "sellBalance": 8851.4,
+      "ratio": 3.21
+    },
+    {
+      "date": "2022-08-19",
+      "buyBalance": 28831.8,
+      "sellBalance": 9366.9,
+      "ratio": 3.08
+    },
+    {
+      "date": "2022-08-26",
+      "buyBalance": 29622.9,
+      "sellBalance": 9323.1,
+      "ratio": 3.18
+    },
+    {
+      "date": "2022-09-02",
+      "buyBalance": 31767.4,
+      "sellBalance": 7965.1,
+      "ratio": 3.99
+    },
+    {
+      "date": "2022-09-09",
+      "buyBalance": 30895.9,
+      "sellBalance": 8470.7,
+      "ratio": 3.65
+    },
+    {
+      "date": "2022-09-16",
+      "buyBalance": 32052,
+      "sellBalance": 8561.2,
+      "ratio": 3.74
+    },
+    {
+      "date": "2022-09-22",
+      "buyBalance": 31934.3,
+      "sellBalance": 8566.9,
+      "ratio": 3.73
+    },
+    {
+      "date": "2022-09-30",
+      "buyBalance": 32432.4,
+      "sellBalance": 6401.6,
+      "ratio": 5.07
+    },
+    {
+      "date": "2022-10-07",
+      "buyBalance": 30137.2,
+      "sellBalance": 6968.1,
+      "ratio": 4.33
+    },
+    {
+      "date": "2022-10-14",
+      "buyBalance": 30347.9,
+      "sellBalance": 7070.6,
+      "ratio": 4.29
+    },
+    {
+      "date": "2022-10-21",
+      "buyBalance": 31478.7,
+      "sellBalance": 7025.2,
+      "ratio": 4.48
+    },
+    {
+      "date": "2022-10-28",
+      "buyBalance": 31160,
+      "sellBalance": 6875.7,
+      "ratio": 4.53
+    },
+    {
+      "date": "2022-11-04",
+      "buyBalance": 31419.2,
+      "sellBalance": 7044.9,
+      "ratio": 4.46
+    },
+    {
+      "date": "2022-11-11",
+      "buyBalance": 29417.6,
+      "sellBalance": 8043.9,
+      "ratio": 3.66
+    },
+    {
+      "date": "2022-11-18",
+      "buyBalance": 30658.7,
+      "sellBalance": 7922.4,
+      "ratio": 3.87
+    },
+    {
+      "date": "2022-11-25",
+      "buyBalance": 30091.8,
+      "sellBalance": 8533.9,
+      "ratio": 3.53
+    },
+    {
+      "date": "2022-12-02",
+      "buyBalance": 32247.2,
+      "sellBalance": 7905.9,
+      "ratio": 4.08
+    },
+    {
+      "date": "2022-12-09",
+      "buyBalance": 31889,
+      "sellBalance": 8337.2,
+      "ratio": 3.82
+    },
+    {
+      "date": "2022-12-16",
+      "buyBalance": 33354.8,
+      "sellBalance": 8179,
+      "ratio": 4.08
+    },
+    {
+      "date": "2022-12-23",
+      "buyBalance": 33999.6,
+      "sellBalance": 7989.1,
+      "ratio": 4.26
+    },
+    {
+      "date": "2022-12-30",
+      "buyBalance": 33423.8,
+      "sellBalance": 6313.2,
+      "ratio": 5.29
+    },
+    {
+      "date": "2023-01-06",
+      "buyBalance": 33930.3,
+      "sellBalance": 6400.1,
+      "ratio": 5.3
+    },
+    {
+      "date": "2023-01-13",
+      "buyBalance": 33632,
+      "sellBalance": 6898.4,
+      "ratio": 4.88
+    },
+    {
+      "date": "2023-01-20",
+      "buyBalance": 32990.8,
+      "sellBalance": 6973.1,
+      "ratio": 4.73
+    },
+    {
+      "date": "2023-01-27",
+      "buyBalance": 31744.2,
+      "sellBalance": 8211.9,
+      "ratio": 3.87
+    },
+    {
+      "date": "2023-02-03",
+      "buyBalance": 32011.9,
+      "sellBalance": 8298.2,
+      "ratio": 3.86
+    },
+    {
+      "date": "2023-02-10",
+      "buyBalance": 32153.9,
+      "sellBalance": 8645.7,
+      "ratio": 3.72
+    },
+    {
+      "date": "2023-02-17",
+      "buyBalance": 32236.8,
+      "sellBalance": 9030.5,
+      "ratio": 3.57
+    },
+    {
+      "date": "2023-02-24",
+      "buyBalance": 32838.8,
+      "sellBalance": 10651.4,
+      "ratio": 3.08
+    },
+    {
+      "date": "2023-03-03",
+      "buyBalance": 32448.8,
+      "sellBalance": 8909,
+      "ratio": 3.64
+    },
+    {
+      "date": "2023-03-10",
+      "buyBalance": 32452.7,
+      "sellBalance": 9606.4,
+      "ratio": 3.38
+    },
+    {
+      "date": "2023-03-17",
+      "buyBalance": 33498.3,
+      "sellBalance": 8583.9,
+      "ratio": 3.9
+    },
+    {
+      "date": "2023-03-24",
+      "buyBalance": 33922.2,
+      "sellBalance": 9628.1,
+      "ratio": 3.52
+    },
+    {
+      "date": "2023-03-31",
+      "buyBalance": 32504.2,
+      "sellBalance": 7485.1,
+      "ratio": 4.34
+    },
+    {
+      "date": "2023-04-07",
+      "buyBalance": 33941,
+      "sellBalance": 6809.8,
+      "ratio": 4.98
+    },
+    {
+      "date": "2023-04-14",
+      "buyBalance": 33285.1,
+      "sellBalance": 7677.4,
+      "ratio": 4.34
+    },
+    {
+      "date": "2023-04-21",
+      "buyBalance": 33284.3,
+      "sellBalance": 8037.7,
+      "ratio": 4.14
+    },
+    {
+      "date": "2023-04-28",
+      "buyBalance": 33119.4,
+      "sellBalance": 7659.4,
+      "ratio": 4.32
+    },
+    {
+      "date": "2023-05-12",
+      "buyBalance": 32473.3,
+      "sellBalance": 8443.8,
+      "ratio": 3.85
+    },
+    {
+      "date": "2023-05-19",
+      "buyBalance": 31363.9,
+      "sellBalance": 9720.1,
+      "ratio": 3.23
+    },
+    {
+      "date": "2023-05-26",
+      "buyBalance": 31883.5,
+      "sellBalance": 9811.6,
+      "ratio": 3.25
+    },
+    {
+      "date": "2023-06-02",
+      "buyBalance": 32157.6,
+      "sellBalance": 9071.6,
+      "ratio": 3.54
+    },
+    {
+      "date": "2023-06-09",
+      "buyBalance": 32214.1,
+      "sellBalance": 9587.1,
+      "ratio": 3.36
+    },
+    {
+      "date": "2023-06-16",
+      "buyBalance": 32476.9,
+      "sellBalance": 10185.4,
+      "ratio": 3.19
+    },
+    {
+      "date": "2023-06-23",
+      "buyBalance": 34688.9,
+      "sellBalance": 10003.7,
+      "ratio": 3.47
+    },
+    {
+      "date": "2023-06-30",
+      "buyBalance": 34675.4,
+      "sellBalance": 9063.7,
+      "ratio": 3.83
+    },
+    {
+      "date": "2023-07-07",
+      "buyBalance": 36277.7,
+      "sellBalance": 8741.4,
+      "ratio": 4.15
+    },
+    {
+      "date": "2023-07-14",
+      "buyBalance": 36411.9,
+      "sellBalance": 8646.9,
+      "ratio": 4.21
+    },
+    {
+      "date": "2023-07-21",
+      "buyBalance": 36703.8,
+      "sellBalance": 8530.5,
+      "ratio": 4.3
+    },
+    {
+      "date": "2023-07-28",
+      "buyBalance": 36238.3,
+      "sellBalance": 8725.7,
+      "ratio": 4.15
+    },
+    {
+      "date": "2023-08-04",
+      "buyBalance": 37957.8,
+      "sellBalance": 8316.3,
+      "ratio": 4.56
+    },
+    {
+      "date": "2023-08-10",
+      "buyBalance": 36742.9,
+      "sellBalance": 8640.4,
+      "ratio": 4.25
+    },
+    {
+      "date": "2023-08-18",
+      "buyBalance": 36642.5,
+      "sellBalance": 8244.5,
+      "ratio": 4.44
+    },
+    {
+      "date": "2023-08-25",
+      "buyBalance": 36738.7,
+      "sellBalance": 8614.8,
+      "ratio": 4.26
+    },
+    {
+      "date": "2023-09-01",
+      "buyBalance": 34559.5,
+      "sellBalance": 8918,
+      "ratio": 3.88
+    },
+    {
+      "date": "2023-09-08",
+      "buyBalance": 36030.7,
+      "sellBalance": 9242.9,
+      "ratio": 3.9
+    },
+    {
+      "date": "2023-09-15",
+      "buyBalance": 35699.4,
+      "sellBalance": 9887.7,
+      "ratio": 3.61
+    },
+    {
+      "date": "2023-09-22",
+      "buyBalance": 37562.2,
+      "sellBalance": 9620.3,
+      "ratio": 3.9
+    },
+    {
+      "date": "2023-09-29",
+      "buyBalance": 38722.3,
+      "sellBalance": 7281,
+      "ratio": 5.32
+    },
+    {
+      "date": "2023-10-06",
+      "buyBalance": 39372.4,
+      "sellBalance": 6684.8,
+      "ratio": 5.89
+    },
+    {
+      "date": "2023-10-13",
+      "buyBalance": 38814.2,
+      "sellBalance": 7529.8,
+      "ratio": 5.15
+    },
+    {
+      "date": "2023-10-20",
+      "buyBalance": 39886.1,
+      "sellBalance": 7290.3,
+      "ratio": 5.47
+    },
+    {
+      "date": "2023-10-27",
+      "buyBalance": 40085.7,
+      "sellBalance": 7489.3,
+      "ratio": 5.35
+    },
+    {
+      "date": "2023-11-02",
+      "buyBalance": 38869.5,
+      "sellBalance": 7113.9,
+      "ratio": 5.46
+    },
+    {
+      "date": "2023-11-10",
+      "buyBalance": 38749.1,
+      "sellBalance": 7693.5,
+      "ratio": 5.04
+    },
+    {
+      "date": "2023-11-17",
+      "buyBalance": 37561.7,
+      "sellBalance": 8517.8,
+      "ratio": 4.41
+    },
+    {
+      "date": "2023-11-24",
+      "buyBalance": 38057.9,
+      "sellBalance": 9134.5,
+      "ratio": 4.17
+    },
+    {
+      "date": "2023-12-01",
+      "buyBalance": 38452,
+      "sellBalance": 8861.3,
+      "ratio": 4.34
+    },
+    {
+      "date": "2023-12-08",
+      "buyBalance": 39839.8,
+      "sellBalance": 8229.5,
+      "ratio": 4.84
+    },
+    {
+      "date": "2023-12-15",
+      "buyBalance": 37948.7,
+      "sellBalance": 9181.2,
+      "ratio": 4.13
+    },
+    {
+      "date": "2023-12-22",
+      "buyBalance": 37388.8,
+      "sellBalance": 8956.9,
+      "ratio": 4.17
+    },
+    {
+      "date": "2023-12-29",
+      "buyBalance": 36180.7,
+      "sellBalance": 7031.2,
+      "ratio": 5.15
+    },
+    {
+      "date": "2024-01-12",
+      "buyBalance": 34542.2,
+      "sellBalance": 8736.9,
+      "ratio": 3.95
+    },
+    {
+      "date": "2024-01-19",
+      "buyBalance": 35220.3,
+      "sellBalance": 9158.2,
+      "ratio": 3.85
+    },
+    {
+      "date": "2024-01-26",
+      "buyBalance": 37120.6,
+      "sellBalance": 8808.9,
+      "ratio": 4.21
+    },
+    {
+      "date": "2024-02-02",
+      "buyBalance": 38184.3,
+      "sellBalance": 8858.5,
+      "ratio": 4.31
+    },
+    {
+      "date": "2024-02-09",
+      "buyBalance": 39500.2,
+      "sellBalance": 9401,
+      "ratio": 4.2
+    },
+    {
+      "date": "2024-02-16",
+      "buyBalance": 39391.6,
+      "sellBalance": 10215,
+      "ratio": 3.86
+    },
+    {
+      "date": "2024-02-22",
+      "buyBalance": 40050.3,
+      "sellBalance": 10614.7,
+      "ratio": 3.77
+    },
+    {
+      "date": "2024-03-01",
+      "buyBalance": 40999.2,
+      "sellBalance": 9484.2,
+      "ratio": 4.32
+    },
+    {
+      "date": "2024-03-08",
+      "buyBalance": 43380.8,
+      "sellBalance": 9479.2,
+      "ratio": 4.58
+    },
+    {
+      "date": "2024-03-15",
+      "buyBalance": 44286.2,
+      "sellBalance": 9196,
+      "ratio": 4.82
+    },
+    {
+      "date": "2024-03-22",
+      "buyBalance": 42183.3,
+      "sellBalance": 10926.4,
+      "ratio": 3.86
+    },
+    {
+      "date": "2024-03-29",
+      "buyBalance": 43043.1,
+      "sellBalance": 8382.5,
+      "ratio": 5.13
+    },
+    {
+      "date": "2024-04-05",
+      "buyBalance": 45733.5,
+      "sellBalance": 7590.6,
+      "ratio": 6.03
+    },
+    {
+      "date": "2024-04-12",
+      "buyBalance": 45953.3,
+      "sellBalance": 7762.1,
+      "ratio": 5.92
+    },
+    {
+      "date": "2024-04-19",
+      "buyBalance": 48645.1,
+      "sellBalance": 6671.1,
+      "ratio": 7.29
+    },
+    {
+      "date": "2024-04-26",
+      "buyBalance": 47332.2,
+      "sellBalance": 6695.9,
+      "ratio": 7.07
+    },
+    {
+      "date": "2024-05-02",
+      "buyBalance": 46836.4,
+      "sellBalance": 6923.1,
+      "ratio": 6.77
+    },
+    {
+      "date": "2024-05-10",
+      "buyBalance": 46979.2,
+      "sellBalance": 7294.9,
+      "ratio": 6.44
+    },
+    {
+      "date": "2024-05-17",
+      "buyBalance": 46837.5,
+      "sellBalance": 7565.6,
+      "ratio": 6.19
+    },
+    {
+      "date": "2024-05-24",
+      "buyBalance": 47400.2,
+      "sellBalance": 7780,
+      "ratio": 6.09
+    },
+    {
+      "date": "2024-05-31",
+      "buyBalance": 47089,
+      "sellBalance": 7757.4,
+      "ratio": 6.07
+    },
+    {
+      "date": "2024-06-07",
+      "buyBalance": 48260.9,
+      "sellBalance": 7398.2,
+      "ratio": 6.52
+    },
+    {
+      "date": "2024-06-14",
+      "buyBalance": 48697.5,
+      "sellBalance": 7608.4,
+      "ratio": 6.4
+    },
+    {
+      "date": "2024-06-21",
+      "buyBalance": 49117.6,
+      "sellBalance": 7617.8,
+      "ratio": 6.45
+    },
+    {
+      "date": "2024-06-28",
+      "buyBalance": 47533.4,
+      "sellBalance": 7248.3,
+      "ratio": 6.56
+    },
+    {
+      "date": "2024-07-05",
+      "buyBalance": 47170.1,
+      "sellBalance": 8015.8,
+      "ratio": 5.88
+    },
+    {
+      "date": "2024-07-12",
+      "buyBalance": 47882.6,
+      "sellBalance": 7831.1,
+      "ratio": 6.11
+    },
+    {
+      "date": "2024-07-19",
+      "buyBalance": 49254.6,
+      "sellBalance": 7605.7,
+      "ratio": 6.48
+    },
+    {
+      "date": "2024-07-26",
+      "buyBalance": 49809,
+      "sellBalance": 6845,
+      "ratio": 7.28
+    },
+    {
+      "date": "2024-08-02",
+      "buyBalance": 48721,
+      "sellBalance": 5586.9,
+      "ratio": 8.72
+    },
+    {
+      "date": "2024-08-09",
+      "buyBalance": 39635,
+      "sellBalance": 5297.7,
+      "ratio": 7.48
+    },
+    {
+      "date": "2024-08-16",
+      "buyBalance": 38535.9,
+      "sellBalance": 6535.5,
+      "ratio": 5.9
+    },
+    {
+      "date": "2024-08-23",
+      "buyBalance": 39475.2,
+      "sellBalance": 6862.1,
+      "ratio": 5.75
+    },
+    {
+      "date": "2024-08-30",
+      "buyBalance": 39851.9,
+      "sellBalance": 6268,
+      "ratio": 6.36
+    },
+    {
+      "date": "2024-09-06",
+      "buyBalance": 41046.5,
+      "sellBalance": 6078.5,
+      "ratio": 6.75
+    },
+    {
+      "date": "2024-09-13",
+      "buyBalance": 40859.5,
+      "sellBalance": 6276.6,
+      "ratio": 6.51
+    },
+    {
+      "date": "2024-09-20",
+      "buyBalance": 39831.7,
+      "sellBalance": 7271.7,
+      "ratio": 5.48
+    },
+    {
+      "date": "2024-09-27",
+      "buyBalance": 38110.3,
+      "sellBalance": 6330.8,
+      "ratio": 6.02
+    },
+    {
+      "date": "2024-10-04",
+      "buyBalance": 39329,
+      "sellBalance": 5716.8,
+      "ratio": 6.88
+    },
+    {
+      "date": "2024-10-11",
+      "buyBalance": 39625.2,
+      "sellBalance": 6263.2,
+      "ratio": 6.33
+    },
+    {
+      "date": "2024-10-18",
+      "buyBalance": 40650.1,
+      "sellBalance": 6177.8,
+      "ratio": 6.58
+    },
+    {
+      "date": "2024-10-25",
+      "buyBalance": 40960.8,
+      "sellBalance": 5927,
+      "ratio": 6.91
+    },
+    {
+      "date": "2024-11-01",
+      "buyBalance": 41493.3,
+      "sellBalance": 5263.8,
+      "ratio": 7.88
+    },
+    {
+      "date": "2024-11-08",
+      "buyBalance": 39838.7,
+      "sellBalance": 5984.4,
+      "ratio": 6.66
+    },
+    {
+      "date": "2024-11-15",
+      "buyBalance": 40857.9,
+      "sellBalance": 6258.8,
+      "ratio": 6.53
+    },
+    {
+      "date": "2024-11-22",
+      "buyBalance": 42395,
+      "sellBalance": 6489,
+      "ratio": 6.53
+    },
+    {
+      "date": "2024-11-29",
+      "buyBalance": 43509.1,
+      "sellBalance": 7280.1,
+      "ratio": 5.98
+    },
+    {
+      "date": "2024-12-06",
+      "buyBalance": 42423.9,
+      "sellBalance": 7045.5,
+      "ratio": 6.02
+    },
+    {
+      "date": "2024-12-13",
+      "buyBalance": 42059.7,
+      "sellBalance": 8146.2,
+      "ratio": 5.16
+    },
+    {
+      "date": "2024-12-20",
+      "buyBalance": 42891.4,
+      "sellBalance": 7501.2,
+      "ratio": 5.72
+    },
+    {
+      "date": "2024-12-27",
+      "buyBalance": 39663.5,
+      "sellBalance": 6793,
+      "ratio": 5.84
+    },
+    {
+      "date": "2025-01-10",
+      "buyBalance": 42279.8,
+      "sellBalance": 6399.5,
+      "ratio": 6.61
+    },
+    {
+      "date": "2025-01-17",
+      "buyBalance": 43305.9,
+      "sellBalance": 6041.8,
+      "ratio": 7.17
+    },
+    {
+      "date": "2025-01-24",
+      "buyBalance": 41279.6,
+      "sellBalance": 7244.3,
+      "ratio": 5.7
+    },
+    {
+      "date": "2025-01-31",
+      "buyBalance": 42453.9,
+      "sellBalance": 7048.3,
+      "ratio": 6.02
+    },
+    {
+      "date": "2025-02-07",
+      "buyBalance": 44310.4,
+      "sellBalance": 7146.4,
+      "ratio": 6.2
+    },
+    {
+      "date": "2025-02-14",
+      "buyBalance": 44606.6,
+      "sellBalance": 7898.5,
+      "ratio": 5.65
+    },
+    {
+      "date": "2025-02-21",
+      "buyBalance": 45372.4,
+      "sellBalance": 8483.8,
+      "ratio": 5.35
+    },
+    {
+      "date": "2025-02-28",
+      "buyBalance": 47109.4,
+      "sellBalance": 6307.9,
+      "ratio": 7.47
+    },
+    {
+      "date": "2025-03-07",
+      "buyBalance": 45656.7,
+      "sellBalance": 7246,
+      "ratio": 6.3
+    },
+    {
+      "date": "2025-03-14",
+      "buyBalance": 45056.7,
+      "sellBalance": 8306.1,
+      "ratio": 5.42
+    },
+    {
+      "date": "2025-03-21",
+      "buyBalance": 44724.7,
+      "sellBalance": 8464.1,
+      "ratio": 5.28
+    },
+    {
+      "date": "2025-03-28",
+      "buyBalance": 45791.2,
+      "sellBalance": 5768.6,
+      "ratio": 7.94
+    },
+    {
+      "date": "2025-04-04",
+      "buyBalance": 44696.5,
+      "sellBalance": 4641.8,
+      "ratio": 9.63
+    },
+    {
+      "date": "2025-04-11",
+      "buyBalance": 39508.2,
+      "sellBalance": 4593.6,
+      "ratio": 8.6
+    },
+    {
+      "date": "2025-04-18",
+      "buyBalance": 39537.7,
+      "sellBalance": 5965.9,
+      "ratio": 6.63
+    },
+    {
+      "date": "2025-04-25",
+      "buyBalance": 38853.3,
+      "sellBalance": 6461.4,
+      "ratio": 6.01
+    },
+    {
+      "date": "2025-05-02",
+      "buyBalance": 38721.8,
+      "sellBalance": 6461.4,
+      "ratio": 5.99
+    },
+    {
+      "date": "2025-05-09",
+      "buyBalance": 38199.5,
+      "sellBalance": 6992,
+      "ratio": 5.46
+    },
+    {
+      "date": "2025-05-16",
+      "buyBalance": 38419.7,
+      "sellBalance": 7325.7,
+      "ratio": 5.24
+    },
+    {
+      "date": "2025-05-23",
+      "buyBalance": 39238.7,
+      "sellBalance": 7814,
+      "ratio": 5.02
+    },
+    {
+      "date": "2025-05-30",
+      "buyBalance": 39206.1,
+      "sellBalance": 8047.1,
+      "ratio": 4.87
+    },
+    {
+      "date": "2025-06-06",
+      "buyBalance": 40142.6,
+      "sellBalance": 8200.5,
+      "ratio": 4.9
+    },
+    {
+      "date": "2025-06-13",
+      "buyBalance": 40489.6,
+      "sellBalance": 8440.3,
+      "ratio": 4.8
+    },
+    {
+      "date": "2025-06-20",
+      "buyBalance": 40540.2,
+      "sellBalance": 8997.9,
+      "ratio": 4.51
+    },
+    {
+      "date": "2025-06-27",
+      "buyBalance": 38390.9,
+      "sellBalance": 8766.3,
+      "ratio": 4.38
+    },
+    {
+      "date": "2025-07-04",
+      "buyBalance": 39411.2,
+      "sellBalance": 8417.1,
+      "ratio": 4.68
+    },
+    {
+      "date": "2025-07-11",
+      "buyBalance": 40040.7,
+      "sellBalance": 8608.6,
+      "ratio": 4.65
+    },
+    {
+      "date": "2025-07-18",
+      "buyBalance": 40330.9,
+      "sellBalance": 8722.4,
+      "ratio": 4.62
+    },
+    {
+      "date": "2025-07-25",
+      "buyBalance": 38274.7,
+      "sellBalance": 9576.1,
+      "ratio": 4
+    },
+    {
+      "date": "2025-08-01",
+      "buyBalance": 38987.2,
+      "sellBalance": 9274.3,
+      "ratio": 4.2
+    },
+    {
+      "date": "2025-08-08",
+      "buyBalance": 38905,
+      "sellBalance": 10032.8,
+      "ratio": 3.88
+    },
+    {
+      "date": "2025-08-15",
+      "buyBalance": 37786.2,
+      "sellBalance": 11051.6,
+      "ratio": 3.42
+    },
+    {
+      "date": "2025-08-22",
+      "buyBalance": 39879.1,
+      "sellBalance": 10567.4,
+      "ratio": 3.77
+    },
+    {
+      "date": "2025-08-29",
+      "buyBalance": 41475.9,
+      "sellBalance": 9395.3,
+      "ratio": 4.41
+    },
+    {
+      "date": "2025-09-05",
+      "buyBalance": 42324.7,
+      "sellBalance": 9566.4,
+      "ratio": 4.42
+    },
+    {
+      "date": "2025-09-12",
+      "buyBalance": 41511.3,
+      "sellBalance": 10902.4,
+      "ratio": 3.81
+    },
+    {
+      "date": "2025-09-19",
+      "buyBalance": 41891.4,
+      "sellBalance": 11229,
+      "ratio": 3.73
+    },
+    {
+      "date": "2025-09-26",
+      "buyBalance": 42110.6,
+      "sellBalance": 15147.7,
+      "ratio": 2.78
+    },
+    {
+      "date": "2025-10-03",
+      "buyBalance": 42848.6,
+      "sellBalance": 9321.9,
+      "ratio": 4.6
+    },
+    {
+      "date": "2025-10-10",
+      "buyBalance": 43623.6,
+      "sellBalance": 9375.7,
+      "ratio": 4.65
+    },
+    {
+      "date": "2025-10-17",
+      "buyBalance": 44984.2,
+      "sellBalance": 9182,
+      "ratio": 4.9
+    },
+    {
+      "date": "2025-10-24",
+      "buyBalance": 44378.2,
+      "sellBalance": 9752.2,
+      "ratio": 4.55
+    },
+    {
+      "date": "2025-10-31",
+      "buyBalance": 45025.7,
+      "sellBalance": 9503.4,
+      "ratio": 4.74
+    },
+    {
+      "date": "2025-11-07",
+      "buyBalance": 47355.7,
+      "sellBalance": 8161.3,
+      "ratio": 5.8
+    },
+    {
+      "date": "2025-11-14",
+      "buyBalance": 48348.9,
+      "sellBalance": 8497.1,
+      "ratio": 5.69
+    },
+    {
+      "date": "2025-11-21",
+      "buyBalance": 47321,
+      "sellBalance": 8059.9,
+      "ratio": 5.87
+    },
+    {
+      "date": "2025-11-28",
+      "buyBalance": 47012.8,
+      "sellBalance": 8733.5,
+      "ratio": 5.38
+    },
+    {
+      "date": "2025-12-05",
+      "buyBalance": 47828.8,
+      "sellBalance": 9005.6,
+      "ratio": 5.31
+    },
+    {
+      "date": "2025-12-12",
+      "buyBalance": 47625.2,
+      "sellBalance": 9147.3,
+      "ratio": 5.21
+    },
+    {
+      "date": "2025-12-19",
+      "buyBalance": 49011.9,
+      "sellBalance": 9162.6,
+      "ratio": 5.35
+    },
+    {
+      "date": "2025-12-26",
+      "buyBalance": 47976.3,
+      "sellBalance": 11444,
+      "ratio": 4.19
+    },
+    {
+      "date": "2026-01-09",
+      "buyBalance": 48044.7,
+      "sellBalance": 8624.9,
+      "ratio": 5.57
+    },
+    {
+      "date": "2026-01-16",
+      "buyBalance": 48542,
+      "sellBalance": 9278.5,
+      "ratio": 5.23
+    },
+    {
+      "date": "2026-01-23",
+      "buyBalance": 51162,
+      "sellBalance": 9122.1,
+      "ratio": 5.61
+    },
+    {
+      "date": "2026-01-30",
+      "buyBalance": 53867.2,
+      "sellBalance": 8816.2,
+      "ratio": 6.11
+    },
+    {
+      "date": "2026-02-06",
+      "buyBalance": 53552.8,
+      "sellBalance": 9299.3,
+      "ratio": 5.76
+    },
+    {
+      "date": "2026-02-13",
+      "buyBalance": 52853.4,
+      "sellBalance": 10228.3,
+      "ratio": 5.17
+    },
+    {
+      "date": "2026-02-20",
+      "buyBalance": 55830.4,
+      "sellBalance": 10621,
+      "ratio": 5.26
+    },
+    {
+      "date": "2026-02-27",
+      "buyBalance": 55405.5,
+      "sellBalance": 10034.2,
+      "ratio": 5.52
+    },
+    {
+      "date": "2026-03-06",
+      "buyBalance": 57181.3,
+      "sellBalance": 9793.6,
+      "ratio": 5.84
+    },
+    {
+      "date": "2026-03-13",
+      "buyBalance": 57194.9,
+      "sellBalance": 10012.3,
+      "ratio": 5.71
+    },
+    {
+      "date": "2026-03-19",
+      "buyBalance": 58025.8,
+      "sellBalance": 10219.7,
+      "ratio": 5.68
+    },
+    {
+      "date": "2026-03-27",
+      "buyBalance": 54419.5,
+      "sellBalance": 15420.4,
+      "ratio": 3.53
+    },
+    {
+      "date": "2026-04-03",
+      "buyBalance": 52704.7,
+      "sellBalance": 8679.5,
+      "ratio": 6.07
+    },
+    {
+      "date": "2026-04-10",
+      "buyBalance": 51565.1,
+      "sellBalance": 9733.1,
+      "ratio": 5.3
+    },
+    {
+      "date": "2026-04-17",
+      "buyBalance": 54859.7,
+      "sellBalance": 9434.4,
+      "ratio": 5.81
+    }
+  ]
+}

@@ -11,7 +11,7 @@ export default function PrivacyPage() {
   return (
     <StaticPageLayout title="プライバシーポリシー">
       <p>
-        株温計（以下「当サイト」）は、ユーザーのプライバシーを尊重し、個人情報の取り扱いについて以下のとおり定めます。
+        株温計（運営: リブラボ、以下「当サイト」）は、ユーザーのプライバシーを尊重し、個人情報の取り扱いについて以下のとおり定めます。
       </p>
 
       <section>
@@ -131,7 +131,7 @@ export default function PrivacyPage() {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 19 日</p>
+      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 23 日</p>
     </StaticPageLayout>
   );
 }

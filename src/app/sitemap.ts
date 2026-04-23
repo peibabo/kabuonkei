@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getEventsMeta } from "@/lib/events";
+import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
@@ -11,6 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "yearly",
     priority: 0.5,
   }));
+
+  // 分析記事は月次で再生成されるので lastModified には generatedAt を使う
+  const marginAnalysis = getMarginRatioAnalysis();
+  const marginAnalysisModified = new Date(marginAnalysis.generatedAt);
 
   return [
     {
@@ -58,6 +63,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/guide/fire-long-term`,
       lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/analysis`,
+      lastModified: marginAnalysisModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/analysis/margin-ratio-temperature`,
+      lastModified: marginAnalysisModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

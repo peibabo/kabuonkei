@@ -160,6 +160,38 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 - 類似日カード（SimilarDaysCard）でイベントラベル付き行は `/events/[slug]?ref=event_link` リンクになる
 - X bot（`scripts/post-daily-temperature-tweet.ts`）は TOP1 類似日がイベント付きのときツイート文末にイベントページ URL（`?utm_source=x&utm_campaign=event_link`）を追加する
 
+## 分析記事 `/analysis/[slug]`
+
+独自データを掛け合わせた深掘り SEO 記事の置き場所。ペルソナ別の `/guide`、イベント別の `/events` とは別枠で、トピック×独自データのハイブリッド記事を貯める。収益化戦略上は「すでにメイン口座を持つ中級者」向けに信用取引サブ口座アフィなどの文脈適合 CTA を添える。
+
+### 第1弾: 信用倍率 × 株温計（`/analysis/margin-ratio-temperature`）
+
+「信用倍率 4 倍超えは危険か」を過去10年データで検証する記事。
+
+**データ層**:
+- `src/data/margin-ratio-history.json`: JPX 公開の「信用取引現在高 過去推移表」（`margin/06.html` の連結 Excel `tvdivq0000015969.xls`）を取得して 2002-08 以降の週次信用倍率を `{date, buyBalance, sellBalance, ratio}[]` として保存。直近数週は `margin/04.html` の個別 `mtseisan*.xls` でギャップ埋めする。生成スクリプト: `npm run generate:margin-history`（`scripts/backfill-margin-ratio-history.ts`）
+- `src/data/margin-ratio-analysis.json`: 上記履歴 × `japan-temperature-history.json` × Yahoo `^N225` を結合し、信用倍率バンド (`〜3倍 / 3〜4倍 / 4〜5倍 / 5倍〜`) × 温度バンド (`SENTIMENT_RANGES`) の 2D joint セルごとに 1ヶ月/3ヶ月/6ヶ月の日経225 前方リターンを集計したもの。加えて 1D マージナル・信用倍率 quartile・最新 context を格納。生成スクリプト: `npm run generate:margin-analysis`（`scripts/generate-margin-ratio-analysis.ts`）
+- 結合は **申込日（金曜）基準**で anchor。温度スコアは申込日 or 7 日以内の直近営業日、base price は ^N225 の申込日 or 直近営業日終値。JPX 公表は T+5 営業日遅れだが 1ヶ月以上の horizon では影響小という注記を記事内に明記
+
+**ヘルパ/共通資産**:
+- `scripts/_lib/jpx-margin.ts`: 週次 Excel (`parseWeeklyMarginXls` / `extractWeeklyMarginLinks`) と連結履歴 Excel (`parseHistoryMarginXls` / `extractHistoryExcelUrl`) の両方に対応した JPX 信用取引残高パーサ。`excelSerialToIso` も提供
+- `scripts/_lib/stats-aggregator.ts` に 2D 集計関数 `aggregateJointReturns<K>` を追加（1D の `aggregateLevelReturns` と並列）。`bucketOf: (date) => { band1, band2 } | null` を受けてセル配列を返す純粋関数。`scripts/__tests__/joint-aggregator.test.ts` でユニットテスト
+- `src/lib/heatmap-colors.ts`: `heatmapCellStyle(avgReturn, maxAbs, isLowSample)` を SectorHeatmapCard から抽出して共有
+- `src/lib/margin-ratio-analysis.ts`: 分析 JSON のアクセサ（`getMarginRatioAnalysis` / `findJointCell` / `classifyRatioToBand` / `computeRatioPercentile`）
+- `src/lib/article-jsonld.ts`: `buildArticleJsonLd({url, headline, description, datePublished, dateModified, imageUrl?})` — 分析記事ページに埋め込む schema.org Article JSON-LD を純粋関数で組み立てる
+
+**UI**:
+- `src/app/analysis/page.tsx`: 記事インデックス（`StaticPageLayout` ベース、ハンド書きカード配列）
+- `src/app/analysis/margin-ratio-temperature/page.tsx`: 記事本体（Server Component、`<Script type="application/ld+json">` で JSON-LD 埋め込み、目次・用語解説・`MarginRatioAnalysisBody` 埋め込み・示唆・手法・関連リンクで構成）
+- `src/components/analysis/MarginRatioAnalysisBody.tsx`: Client Component。`PeriodSwitcher<1m|3m|6m>` で期間切替、quartile 表・2D ヒートマップ (`heatmapCellStyle` 流用、`LOW_SAMPLE_THRESHOLD = 10`)・1D マージナル表（信用倍率版 / 温度版）を描画。最新比率 ≥ 5 または温度 ≤ 20/≥81 のとき上部に動的 boost アラートカード。マウント時に GA4 `analysis_view` を送信
+- `src/components/analysis/MarginAccountCTA.tsx`: Client Component。信用取引口座（松井/GMOクリック/SBI）の比較カード。**暫定仕様**: 各証券会社の公式サイトへ直リンク（`href` は top-level domain、`rel="noopener noreferrer"`）。PV が伸びたら ASP (A8 / もしも / バリューコマース / TCS / アクセストレード 等) 登録後にアフィリエイト URL へ差し替える前提。差し替え時に `rel` へ `sponsored nofollow` を加え、カード上部に「※PR / 広告」表示を復活させる。GA4 イベントは直リンク/アフィどちらでも共通の `broker_cta_click(article, broker, placement)` を使用してヒストリカル計測の継続性を確保
+- `/analysis/margin-ratio-temperature/opengraph-image.tsx`: 静的 OG 画像。`buildNotoSansJpFonts` + `THERMOMETER_SVG` を `/api/og/daily` と共通利用。最新比率・中央値・サンプル数を描画
+- `/terms` に第8条「広告・アフィリエイトリンクの表示」セクションを追加済み（景表法・JSTA ガイドライン対応）
+- Footer / `/guide/short-term-trader` / `/guide/fire-long-term` から内部リンクを追加（トピッククラスタ形成）
+- sitemap: `/analysis` (`priority: 0.7`) / `/analysis/margin-ratio-temperature` (`priority: 0.6`)。`lastModified` は `margin-ratio-analysis.json.generatedAt` 由来
+
+**自動更新**: `.github/workflows/update-historical-stats.yml` の月次ジョブ末尾に `generate:margin-history` → `generate:margin-analysis` の 2 ステップを追加（`generate:japan-temperature-history` の後、順序重要）。生成ファイル 2 本を commit 対象に追加済み
+
 ## 日本市場データ
 
 - `src/data/japan-market-data.json`: JPX公開データから取得した日本市場固有の需給データ
@@ -192,7 +224,8 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 
 `scripts/_lib/shared.ts` には生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export。
 `scripts/_lib/snapshot-merge.ts` には日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）を分離し、`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化。
-`scripts/_lib/stats-aggregator.ts` には日米の過去統計生成スクリプトで共通する温度帯別リターン集計関数 `aggregateLevelReturns<K>` を分離し、`scripts/__tests__/stats-aggregator.test.ts` でユニットテスト化。
+`scripts/_lib/stats-aggregator.ts` には日米の過去統計生成スクリプトで共通する温度帯別リターン集計関数 `aggregateLevelReturns<K>` に加え、分析記事用の 2D 集計関数 `aggregateJointReturns<K>` を提供。`scripts/__tests__/{stats-aggregator,joint-aggregator}.test.ts` でユニットテスト化。
+`scripts/_lib/jpx-margin.ts` は JPX 信用取引残高 Excel を扱う共通パーサ（週次 `mtseisan*.xls` 用 `parseWeeklyMarginXls` / `extractWeeklyMarginLinks` と、連結履歴 `tvdivq0000015969.xls` 用 `parseHistoryMarginXls` / `extractHistoryExcelUrl` / `excelSerialToIso`）。`backfill-margin-ratio-history.ts` が利用する。
 
 ## 公開サイトとしての運用
 
@@ -211,9 +244,10 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 - `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）
 - `/events` — 主要イベント14件のインデックスページ（`src/app/events/page.tsx`）。日付降順でカード表示、各カードから詳細ページ `/events/[slug]?ref=events_index` へ遷移。`StaticPageLayout` ベース
 - `/guide` — 投資家タイプ別ガイドのインデックスページ（`src/app/guide/page.tsx`）。`nisa-tsumitate` / `short-term-trader` / `fire-long-term` の 3 本をカード表示。各ガイドは単体 TSX（Markdown 化せず個別性重視）で `src/app/guide/[slug]/page.tsx`
+- `/analysis` — 深掘り分析記事のインデックスページ（`src/app/analysis/page.tsx`）。第1弾は `/analysis/margin-ratio-temperature`（信用倍率 × 株温計）。詳細は上の「分析記事」セクション参照
 - Dashboard 内の `StatsSection` 直後に `PersonalizedHintCard`（`src/components/PersonalizedHintCard.tsx`）を配置し、タブ切替で現在温度に応じた「あなたのスタイル別の読み方」を表示 → 該当ガイドへ遷移（`?ref=persona_hint`）。ヒント文言は純粋データ `src/lib/persona-hints.ts`（`PERSONA_HINTS` マトリクス / `getPersonaHint(persona, score)` / `isExtremeScore(score)`）。極寒/沸騰時はカード枠を amber 強調 + 注意書きを表示。選択したペルソナは localStorage（`kabuonkei.persona`）で保持し次回訪問時に復元。タブ切替は GA4 `persona_select` イベントを送信
 - `/about` `/widget` `/terms` `/privacy` `/events` `/guide` の外枠（`<main>` + 戻るリンク + `<h1>` + コンテンツ枠）は `src/components/StaticPageLayout.tsx` に共通化されており、各 page は `<StaticPageLayout title="...">` で本文のみを記述する
-- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）。`/about` `/events` `/guide` `/widget` `/terms` `/privacy` へのリンクを掲載
+- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）。`/about` `/events` `/guide` `/analysis` `/widget` `/terms` `/privacy` へのリンクを掲載
 
 ### 埋め込みウィジェット画像 API
 - `/widget/today` — 400×400 PNG を動的生成する Route Handler（`src/app/widget/today/route.tsx`）。他サイトが `<img src>` で貼れる SEO 資産（被リンク獲得目的）。内部で `fetchAllMarketData()` を呼び、日米の最新スコアを描画
@@ -234,7 +268,8 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 
 ### SEO / 計測
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
-- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap は `/`, `/about`, `/widget`, `/terms`, `/privacy` の 5 ページ
+- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap には `/`, `/about`, `/widget`, `/events`, `/guide` + 3 ガイド, `/analysis` + 分析記事, `/events/[slug]` 全件, `/terms`, `/privacy` を収録
+- **記事 JSON-LD**: `src/lib/article-jsonld.ts` の `buildArticleJsonLd({url, headline, description, datePublished, dateModified, imageUrl?})` で schema.org Article 用 JSON 文字列を生成し、記事ページで `<Script type="application/ld+json">` として埋め込む（分析記事で利用）
 - **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
 - **OG 画像**: `src/app/opengraph-image.tsx` で動的生成（`ImageResponse` + Google Fonts の Noto Sans JP サブセットを fetch）。手動の PNG 配置は不要。フォント取得（`loadGoogleFont` / `buildNotoSansJpFonts`）と温度計アイコン SVG は `src/lib/og/{fonts,thermometer-svg}.ts` に共通化されており、`/api/og/daily` 側も同じモジュールを参照する
 

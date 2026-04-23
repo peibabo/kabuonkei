@@ -97,8 +97,23 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
           運営
         </h2>
-        <p>
-          株温計は個人によって運営されている情報サイトです。公開データから独自計算したスコアや解説コンテンツを提供することが目的で、一次市場データ（価格・指数値等）を再配信する商用データサービスではありません。
+        <dl className="grid grid-cols-[100px_1fr] gap-y-1 gap-x-4 text-sm">
+          <dt className="text-gray-500">屋号</dt>
+          <dd className="text-gray-800">リブラボ</dd>
+          <dt className="text-gray-500">企画・分析</dt>
+          <dd className="text-gray-800">ao</dd>
+          <dt className="text-gray-500">お問い合わせ</dt>
+          <dd>
+            <a
+              href="mailto:info@kabuonkei.com"
+              className="underline hover:text-gray-900"
+            >
+              info@kabuonkei.com
+            </a>
+          </dd>
+        </dl>
+        <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+          株温計はリブラボ（個人運営）が開発・運営している情報サイトです。公開データから独自計算したスコアや解説コンテンツを提供することが目的で、一次市場データ（価格・指数値等）を再配信する商用データサービスではありません。
         </p>
         <p className="mt-2 text-sm text-gray-600">
           ご利用に際しては{" "}
@@ -110,15 +125,6 @@ export default function AboutPage() {
             プライバシーポリシー
           </Link>
           {" "}をご確認ください。
-        </p>
-        <p className="mt-2 text-sm text-gray-600">
-          お問い合わせ:{" "}
-          <a
-            href="mailto:info@kabuonkei.com"
-            className="underline hover:text-gray-900"
-          >
-            info@kabuonkei.com
-          </a>
         </p>
       </section>
 

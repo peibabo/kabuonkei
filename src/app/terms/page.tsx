@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <StaticPageLayout title="利用規約">
       <p>
-        本利用規約（以下「本規約」）は、株温計（以下「当サイト」）が提供するサービスの利用条件を定めるものです。利用者は、当サイトを利用することで本規約に同意したものとみなされます。
+        本利用規約（以下「本規約」）は、リブラボ（以下「運営者」）が提供する株温計（以下「当サイト」）の利用条件を定めるものです。利用者は、当サイトを利用することで本規約に同意したものとみなされます。
       </p>
 
       <section>
@@ -104,7 +104,27 @@ export default function TermsPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          第 8 条（お問い合わせ）
+          第 8 条（外部サービスへのリンクおよび広告表示）
+        </h2>
+        <p>
+          当サイトの一部の記事・ページには、<strong>運営者が独自に調査した外部サービス（証券口座・書籍等）の公式ページへのリンク</strong>を掲載することがあります。これらのリンクは将来的に<strong>広告（アフィリエイトリンク）に切り替わる可能性</strong>があり、その場合には運営者が広告主から成果報酬を受け取ることになります。
+        </p>
+        <ul className="list-disc pl-6 space-y-1 mt-3 text-sm">
+          <li>
+            広告（アフィリエイト）リンクを掲載する箇所には、「PR」「広告」「sponsored」等の表示を行います
+          </li>
+          <li>
+            外部サービスの選定・紹介は、運営者の独立した判断に基づいて行われ、広告報酬の有無によって分析結果や解説コンテンツの中立性が左右されないよう努めています
+          </li>
+          <li>
+            外部サービスの内容、ご契約条件、取引結果については各サービス提供事業者が責任を負うものであり、当サイトは一切の責任を負いません。お申込みはご自身の判断と責任で行ってください
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          第 9 条（お問い合わせ）
         </h2>
         <p>
           本規約に関するお問い合わせ、コンテンツの転載許諾、その他のご連絡は下記までお願いします。
@@ -120,7 +140,7 @@ export default function TermsPage() {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 22 日</p>
+      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 23 日</p>
     </StaticPageLayout>
   );
 }

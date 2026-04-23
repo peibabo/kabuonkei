@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getEventsMeta } from "@/lib/events";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
+import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
@@ -16,6 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 分析記事は月次で再生成されるので lastModified には generatedAt を使う
   const marginAnalysis = getMarginRatioAnalysis();
   const marginAnalysisModified = new Date(marginAnalysis.generatedAt);
+  const vixAnalysis = getVixSp500Analysis();
+  const vixAnalysisModified = new Date(vixAnalysis.generatedAt);
+  const analysisIndexModified = new Date(
+    Math.max(marginAnalysisModified.getTime(), vixAnalysisModified.getTime())
+  );
 
   return [
     {
@@ -68,13 +74,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${siteUrl}/analysis`,
-      lastModified: marginAnalysisModified,
+      lastModified: analysisIndexModified,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/analysis/margin-ratio-temperature`,
       lastModified: marginAnalysisModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/analysis/vix-threshold-sp500`,
+      lastModified: vixAnalysisModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

@@ -74,8 +74,8 @@ export default function PortfolioPage() {
           role="note"
           className="bg-red-50 border border-red-300 rounded-xl p-4 not-prose"
         >
-          <p className="text-xs text-red-700 mb-1 font-semibold">⚠️ 重要な免責事項</p>
-          <p className="text-sm text-gray-800 leading-relaxed">
+          <p className="text-sm text-red-700 mb-1 font-semibold">⚠️ 重要な免責事項</p>
+          <p className="text-base text-gray-800 leading-relaxed">
             このページの NAV / リターン / 配分推奨は、<strong>過去データに特定のルールを当てはめた「バックテスト」および「シミュレーション」</strong>の結果です。
             <strong className="mx-1">投資助言・投資勧誘ではなく</strong>、特定の金融商品の売買を推奨するものではありません。
             現実の取引では、手数料・税金・スリッページ・約定遅延など、ここでは一切考慮していないコストが発生します。投資判断はご自身の責任で行ってください。
@@ -86,15 +86,15 @@ export default function PortfolioPage() {
           id="for-whom"
           className="bg-amber-50 border border-amber-300 rounded-xl p-5 not-prose scroll-mt-16"
         >
-          <h2 className="text-base font-bold text-amber-900 mb-2">
+          <h2 className="text-lg font-bold text-amber-900 mb-2">
             📖 この記事は誰のためのものか（先に読んでください）
           </h2>
-          <p className="text-sm text-gray-800 leading-relaxed mb-3">
+          <p className="text-base text-gray-800 leading-relaxed mb-3">
             結論を先に書きます。過去10年の日米市場では、
             <strong>どの 3 戦略を比べても「100% 株を買ってひたすら持つ」が最強だった</strong>
             というのが数字上の事実です。温度ルールは他の 2 戦略と比べて以下のような位置にいます。
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-sm text-gray-800 mb-4">
+          <ul className="list-disc pl-6 space-y-2 text-base text-gray-800 mb-4">
             <li>
               <strong>vs 一括買い持ち（初日に全額投入）</strong>:
               温度ルールは累計リターンで大きく劣後（JP α{" "}
@@ -112,12 +112,12 @@ export default function PortfolioPage() {
               。<strong>NISA 積立をしている人にとって、温度ルールへの切替はほぼ意味がありません</strong>
             </li>
           </ul>
-          <p className="text-sm text-gray-800 leading-relaxed mb-3">
+          <p className="text-base text-gray-800 leading-relaxed mb-3">
             つまりこのルールが
             <strong>意味を持つ可能性があるのは次の条件に全部当てはまる人だけ</strong>
             です:
           </p>
-          <ul className="list-disc pl-6 space-y-1 text-sm text-gray-800 mb-3">
+          <ul className="list-disc pl-6 space-y-1 text-base text-gray-800 mb-3">
             <li>
               まとまった現金（例: 退職金、副業収入、相続）が手元にあって、<strong>一括投入したいけど怖くてできない</strong>
             </li>
@@ -128,7 +128,7 @@ export default function PortfolioPage() {
               過去に一度でも<strong>暴落で売った or 買うのを躊躇した経験</strong>がある
             </li>
           </ul>
-          <p className="text-sm text-gray-800 leading-relaxed">
+          <p className="text-base text-gray-800 leading-relaxed">
             <strong>NISA 積立ができる方は、それが今も昔もベストプラクティスです</strong>
             。続きを読む前にまず積立設定を見直すことをお勧めします。積立も検討したうえで「一括で持ってる現金の配分判断に補助輪が欲しい」という方のみ、温度ルールの細かい数字を追う価値があります。
           </p>
@@ -136,7 +136,7 @@ export default function PortfolioPage() {
 
         <nav
           aria-label="目次"
-          className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm not-prose"
+          className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-base not-prose"
         >
           <p className="font-semibold text-gray-700 mb-2">📑 目次</p>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 list-none pl-0">
@@ -153,25 +153,25 @@ export default function PortfolioPage() {
           </ul>
         </nav>
 
-        <p className="text-xs text-gray-400">
+        <p className="text-sm text-gray-400">
           最終更新: <time dateTime={history.generatedAt}>{history.generatedAt}</time>
           （公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>）
         </p>
 
         <section id="intro" className="scroll-mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mt-2 mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 mt-2 mb-3">
             温度でポートフォリオを動かすと、どうなるのか？
           </h2>
-          <p className="leading-relaxed">
+          <p className="text-base leading-relaxed">
             株温計の温度スコア（0-100）は、「市場が今どれくらい熱狂 / 悲観しているか」を示すセンチメント指標です。ではその温度に応じて、
             機械的に<strong>株と現金の配分を月次に入れ替える</strong>と、過去どのような結果になっていたのでしょうか。このページは、日経225 と S&amp;P500 の 2 市場で、そのシミュレーションを公開するものです。
           </p>
-          <ul className="list-disc pl-6 mt-3 space-y-1 text-sm leading-relaxed">
+          <ul className="list-disc pl-6 mt-3 space-y-1 text-base leading-relaxed">
             <li>
               🇯🇵 <strong>日本版</strong>: 温度ルール 累計 +
               {jpStats.totalReturn.toFixed(1)}% / 最大DD{" "}
               {jpStats.maxDrawdown.toFixed(1)}% <br />
-              <span className="text-xs text-gray-500">
+              <span className="text-sm text-gray-500">
                 一括買い持ち: +{jpStats.benchmarkReturn.toFixed(1)}% /{" "}
                 {jpStats.benchmarkMaxDrawdown.toFixed(1)}% &nbsp;|&nbsp; 月次積立: +
                 {jpStats.dcaReturn.toFixed(1)}% /{" "}
@@ -182,7 +182,7 @@ export default function PortfolioPage() {
               🇺🇸 <strong>米国版</strong>: 温度ルール 累計 +
               {usStats.totalReturn.toFixed(1)}% / 最大DD{" "}
               {usStats.maxDrawdown.toFixed(1)}% <br />
-              <span className="text-xs text-gray-500">
+              <span className="text-sm text-gray-500">
                 一括買い持ち: +{usStats.benchmarkReturn.toFixed(1)}% /{" "}
                 {usStats.benchmarkMaxDrawdown.toFixed(1)}% &nbsp;|&nbsp; 月次積立: +
                 {usStats.dcaReturn.toFixed(1)}% /{" "}
@@ -190,7 +190,7 @@ export default function PortfolioPage() {
               </span>
             </li>
           </ul>
-          <p className="text-sm leading-relaxed mt-3 text-gray-600">
+          <p className="text-base leading-relaxed mt-3 text-gray-600">
             過去10年は両市場とも強い上昇相場だったため、絶対リターンでは<strong>「一括買い持ち &gt; 月次積立 &gt; 温度ルール」</strong>
             の順で並びました。温度ルールと月次積立の差は JP{" "}
             {Math.abs(jpStats.alphaVsDca).toFixed(1)}pp / US{" "}
@@ -201,15 +201,15 @@ export default function PortfolioPage() {
         </section>
 
         <section id="rule" className="scroll-mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
             ルールの説明
           </h2>
-          <p className="leading-relaxed">
+          <p className="text-base leading-relaxed">
             毎月第一営業日に、その時点の温度スコアをもとに下の配分表に従って株 : 現金を再配分します。
             配分は「ニュートラル 60 : 40 を基準に、温度に応じて ±30% の範囲で振る」ルール設定です。
           </p>
           <div className="overflow-x-auto not-prose mt-3">
-            <table className="w-full text-sm border border-gray-200 rounded-lg">
+            <table className="w-full text-base border border-gray-200 rounded-lg">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-3 py-2 text-left font-semibold">温度帯</th>
@@ -236,26 +236,26 @@ export default function PortfolioPage() {
               </tbody>
             </table>
           </div>
-          <p className="text-sm leading-relaxed mt-3 text-gray-600">
+          <p className="text-base leading-relaxed mt-3 text-gray-600">
             極寒（総悲観）のときに株の比率を上げ、沸騰（総楽観）のときに下げる<strong>逆張り型</strong>のルールです。リバランスは月次で、ポジション変更は月初 1 回のみ。
           </p>
         </section>
 
         <section id="body" className="scroll-mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
             バックテスト結果
           </h2>
-          <p className="leading-relaxed text-sm text-gray-600 mb-4">
+          <p className="leading-relaxed text-base text-gray-600 mb-4">
             下のタブで日本版 / 米国版を切替、期間切替で 1年 / 5年 / 10年の NAV 推移をご覧いただけます。
           </p>
           <PortfolioBody history={history} />
         </section>
 
         <section id="method" className="scroll-mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
             データと手法
           </h2>
-          <ul className="list-disc pl-6 space-y-1 text-sm leading-relaxed">
+          <ul className="list-disc pl-6 space-y-1 text-base leading-relaxed">
             <li>
               <strong>対象銘柄</strong>: 日本版 = ^N225、米国版 = ^GSPC（いずれも Yahoo Finance 日足終値）
             </li>
@@ -286,17 +286,17 @@ export default function PortfolioPage() {
             </li>
             <li>
               <strong>ライブ追跡</strong>: 毎営業日 JST 07:00 に
-              {" "}<code className="text-xs">snapshot:portfolio</code>
+              {" "}<code className="text-sm">snapshot:portfolio</code>
               {" "}で新規価格と温度を取り込み、JSON を差分更新 → Vercel 再デプロイ
             </li>
           </ul>
         </section>
 
         <section id="biases" className="scroll-mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
             バックテストに内在するバイアス
           </h2>
-          <ul className="list-disc pl-6 space-y-2 text-sm leading-relaxed">
+          <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed">
             <li>
               <strong>ルック・アヘッド・バイアスの可能性</strong>: 本シミュレーションは「当日終値と当日終値時点の温度」でリバランス判断を行います。現実には終値が確定した後に翌日以降の寄りで執行するため、理論値と現実の間に乖離が生じます
             </li>
@@ -316,8 +316,8 @@ export default function PortfolioPage() {
         </section>
 
         <section id="related" className="scroll-mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">関連リンク</h2>
-          <ul className="list-disc pl-6 space-y-2 text-sm">
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">関連リンク</h2>
+          <ul className="list-disc pl-6 space-y-2 text-base">
             <li>
               <Link href="/" className="underline hover:text-gray-900">
                 今日の日米温度を見る
@@ -355,7 +355,7 @@ export default function PortfolioPage() {
         </section>
 
         <section>
-          <p className="mt-8 text-xs text-gray-500 leading-relaxed">
+          <p className="mt-8 text-sm text-gray-500 leading-relaxed">
             ※ 本ページの情報は投資助言ではありません。バックテスト結果は過去データの集計であり、将来の運用成果を保証するものではありません。投資判断はご自身のリスク許容度に応じて行ってください。データ出典: Yahoo Finance（^N225 / ^GSPC / ^VIX / USDJPY=X）、日本温度履歴は株温計独自計算。
           </p>
         </section>

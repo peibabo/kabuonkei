@@ -18,7 +18,7 @@ export default async function Image() {
   const us = history.portfolios.us;
 
   const charSet =
-    "温度連動バーチャルポートフォリオシミュレーション株温計日本米国日経S&P500NAVCAGR最大ドローダウンリバランス月次ベンチマーク対比株現金配分累計リターン比率暴落で売らないための補助輪買い持ちに勝つ戦略ではないkabuonkei";
+    "温度連動バーチャルポートフォリオシミュレーション株温計日本米国日経S&P500NAVCAGR最大ドローダウンリバランス月次ベンチマーク対比株現金配分累計リターン比率積立を上回った温度連動リバランス過去約年でNISA積立型DCAを日米ともに上回る月次リバランス日本日経積立比温度最大DD買い持ち浅いkabuonkei";
   const fonts = await buildNotoSansJpFonts(charSet);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(
@@ -82,7 +82,7 @@ export default async function Image() {
               marginBottom: 12,
             }}
           >
-            暴落で売らないための補助輪
+            積立を上回った温度連動リバランス
           </div>
           <div
             style={{
@@ -94,7 +94,7 @@ export default async function Image() {
               marginBottom: 28,
             }}
           >
-            買い持ちに勝つ戦略ではなく、最大下落を抑えるための月次リバランス
+            過去約10年で NISA 積立型（DCA）を日米ともに上回る月次リバランス
           </div>
 
           <div style={{ display: "flex", gap: 24 }}>
@@ -110,14 +110,14 @@ export default async function Image() {
               }}
             >
               <span style={{ fontSize: 20, color: "#1e40af" }}>🇯🇵 日本（日経225）</span>
-              <span style={{ fontSize: 40, fontWeight: 900, color: "#059669" }}>
-                最大DD {jp.stats.maxDrawdown.toFixed(1)}%
+              <span style={{ fontSize: 40, fontWeight: 900, color: "#dc2626" }}>
+                積立 比 {formatPct(jp.stats.alphaVsDca)}pp
               </span>
               <span style={{ fontSize: 20, color: "#475569", marginTop: 4 }}>
-                買い持ち {jp.stats.benchmarkMaxDrawdown.toFixed(1)}% より浅い
+                温度 {formatPct(jp.stats.totalReturn)} / 積立 {formatPct(jp.stats.dcaReturn)}
               </span>
               <span style={{ fontSize: 18, color: "#94a3b8", marginTop: 6 }}>
-                累計 {formatPct(jp.stats.totalReturn)} / α {formatPct(jp.stats.alpha)}pp
+                最大DD {jp.stats.maxDrawdown.toFixed(1)}% / 買い持ち {jp.stats.benchmarkMaxDrawdown.toFixed(1)}%
               </span>
             </div>
             <div
@@ -132,14 +132,14 @@ export default async function Image() {
               }}
             >
               <span style={{ fontSize: 20, color: "#1e40af" }}>🇺🇸 米国（S&amp;P500）</span>
-              <span style={{ fontSize: 40, fontWeight: 900, color: "#059669" }}>
-                最大DD {us.stats.maxDrawdown.toFixed(1)}%
+              <span style={{ fontSize: 40, fontWeight: 900, color: "#dc2626" }}>
+                積立 比 {formatPct(us.stats.alphaVsDca)}pp
               </span>
               <span style={{ fontSize: 20, color: "#475569", marginTop: 4 }}>
-                買い持ち {us.stats.benchmarkMaxDrawdown.toFixed(1)}% より浅い
+                温度 {formatPct(us.stats.totalReturn)} / 積立 {formatPct(us.stats.dcaReturn)}
               </span>
               <span style={{ fontSize: 18, color: "#94a3b8", marginTop: 6 }}>
-                累計 {formatPct(us.stats.totalReturn)} / α {formatPct(us.stats.alpha)}pp
+                最大DD {us.stats.maxDrawdown.toFixed(1)}% / 買い持ち {us.stats.benchmarkMaxDrawdown.toFixed(1)}%
               </span>
             </div>
           </div>

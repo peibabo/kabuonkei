@@ -7,11 +7,11 @@ import { trackEvent } from "@/lib/analytics";
 
 /**
  * Dashboard 第 5 章（詳しく見る）に配置するポートフォリオ導線カード。
- * 最新 NAV と ベンチマーク比、現在配分を要約表示し、/portfolio へ誘導する。
+ * 最新 NAV と 積立（DCA）対比、現在配分を要約表示し、/portfolio へ誘導する。
  *
- * 表示順は「耐震性（最大DD 改善）→ 配分 → α」の順。
- * このルールは強気相場ではリターンで負けやすく、α を全面に出すと読者が
- * 一瞬で離脱するため、リスク抑制という勝ち筋を先頭に置く。
+ * 表示順は「α vs 積立（DCA） → 配分 → 最大DD 改善（vs 買い持ち）」の順。
+ * 過去10年のバックテストで温度ルールが DCA を上回ることが判明したため、
+ * NISA 積立勢に響く「α vs DCA」を主役に置く。maxDD は補助情報。
  */
 export default function PortfolioTeaserCard() {
   const history = useMemo(() => getPortfolioHistory(), []);
@@ -29,11 +29,14 @@ export default function PortfolioTeaserCard() {
     ? "bg-amber-50 border border-amber-300 rounded-2xl shadow-md p-6"
     : "bg-white rounded-2xl shadow-md p-6";
 
-  // ベンチマークのドローダウンに対する改善幅（正なら「抑制できた」= 良い）
+  // 一括買い持ちベンチマークの DD に対する改善幅（補助情報）
   const jpDdImprovement =
     jp.stats.benchmarkMaxDrawdown - jp.stats.maxDrawdown;
   const usDdImprovement =
     us.stats.benchmarkMaxDrawdown - us.stats.maxDrawdown;
+  // 積立(DCA)比の DD 差（正なら温度ルールのほうが深い = 積立のほうが DD 浅い）
+  const jpDdVsDca = jp.stats.maxDrawdown - jp.stats.dcaMaxDrawdown;
+  const usDdVsDca = us.stats.maxDrawdown - us.stats.dcaMaxDrawdown;
 
   return (
     <div className={containerClass}>
@@ -54,26 +57,26 @@ export default function PortfolioTeaserCard() {
       </div>
 
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-        温度スコアに応じて株/現金比率を月次に切り替える耐震型シミュレーション。
+        温度スコアに応じて株/現金比率を月次に切り替えるシミュレーション。
         <span className="text-gray-500">
-        一括買い持ち / 月次積立（NISA 積立型） / 温度ルール の 3 戦略比較を公開中。
-        結論: 過去10年では<strong className="text-gray-700">積立が温度ルールとほぼ同等</strong>だったので、
-        NISA 積立で十分です。
+        過去約10年で<strong className="text-gray-700">積立(DCA)を JP +{jp.stats.alphaVsDca.toFixed(0)}pp / US +{us.stats.alphaVsDca.toFixed(0)}pp 上回る</strong>が、
+        記事内で<strong>α の大半は「配分の高さ」由来で温度信号の純寄与は限定的</strong>という正直な分解も公開中。
         </span>
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
           <div className="text-xs text-gray-500 mb-1">🇯🇵 日本版</div>
-          <div className="text-sm font-semibold text-emerald-700">
-            最大DD 改善{" "}
+          <div className="text-sm font-semibold text-red-600">
+            積立 (DCA) 比{" "}
             <span className="font-bold">
-              +{jpDdImprovement.toFixed(1)}pp
+              {jp.stats.alphaVsDca >= 0 ? "+" : ""}
+              {jp.stats.alphaVsDca.toFixed(1)}pp
             </span>
           </div>
           <div className="text-[11px] text-gray-500 mt-0.5">
-            ポートフォリオ {jp.stats.maxDrawdown.toFixed(1)}% vs ベンチ{" "}
-            {jp.stats.benchmarkMaxDrawdown.toFixed(1)}%
+            温度 {jp.stats.totalReturn.toFixed(1)}% / 積立{" "}
+            {jp.stats.dcaReturn.toFixed(1)}%
           </div>
           <div className="text-sm mt-2">
             株 <strong>{(jp.current.equityRatio * 100).toFixed(0)}%</strong>{" "}
@@ -81,28 +84,32 @@ export default function PortfolioTeaserCard() {
             <span className="ml-2 text-gray-400">（{jpBand}）</span>
           </div>
           <div className="text-[11px] text-gray-400 mt-1">
-            累計 α vs 買い持ち:{" "}
+            最大DD vs 買い持ち:{" "}
+            <span className="text-emerald-700">
+              +{jpDdImprovement.toFixed(1)}pp 浅い
+            </span>
+            {" / "}vs 積立:{" "}
             <span
               className={
-                jp.stats.alpha >= 0 ? "text-red-500" : "text-gray-500"
+                jpDdVsDca > 0 ? "text-amber-700" : "text-emerald-700"
               }
             >
-              {jp.stats.alpha >= 0 ? "+" : ""}
-              {jp.stats.alpha.toFixed(1)}pp
+              {jpDdVsDca > 0 ? `+${jpDdVsDca.toFixed(1)}pp 深い` : `${Math.abs(jpDdVsDca).toFixed(1)}pp 浅い`}
             </span>
           </div>
         </div>
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
           <div className="text-xs text-gray-500 mb-1">🇺🇸 米国版</div>
-          <div className="text-sm font-semibold text-emerald-700">
-            最大DD 改善{" "}
+          <div className="text-sm font-semibold text-red-600">
+            積立 (DCA) 比{" "}
             <span className="font-bold">
-              +{usDdImprovement.toFixed(1)}pp
+              {us.stats.alphaVsDca >= 0 ? "+" : ""}
+              {us.stats.alphaVsDca.toFixed(1)}pp
             </span>
           </div>
           <div className="text-[11px] text-gray-500 mt-0.5">
-            ポートフォリオ {us.stats.maxDrawdown.toFixed(1)}% vs ベンチ{" "}
-            {us.stats.benchmarkMaxDrawdown.toFixed(1)}%
+            温度 {us.stats.totalReturn.toFixed(1)}% / 積立{" "}
+            {us.stats.dcaReturn.toFixed(1)}%
           </div>
           <div className="text-sm mt-2">
             株 <strong>{(us.current.equityRatio * 100).toFixed(0)}%</strong>{" "}
@@ -110,14 +117,17 @@ export default function PortfolioTeaserCard() {
             <span className="ml-2 text-gray-400">（{usBand}）</span>
           </div>
           <div className="text-[11px] text-gray-400 mt-1">
-            累計 α vs 買い持ち:{" "}
+            最大DD vs 買い持ち:{" "}
+            <span className="text-emerald-700">
+              +{usDdImprovement.toFixed(1)}pp 浅い
+            </span>
+            {" / "}vs 積立:{" "}
             <span
               className={
-                us.stats.alpha >= 0 ? "text-red-500" : "text-gray-500"
+                usDdVsDca > 0 ? "text-amber-700" : "text-emerald-700"
               }
             >
-              {us.stats.alpha >= 0 ? "+" : ""}
-              {us.stats.alpha.toFixed(1)}pp
+              {usDdVsDca > 0 ? `+${usDdVsDca.toFixed(1)}pp 深い` : `${Math.abs(usDdVsDca).toFixed(1)}pp 浅い`}
             </span>
           </div>
         </div>

@@ -9,7 +9,7 @@ import { buildArticleJsonLd } from "@/lib/article-jsonld";
 const ARTICLE_PATH = "/portfolio";
 const ARTICLE_TITLE = "温度連動バーチャルポートフォリオ（シミュレーション）";
 const ARTICLE_DESCRIPTION =
-  "株温計の温度スコアに応じて、日経225・S&P500 の株/現金配分を月次に切り替えるシミュレーション。過去約10年のバックテストと日次ライブ追跡を公開。これは研究目的であり、投資助言ではありません。";
+  "買い持ちに勝つ戦略ではなく、暴落で売ってしまいがちな人が感情ではなく仕組みでポジションを保つための「補助輪」を検証した研究。日経225・S&P500 で温度スコアに応じて株/現金配分を月次に切り替えた場合の過去10年バックテスト + 日次ライブ追跡を公開。";
 const PUBLISHED_AT = "2026-04-23";
 
 export const metadata: Metadata = {
@@ -39,6 +39,7 @@ export const metadata: Metadata = {
 
 const TOC_ITEMS = [
   { href: "#disclaimer", label: "重要：このページは投資助言ではありません" },
+  { href: "#for-whom", label: "この記事は誰のためのものか（先に読んでください）" },
   { href: "#rule", label: "ルールの説明" },
   { href: "#body", label: "バックテスト結果" },
   { href: "#method", label: "データと手法" },
@@ -80,6 +81,54 @@ export default function PortfolioPage() {
             現実の取引では、手数料・税金・スリッページ・約定遅延など、ここでは一切考慮していないコストが発生します。投資判断はご自身の責任で行ってください。
           </p>
         </div>
+
+        <section
+          id="for-whom"
+          className="bg-amber-50 border border-amber-300 rounded-xl p-5 not-prose scroll-mt-16"
+        >
+          <h2 className="text-base font-bold text-amber-900 mb-2">
+            📖 この記事は誰のためのものか（先に読んでください）
+          </h2>
+          <p className="text-sm text-gray-800 leading-relaxed mb-3">
+            結論を先に書きます。
+            過去10年の日米市場では、
+            <strong>
+              「温度を無視してずっと買い持ち」した方が、絶対リターンは高かった
+            </strong>
+            です（JP: +{jpStats.benchmarkReturn.toFixed(0)}% vs +
+            {jpStats.totalReturn.toFixed(0)}% / US: +
+            {usStats.benchmarkReturn.toFixed(0)}% vs +
+            {usStats.totalReturn.toFixed(0)}%）。
+            このページは<strong>「買い持ちに勝つ戦略」ではありません</strong>。
+          </p>
+          <p className="text-sm text-gray-800 leading-relaxed mb-3">
+            これは、<strong>暴落が怖くて途中で売ってしまう / 怖くて買い増せなくなる人</strong>
+            が、感情ではなく仕組みでポジションを保つための
+            <strong>「補助輪」</strong>を検証した研究です。
+            温度ルールが勝っているのは 2 点だけ:
+          </p>
+          <ul className="list-disc pl-6 space-y-1 text-sm text-gray-800 mb-3">
+            <li>
+              <strong>最大ドローダウンが {
+                Math.round(
+                  jpStats.benchmarkMaxDrawdown - jpStats.maxDrawdown
+                )
+              }〜{
+                Math.round(
+                  usStats.benchmarkMaxDrawdown - usStats.maxDrawdown
+                )
+              }pp 小さい</strong>（JP: {jpStats.maxDrawdown.toFixed(1)}% vs {jpStats.benchmarkMaxDrawdown.toFixed(1)}% / US: {usStats.maxDrawdown.toFixed(1)}% vs {usStats.benchmarkMaxDrawdown.toFixed(1)}%）
+            </li>
+            <li>
+              現金金利 3% を仮定すると、<strong>リスク調整後（Sharpe）で買い持ちを上回る</strong>ケースがある
+            </li>
+          </ul>
+          <p className="text-sm text-gray-800 leading-relaxed">
+            自分は「何があっても絶対売らずに 10 年持ち続けられる」と断言できる人は、
+            <strong>素直にインデックスの買い持ちをしてください</strong>
+            （数学的にそれが最強です）。もし過去に一度でも「怖くて売った」「買うのを躊躇した」経験がある方は、このページの残りを読む価値があるかもしれません。
+          </p>
+        </section>
 
         <nav
           aria-label="目次"

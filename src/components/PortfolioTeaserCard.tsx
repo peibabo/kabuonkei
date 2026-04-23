@@ -55,7 +55,9 @@ export default function PortfolioTeaserCard() {
 
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
         温度スコアに応じて株/現金比率を月次に切り替え、<strong>下落局面を抑制する</strong>
-        耐震型シミュレーション。過去10年のバックテストとライブ追跡を公開中。
+        耐震型シミュレーション。<span className="text-gray-500">
+        買い持ちに勝つ戦略ではなく、暴落で売りたくなる人が仕組みで持ち続けるための
+        「補助輪」</span>として検証した研究です。
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

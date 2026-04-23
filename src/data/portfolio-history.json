@@ -17690,7 +17690,54 @@
         "cash": 83.37435123890826,
         "benchmarkUnits": 0.005690713078581301,
         "lastEquityRatio": 0.6
-      }
+      },
+      "cashYieldSensitivity": [
+        {
+          "cashYield": 0,
+          "label": "現金 0%（本体モデル）",
+          "stats": {
+            "totalReturn": 121,
+            "benchmarkReturn": 236.55,
+            "alpha": -115.55,
+            "cagr": 8.25,
+            "benchmarkCagr": 12.9,
+            "maxDrawdown": -22.6,
+            "benchmarkMaxDrawdown": -31.8,
+            "sharpe": 0.73,
+            "benchmarkSharpe": 0.71
+          }
+        },
+        {
+          "cashYield": 0.01,
+          "label": "MMF 相当 1%",
+          "stats": {
+            "totalReturn": 131.59,
+            "benchmarkReturn": 236.55,
+            "alpha": -104.96,
+            "cagr": 8.76,
+            "benchmarkCagr": 12.9,
+            "maxDrawdown": -22.55,
+            "benchmarkMaxDrawdown": -31.8,
+            "sharpe": 0.76,
+            "benchmarkSharpe": 0.71
+          }
+        },
+        {
+          "cashYield": 0.03,
+          "label": "短期金利 3%",
+          "stats": {
+            "totalReturn": 154.34,
+            "benchmarkReturn": 236.55,
+            "alpha": -82.21,
+            "cagr": 9.78,
+            "benchmarkCagr": 12.9,
+            "maxDrawdown": -22.45,
+            "benchmarkMaxDrawdown": -31.8,
+            "sharpe": 0.84,
+            "benchmarkSharpe": 0.71
+          }
+        }
+      ]
     },
     "us": {
       "equitySymbol": "^GSPC",
@@ -35738,7 +35785,54 @@
         "cash": 76.78237016606226,
         "benchmarkUnits": 0.04781074415742435,
         "lastEquityRatio": 0.6
-      }
+      },
+      "cashYieldSensitivity": [
+        {
+          "cashYield": 0,
+          "label": "現金 0%（本体モデル）",
+          "stats": {
+            "totalReturn": 101.81,
+            "benchmarkReturn": 241.27,
+            "alpha": -139.46,
+            "cagr": 7.27,
+            "benchmarkCagr": 13.06,
+            "maxDrawdown": -23.89,
+            "benchmarkMaxDrawdown": -33.92,
+            "sharpe": 0.71,
+            "benchmarkSharpe": 0.77
+          }
+        },
+        {
+          "cashYield": 0.01,
+          "label": "MMF 相当 1%",
+          "stats": {
+            "totalReturn": 113.1,
+            "benchmarkReturn": 241.27,
+            "alpha": -128.17,
+            "cagr": 7.86,
+            "benchmarkCagr": 13.06,
+            "maxDrawdown": -23.86,
+            "benchmarkMaxDrawdown": -33.92,
+            "sharpe": 0.76,
+            "benchmarkSharpe": 0.77
+          }
+        },
+        {
+          "cashYield": 0.03,
+          "label": "短期金利 3%",
+          "stats": {
+            "totalReturn": 137.68,
+            "benchmarkReturn": 241.27,
+            "alpha": -103.59,
+            "cagr": 9.04,
+            "benchmarkCagr": 13.06,
+            "maxDrawdown": -23.8,
+            "benchmarkMaxDrawdown": -33.92,
+            "sharpe": 0.86,
+            "benchmarkSharpe": 0.77
+          }
+        }
+      ]
     }
   }
 }

@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import type {
+  PortfolioCashYieldScenario,
   PortfolioHistory,
   PortfolioMarket,
   PortfolioSection,
@@ -202,6 +203,105 @@ function StatsTable({ section }: { section: PortfolioSection }) {
             >
               {(s.sharpe - s.benchmarkSharpe).toFixed(2)}
             </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CashYieldSensitivityTable({
+  scenarios,
+  benchmarkCagr,
+  benchmarkSharpe,
+}: {
+  scenarios: PortfolioCashYieldScenario[];
+  benchmarkCagr: number;
+  benchmarkSharpe: number;
+}) {
+  return (
+    <div className="overflow-x-auto not-prose">
+      <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[520px]">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-3 py-2 text-left font-semibold text-gray-700">
+              現金金利シナリオ
+            </th>
+            <th className="px-3 py-2 text-right font-semibold text-gray-700">
+              累計
+            </th>
+            <th className="px-3 py-2 text-right font-semibold text-gray-700">
+              CAGR
+            </th>
+            <th className="px-3 py-2 text-right font-semibold text-gray-700">
+              α
+            </th>
+            <th className="px-3 py-2 text-right font-semibold text-gray-700">
+              Sharpe
+            </th>
+            <th className="px-3 py-2 text-right font-semibold text-gray-700">
+              vs ベンチ Sharpe
+            </th>
+          </tr>
+        </thead>
+        <tbody className="[&>tr>td]:px-3 [&>tr>td]:py-2 [&>tr]:border-t [&>tr]:border-gray-100">
+          {scenarios.map((s) => {
+            const sharpeDiff = s.stats.sharpe - benchmarkSharpe;
+            const isBaseline = s.cashYield === 0;
+            return (
+              <tr key={s.cashYield} className={isBaseline ? "bg-gray-50" : ""}>
+                <td className={isBaseline ? "font-semibold" : ""}>
+                  {s.label}
+                  {isBaseline && (
+                    <span className="block text-[10px] text-gray-400">
+                      本体モデルに一致
+                    </span>
+                  )}
+                </td>
+                <td
+                  className={`text-right font-mono ${returnColorClass(s.stats.totalReturn)}`}
+                >
+                  {formatPct(s.stats.totalReturn)}
+                </td>
+                <td
+                  className={`text-right font-mono ${returnColorClass(s.stats.cagr)}`}
+                >
+                  {formatPct(s.stats.cagr)}
+                </td>
+                <td
+                  className={`text-right font-mono ${returnColorClass(s.stats.alpha)}`}
+                >
+                  {formatPct(s.stats.alpha)} pp
+                </td>
+                <td className="text-right font-mono">
+                  {s.stats.sharpe.toFixed(2)}
+                </td>
+                <td
+                  className={`text-right font-mono ${
+                    sharpeDiff >= 0 ? "text-red-500" : "text-green-600"
+                  }`}
+                >
+                  {sharpeDiff >= 0 ? "+" : ""}
+                  {sharpeDiff.toFixed(2)}
+                </td>
+              </tr>
+            );
+          })}
+          <tr className="border-t border-gray-200 bg-white">
+            <td className="text-gray-500 italic">
+              ベンチマーク（100% 株 buy & hold）
+            </td>
+            <td className="text-right font-mono text-gray-500">—</td>
+            <td
+              className={`text-right font-mono ${returnColorClass(benchmarkCagr)}`}
+            >
+              {formatPct(benchmarkCagr)}
+            </td>
+            <td className="text-right font-mono text-gray-500">—</td>
+            <td className="text-right font-mono text-gray-500">
+              {benchmarkSharpe.toFixed(2)}
+            </td>
+            <td className="text-right font-mono text-gray-500">—</td>
           </tr>
         </tbody>
       </table>
@@ -436,6 +536,34 @@ export default function PortfolioBody({ history }: Props) {
         </h3>
         <StatsTable section={section} />
       </section>
+
+      {section.cashYieldSensitivity &&
+        section.cashYieldSensitivity.length > 0 && (
+          <section
+            aria-labelledby="sensitivity-heading"
+            className="bg-white rounded-2xl shadow-md p-6"
+          >
+            <h3
+              id="sensitivity-heading"
+              className="text-base font-bold text-gray-900 mb-2"
+            >
+              現金金利シナリオの感度分析
+            </h3>
+            <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+              本体モデルは現金金利 = 0% を前提にしています。現実には
+              MMF や短期国債で年 1〜3% の利息が付くため、本戦略の<strong>相対的な不利さは実際には小さくなります</strong>。
+              以下は同じルールで現金金利だけを差し替えた場合の過去約10年の結果です。
+            </p>
+            <CashYieldSensitivityTable
+              scenarios={section.cashYieldSensitivity}
+              benchmarkCagr={section.stats.benchmarkCagr}
+              benchmarkSharpe={section.stats.benchmarkSharpe}
+            />
+            <p className="text-[11px] text-gray-500 mt-3 leading-relaxed">
+              ※ 金利は年率想定。日次複利 1/252 で計算（シミュレーター内）。税金・手数料は引き続き 0 前提。現金金利は株価とは独立に付与されるため、ドローダウンには影響しません。
+            </p>
+          </section>
+        )}
 
       <section aria-labelledby="trades-heading" className="bg-white rounded-2xl shadow-md p-6">
         <h3 id="trades-heading" className="text-base font-bold text-gray-900 mb-3">

@@ -208,7 +208,8 @@ export default function PortfolioPage() {
             </li>
             <li>
               <strong>前提（重要）</strong>: 現金金利 = <strong>0%</strong> 固定 / 手数料 = 0 / スリッページ = 0 / 税金 = 0。
-              現実の MMF 金利（1〜3%）や手数料を加味すると結果は変動します
+              現金金利の影響はバックテスト結果セクション内の<strong>「現金金利シナリオの感度分析」</strong>
+              で 0% / 1% / 3% の 3 シナリオを並列掲載しています
             </li>
             <li>
               <strong>NAV の基準</strong>: 初日を 100 として正規化

@@ -223,12 +223,13 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 - バックテスト期間: 2016-04-22（日本温度履歴の起点）〜 最新
 
 ### データ層
-- `src/data/portfolio-history.json`: 日米 2 ポートフォリオの `daily[]` / `trades[]` / `stats` / `current` / `endState` を同梱
+- `src/data/portfolio-history.json`: 日米 2 ポートフォリオの `daily[]` / `trades[]` / `stats` / `current` / `endState` / `cashYieldSensitivity` を同梱
 - 生成（全再生成）: `npm run generate:portfolio-history`（`scripts/generate-portfolio-history.ts`）
-- 差分 append: `npm run snapshot:portfolio`（`scripts/snapshot-portfolio.ts`）。既存 JSON の `endState` から継続
+- 差分 append: `npm run snapshot:portfolio`（`scripts/snapshot-portfolio.ts`）。既存 JSON の `endState` から継続。`cashYieldSensitivity` は spread で無変更保持（月次フル再生成で更新）
 - 純粋関数: `scripts/_lib/portfolio-sim.ts`（`simulatePortfolio` / `DEFAULT_PORTFOLIO_RULE` / `computeStats` / `computeMaxDrawdown` / `computeSharpe`）
 - ユニットテスト: `scripts/__tests__/portfolio-sim.test.ts`（リバランス発火 / NAV 保全 / 差分モード連続性）
-- アクセサ: `src/lib/portfolio.ts`（`getPortfolioHistory` / `slicePortfolioDailyByDays` / `resolveBandByScore`）
+- アクセサ: `src/lib/portfolio.ts`（`getPortfolioHistory` / `slicePortfolioDailyByDays` / `resolveBandByScore`、`PortfolioCashYieldScenario` 型）
+- **現金金利感度分析**: 同じルールで `cashYield` を 0% / 1% / 3% に差し替えた 3 シナリオを `cashYieldSensitivity[]` に格納。記事の「現金金利シナリオの感度分析」セクションで一覧表示し、MMF/短期金利を仮定したときの相対改善を可視化（3% 想定で JP Sharpe 0.84 > ベンチ 0.71 に逆転する等）
 
 ### UI
 - ページ本体: `src/app/portfolio/page.tsx`（Server Component、`StaticPageLayout` ベース、`buildArticleJsonLd` で Article JSON-LD 埋込、目次 + 赤枠免責バナー + ルール表 + `PortfolioBody` + 手法 + バイアス + 関連リンク）

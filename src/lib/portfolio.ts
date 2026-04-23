@@ -49,6 +49,12 @@ export interface PortfolioCurrent {
   benchmark: number;
 }
 
+export interface PortfolioCashYieldScenario {
+  cashYield: number;
+  label: string;
+  stats: PortfolioStats;
+}
+
 export interface PortfolioSection {
   equitySymbol: string;
   displayName: string;
@@ -56,6 +62,8 @@ export interface PortfolioSection {
   trades: PortfolioTrade[];
   stats: PortfolioStats;
   current: PortfolioCurrent;
+  /** 現金金利の感度分析。古い JSON には存在しない可能性があるので optional */
+  cashYieldSensitivity?: PortfolioCashYieldScenario[];
 }
 
 export interface PortfolioBand {

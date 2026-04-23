@@ -90,43 +90,47 @@ export default function PortfolioPage() {
             📖 この記事は誰のためのものか（先に読んでください）
           </h2>
           <p className="text-sm text-gray-800 leading-relaxed mb-3">
-            結論を先に書きます。
-            過去10年の日米市場では、
-            <strong>
-              「温度を無視してずっと買い持ち」した方が、絶対リターンは高かった
-            </strong>
-            です（JP: +{jpStats.benchmarkReturn.toFixed(0)}% vs +
-            {jpStats.totalReturn.toFixed(0)}% / US: +
-            {usStats.benchmarkReturn.toFixed(0)}% vs +
-            {usStats.totalReturn.toFixed(0)}%）。
-            このページは<strong>「買い持ちに勝つ戦略」ではありません</strong>。
+            結論を先に書きます。過去10年の日米市場では、
+            <strong>どの 3 戦略を比べても「100% 株を買ってひたすら持つ」が最強だった</strong>
+            というのが数字上の事実です。温度ルールは他の 2 戦略と比べて以下のような位置にいます。
           </p>
+          <ul className="list-disc pl-6 space-y-2 text-sm text-gray-800 mb-4">
+            <li>
+              <strong>vs 一括買い持ち（初日に全額投入）</strong>:
+              温度ルールは累計リターンで大きく劣後（JP α{" "}
+              {jpStats.alpha.toFixed(0)}pp / US α {usStats.alpha.toFixed(0)}pp）。
+              ただし<strong>最大ドローダウンは 9〜10pp 浅く</strong>、暴落耐性は上
+            </li>
+            <li>
+              <strong>vs 月次積立（NISA 積立投資の典型）</strong>:
+              実は<strong>これが一番近い相手</strong>で、累計リターン差はたった
+              <strong>
+                {" "}JP {jpStats.alphaVsDca.toFixed(1)}pp / US{" "}
+                {usStats.alphaVsDca.toFixed(1)}pp
+              </strong>
+              しかない。しかも最大DD は <strong>JP でやや有利 / US でほぼ同等〜やや不利</strong>
+              。<strong>NISA 積立をしている人にとって、温度ルールへの切替はほぼ意味がありません</strong>
+            </li>
+          </ul>
           <p className="text-sm text-gray-800 leading-relaxed mb-3">
-            これは、<strong>暴落が怖くて途中で売ってしまう / 怖くて買い増せなくなる人</strong>
-            が、感情ではなく仕組みでポジションを保つための
-            <strong>「補助輪」</strong>を検証した研究です。
-            温度ルールが勝っているのは 2 点だけ:
+            つまりこのルールが
+            <strong>意味を持つ可能性があるのは次の条件に全部当てはまる人だけ</strong>
+            です:
           </p>
           <ul className="list-disc pl-6 space-y-1 text-sm text-gray-800 mb-3">
             <li>
-              <strong>最大ドローダウンが {
-                Math.round(
-                  jpStats.benchmarkMaxDrawdown - jpStats.maxDrawdown
-                )
-              }〜{
-                Math.round(
-                  usStats.benchmarkMaxDrawdown - usStats.maxDrawdown
-                )
-              }pp 小さい</strong>（JP: {jpStats.maxDrawdown.toFixed(1)}% vs {jpStats.benchmarkMaxDrawdown.toFixed(1)}% / US: {usStats.maxDrawdown.toFixed(1)}% vs {usStats.benchmarkMaxDrawdown.toFixed(1)}%）
+              まとまった現金（例: 退職金、副業収入、相続）が手元にあって、<strong>一括投入したいけど怖くてできない</strong>
             </li>
             <li>
-              現金金利 3% を仮定すると、<strong>リスク調整後（Sharpe）で買い持ちを上回る</strong>ケースがある
+              NISA 積立のような <strong>毎月自動投入の仕組みには今は乗っていない</strong>
+            </li>
+            <li>
+              過去に一度でも<strong>暴落で売った or 買うのを躊躇した経験</strong>がある
             </li>
           </ul>
           <p className="text-sm text-gray-800 leading-relaxed">
-            自分は「何があっても絶対売らずに 10 年持ち続けられる」と断言できる人は、
-            <strong>素直にインデックスの買い持ちをしてください</strong>
-            （数学的にそれが最強です）。もし過去に一度でも「怖くて売った」「買うのを躊躇した」経験がある方は、このページの残りを読む価値があるかもしれません。
+            <strong>NISA 積立ができる方は、それが今も昔もベストプラクティスです</strong>
+            。続きを読む前にまず積立設定を見直すことをお勧めします。積立も検討したうえで「一括で持ってる現金の配分判断に補助輪が欲しい」という方のみ、温度ルールの細かい数字を追う価値があります。
           </p>
         </section>
 
@@ -164,21 +168,35 @@ export default function PortfolioPage() {
           </p>
           <ul className="list-disc pl-6 mt-3 space-y-1 text-sm leading-relaxed">
             <li>
-              🇯🇵 <strong>日本版</strong>: 累計 {jpStats.totalReturn >= 0 ? "+" : ""}
-              {jpStats.totalReturn.toFixed(2)}% / 最大DD {jpStats.maxDrawdown.toFixed(2)}%
-              （ベンチマーク: {jpStats.benchmarkReturn >= 0 ? "+" : ""}
-              {jpStats.benchmarkReturn.toFixed(2)}% / {jpStats.benchmarkMaxDrawdown.toFixed(2)}%）
+              🇯🇵 <strong>日本版</strong>: 温度ルール 累計 +
+              {jpStats.totalReturn.toFixed(1)}% / 最大DD{" "}
+              {jpStats.maxDrawdown.toFixed(1)}% <br />
+              <span className="text-xs text-gray-500">
+                一括買い持ち: +{jpStats.benchmarkReturn.toFixed(1)}% /{" "}
+                {jpStats.benchmarkMaxDrawdown.toFixed(1)}% &nbsp;|&nbsp; 月次積立: +
+                {jpStats.dcaReturn.toFixed(1)}% /{" "}
+                {jpStats.dcaMaxDrawdown.toFixed(1)}%
+              </span>
             </li>
             <li>
-              🇺🇸 <strong>米国版</strong>: 累計 {usStats.totalReturn >= 0 ? "+" : ""}
-              {usStats.totalReturn.toFixed(2)}% / 最大DD {usStats.maxDrawdown.toFixed(2)}%
-              （ベンチマーク: {usStats.benchmarkReturn >= 0 ? "+" : ""}
-              {usStats.benchmarkReturn.toFixed(2)}% / {usStats.benchmarkMaxDrawdown.toFixed(2)}%）
+              🇺🇸 <strong>米国版</strong>: 温度ルール 累計 +
+              {usStats.totalReturn.toFixed(1)}% / 最大DD{" "}
+              {usStats.maxDrawdown.toFixed(1)}% <br />
+              <span className="text-xs text-gray-500">
+                一括買い持ち: +{usStats.benchmarkReturn.toFixed(1)}% /{" "}
+                {usStats.benchmarkMaxDrawdown.toFixed(1)}% &nbsp;|&nbsp; 月次積立: +
+                {usStats.dcaReturn.toFixed(1)}% /{" "}
+                {usStats.dcaMaxDrawdown.toFixed(1)}%
+              </span>
             </li>
           </ul>
           <p className="text-sm leading-relaxed mt-3 text-gray-600">
-            過去10年は両市場とも強い上昇相場だったため、絶対リターンでは 100% 株の buy &amp;
-            hold に劣後します。一方で、<strong>ドローダウン（最大下落率）は大きく抑制</strong>されています。リスク調整後パフォーマンスは記事下部の Sharpe 列をご覧ください。
+            過去10年は両市場とも強い上昇相場だったため、絶対リターンでは<strong>「一括買い持ち &gt; 月次積立 &gt; 温度ルール」</strong>
+            の順で並びました。温度ルールと月次積立の差は JP{" "}
+            {Math.abs(jpStats.alphaVsDca).toFixed(1)}pp / US{" "}
+            {Math.abs(usStats.alphaVsDca).toFixed(1)}pp と小さいため、
+            <strong>NISA 積立をしている人が温度ルールに切り替える実利は過去10年ではほぼゼロ</strong>
+            でした。
           </p>
         </section>
 
@@ -253,7 +271,10 @@ export default function PortfolioPage() {
               <strong>リバランス</strong>: 毎月第一営業日に温度帯を判定し、目標株比率に合わせて株/現金を入れ替え。月中は据え置き
             </li>
             <li>
-              <strong>ベンチマーク</strong>: 同じ銘柄を初日に 100% 買って保有し続ける buy &amp; hold
+              <strong>ベンチマーク（2 種類）</strong>:
+              (1) <strong>一括買い持ち</strong> = 同じ銘柄を初日に 100% 買って保有。
+              (2) <strong>月次積立（DCA）</strong> = 初期 100 を N ヶ月で等額按分し、毎月第一営業日にその月分を株へ投入（NISA 積立投資を模擬）。
+              累計投入額を 100 で揃えて 3 戦略を比較しています
             </li>
             <li>
               <strong>前提（重要）</strong>: 現金金利 = <strong>0%</strong> 固定 / 手数料 = 0 / スリッページ = 0 / 税金 = 0。

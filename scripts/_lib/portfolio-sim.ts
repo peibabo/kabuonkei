@@ -45,7 +45,15 @@ export interface PortfolioRule {
 export interface DailyPoint {
   date: string;
   nav: number;
+  /** ベンチマーク 1: 一括買い持ち（初日に initialNav 全額を株に投入し保有） */
   benchmark: number;
+  /**
+   * ベンチマーク 2: 月次積立（DCA）。
+   * initialNav を月数 N で等額按分し、毎月第一営業日にその月分を株に投入する。
+   * 未投入の現金は NAV に含まれる（現金金利ゼロ前提なので評価額は変化しない）。
+   * これにより「同じ 100 の元手をどう展開するか」で 3 戦略を直接比較できる。
+   */
+  benchmarkDca: number;
   equityRatio: number;
   score: number | null;
 }
@@ -61,14 +69,21 @@ export interface TradeLog {
 
 export interface PortfolioStats {
   totalReturn: number; // %
-  benchmarkReturn: number; // %
-  alpha: number; // pp
+  benchmarkReturn: number; // % (一括買い持ち)
+  alpha: number; // pp (vs 一括買い持ち)
   cagr: number; // %
   benchmarkCagr: number; // %
   maxDrawdown: number; // % (負の値)
   benchmarkMaxDrawdown: number; // %
   sharpe: number; // 無次元（日次リターンから年率換算）
   benchmarkSharpe: number;
+  /** 積立（DCA）ベンチマークとの比較 */
+  dcaReturn: number; // %
+  dcaCagr: number; // %
+  dcaMaxDrawdown: number; // % (負の値)
+  dcaSharpe: number; // 無次元
+  /** 温度ルール vs 積立（DCA）の差分（pp） */
+  alphaVsDca: number;
 }
 
 /** 既存の累積状態（差分モード用） */
@@ -81,6 +96,14 @@ export interface SimulatorStartState {
   benchmarkUnits: number;
   /** 直近の目標株比率 */
   lastEquityRatio: number;
+  /** DCA ベンチマーク: 累積で買った株ユニット数 */
+  dcaUnits?: number;
+  /** DCA ベンチマーク: 未投入の現金残高 */
+  dcaCash?: number;
+  /** DCA ベンチマーク: 1 回あたりの積立額（按分済み） */
+  dcaMonthlyContribution?: number;
+  /** DCA ベンチマーク: 残り投入回数 */
+  dcaRemainingContributions?: number;
 }
 
 export interface SimulateOptions {
@@ -171,6 +194,20 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
   let benchmarkUnits = startState?.benchmarkUnits ?? 0;
   let lastEquityRatio = startState?.lastEquityRatio ?? 0;
 
+  // DCA ベンチマーク: フル実行時は月数ベースで等額按分、差分モードでは引き継ぐ
+  let dcaUnits = startState?.dcaUnits ?? 0;
+  let dcaCash =
+    startState?.dcaCash ?? (startState ? 0 : rule.initialNav);
+  let dcaMonthlyContribution = startState?.dcaMonthlyContribution ?? 0;
+  let dcaRemainingContributions = startState?.dcaRemainingContributions ?? 0;
+  if (!startState) {
+    const totalMonths = firstBusinessDays.size;
+    if (totalMonths > 0) {
+      dcaMonthlyContribution = rule.initialNav / totalMonths;
+      dcaRemainingContributions = totalMonths;
+    }
+  }
+
   const daily: DailyPoint[] = [];
   const trades: TradeLog[] = [];
 
@@ -185,8 +222,11 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
     }
 
     // 日次現金金利（年率 → 日率、cashYield=0 なら変化なし）
+    // 温度ルール側と DCA 側の双方の現金に同じ金利を適用する
     if (rule.cashYield > 0) {
-      cash *= 1 + rule.cashYield / 252;
+      const dailyFactor = 1 + rule.cashYield / 252;
+      cash *= dailyFactor;
+      dcaCash *= dailyFactor;
     }
 
     // NAV 計算（リバランス前）
@@ -216,15 +256,27 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
           todayRatio = targetRatio;
         }
       }
+
+      // DCA: 月初に 1 回分を現金から株へ（金利・スコア非依存）
+      if (dcaRemainingContributions > 0 && dcaMonthlyContribution > 0) {
+        const buyAmount = Math.min(dcaMonthlyContribution, dcaCash);
+        if (buyAmount > 0) {
+          dcaUnits += buyAmount / price;
+          dcaCash -= buyAmount;
+        }
+        dcaRemainingContributions -= 1;
+      }
     }
 
     const nav = equityUnits * price + cash;
     const actualRatio = nav > 0 ? (equityUnits * price) / nav : todayRatio;
+    const dcaNav = dcaUnits * price + dcaCash;
 
     daily.push({
       date,
       nav: round2(nav),
       benchmark: round2(benchmarkUnits * price),
+      benchmarkDca: round2(dcaNav),
       equityRatio: round4(actualRatio),
       score: scoreOf(date),
     });
@@ -237,6 +289,10 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
     cash,
     benchmarkUnits,
     lastEquityRatio,
+    dcaUnits,
+    dcaCash,
+    dcaMonthlyContribution,
+    dcaRemainingContributions,
   };
 
   return { daily, trades, stats, endState };
@@ -266,6 +322,11 @@ export function computeStats(
       benchmarkMaxDrawdown: 0,
       sharpe: 0,
       benchmarkSharpe: 0,
+      dcaReturn: 0,
+      dcaCagr: 0,
+      dcaMaxDrawdown: 0,
+      dcaSharpe: 0,
+      alphaVsDca: 0,
     };
   }
 
@@ -274,6 +335,8 @@ export function computeStats(
   const totalReturn = ((last.nav - initialNav) / initialNav) * 100;
   const benchmarkReturn =
     ((last.benchmark - initialNav) / initialNav) * 100;
+  const dcaReturn =
+    ((last.benchmarkDca - initialNav) / initialNav) * 100;
 
   // 年数: カレンダー日数ベース
   const years =
@@ -288,18 +351,29 @@ export function computeStats(
     years > 0
       ? (Math.pow(last.benchmark / initialNav, 1 / years) - 1) * 100
       : 0;
+  const dcaCagr =
+    years > 0
+      ? (Math.pow(last.benchmarkDca / initialNav, 1 / years) - 1) * 100
+      : 0;
 
   const maxDrawdown = computeMaxDrawdown(daily.map((d) => d.nav));
   const benchmarkMaxDrawdown = computeMaxDrawdown(
     daily.map((d) => d.benchmark)
+  );
+  const dcaMaxDrawdown = computeMaxDrawdown(
+    daily.map((d) => d.benchmarkDca)
   );
 
   const dailyReturns = computeDailyReturns(daily.map((d) => d.nav));
   const benchmarkDailyReturns = computeDailyReturns(
     daily.map((d) => d.benchmark)
   );
+  const dcaDailyReturns = computeDailyReturns(
+    daily.map((d) => d.benchmarkDca)
+  );
   const sharpe = computeSharpe(dailyReturns);
   const benchmarkSharpe = computeSharpe(benchmarkDailyReturns);
+  const dcaSharpe = computeSharpe(dcaDailyReturns);
 
   return {
     totalReturn: round2(totalReturn),
@@ -311,6 +385,11 @@ export function computeStats(
     benchmarkMaxDrawdown: round2(benchmarkMaxDrawdown),
     sharpe: round2(sharpe),
     benchmarkSharpe: round2(benchmarkSharpe),
+    dcaReturn: round2(dcaReturn),
+    dcaCagr: round2(dcaCagr),
+    dcaMaxDrawdown: round2(dcaMaxDrawdown),
+    dcaSharpe: round2(dcaSharpe),
+    alphaVsDca: round2(totalReturn - dcaReturn),
   };
 }
 

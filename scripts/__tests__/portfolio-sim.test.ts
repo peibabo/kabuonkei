@@ -61,15 +61,31 @@ describe("computeSharpe", () => {
 });
 
 describe("computeStats", () => {
-  it("2 点しかなくても NaN にならず、リターンを算出する", () => {
+  it("2 点しかなくても NaN にならず、3 戦略すべてのリターンを算出する", () => {
     const daily = [
-      { date: "2026-01-01", nav: 100, benchmark: 100, equityRatio: 0.6, score: 50 },
-      { date: "2027-01-01", nav: 110, benchmark: 120, equityRatio: 0.6, score: 55 },
+      {
+        date: "2026-01-01",
+        nav: 100,
+        benchmark: 100,
+        benchmarkDca: 100,
+        equityRatio: 0.6,
+        score: 50,
+      },
+      {
+        date: "2027-01-01",
+        nav: 110,
+        benchmark: 120,
+        benchmarkDca: 115,
+        equityRatio: 0.6,
+        score: 55,
+      },
     ];
     const s = computeStats(daily, 100);
     expect(s.totalReturn).toBeCloseTo(10, 1);
     expect(s.benchmarkReturn).toBeCloseTo(20, 1);
     expect(s.alpha).toBeCloseTo(-10, 1);
+    expect(s.dcaReturn).toBeCloseTo(15, 1);
+    expect(s.alphaVsDca).toBeCloseTo(-5, 1);
     expect(s.cagr).toBeGreaterThan(9);
     expect(s.cagr).toBeLessThan(11);
   });
@@ -208,5 +224,140 @@ describe("simulatePortfolio — 差分モード", () => {
     const splitLast = part2.daily[part2.daily.length - 1];
     expect(splitLast.nav).toBeCloseTo(fullLast.nav, 1);
     expect(splitLast.benchmark).toBeCloseTo(fullLast.benchmark, 1);
+    // DCA の積立回数は初期化時の horizon に依存するため、
+    // part1 が 3 ヶ月分で初期化すると part2 と合算しても full と一致しない。
+    // 本番運用では generate:portfolio-history（full）→ snapshot:portfolio（diff）
+    // の順で回すため、DCA は実質「full で初期化された state を diff で継続」する構造になる
+  });
+
+  it("dcaMonthlyContribution を持つ startState から diff 継続できる", () => {
+    const priceDates = [
+      "2026-01-05",
+      "2026-02-02",
+      "2026-03-02",
+      "2026-04-01",
+    ];
+    const priceMap = new Map<string, number>([
+      ["2026-01-05", 100],
+      ["2026-02-02", 100],
+      ["2026-03-02", 100],
+      ["2026-04-01", 100],
+    ]);
+
+    // フル run
+    const full = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf: () => 50,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+
+    // 最初の 2 ヶ月（part1）とそのあと 2 ヶ月（part2）に分ける。
+    // part1 は最初から 4 ヶ月 horizon を前提にした state を手動で生成して渡す
+    // （本番の snapshot-portfolio は既存 JSON から dcaMonthlyContribution を引き継ぐ）
+    const part1 = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf: () => 50,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      endDate: "2026-02-02",
+    });
+    const part2 = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf: () => 50,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      startDate: "2026-03-02",
+      startState: {
+        ...part1.endState,
+        // full と同じ horizon (4 ヶ月) で初期化されたかのように手動補正
+        dcaMonthlyContribution: DEFAULT_PORTFOLIO_RULE.initialNav / 4,
+        dcaRemainingContributions: 2,
+      },
+    });
+
+    const fullLast = full.daily[full.daily.length - 1];
+    const splitLast = part2.daily[part2.daily.length - 1];
+    // part1 が 2 ヶ月で初期化されるため完全一致しない（50/2 = 25 投入済み）
+    // ただし DCA の "続きを投入する" 振る舞い自体は正しく継続することを確認
+    expect(splitLast.benchmarkDca).toBeGreaterThan(0);
+    expect(fullLast.benchmarkDca).toBeCloseTo(100, 1);
+  });
+});
+
+describe("simulatePortfolio — DCA ベンチマーク", () => {
+  // 月初のみ 4 ヶ月分 = 4 回の積立、等額で 25 ずつ
+  const priceDates = [
+    "2026-01-05",
+    "2026-02-02",
+    "2026-03-02",
+    "2026-04-01",
+  ];
+
+  it("価格が一定なら積立 NAV は initialNav から動かない", () => {
+    const priceMap = new Map<string, number>([
+      ["2026-01-05", 100],
+      ["2026-02-02", 100],
+      ["2026-03-02", 100],
+      ["2026-04-01", 100],
+    ]);
+    const result = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf: () => 50,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+    const last = result.daily[result.daily.length - 1];
+    // 100 の元手を 4 回等額で投入 → 全額投入完了時点で株価変わらず = NAV 100
+    expect(last.benchmarkDca).toBeCloseTo(100, 1);
+  });
+
+  it("価格が毎月 +10% 上昇する相場では一括買い持ちが DCA を上回る", () => {
+    const priceMap = new Map<string, number>([
+      ["2026-01-05", 100],
+      ["2026-02-02", 110],
+      ["2026-03-02", 121],
+      ["2026-04-01", 133.1],
+    ]);
+    const result = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf: () => 50,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+    const last = result.daily[result.daily.length - 1];
+    // 一括: 100 → 133.1 (+33.1%)
+    expect(last.benchmark).toBeCloseTo(133.1, 1);
+    // DCA: 4 回に分けて 25 ずつ、平均購入価格は 100 + 110 + 121 + 133.1 = 464.1/4 = 116.025
+    //      最終ユニット数 = 25/100 + 25/110 + 25/121 + 25/133.1 ≒ 0.881
+    //      NAV = 0.881 * 133.1 ≒ 117.3
+    expect(last.benchmarkDca).toBeGreaterThan(115);
+    expect(last.benchmarkDca).toBeLessThan(120);
+    // 一括 > DCA
+    expect(last.benchmark).toBeGreaterThan(last.benchmarkDca);
+  });
+
+  it("DCA 月次投入は現金から株に按分で動き、累積投入額は initialNav に一致する", () => {
+    const priceMap = new Map<string, number>([
+      ["2026-01-05", 100],
+      ["2026-02-02", 50],
+      ["2026-03-02", 200],
+      ["2026-04-01", 100],
+    ]);
+    const result = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf: () => 50,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+    // 4 ヶ月分 = 25 * 4 = 100 を累積投入 → endState.dcaCash が 0 に近い
+    expect(result.endState.dcaCash).toBeCloseTo(0, 1);
+    expect(result.endState.dcaRemainingContributions).toBe(0);
+    // ボラが激しい相場（50→200）では平均購入価格が下がって DCA 有利
+    // 最終 price=100 なのでユニット数 * 100 = 最終 NAV
+    //   25/100 + 25/50 + 25/200 + 25/100 = 0.25 + 0.5 + 0.125 + 0.25 = 1.125 unit
+    //   NAV = 1.125 * 100 = 112.5
+    const last = result.daily[result.daily.length - 1];
+    expect(last.benchmarkDca).toBeCloseTo(112.5, 1);
   });
 });

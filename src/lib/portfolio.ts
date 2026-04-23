@@ -13,7 +13,10 @@ export type PortfolioMarket = "jp" | "us";
 export interface PortfolioDailyPoint {
   date: string;
   nav: number;
+  /** 一括買い持ちベンチマーク */
   benchmark: number;
+  /** 月次積立（DCA）ベンチマーク */
+  benchmarkDca: number;
   equityRatio: number;
   score: number | null;
 }
@@ -29,7 +32,9 @@ export interface PortfolioTrade {
 
 export interface PortfolioStats {
   totalReturn: number;
+  /** 一括買い持ち */
   benchmarkReturn: number;
+  /** 温度ルール vs 一括買い持ち */
   alpha: number;
   cagr: number;
   benchmarkCagr: number;
@@ -37,6 +42,13 @@ export interface PortfolioStats {
   benchmarkMaxDrawdown: number;
   sharpe: number;
   benchmarkSharpe: number;
+  /** 積立（DCA）ベンチマーク */
+  dcaReturn: number;
+  dcaCagr: number;
+  dcaMaxDrawdown: number;
+  dcaSharpe: number;
+  /** 温度ルール vs 積立 */
+  alphaVsDca: number;
 }
 
 export interface PortfolioCurrent {
@@ -47,6 +59,8 @@ export interface PortfolioCurrent {
   cashRatio: number;
   nav: number;
   benchmark: number;
+  /** 月次積立 NAV。過去の JSON には存在しない可能性あり */
+  benchmarkDca?: number;
 }
 
 export interface PortfolioCashYieldScenario {

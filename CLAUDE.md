@@ -216,6 +216,8 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 
 **ポジショニング（トーン設計）**: 絶対リターンでは過去10年とも 100% 株の buy & hold に大差で劣後する（JP -115pp / US -139pp）。これを隠さず、ページ冒頭の amber ブロック（`#for-whom`）で「買い持ちに勝つ戦略ではなく、暴落で売ってしまう人が仕組みで持ち続けるための補助輪」と明言する。読者セグメンテーション（= 絶対リターン目当ての人には「素直にインデックス買い持ちをしてください」と離脱を促す）で信頼性を確保する方針。Dashboard ミニカードと OG 画像も同トーンで統一（最大DD 改善を主役、α は補助情報）。
 
+**3 戦略比較（一括買い持ち / 月次積立 / 温度ルール）**: サイトの主要読者（NISA 積立勢）が**自分のやり方との差分で温度ルールを評価できる**よう、月次積立（DCA）ベンチマークを simulator に組み込み、チャート 3 本・統計表 4 列（温度 / 一括 / 積立 / 温度 vs 積立）で並列表示する。結果として JP α vs DCA = -8.9pp / US α vs DCA = -4pp と小さく、「**NISA 積立できる人は温度ルールに切り替えても実利はほぼない**」が新しい結論。この事実を `#for-whom` ブロックでも正直に書き、記事の target 読者を「まとまった現金を一括投入できずにいる人」だけに絞る。`scripts/_lib/portfolio-sim.ts::simulatePortfolio` は `DailyPoint.benchmarkDca` と `PortfolioStats.dcaReturn/dcaCagr/dcaMaxDrawdown/dcaSharpe/alphaVsDca` を生成し、`startState` の `dcaMonthlyContribution / dcaRemainingContributions` で差分モードにも対応。
+
 ### ルール（固定）
 - 対象: 日本 = ^N225 + 現金（日本版温度 = C1+C5 で駆動）/ 米国 = ^GSPC + 現金（VIX→温度で駆動）
 - リバランス: **月次**、各月第一営業日に温度帯を判定して目標配分へ移動

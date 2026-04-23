@@ -45,7 +45,7 @@ export default function SimilarDaysSection({
   if (japanMatches.length === 0 && usMatches.length === 0) return null;
 
   return (
-    <section className="mb-8">
+    <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {japanScore != null && japanMatches.length > 0 && (
           <SimilarDaysCard
@@ -78,6 +78,6 @@ export default function SimilarDaysSection({
           過去の主要イベント一覧（14件）→
         </Link>
       </p>
-    </section>
+    </div>
   );
 }

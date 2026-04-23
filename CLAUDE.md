@@ -238,7 +238,7 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 
 ### UI
 - ページ本体: `src/app/portfolio/page.tsx`（Server Component、`StaticPageLayout` ベース、`buildArticleJsonLd` で Article JSON-LD 埋込、目次 + 赤枠免責バナー + **青枠 `#scope` ブロック**（「このページは株温計の応用 1 実験であり、コア機能は `/` / `/events` / `/guide` にある」と射程を限定）+ `#for-whom`（寄与度開示付き）+ ルール表 + `PortfolioBody` + `#selection`（**ルール選定プロセスと温度信号の寄与度**：17ルール探索経緯・多重検定リスク・温度信号純寄与度の表）+ 手法 + バイアス（**レジーム依存 = 強気相場では「過熱で減らす」系が構造的に不利**を明記）+ 関連リンク（コア機能を「📊 まずここ」として `/` / `/events` / `/guide` を優先、分析記事は二次配置））
-- Client 本体: `src/components/portfolio/PortfolioBody.tsx`（日米タブ / 1Y・5Y・10Y 切替 / 現在配分カード / NAV 推移チャート（ComposedChart、ポートフォリオ = 温度色実線、ベンチマーク = グレー破線）/ 統計テーブル（totalReturn / CAGR / maxDD / Sharpe + ベンチ比）/ リバランス履歴（直近 12 件 + 展開）/ `InvestingBooksCTA placement="portfolio"`）
+- Client 本体: `src/components/portfolio/PortfolioBody.tsx`（日米タブ / 1Y・5Y・10Y 切替（**デフォルト 10Y** — NAV=100 の起点からの分岐を最も見やすく）/ 現在配分カード / NAV 推移チャート（ComposedChart、**ポートフォリオ = 赤実線固定 `#dc2626`**、ベンチマーク = グレー破線、月次積立 = 青鎖線）/ 統計テーブル（totalReturn / CAGR / maxDD / Sharpe + ベンチ比）/ リバランス履歴（直近 12 件 + 展開）/ `InvestingBooksCTA placement="portfolio"`）
 - Dashboard ミニカード: `src/components/PortfolioTeaserCard.tsx` を Dashboard 第 5 章「🔍 詳しく見る」末尾に配置。日米配分・α vs DCA（主役）・最大DD「vs 買い持ち」と「vs 積立」を併記（US は「vs 積立で +10.7pp 深い」警告を amber 色で表示）。`/portfolio?ref=dashboard_teaser` へ誘導。片方が極寒/沸騰時は amber 強調。本文コピーでは「α の大半は配分の高さ由来」注記を追加
 - OG 画像: `src/app/portfolio/opengraph-image.tsx`（青系、日米の「積立 比 +Xpp」を主見出しに、温度 / 積立 / 最大DD を並列表示、`buildNotoSansJpFonts` + `THERMOMETER_SVG` 共用）
 - GA4 イベント: `portfolio_view` / `portfolio_market_switch` / `portfolio_period_switch` / `portfolio_teaser_click`

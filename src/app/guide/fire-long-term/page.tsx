@@ -154,6 +154,15 @@ export default function FireLongTermGuidePage() {
             で過去の大底とその後の長期リターンを確認
           </li>
           <li>
+            <Link
+              href="/analysis/margin-ratio-temperature"
+              className="underline hover:text-gray-900"
+            >
+              信用倍率 × 株温計 — 過去10年の検証
+            </Link>
+            で需給指標と温度の相互作用を確認（リバランス前の環境読み）
+          </li>
+          <li>
             <Link href="/guide" className="underline hover:text-gray-900">
               他の投資家タイプ別ガイド
             </Link>

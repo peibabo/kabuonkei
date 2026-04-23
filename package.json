@@ -18,6 +18,8 @@
     "generate:sector-heatmap": "npx tsx scripts/generate-japan-sector-heatmap.ts",
     "generate:score-distribution": "npx tsx scripts/generate-score-distribution.ts",
     "generate:similar-days": "npx tsx scripts/generate-similar-days.ts",
+    "generate:margin-history": "npx tsx scripts/backfill-margin-ratio-history.ts",
+    "generate:margin-analysis": "npx tsx scripts/generate-margin-ratio-analysis.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts",
     "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts"
   },

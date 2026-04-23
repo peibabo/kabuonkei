@@ -24,6 +24,7 @@
 - **イベント詳細ページ（`/events/[slug]`）** - 14件の主要市場イベントについて、その日の日米温度・前後±90日の温度推移・1M/3M/6M/1Y 実リターンに加え、各イベントごとの「当時の背景と市場心理」解説（Markdown 本文、1本 500〜600字）を表示する恒久 URL（全件 SSG、イベント別 OG 画像付き）
 - **主要イベント一覧（`/events`）** - 14件を日付降順で俯瞰できるインデックスページ。Footer・About・類似日カード末尾から導線あり
 - **投資家タイプ別ガイド（`/guide`）** - NISA積立 / 短期トレーダー / FIRE目指し の 3 タイプ別に、温度帯ごとの具体的なアクション指針を解説するガイドページ。Footer・About から導線あり
+- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。第1弾は「信用倍率 × 株温計 — 過去10年の徹底検証」（`/analysis/margin-ratio-temperature`）で、JPX 公表の週次信用倍率と株温計を 2D 集計し、信用倍率×温度帯ごとの日経225 翌 1/3/6ヶ月リターンをヒートマップで可視化
 - **あなたのスタイル別の読み方カード** - ダッシュボード内（過去統計の直下）に配置し、タブ切替で現在温度に応じた 1〜2 行の行動指針を表示。極寒/沸騰時は amber 強調 + 注意書き。選択タイプは localStorage で保持
 - **日本市場の需給** - 投資主体別売買動向（海外投資家等の買越/売越）+ 裁定残推移 + 信用倍率
 - **埋め込みウィジェット** - `/widget/today` で配信する 400×400 PNG 画像。他サイト（ブログ/note/X）に貼り付けると今日の日米温度を自動更新で表示（15 分 ISR）。説明ページは `/widget`
@@ -65,6 +66,8 @@ npm run generate:japan-temperature-history  # 日本版 温度推移（平日17:
 npm run generate:similar-days               # 類似日検索データ（日本/米国両方）
 npm run generate:cross-stats                # クロス分析（米国温度×日経225 / 日本温度×S&P500）
 npm run generate:score-distribution         # 温度スコア分布（過去10年の歴史的位置づけ用）
+npm run generate:margin-history             # 信用倍率の 20 年超週次バックフィル（JPX 連結 Excel）
+npm run generate:margin-analysis            # 信用倍率 × 株温計 × 日経225 の分析 JSON（/analysis 用）
 
 # X Bot（平日 JST 7:30 に GitHub Actions から実行される）
 npm run post:daily-tweet                    # 実投稿（X_API_* が必要）

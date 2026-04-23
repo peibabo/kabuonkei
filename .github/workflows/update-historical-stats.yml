@@ -29,11 +29,16 @@ jobs:
       # score-distribution は japan-temperature-history.json を読み込むため、
       # 上記 generate:japan-temperature-history の後で実行する必要がある
       - run: npm run generate:score-distribution
+      # margin-history は JPX 連結 XLS を取得して 20 年超の週次データを再生成する。
+      # 続く margin-analysis は margin-history.json + japan-temperature-history.json を読むため、
+      # generate:japan-temperature-history の後に置く必要がある
+      - run: npm run generate:margin-history
+      - run: npm run generate:margin-analysis
       - name: Commit and push if changed
         run: |
           git diff --quiet src/data/ && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/cross-historical-stats.json src/data/japan-sector-heatmap.json src/data/score-distribution.json
+          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/cross-historical-stats.json src/data/japan-sector-heatmap.json src/data/score-distribution.json src/data/margin-ratio-history.json src/data/margin-ratio-analysis.json
           git commit -m "chore: 統計データを更新（$(date +%Y-%m-%d)）"
           git push

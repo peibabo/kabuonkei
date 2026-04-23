@@ -104,7 +104,27 @@ export default function TermsPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          第 8 条（お問い合わせ）
+          第 8 条（広告・アフィリエイトリンクの表示）
+        </h2>
+        <p>
+          当サイトの一部の記事・ページには、<strong>第三者が提供する広告（アフィリエイトリンクを含む）</strong>を掲載しています。利用者がこれらのリンクを経由して商品・サービスの申込みを行った場合、当サイト運営者が広告主から成果報酬を受け取る仕組みになっています。
+        </p>
+        <ul className="list-disc pl-6 space-y-1 mt-3 text-sm">
+          <li>
+            広告を含むカードやリンクには「PR」「広告」「sponsored」等の表示を行います
+          </li>
+          <li>
+            広告の存在は、当サイトが掲載する分析結果・解説コンテンツの中立性に影響しないよう努めています
+          </li>
+          <li>
+            広告主の商品・サービスの内容、ご契約条件、取引結果について当サイトは一切の責任を負いません。お申込みはご自身の判断と責任で行ってください
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          第 9 条（お問い合わせ）
         </h2>
         <p>
           本規約に関するお問い合わせ、コンテンツの転載許諾、その他のご連絡は下記までお願いします。
@@ -120,7 +140,7 @@ export default function TermsPage() {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 22 日</p>
+      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 23 日</p>
     </StaticPageLayout>
   );
 }

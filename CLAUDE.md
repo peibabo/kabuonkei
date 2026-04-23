@@ -64,9 +64,18 @@
 - UI: `src/components/CrossStatsCard.tsx`（1カードに方向タブ 🇺🇸×🇯🇵 / 🇯🇵×🇺🇸 を置いた単独配置。Dashboard では `StatsSection` の直後）
 - **注意**: 温度と対象市場が異なるため、純粋分離の同市場統計より相関が弱い可能性あり。カード冒頭に参考値である旨の注釈を常時表示。日付結合は UTC 日付ベースの簡易結合で、厳密なイベントスタディではない
 
+### 歴史的位置づけ表示（Score Percentile）
+- `src/data/score-distribution.json`: 過去10年の温度スコア分布（市場別にソート済み配列）
+  - `us.scores`: VIX 10年から `estimateFearGreedFromVix` で推定した温度スコア配列
+  - `jp.scores`: 既存 `japan-temperature-history.json` の `daily[].score` を再利用
+- 生成スクリプト: `npm run generate:score-distribution`（`scripts/generate-score-distribution.ts`）
+- アクセサ: `src/lib/score-distribution.ts`（`getScorePercentile(score, market)` / `getDistributionMeta()`）。二分探索で O(log n) の percentile 計算。JSON 未生成時は `null` を返して UI 非表示
+- UI: `src/components/HistoricalPercentileBadge.tsx` を `FearGreedGauge` のスコア直下に組み込み。下位 20% 以下は青系 + ❄️、上位 20% 以上は赤系 + 🔥、それ以外は灰色テキスト
+- 生成順序の依存: `japan-temperature-history.json` を読み込むため `generate:japan-temperature-history` の後に実行する必要あり（CI workflow で順序固定）
+
 ### 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
-- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析の5種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
+- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析・スコア分布の6種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
 
 ## 温度推移データ
 

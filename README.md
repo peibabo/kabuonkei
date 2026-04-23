@@ -9,6 +9,7 @@
 ### 掲載指標
 
 - **Fear & Greed（米国）** - CNN Fear & Greed Indexベースのメインゲージ（0-100）
+- **歴史的位置づけバッジ** - 温度カード内に「過去10年中、このスコア以下だった日は XX%」を表示。下位 20% / 上位 20% 時はアラート色で強調
 - **市場温度（日本）** - 日本市場独自の5要素バランス型温度スコア
   - 日経225モメンタム（125日MA乖離）/ 海外投資家フロー（直近4週累積）/ 信用倍率 / 裁定残バランス / ドル円50日モメンタム
 - **温度の推移チャート（米国版）** - 過去1年分の温度推移を時系列で可視化（期間切り替え対応）
@@ -62,6 +63,7 @@ npm run generate:temperature-history        # 米国版 温度推移
 npm run generate:japan-temperature-history  # 日本版 温度推移（平日17:00 JSTにも自動再生成）
 npm run generate:similar-days               # 類似日検索データ（日本/米国両方）
 npm run generate:cross-stats                # クロス分析（米国温度×日経225 / 日本温度×S&P500）
+npm run generate:score-distribution         # 温度スコア分布（過去10年の歴史的位置づけ用）
 
 # X Bot（平日 JST 7:30 に GitHub Actions から実行される）
 npm run post:daily-tweet                    # 実投稿（X_API_* が必要）

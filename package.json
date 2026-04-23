@@ -15,6 +15,7 @@
     "generate:japan-stats": "npx tsx scripts/generate-japan-historical-stats.ts",
     "generate:japan-temperature-history": "npx tsx scripts/generate-japan-temperature-history.ts",
     "generate:cross-stats": "npx tsx scripts/generate-cross-historical-stats.ts",
+    "generate:score-distribution": "npx tsx scripts/generate-score-distribution.ts",
     "generate:similar-days": "npx tsx scripts/generate-similar-days.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts",
     "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts"

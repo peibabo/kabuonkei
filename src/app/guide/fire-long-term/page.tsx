@@ -163,6 +163,15 @@ export default function FireLongTermGuidePage() {
             で需給指標と温度の相互作用を確認（リバランス前の環境読み）
           </li>
           <li>
+            <Link
+              href="/portfolio"
+              className="underline hover:text-gray-900"
+            >
+              温度連動バーチャルポートフォリオ
+            </Link>
+            で「温度でリバランス」を過去10年に当てはめたシミュレーションを確認（リスク調整パフォーマンスの参考に）
+          </li>
+          <li>
             <Link href="/guide" className="underline hover:text-gray-900">
               他の投資家タイプ別ガイド
             </Link>

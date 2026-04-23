@@ -12,6 +12,7 @@ import StatsSection from "./dashboard/StatsSection";
 import PersonalizedHintCard from "./PersonalizedHintCard";
 import CrossStatsCard from "./CrossStatsCard";
 import SectorHeatmapCard from "./SectorHeatmapCard";
+import PortfolioTeaserCard from "./PortfolioTeaserCard";
 import SimilarDaysSection from "./dashboard/SimilarDaysSection";
 import JapanMarketSection from "./dashboard/JapanMarketSection";
 import MarketDataSection from "./dashboard/MarketDataSection";
@@ -82,6 +83,7 @@ export default function Dashboard() {
       >
         <CrossStatsCard japanScore={japanScore} usScore={usScore} />
         <SectorHeatmapCard japanScore={japanScore} />
+        <PortfolioTeaserCard />
       </DashboardSection>
 
       <DashboardSection

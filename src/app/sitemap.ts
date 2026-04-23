@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getEventsMeta } from "@/lib/events";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
+import { getPortfolioHistory } from "@/lib/portfolio";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
@@ -22,6 +23,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const analysisIndexModified = new Date(
     Math.max(marginAnalysisModified.getTime(), vixAnalysisModified.getTime())
   );
+  const portfolio = getPortfolioHistory();
+  const portfolioModified = new Date(portfolio.generatedAt);
 
   return [
     {
@@ -89,6 +92,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: vixAnalysisModified,
       changeFrequency: "monthly",
       priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/portfolio`,
+      lastModified: portfolioModified,
+      changeFrequency: "daily",
+      priority: 0.8,
     },
     {
       url: `${siteUrl}/terms`,

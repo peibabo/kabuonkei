@@ -208,6 +208,50 @@ Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の�
 
 **自動更新**: `.github/workflows/update-historical-stats.yml` の月次ジョブ末尾に `generate:margin-history` → `generate:margin-analysis` の 2 ステップを追加（`generate:japan-temperature-history` の後、順序重要）。生成ファイル 2 本を commit 対象に追加済み
 
+## 温度連動バーチャルポートフォリオ（`/portfolio`）
+
+株温計の温度スコアに応じて、日経225・S&P500 の株/現金配分を月次に切り替える「逆張り型」ポートフォリオのシミュレーション。過去約10年のバックテストとライブ追跡を公開し、リテンション（毎日 NAV が動く＝毎日見に来る動機）と SEO 資産化（「温度計 戦略 バックテスト」等のキーワード）を狙う。
+
+**重要**: 金商法リスクを下げるため、徹頭徹尾「研究 / シミュレーション」として framing する（"今月◯買え" ではなく "ルールに基づけば理論上このようになっていた"）。`/terms` 第 9 条に「バックテスト・シミュレーション結果の表示について」を明記し、ページ冒頭には赤枠の常時免責バナーを置く。
+
+### ルール（固定）
+- 対象: 日本 = ^N225 + 現金（日本版温度 = C1+C5 で駆動）/ 米国 = ^GSPC + 現金（VIX→温度で駆動）
+- リバランス: **月次**、各月第一営業日に温度帯を判定して目標配分へ移動
+- 配分表（ニュートラル 60/40・振れ幅 ±30%）: 極寒=株90% / 冷え込み=75% / 平温=60% / 過熱=45% / 沸騰=30%
+- 現金金利 / 手数料 / 税金 / スリッページ = すべて 0 固定（記事で明記）
+- ベンチマーク: 100% 株の buy & hold（同じ銘柄）
+- バックテスト期間: 2016-04-22（日本温度履歴の起点）〜 最新
+
+### データ層
+- `src/data/portfolio-history.json`: 日米 2 ポートフォリオの `daily[]` / `trades[]` / `stats` / `current` / `endState` を同梱
+- 生成（全再生成）: `npm run generate:portfolio-history`（`scripts/generate-portfolio-history.ts`）
+- 差分 append: `npm run snapshot:portfolio`（`scripts/snapshot-portfolio.ts`）。既存 JSON の `endState` から継続
+- 純粋関数: `scripts/_lib/portfolio-sim.ts`（`simulatePortfolio` / `DEFAULT_PORTFOLIO_RULE` / `computeStats` / `computeMaxDrawdown` / `computeSharpe`）
+- ユニットテスト: `scripts/__tests__/portfolio-sim.test.ts`（リバランス発火 / NAV 保全 / 差分モード連続性）
+- アクセサ: `src/lib/portfolio.ts`（`getPortfolioHistory` / `slicePortfolioDailyByDays` / `resolveBandByScore`）
+
+### UI
+- ページ本体: `src/app/portfolio/page.tsx`（Server Component、`StaticPageLayout` ベース、`buildArticleJsonLd` で Article JSON-LD 埋込、目次 + 赤枠免責バナー + ルール表 + `PortfolioBody` + 手法 + バイアス + 関連リンク）
+- Client 本体: `src/components/portfolio/PortfolioBody.tsx`（日米タブ / 1Y・5Y・10Y 切替 / 現在配分カード / NAV 推移チャート（ComposedChart、ポートフォリオ = 温度色実線、ベンチマーク = グレー破線）/ 統計テーブル（totalReturn / CAGR / maxDD / Sharpe + ベンチ比）/ リバランス履歴（直近 12 件 + 展開）/ `InvestingBooksCTA placement="portfolio"`）
+- Dashboard ミニカード: `src/components/PortfolioTeaserCard.tsx` を Dashboard 第 5 章「🔍 詳しく見る」末尾に配置。日米配分・α・最大DDを要約し `/portfolio?ref=dashboard_teaser` へ誘導。片方が極寒/沸騰時は amber 強調
+- OG 画像: `src/app/portfolio/opengraph-image.tsx`（青系、日米 NAV・α・最大DD を並列表示、`buildNotoSansJpFonts` + `THERMOMETER_SVG` 共用）
+- GA4 イベント: `portfolio_view` / `portfolio_market_switch` / `portfolio_period_switch` / `portfolio_teaser_click`
+
+### SEO 配線
+- sitemap: `/portfolio`（`priority: 0.8`, `changeFrequency: "daily"`, `lastModified = portfolio-history.json.generatedAt`）
+- Footer 共通リンクに「温度連動ポートフォリオ」追加
+- `/guide/fire-long-term` 末尾の関連リンクに `/portfolio` を追加（長期戦略読者ターゲット）
+- `InvestingBooksCTA` は `placement: "portfolio"` と `article?: string`（既定 `"vix-threshold-sp500"`、`/portfolio` では `"portfolio"`）を受けるよう拡張済み
+
+### 自動更新
+- `.github/workflows/update-portfolio.yml`: 平日 JST 07:00（cron `0 22 * * 0-4`）に `snapshot:portfolio` を実行。差分があれば commit & push（コミットタイトル `chore(portfolio): daily NAV update YYYY-MM-DD`）
+- `.github/workflows/update-historical-stats.yml`: 月次ジョブ末尾に `generate:portfolio-history` を追加（`generate:japan-temperature-history` の後）。差分 append で累積したズレを月 1 回リセット
+
+### 既知の制約
+- バックテスト期間は日本温度履歴に合わせて 2016-04-22 以降（約10年）。リーマンショックなどはカバーされない
+- 現金金利 0% は保守的（MMF なら 1〜3% 上乗せ可）。手法セクションで明記
+- 温度スコア自体（C1+C5 / VIX 推定）の過剰最適化リスクはあり得る。記事で明示
+
 ## 日本市場データ
 
 - `src/data/japan-market-data.json`: JPX公開データから取得した日本市場固有の需給データ

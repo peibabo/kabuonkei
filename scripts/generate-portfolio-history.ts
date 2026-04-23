@@ -16,10 +16,13 @@ import { resolve } from "path";
 import {
   DEFAULT_PORTFOLIO_RULE,
   simulatePortfolio,
+  type BandRule,
   type DailyPoint,
+  type PortfolioRule,
   type PortfolioStats,
   type TradeLog,
 } from "./_lib/portfolio-sim";
+import type { SentimentLevel } from "../src/lib/types";
 import { estimateFearGreedFromVix, fetchDailyCloses, sleep } from "./_lib/shared";
 import { getSentimentLevel } from "../src/lib/sentiment";
 
@@ -34,6 +37,14 @@ interface CashYieldScenarioJson {
   /** ラベル（"現金 0%" / "MMF 1%" / "短期金利 3%" 等） */
   label: string;
   stats: PortfolioStats;
+}
+
+interface TemperatureContributionJson {
+  avgEquityRatio: number;
+  constantStats: PortfolioStats;
+  alphaVsConstant: number;
+  ddVsConstant: number;
+  sharpeVsConstant: number;
 }
 
 interface PortfolioSectionJson {
@@ -68,6 +79,11 @@ interface PortfolioSectionJson {
    * 「MMF / 短期金利を仮定するとどれくらい改善するか」を併記する。
    */
   cashYieldSensitivity: CashYieldScenarioJson[];
+  /**
+   * 温度信号の純寄与度: 同じ平均株比率の定数配分と比較することで、
+   * α vs DCA のうち「温度 timing に依る部分」と「単に高配分な部分」を分離する。
+   */
+  temperatureContribution: TemperatureContributionJson;
 }
 
 interface PortfolioHistoryJson {
@@ -95,6 +111,20 @@ const CASH_YIELD_SCENARIOS: Array<{ yield: number; label: string }> = [
   { yield: 0.01, label: "MMF 相当 1%" },
   { yield: 0.03, label: "短期金利 3%" },
 ];
+
+/** 全バンドを同じ株比率にした「定数配分」ルール */
+function makeConstantRule(ratio: number): PortfolioRule {
+  const levels: SentimentLevel[] = ["極寒", "冷え込み", "平温", "過熱", "沸騰"];
+  const bands: BandRule[] = levels.map((level, i) => ({
+    level,
+    scoreRange: [
+      i === 0 ? 0 : i * 20 + 1,
+      i === 4 ? 100 : (i + 1) * 20,
+    ] as [number, number],
+    equityRatio: ratio,
+  }));
+  return { ...DEFAULT_PORTFOLIO_RULE, bands };
+}
 
 function buildSection(
   equitySymbol: string,
@@ -134,6 +164,27 @@ function buildSection(
     }
   );
 
+  // 温度信号の純寄与度: 温度ルールの実現平均株比率を定数として持ち続けた場合と比較する
+  const avgEquityRatio =
+    result.daily.reduce((s, d) => s + d.equityRatio, 0) / result.daily.length;
+  const constantResult = simulatePortfolio({
+    priceMap,
+    priceDates: filteredDates,
+    scoreOf,
+    rule: makeConstantRule(avgEquityRatio),
+    startDate: filteredDates[0],
+  });
+  const temperatureContribution: TemperatureContributionJson = {
+    avgEquityRatio: Math.round(avgEquityRatio * 10000) / 10000,
+    constantStats: constantResult.stats,
+    alphaVsConstant:
+      Math.round((result.stats.totalReturn - constantResult.stats.totalReturn) * 100) / 100,
+    ddVsConstant:
+      Math.round((result.stats.maxDrawdown - constantResult.stats.maxDrawdown) * 100) / 100,
+    sharpeVsConstant:
+      Math.round((result.stats.sharpe - constantResult.stats.sharpe) * 100) / 100,
+  };
+
   const last = result.daily[result.daily.length - 1];
   const latestScore = last.score;
   const band = latestScore != null ? getSentimentLevel(latestScore) : "—";
@@ -155,6 +206,7 @@ function buildSection(
     },
     endState: result.endState,
     cashYieldSensitivity,
+    temperatureContribution,
   };
 }
 

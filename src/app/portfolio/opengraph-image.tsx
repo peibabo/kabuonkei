@@ -18,7 +18,7 @@ export default async function Image() {
   const us = history.portfolios.us;
 
   const charSet =
-    "温度連動バーチャルポートフォリオシミュレーション株温計日本米国日経S&P500NAVCAGR最大ドローダウンリバランス月次ベンチマーク対比株現金配分累計リターン比率積立を上回った過去約年でNISA型vs買持ち浅いkabuonkei";
+    "温度連動バーチャルポートフォリオシミュレーション株温計日本米国日経S&P500NAVCAGR最大ドローダウンリバランス月次ベンチマーク対比株現金配分累計リターン比率積立を上回った温度連動リバランス過去約年でNISA積立型DCAを日米ともに上回る月次リバランス日本日経積立比温度最大DD買い持ち浅いkabuonkei";
   const fonts = await buildNotoSansJpFonts(charSet);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(

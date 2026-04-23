@@ -20205,7 +20205,29 @@
             "alphaVsDca": 45.75
           }
         }
-      ]
+      ],
+      "temperatureContribution": {
+        "avgEquityRatio": 0.6927,
+        "constantStats": {
+          "totalReturn": 165.61,
+          "benchmarkReturn": 236.55,
+          "alpha": -70.94,
+          "cagr": 10.26,
+          "benchmarkCagr": 12.9,
+          "maxDrawdown": -24.11,
+          "benchmarkMaxDrawdown": -31.8,
+          "sharpe": 0.72,
+          "benchmarkSharpe": 0.71,
+          "dcaReturn": 129.9,
+          "dcaCagr": 8.68,
+          "dcaMaxDrawdown": -24.31,
+          "dcaSharpe": 0.68,
+          "alphaVsDca": 35.71
+        },
+        "alphaVsConstant": 2.57,
+        "ddVsConstant": -3.41,
+        "sharpeVsConstant": 0.01
+      }
     },
     "us": {
       "equitySymbol": "^GSPC",
@@ -40839,7 +40861,29 @@
             "alphaVsDca": 51.46
           }
         }
-      ]
+      ],
+      "temperatureContribution": {
+        "avgEquityRatio": 0.646,
+        "constantStats": {
+          "totalReturn": 155.85,
+          "benchmarkReturn": 241.27,
+          "alpha": -85.42,
+          "cagr": 9.85,
+          "benchmarkCagr": 13.06,
+          "maxDrawdown": -25.35,
+          "benchmarkMaxDrawdown": -33.92,
+          "sharpe": 0.76,
+          "benchmarkSharpe": 0.77,
+          "dcaReturn": 105.81,
+          "dcaCagr": 7.49,
+          "dcaMaxDrawdown": -18.45,
+          "dcaSharpe": 0.71,
+          "alphaVsDca": 50.04
+        },
+        "alphaVsConstant": -7.98,
+        "ddVsConstant": -3.82,
+        "sharpeVsConstant": -0.03
+      }
     }
   }
 }

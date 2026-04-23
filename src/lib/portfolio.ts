@@ -69,6 +69,24 @@ export interface PortfolioCashYieldScenario {
   stats: PortfolioStats;
 }
 
+/**
+ * 温度信号の寄与度分析: 同じ平均株比率を持つ「定数配分」と温度ルールを比較し、
+ * α vs DCA のうち「温度信号 timing に依るもの」と「単に株比率が高いこと」を分離する。
+ * α vs DCA は両者の足し算だが、現実には後者が支配的になるケースもある。
+ */
+export interface PortfolioTemperatureContribution {
+  /** 温度ルールの実現平均株比率（日次 equityRatio の平均） */
+  avgEquityRatio: number;
+  /** 同じ平均株比率を定数で持ち続けた場合の stats */
+  constantStats: PortfolioStats;
+  /** 温度ルール total − 定数 total（pp。正なら温度信号がリターンに寄与） */
+  alphaVsConstant: number;
+  /** 温度ルール maxDD − 定数 maxDD（pp。負なら温度信号が DD 抑制に寄与） */
+  ddVsConstant: number;
+  /** 温度ルール Sharpe − 定数 Sharpe */
+  sharpeVsConstant: number;
+}
+
 export interface PortfolioSection {
   equitySymbol: string;
   displayName: string;
@@ -78,6 +96,8 @@ export interface PortfolioSection {
   current: PortfolioCurrent;
   /** 現金金利の感度分析。古い JSON には存在しない可能性があるので optional */
   cashYieldSensitivity?: PortfolioCashYieldScenario[];
+  /** 温度信号の純寄与度（古い JSON には存在しない可能性があるので optional） */
+  temperatureContribution?: PortfolioTemperatureContribution;
 }
 
 export interface PortfolioBand {

@@ -34,6 +34,9 @@ export default function PortfolioTeaserCard() {
     jp.stats.benchmarkMaxDrawdown - jp.stats.maxDrawdown;
   const usDdImprovement =
     us.stats.benchmarkMaxDrawdown - us.stats.maxDrawdown;
+  // 積立(DCA)比の DD 差（正なら温度ルールのほうが深い = 積立のほうが DD 浅い）
+  const jpDdVsDca = jp.stats.maxDrawdown - jp.stats.dcaMaxDrawdown;
+  const usDdVsDca = us.stats.maxDrawdown - us.stats.dcaMaxDrawdown;
 
   return (
     <div className={containerClass}>
@@ -56,8 +59,8 @@ export default function PortfolioTeaserCard() {
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
         温度スコアに応じて株/現金比率を月次に切り替えるシミュレーション。
         <span className="text-gray-500">
-        過去約10年のバックテストで、<strong className="text-gray-700">NISA 積立型（DCA）を JP +{jp.stats.alphaVsDca.toFixed(0)}pp / US +{us.stats.alphaVsDca.toFixed(0)}pp 上回る</strong>結果。
-        一括買い持ちには届かないが、最大DD は買い持ちより浅い。
+        過去約10年で<strong className="text-gray-700">積立(DCA)を JP +{jp.stats.alphaVsDca.toFixed(0)}pp / US +{us.stats.alphaVsDca.toFixed(0)}pp 上回る</strong>が、
+        記事内で<strong>α の大半は「配分の高さ」由来で温度信号の純寄与は限定的</strong>という正直な分解も公開中。
         </span>
       </p>
 
@@ -85,6 +88,14 @@ export default function PortfolioTeaserCard() {
             <span className="text-emerald-700">
               +{jpDdImprovement.toFixed(1)}pp 浅い
             </span>
+            {" / "}vs 積立:{" "}
+            <span
+              className={
+                jpDdVsDca > 0 ? "text-amber-700" : "text-emerald-700"
+              }
+            >
+              {jpDdVsDca > 0 ? `+${jpDdVsDca.toFixed(1)}pp 深い` : `${Math.abs(jpDdVsDca).toFixed(1)}pp 浅い`}
+            </span>
           </div>
         </div>
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
@@ -109,6 +120,14 @@ export default function PortfolioTeaserCard() {
             最大DD vs 買い持ち:{" "}
             <span className="text-emerald-700">
               +{usDdImprovement.toFixed(1)}pp 浅い
+            </span>
+            {" / "}vs 積立:{" "}
+            <span
+              className={
+                usDdVsDca > 0 ? "text-amber-700" : "text-emerald-700"
+              }
+            >
+              {usDdVsDca > 0 ? `+${usDdVsDca.toFixed(1)}pp 深い` : `${Math.abs(usDdVsDca).toFixed(1)}pp 浅い`}
             </span>
           </div>
         </div>

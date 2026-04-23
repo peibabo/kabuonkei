@@ -73,7 +73,7 @@ function CustomTooltip({
       <span className="text-gray-400">—</span>
     );
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 text-xs">
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 text-sm">
       <p className="text-gray-500 mb-1">{d.date}</p>
       <p>
         <span className="text-gray-500">温度ルール</span>{" "}
@@ -110,7 +110,7 @@ function formatPct(value: number): string {
 function AllocationBar({ equityRatio }: { equityRatio: number }) {
   const equityPct = Math.max(0, Math.min(1, equityRatio)) * 100;
   return (
-    <div className="w-full rounded-full bg-gray-100 overflow-hidden h-4 flex text-[10px] font-medium">
+    <div className="w-full rounded-full bg-gray-100 overflow-hidden h-5 flex text-xs font-medium">
       <div
         className="bg-red-500 text-white flex items-center justify-center"
         style={{ width: `${equityPct}%` }}
@@ -134,7 +134,7 @@ function StatsTable({ section }: { section: PortfolioSection }) {
   const sharpeVsDca = s.sharpe - s.dcaSharpe;
   return (
     <div className="overflow-x-auto not-prose">
-      <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[680px]">
+      <table className="w-full text-base border border-gray-200 rounded-lg min-w-[680px]">
         <thead className="bg-gray-50">
           <tr>
             <th className="px-3 py-2 text-left font-semibold text-gray-700">
@@ -237,7 +237,7 @@ function StatsTable({ section }: { section: PortfolioSection }) {
           </tr>
         </tbody>
       </table>
-      <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+      <p className="text-xs text-gray-500 mt-2 leading-relaxed">
         <strong>月次積立（DCA）</strong>: 初期 100 を N ヶ月で等額按分し、毎月第一営業日にその月分を株へ投入（NISA 積立投資の典型パターンを模擬）。
         累計で 100 を全額投入する点で、他 2 戦略と元手を揃えて比較できます。
       </p>
@@ -256,7 +256,7 @@ function CashYieldSensitivityTable({
 }) {
   return (
     <div className="overflow-x-auto not-prose">
-      <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[520px]">
+      <table className="w-full text-base border border-gray-200 rounded-lg min-w-[520px]">
         <thead className="bg-gray-50">
           <tr>
             <th className="px-3 py-2 text-left font-semibold text-gray-700">
@@ -288,7 +288,7 @@ function CashYieldSensitivityTable({
                 <td className={isBaseline ? "font-semibold" : ""}>
                   {s.label}
                   {isBaseline && (
-                    <span className="block text-[10px] text-gray-400">
+                    <span className="block text-xs text-gray-400">
                       本体モデルに一致
                     </span>
                   )}
@@ -353,7 +353,7 @@ function TradeLog({ section }: { section: PortfolioSection }) {
   return (
     <div className="not-prose">
       <div className="overflow-x-auto">
-        <table className="w-full text-xs border border-gray-200 rounded-lg min-w-[480px]">
+        <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[480px]">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-3 py-2 text-left font-semibold text-gray-700">
@@ -399,7 +399,7 @@ function TradeLog({ section }: { section: PortfolioSection }) {
       {all.length > 12 && (
         <button
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-xs text-gray-500 hover:text-gray-800"
+          className="mt-2 text-sm text-gray-500 hover:text-gray-800"
         >
           {expanded ? "▲ 直近 12 件のみ表示" : `▼ 全 ${all.length} 件を表示`}
         </button>
@@ -442,7 +442,7 @@ export default function PortfolioBody({ history }: Props) {
           <button
             key={m}
             onClick={() => handleMarketChange(m)}
-            className={`px-4 py-2 text-sm rounded-full transition-colors ${
+            className={`px-4 py-2 text-base rounded-full transition-colors ${
               market === m
                 ? "bg-gray-800 text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -454,13 +454,13 @@ export default function PortfolioBody({ history }: Props) {
       </div>
 
       <section aria-labelledby="allocation-heading" className="bg-white rounded-2xl shadow-md p-6">
-        <h3 id="allocation-heading" className="text-base font-bold text-gray-900 mb-3">
+        <h3 id="allocation-heading" className="text-lg font-bold text-gray-900 mb-3">
           現在の配分（{section.current.date} 時点）
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
           <div>
-            <div className="text-xs text-gray-500 mb-1">温度</div>
-            <div className="text-lg font-bold">
+            <div className="text-sm text-gray-500 mb-1">温度</div>
+            <div className="text-xl font-bold">
               {currentScore != null ? (
                 <span style={{ color: getSentimentColor(currentScore) }}>
                   {currentScore} 点
@@ -468,17 +468,17 @@ export default function PortfolioBody({ history }: Props) {
               ) : (
                 <span className="text-gray-400">—</span>
               )}{" "}
-              <span className="text-sm font-normal text-gray-500">
+              <span className="text-base font-normal text-gray-500">
                 （{section.current.band}）
               </span>
             </div>
           </div>
           <div>
-            <div className="text-xs text-gray-500 mb-1">NAV（初期=100）</div>
-            <div className="text-lg font-bold font-mono">
+            <div className="text-sm text-gray-500 mb-1">NAV（初期=100）</div>
+            <div className="text-xl font-bold font-mono">
               {section.current.nav.toFixed(1)}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-sm text-gray-500">
               累計{" "}
               <span className={returnColorClass(section.stats.totalReturn)}>
                 {formatPct(section.stats.totalReturn)}
@@ -486,13 +486,13 @@ export default function PortfolioBody({ history }: Props) {
             </div>
           </div>
           <div>
-            <div className="text-xs text-gray-500 mb-1">ベンチマーク比（α）</div>
+            <div className="text-sm text-gray-500 mb-1">ベンチマーク比（α）</div>
             <div
-              className={`text-lg font-bold font-mono ${returnColorClass(section.stats.alpha)}`}
+              className={`text-xl font-bold font-mono ${returnColorClass(section.stats.alpha)}`}
             >
               {formatPct(section.stats.alpha)} pp
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-sm text-gray-500">
               ベンチ: {section.current.benchmark.toFixed(1)}
             </div>
           </div>
@@ -502,7 +502,7 @@ export default function PortfolioBody({ history }: Props) {
 
       <section aria-labelledby="chart-heading" className="bg-white rounded-2xl shadow-md p-6">
         <div className="flex flex-col gap-2 mb-4">
-          <h3 id="chart-heading" className="text-base font-bold text-gray-900">
+          <h3 id="chart-heading" className="text-lg font-bold text-gray-900">
             累計 NAV 推移（初期=100）
           </h3>
           <PeriodSwitcher<PortfolioPeriod>
@@ -519,21 +519,21 @@ export default function PortfolioBody({ history }: Props) {
           >
             <XAxis
               dataKey="date"
-              tick={{ fontSize: 11, fill: "#9ca3af" }}
+              tick={{ fontSize: 12, fill: "#9ca3af" }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(d) => formatXAxisDate(d, longPeriod)}
               minTickGap={40}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "#9ca3af" }}
+              tick={{ fontSize: 12, fill: "#9ca3af" }}
               axisLine={false}
               tickLine={false}
               domain={["dataMin", "dataMax"]}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend
-              wrapperStyle={{ fontSize: "11px" }}
+              wrapperStyle={{ fontSize: "13px" }}
               iconSize={8}
               align="right"
               verticalAlign="top"
@@ -568,7 +568,7 @@ export default function PortfolioBody({ history }: Props) {
             />
           </ComposedChart>
         </ResponsiveContainer>
-        <p className="text-[11px] text-gray-500 mt-2">
+        <p className="text-xs text-gray-500 mt-2">
           温度ルール = {section.equitySymbol} と現金を月次にリバランス /
           一括買い持ち = 初日に {section.equitySymbol} を全額購入し保有 /
           月次積立 = 同額を N ヶ月に按分して毎月投入（NISA 積立型）
@@ -576,7 +576,7 @@ export default function PortfolioBody({ history }: Props) {
       </section>
 
       <section aria-labelledby="stats-heading" className="bg-white rounded-2xl shadow-md p-6">
-        <h3 id="stats-heading" className="text-base font-bold text-gray-900 mb-3">
+        <h3 id="stats-heading" className="text-lg font-bold text-gray-900 mb-3">
           バックテスト統計（{history.dataRange.from} 〜 {history.dataRange.to}）
         </h3>
         <StatsTable section={section} />
@@ -590,11 +590,11 @@ export default function PortfolioBody({ history }: Props) {
           >
             <h3
               id="sensitivity-heading"
-              className="text-base font-bold text-gray-900 mb-2"
+              className="text-lg font-bold text-gray-900 mb-2"
             >
               現金金利シナリオの感度分析
             </h3>
-            <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+            <p className="text-sm text-gray-600 mb-3 leading-relaxed">
               本体モデルは現金金利 = 0% を前提にしています。現実には
               MMF や短期国債で年 1〜3% の利息が付くため、本戦略の<strong>相対的な不利さは実際には小さくなります</strong>。
               以下は同じルールで現金金利だけを差し替えた場合の過去約10年の結果です。
@@ -604,17 +604,17 @@ export default function PortfolioBody({ history }: Props) {
               benchmarkCagr={section.stats.benchmarkCagr}
               benchmarkSharpe={section.stats.benchmarkSharpe}
             />
-            <p className="text-[11px] text-gray-500 mt-3 leading-relaxed">
+            <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               ※ 金利は年率想定。日次複利 1/252 で計算（シミュレーター内）。税金・手数料は引き続き 0 前提。現金金利は株価とは独立に付与されるため、ドローダウンには影響しません。
             </p>
           </section>
         )}
 
       <section aria-labelledby="trades-heading" className="bg-white rounded-2xl shadow-md p-6">
-        <h3 id="trades-heading" className="text-base font-bold text-gray-900 mb-3">
+        <h3 id="trades-heading" className="text-lg font-bold text-gray-900 mb-3">
           リバランス履歴
         </h3>
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-sm text-gray-500 mb-3">
           毎月第一営業日に温度帯を判定し、目標株比率へスイッチ。直近から表示。
         </p>
         <TradeLog section={section} />

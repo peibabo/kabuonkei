@@ -225,6 +225,15 @@ export default function VixThresholdSp500Page() {
           <ul className="list-disc pl-6 space-y-2 text-sm">
             <li>
               <Link
+                href="/analysis/temperature-divergence"
+                className="underline hover:text-gray-900"
+              >
+                日米温度の乖離 — 日本だけ熱い局面のその後
+              </Link>{" "}
+              — 米国センチメントを日本版温度と並べたクロス市場ビュー
+            </li>
+            <li>
+              <Link
                 href="/analysis/margin-ratio-temperature"
                 className="underline hover:text-gray-900"
               >

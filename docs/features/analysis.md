@@ -2,6 +2,28 @@
 
 独自データを掛け合わせた深掘り SEO 記事の置き場所。ペルソナ別の `/guide`、イベント別の `/events` とは別枠で、トピック×独自データのハイブリッド記事を貯める。収益化戦略上は「すでにメイン口座を持つ中級者」向けに信用取引サブ口座アフィなどの文脈適合 CTA を添える。
 
+## 第3弾: 日米温度の乖離 × 将来リターン（`/analysis/temperature-divergence`）
+
+「日本だけ熱い・米国は冷静」のような日米センチメント乖離局面のその後を、過去約 10 年で検証する記事。Primary は 乖離バンド × {S&P500, 日経225} の前方リターン + N225-S&P500 平均スプレッド、Joint は 乖離バンド × 日本版温度バンドの 2D。**温度差 = JP score - US score** と定義し、5 バンド (`≤ -20 / -20〜-10 / -10〜+10 / +10〜+20 / ≥ +20`) で集計する。
+
+**データ層**:
+- `src/data/divergence-analysis.json`: Yahoo Finance `^VIX` (米国版温度の元データ) / `^GSPC` / `^N225` 日足 (過去20年) と `japan-temperature-history.json` を結合。米国版温度は `estimateFearGreedFromVix()` (VIX 10 → 95、VIX 40 → 5 の線形マッピング) で再構成。日本版温度は C1+C5 簡易版 (2016-10-28〜)。集計対象は両指標が解決できる米国取引日 ≈ 2,300 日。生成スクリプト: `npm run generate:divergence`（`scripts/generate-divergence-analysis.ts`）
+- 集計時、JP score は同日 or 7 日以内の直近営業日で backward fill。Joint は `aggregateJointReturns` を再利用
+- 温度差バンドは ±Infinity が JSON 化で `null` になる問題を避けるため sentinel 値 `±999` を使用
+
+**アクセサ**:
+- `src/lib/divergence-analysis.ts`: `getDivergenceAnalysis` / `classifyGapToBand` / `findDivergenceJointCell` / `computeGapPercentile`（5 区間線形補間）/ `describeGap`（乖離値→日本語ラベル）
+
+**UI**:
+- `src/app/analysis/temperature-divergence/page.tsx`: Server Component。目次・用語解説・`DivergenceAnalysisBody` 埋め込み・示唆・手法・関連リンクで構成。JSON-LD 埋込、最新更新日明示
+- `src/components/analysis/DivergenceAnalysisBody.tsx`: Client Component。`PeriodSwitcher<1m|3m|6m>` で期間切替、quantile 表 (p10/p25/p50/p75/p90)・Primary 1D 表 (S&P500 + 日経225 + スプレッド)・Joint 2D ヒートマップ。乖離が p25 未満 or p75 超のとき上部に動的アラート (amber 系)
+- `src/app/analysis/temperature-divergence/opengraph-image.tsx`: orange 系グラデの静的 OG。最新の日米温度・温度差・サンプル数を描画
+- sitemap: `/analysis/temperature-divergence` (`priority: 0.6`, `lastModified = divergence-analysis.json.generatedAt`)
+- CI: `update-historical-stats.yml` に `generate:divergence` を追加（`generate:vix-sp500` の後）
+
+**テスト**:
+- `src/__tests__/divergence-analysis.test.ts`: バンド境界 / quantile 補間 / セル検索 / 実 JSON の必須フィールド確認
+
 ## 第2弾: VIX × S&P500 × 日経225（`/analysis/vix-threshold-sp500`）
 
 「VIX 30 超え＝パニック＝危険」を過去20年で検証する記事。Primary は VIX バンド × {S&P500, 日経225} 1D、Bonus は VIX × 日本版温度 × 日経225 のクロス市場 2D。

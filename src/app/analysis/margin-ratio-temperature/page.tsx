@@ -208,6 +208,15 @@ export default function MarginRatioTemperaturePage() {
           <ul className="list-disc pl-6 space-y-2 text-sm">
             <li>
               <Link
+                href="/analysis/temperature-divergence"
+                className="underline hover:text-gray-900"
+              >
+                日米温度の乖離 — 日本だけ熱い局面のその後
+              </Link>{" "}
+              — 日本市場の特異局面を米国センチメントと並べた独自集計
+            </li>
+            <li>
+              <Link
                 href="/guide/short-term-trader"
                 className="underline hover:text-gray-900"
               >

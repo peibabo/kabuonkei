@@ -24,7 +24,8 @@
 - **イベント詳細ページ（`/events/[slug]`）** - 14件の主要市場イベントについて、その日の日米温度・前後±90日の温度推移・1M/3M/6M/1Y 実リターンに加え、各イベントごとの「当時の背景と市場心理」解説（Markdown 本文、1本 500〜600字）を表示する恒久 URL（全件 SSG、イベント別 OG 画像付き）
 - **主要イベント一覧（`/events`）** - 14件を日付降順で俯瞰できるインデックスページ。Footer・About・類似日カード末尾から導線あり
 - **投資家タイプ別ガイド（`/guide`）** - NISA積立 / 短期トレーダー / FIRE目指し の 3 タイプ別に、温度帯ごとの具体的なアクション指針を解説するガイドページ。Footer・About から導線あり
-- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。現在2本公開：
+- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。現在3本公開：
+  - 「日本だけ熱い・米国は冷静——日米温度の乖離が ±20 を超えた日、その後の日経225 と S&P500 はどう動いたか？」（`/analysis/temperature-divergence`）: 日米温度差バンド × {S&P500, 日経225} の翌 1/3/6ヶ月リターン + N225-S&P500 平均スプレッド、温度差 × 日本版温度のクロス市場 2D
   - 「信用倍率 × 株温計 — 過去10年の徹底検証」（`/analysis/margin-ratio-temperature`）: JPX 公表の週次信用倍率 × 株温計 × 日経225 の 2D ヒートマップ
   - 「VIX が 30 を超えた日、その後 S&P500 はどう動いたか？— 過去20年の検証」（`/analysis/vix-threshold-sp500`）: VIX バンド別の S&P500・日経225 翌 1/3/6ヶ月リターンと、VIX × 日本版温度のクロス市場 2D
 - **温度連動ポートフォリオ（`/portfolio`）** - 株温計の温度スコアで株/現金比率を月次に切り替える日米 2 ポートフォリオのシミュレーション（バックテスト + ライブ追跡）。過去約10年で**月次積立 (DCA) を日米ともに上回る**結果（JP +38pp / US +42pp）。一括買い持ち / 月次積立（DCA） / 温度ルール の 3 戦略比較、NAV 推移チャート（1Y/5Y/10Y）、リバランス履歴、CAGR / 最大DD / Sharpe を表示。毎営業日 JST 07:00 に自動更新。投資助言ではなく研究公開として位置付け（`/terms` 第 9 条で明記）
@@ -72,6 +73,7 @@ npm run generate:score-distribution         # 温度スコア分布（過去10�
 npm run generate:margin-history             # 信用倍率の 20 年超週次バックフィル（JPX 連結 Excel）
 npm run generate:margin-analysis            # 信用倍率 × 株温計 × 日経225 の分析 JSON（/analysis 用）
 npm run generate:vix-sp500                  # VIX × S&P500 × 日経225 + JP温度クロスの分析 JSON（/analysis 用）
+npm run generate:divergence                 # 日米温度の乖離 × {N225, S&P500} 前方リターン分析 JSON（/analysis 用）
 npm run generate:portfolio-history          # 温度連動ポートフォリオ バックフィル（/portfolio 用、月次フル再生成）
 npm run snapshot:portfolio                  # 温度連動ポートフォリオ 日次 append（平日 JST 07:00 に自動実行）
 

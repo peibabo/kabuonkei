@@ -161,6 +161,15 @@ export default function ShortTermTraderGuidePage() {
             で需給と温度のクロス集計を深掘り
           </li>
           <li>
+            <Link
+              href="/analysis/temperature-divergence"
+              className="underline hover:text-gray-900"
+            >
+              日米温度の乖離 — 日本だけ熱い局面のその後
+            </Link>
+            で逆張り判断にクロス市場ビューを使う
+          </li>
+          <li>
             <Link href="/guide" className="underline hover:text-gray-900">
               他の投資家タイプ別ガイド
             </Link>

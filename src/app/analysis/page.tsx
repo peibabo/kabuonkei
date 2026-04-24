@@ -3,6 +3,7 @@ import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
+import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 
 export const metadata: Metadata = {
   title: "分析記事",
@@ -29,7 +30,17 @@ interface AnalysisArticle {
 export default function AnalysisIndexPage() {
   const marginAnalysis = getMarginRatioAnalysis();
   const vixAnalysis = getVixSp500Analysis();
+  const divergenceAnalysis = getDivergenceAnalysis();
   const articles: AnalysisArticle[] = [
+    {
+      slug: "temperature-divergence",
+      icon: "🌡️",
+      title:
+        "日本だけ熱い・米国は冷静——日米温度の乖離が ±20 を超えた日、その後の日経225 と S&P500 はどう動いたか？",
+      description:
+        "日本版・米国版の株温計スコアが大きく食い違った日 (温度差 ±20 以上) の後、日経225 と S&P500 がどう動いたか？ 過去約 10 年・2,300 取引日の独自集計で、収斂・発散のパターンを検証。",
+      dateLabel: `最終更新: ${divergenceAnalysis.generatedAt}`,
+    },
     {
       slug: "vix-threshold-sp500",
       icon: "📈",

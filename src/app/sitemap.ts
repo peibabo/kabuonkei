@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getEventsMeta } from "@/lib/events";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
+import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 import { getPortfolioHistory } from "@/lib/portfolio";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -20,8 +21,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const marginAnalysisModified = new Date(marginAnalysis.generatedAt);
   const vixAnalysis = getVixSp500Analysis();
   const vixAnalysisModified = new Date(vixAnalysis.generatedAt);
+  const divergenceAnalysis = getDivergenceAnalysis();
+  const divergenceAnalysisModified = new Date(divergenceAnalysis.generatedAt);
   const analysisIndexModified = new Date(
-    Math.max(marginAnalysisModified.getTime(), vixAnalysisModified.getTime())
+    Math.max(
+      marginAnalysisModified.getTime(),
+      vixAnalysisModified.getTime(),
+      divergenceAnalysisModified.getTime()
+    )
   );
   const portfolio = getPortfolioHistory();
   const portfolioModified = new Date(portfolio.generatedAt);
@@ -90,6 +97,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/analysis/vix-threshold-sp500`,
       lastModified: vixAnalysisModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/analysis/temperature-divergence`,
+      lastModified: divergenceAnalysisModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

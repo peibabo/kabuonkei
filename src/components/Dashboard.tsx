@@ -17,6 +17,8 @@ import SimilarDaysSection from "./dashboard/SimilarDaysSection";
 import JapanMarketSection from "./dashboard/JapanMarketSection";
 import MarketDataSection from "./dashboard/MarketDataSection";
 import AlertBanner from "./alerts/AlertBanner";
+import HeadlineHero from "./hero/HeadlineHero";
+import TemperatureTiles from "./hero/TemperatureTiles";
 
 export default function Dashboard() {
   const { data, loading, error } = useMarketData();
@@ -28,22 +30,54 @@ export default function Dashboard() {
   const japanScore = data.japanFearGreed?.score ?? null;
   const usScore = data.fearGreed.score;
 
+  // 昨日比: US は CNN の previousClose、JP は直近スナップショットからの差分
+  const usDelta = usScore - data.fearGreed.previousClose;
+  const jpDelta =
+    japanScore != null && data.previousJapanScore != null
+      ? japanScore - data.previousJapanScore
+      : null;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <DashboardHeader lastUpdated={data.lastUpdated} />
 
       <AlertBanner japanScore={japanScore} usScore={usScore} />
 
+      {/* 朝刊風ヒーロー（B 案）: 見出し */}
+      <HeadlineHero
+        jp={japanScore}
+        us={usScore}
+        jpDelta={jpDelta}
+        usDelta={usDelta}
+      />
+
+      {/* サービスの肝: 株温計＝温度計 (半円ゲージ × 2) を直下に */}
       <DashboardSection
         id="now"
         emoji="🌡️"
         title="今の温度"
-        description="日本・米国の最新温度と、過去に温度が近かった日"
+        description="日本・米国の温度計と、直近の動き"
       >
         <TemperatureSection
           japanFearGreed={data.japanFearGreed}
           fearGreed={data.fearGreed}
         />
+        <TemperatureTiles
+          jp={japanScore}
+          us={usScore}
+          jpDelta={jpDelta}
+          usDelta={usDelta}
+          jpSparkline={data.japanSparkline}
+          usSparkline={data.usSparkline}
+        />
+      </DashboardSection>
+
+      <DashboardSection
+        id="similar"
+        emoji="🔁"
+        title="今日の類似日"
+        description="今の温度に最も近かった過去の日と、その後の動き"
+      >
         <SimilarDaysSection japanScore={japanScore} usScore={usScore} />
       </DashboardSection>
 

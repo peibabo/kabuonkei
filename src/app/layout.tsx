@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -12,6 +12,21 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// 朝刊スタイルの和文タイポグラフィ。見出し = Serif、本文 = Sans
+const notoSerifJp = Noto_Serif_JP({
+  variable: "--font-serif-jp",
+  subsets: ["latin"],
+  weight: ["600", "800"],
+  display: "swap",
+});
+
+const notoSansJp = Noto_Sans_JP({
+  variable: "--font-sans-jp",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
@@ -68,9 +83,9 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${notoSerifJp.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-gray-50">
+      <body className="min-h-full flex flex-col bg-[#fafaf7]">
         <div className="flex-1">{children}</div>
         <Footer />
         <GoogleAnalytics />

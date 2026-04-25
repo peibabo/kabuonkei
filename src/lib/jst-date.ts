@@ -15,6 +15,20 @@ export function formatJstDateLabel(date: Date = new Date()): string {
 }
 
 /**
+ * 指定日（省略時は現在時刻）を JST に変換し、"YYYY年M月D日(曜)" 形式のラベルを返す。
+ * 例: 2026-04-25T01:00+09:00 → "2026年4月25日(土)"
+ */
+export function formatJstFullDateLabel(date: Date | number = new Date()): string {
+  const ms = typeof date === "number" ? date : date.getTime();
+  const jst = new Date(ms + 9 * 60 * 60 * 1000);
+  const year = jst.getUTCFullYear();
+  const month = jst.getUTCMonth() + 1;
+  const day = jst.getUTCDate();
+  const weekday = WEEKDAYS[jst.getUTCDay()];
+  return `${year}年${month}月${day}日(${weekday})`;
+}
+
+/**
  * Unix ミリ秒を JST に変換し、"M/D HH:MM JST" 形式のラベルを返す。
  * null / undefined / NaN のときは "—" を返す。
  * 例: 1713657300000 (2024-04-21 07:15 UTC) → "4/21 16:15 JST"

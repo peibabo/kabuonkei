@@ -2,6 +2,10 @@ import FearGreedGauge from "../FearGreedGauge";
 import { getSentimentLevel } from "@/lib/sentiment";
 import type { FearGreedData, JapanFearGreedData } from "@/lib/types";
 
+/**
+ * 半円ゲージ × 2（日米）。トップ画面ヒーロー直下の「🌡 今の温度」章で
+ * 株温計＝温度計のメインビジュアルとして表示する。
+ */
 export default function TemperatureSection({
   japanFearGreed,
   fearGreed,

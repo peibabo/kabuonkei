@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { formatJstDateLabel, formatJstDateTimeLabel } from "../jst-date";
+import {
+  formatJstDateLabel,
+  formatJstDateTimeLabel,
+  formatJstFullDateLabel,
+} from "../jst-date";
 
 describe("formatJstDateLabel", () => {
   it("UTC 日付を JST の M/D(曜) に整形する", () => {
@@ -33,5 +37,22 @@ describe("formatJstDateTimeLabel", () => {
     expect(formatJstDateTimeLabel(null)).toBe("—");
     expect(formatJstDateTimeLabel(undefined)).toBe("—");
     expect(formatJstDateTimeLabel(NaN)).toBe("—");
+  });
+});
+
+describe("formatJstFullDateLabel", () => {
+  it("UTC 日付を JST の YYYY年M月D日(曜) に整形する", () => {
+    const utc = new Date(Date.UTC(2026, 3, 25, 1, 0, 0)); // JST 土 10:00
+    expect(formatJstFullDateLabel(utc)).toBe("2026年4月25日(土)");
+  });
+
+  it("数値 (UTC ms) でも受け取れる", () => {
+    const ms = Date.UTC(2026, 3, 19, 3, 0, 0);
+    expect(formatJstFullDateLabel(ms)).toBe("2026年4月19日(日)");
+  });
+
+  it("日跨ぎ: UTC 23:00 が JST 翌日になる", () => {
+    const utc = new Date(Date.UTC(2026, 3, 19, 23, 0, 0));
+    expect(formatJstFullDateLabel(utc)).toBe("2026年4月20日(月)");
   });
 });

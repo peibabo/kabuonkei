@@ -1,14 +1,18 @@
 # 公開サイトとしての運用
 
 ## ページ構成
-- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離。本体は **6 章構成** で、各章を `DashboardSection`（`src/components/dashboard/DashboardSection.tsx` — `<section aria-labelledby>` + `h2` 見出し + 説明文 + `space-y-6` 内部間隔を担う共通ラッパー）で包む：
-  1. 🌡️ **今の温度** — `TemperatureSection` + `SimilarDaysSection`（「今日の温度 → 似た日 → その後のリターン」ナラティブを最速で完成させるペア配置）
-  2. 📈 **温度の推移** — `TrendSection`
-  3. 📊 **過去の傾向** — `StatsSection`
-  4. 👤 **あなたへのヒント** — `PersonalizedHintCard`
-  5. 🔍 **詳しく見る** — `CrossStatsCard` + `SectorHeatmapCard`（深掘り分析）
-  6. 📉 **市場の生データ** — `JapanMarketSection` + `MarketDataSection`
-  各子セクションコンポーネントは外側の `mb-X` を持たず、親 `DashboardSection` の `mb-10` + `space-y-6` で章間/章内のスペーシングを統一する
+- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離。本体は **朝刊ヒーロー + 6 章構成**（B 案：2026-04-25 〜）：
+  - **🌡 ヘッダー** — `DashboardHeader`（タイトル + 紙面風「日付 + 第N号」帯 + アラート/About 導線）
+  - **📰 ヒーロー（章外）** — `HeadlineHero`
+    - `src/components/hero/HeadlineHero.tsx`: 純粋関数 `src/lib/headline.ts`（決定木 v1）が日米スコア + 昨日比から「今日の見出し」一行コピー + サブテキスト + CTA 2 つを生成。罫線囲みの紙面風レイアウト（`font-serif-jp` Noto Serif JP 800）
+  - **🌡 今の温度** — `TemperatureSection`（半円ゲージ × 2＝サービスの肝） + `TemperatureTiles`（補足 2 タイル: 日米平均 / 昨日比、独自 SVG `src/components/hero/Sparkline.tsx` で直近推移）
+  - **🔁 今日の類似日** — `SimilarDaysSection`
+  - **📈 温度の推移** — `TrendSection`（`JapanTemperatureTrendCard` + `TemperatureTrendCard`）
+  - **📊 過去の傾向** — `StatsSection`
+  - **👤 あなたへのヒント** — `PersonalizedHintCard`
+  - **🔍 詳しく見る** — `CrossStatsCard` + `SectorHeatmapCard` + `PortfolioTeaserCard`
+  - **📉 市場の生データ** — `JapanMarketSection` + `MarketDataSection`
+  各子セクションコンポーネントは外側の `mb-X` を持たず、親 `DashboardSection` の `mb-10` + `space-y-6` で章間/章内のスペーシングを統一する。号数は `src/lib/issue-number.ts` がリリース日 `2026-04-19` を第 1 号として JST カレンダー日数で算出
 - `/about` — サイト説明（`src/app/about/page.tsx`）
 - `/widget` — 埋め込みウィジェットの案内ページ（`src/app/widget/page.tsx`）。ライブプレビュー + コピー可能な embed HTML（`src/app/widget/_components/EmbedCodeBlock.tsx`）を表示。HTML 生成は純粋関数 `buildEmbedSnippet`（`src/app/widget/_lib/embed-snippet.ts`）に分離してユニットテスト対象化
 - `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記

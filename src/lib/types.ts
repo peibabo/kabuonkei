@@ -41,3 +41,13 @@ export type {
   EventEnrichedFile,
 } from "./types/market-events";
 export type { MarketData } from "./types/market";
+export type {
+  AlertMarket,
+  AlertState,
+  AlertKind,
+  AlertVariant,
+  AlertSubscriber,
+  AlertTokenPayload,
+  AlertFireDecision,
+} from "./types/alerts";
+export { ALERT_VARIANTS } from "./types/alerts";

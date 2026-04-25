@@ -25,7 +25,8 @@
     "generate:portfolio-history": "npx tsx scripts/generate-portfolio-history.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts",
     "snapshot:portfolio": "npx tsx scripts/snapshot-portfolio.ts",
-    "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts"
+    "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts",
+    "alerts:check": "npx tsx scripts/check-temperature-alerts.ts"
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0",

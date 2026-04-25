@@ -37,6 +37,7 @@
 - [イベント詳細ページ `/events/[slug]`](docs/features/events.md)
 - [分析記事 `/analysis/[slug]`（信用倍率・VIX）](docs/features/analysis.md)
 - [温度連動バーチャルポートフォリオ `/portfolio`](docs/features/portfolio.md)
+- [温度アラート（メール通知）](docs/features/alerts.md)
 - [日本市場データ（JPX 需給）](docs/features/japan-market-data.md)
 - [コード構成（src/lib / scripts/_lib の責務マップ）](docs/architecture.md)
 - [公開サイト運用（ページ / ウィジェット / シェア UX / SEO / X Bot / 環境変数）](docs/operations.md)

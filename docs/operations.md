@@ -49,6 +49,11 @@
 - `NEXT_PUBLIC_GA_ID` — Google Analytics 4 の測定 ID
 - `GOOGLE_SITE_VERIFICATION` — Google Search Console サイト所有権確認コード
 - `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` — X（Twitter）Bot 投稿用（OAuth 1.0a User Context、Read and Write 権限）
+- `RESEND_API_KEY` — Resend の送信 API Key（温度アラートメール）
+- `RESEND_FROM_EMAIL` — 送信元アドレス（初期は `onboarding@resend.dev`、独自ドメイン検証後に `alerts@kabuonkei.com` へ）
+- `KV_REST_API_URL` / `KV_REST_API_TOKEN` — Upstash Redis REST（Vercel Marketplace の Upstash for Redis 統合で自動注入。GitHub Actions 側は Secrets に同名で手動コピー）
+- `ALERTS_TOKEN_SECRET` — 確認/配信解除トークンの HMAC 秘密鍵（32 バイト以上、`openssl rand -hex 32`）
+- `ALERTS_ALLOWED_ORIGINS` — `/api/alerts/subscribe` の Origin ホワイトリスト（カンマ区切り、任意）
 
 ## X（Twitter）Bot — 朝の寄り前ブリーフィング
 - **目的**: 定常流入源として、平日毎朝 JST 7:30 に前営業日引け時点の日米温度＋類似日ナラティブを投稿
@@ -65,3 +70,16 @@
 - **文字数安全弁**: `estimateWeightedLength()` で加重280字超過時は類似日行を自動省略
 
 `.env.example` を参照。本番は Vercel のプロジェクト設定で環境変数を投入する想定。
+
+## 温度アラート（メール通知）
+
+- **目的**: 極端温度（米国/日本 F&G `≤20` or `≥80`）発生時にメールで通知 → 再訪動機 + メール資産
+- **発火ロジック**: 状態遷移ベース + ±5pt ヒステリシス。連続発火なし。`neutral→cold/hot` および `cold↔hot` 直接反転のみ発火
+- **発火時刻**: 平日 JST 07:00（米国版、X Bot の直前）/ 17:15（日本版、snapshot-japan-fg の直後）
+- **登録フロー**: Double opt-in（確認メール 24h、HMAC トークン）/ ワンクリック解除（恒久トークン、`List-Unsubscribe` ヘッダ対応）
+- **永続化**: Upstash Redis（Vercel Marketplace の Upstash for Redis 統合、Free プラン 500k commands/月）。キー命名は `alerts:*` プレフィックス
+- **送信**: Resend REST API（初期は無料プラン 3,000 通/月、`onboarding@resend.dev` サンドボックス）
+- **発火スクリプト**: `scripts/check-temperature-alerts.ts`（`npm run alerts:check -- --variant us|jp [--dry-run]`）
+- **自動実行**: `.github/workflows/check-temperature-alerts.yml`（cron `0 22 * * 0-4` + `15 8 * * 1-5`、workflow_dispatch で手動変種実行も可）
+- **必要な GitHub Secrets**: `RESEND_API_KEY` / `KV_REST_API_URL` / `KV_REST_API_TOKEN` / `ALERTS_TOKEN_SECRET`（Repository Variable に `RESEND_FROM_EMAIL` も）
+- 詳細: [features/alerts.md](features/alerts.md)

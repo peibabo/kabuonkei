@@ -27,14 +27,15 @@
 - **Effort**: CC+gstack ~2-3h
 - **Priority**: P1
 
-### C: 温度アラート（メール登録）— MVP版（リテンション軸）
+### ~~C: 温度アラート（メール登録）— MVP版~~ → 着手（2026-04-24）
 - **What**: 閾値（score ≤ 20 or ≥ 80）を設定してメールアドレス登録、発火時に通知
-- **Why**: コンテンツ戦略メモの Tier 1、最大インパクト。メールアドレスは SNS フォロワーより解約されにくい資産
-- **Pros**: 再訪装置 + 将来のニュースレター・note 告知・年次レポート販売の基盤
-- **Cons**: DB+メール送信基盤+特商法+個人情報取扱の継続コスト。ただし Resend（無料3000通/月）+ Upstash Redis で月0円スタート可能
-- **Effort**: CC+gstack ~6-8h
-- **Depends on**: GA4 で再訪率の実データを確認してから判断するのが CEO 的に正しい
-- **Priority**: P1（データ確認後）
+- **Status**: PR 3 本で MVP 実装完了
+  - PR #1: データ基盤 + 登録/確認/解除 API + HMAC トークン + ヒステリシス付き状態遷移
+  - PR #2: ダッシュボード最上部の AlertBanner + 登録モーダル + 完了ページ + privacy/terms 更新
+  - PR #3: 発火スクリプト + GitHub Actions（平日 JST 07:00 US / 17:15 JP）+ docs
+- **Stack**: Resend（無料 3,000 通/月）+ Upstash Redis（Vercel Marketplace、Free 500k commands/月）+ GitHub Actions runner（送信ループ）
+- **詳細**: [docs/features/alerts.md](docs/features/alerts.md)
+- **Next**: 購読者が 50 名を超えたら独自ドメイン検証（SPF/DKIM/DMARC）、Web Push の追加検討
 
 ## コンテンツ展開（イベントページ基盤が出た後）
 

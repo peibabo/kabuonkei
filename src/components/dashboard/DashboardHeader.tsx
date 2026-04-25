@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { formatJstFullDateLabel } from "@/lib/jst-date";
 import { getIssueNumber } from "@/lib/issue-number";
+import { requestOpenAlertModal } from "@/lib/alert-modal-bus";
 
 export default function DashboardHeader({
   lastUpdated,
@@ -28,13 +31,14 @@ export default function DashboardHeader({
           <span className="text-gray-300" aria-hidden>
             /
           </span>
-          {/* 同一ページ内アンカーは生 <a> でブラウザネイティブのスクロール挙動に任せる */}
-          <a
-            href="#alert-banner"
-            className="text-gray-600 hover:text-gray-900 underline-offset-2 hover:underline"
+          {/* AlertBanner と同じモーダル直開きに統一（bus 経由） */}
+          <button
+            type="button"
+            onClick={() => requestOpenAlertModal("header")}
+            className="text-gray-600 hover:text-gray-900 underline-offset-2 hover:underline cursor-pointer"
           >
             アラート登録
-          </a>
+          </button>
         </nav>
       </div>
 

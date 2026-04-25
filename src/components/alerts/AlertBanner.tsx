@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AlertSignupModal from "./AlertSignupModal";
 import { trackEvent } from "@/lib/analytics";
+import { subscribeOpenAlertModal } from "@/lib/alert-modal-bus";
 import type { AlertVariant } from "@/lib/types";
 
 interface Props {
@@ -50,12 +51,22 @@ export default function AlertBanner({ japanScore, usScore }: Props) {
     };
   }, [japanScore, usScore]);
 
-  function handleOpen() {
-    trackEvent("alerts_banner_clicked", {
+  function handleOpen(source: string = "banner") {
+    trackEvent("alerts_modal_opened", {
+      source,
       extreme: isExtreme ? "true" : "false",
     });
     setOpen(true);
   }
+
+  // Hero / Header の「アラート登録」 CTA から bus 経由で開かれるイベントを購読
+  useEffect(() => {
+    return subscribeOpenAlertModal(({ source }) => {
+      handleOpen(source);
+    });
+    // handleOpen は isExtreme をクロージャで参照するため依存に入れる
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isExtreme]);
 
   const containerClass = isExtreme
     ? "bg-red-50 border-red-300"
@@ -92,7 +103,7 @@ export default function AlertBanner({ japanScore, usScore }: Props) {
         </div>
         <button
           type="button"
-          onClick={handleOpen}
+          onClick={() => handleOpen("banner")}
           className={`shrink-0 rounded-lg px-4 py-2 text-sm font-semibold transition-colors hover:opacity-90 ${badgeClass}`}
         >
           {isExtreme ? "このタイミングで登録" : "アラート登録"}

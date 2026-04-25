@@ -41,9 +41,7 @@ export default function Dashboard() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <DashboardHeader lastUpdated={data.lastUpdated} />
 
-      <div id="alert-banner">
-        <AlertBanner japanScore={japanScore} usScore={usScore} />
-      </div>
+      <AlertBanner japanScore={japanScore} usScore={usScore} />
 
       {/* 朝刊風ヒーロー（B 案）: 見出し */}
       <HeadlineHero

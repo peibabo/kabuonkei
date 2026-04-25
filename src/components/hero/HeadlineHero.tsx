@@ -1,9 +1,11 @@
-import { buildHeroCopy, type HeroCta } from "@/lib/headline";
+"use client";
 
-const CTA_HREF: Record<HeroCta, string> = {
+import { buildHeroCopy, type HeroCta } from "@/lib/headline";
+import { requestOpenAlertModal } from "@/lib/alert-modal-bus";
+
+const CTA_HREF: Record<Exclude<HeroCta, "alert">, string> = {
   "similar-days": "#similar",
   hints: "#hint",
-  alert: "#alert-banner",
 };
 
 const CTA_LABEL: Record<HeroCta, string> = {
@@ -11,6 +13,42 @@ const CTA_LABEL: Record<HeroCta, string> = {
   hints: "あなた向けヒント",
   alert: "アラート登録",
 };
+
+const PRIMARY_CLS =
+  "inline-flex items-center justify-center px-5 py-2.5 bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors";
+const SECONDARY_CLS =
+  "inline-flex items-center justify-center px-5 py-2.5 bg-white border border-gray-900 text-gray-900 text-sm font-medium hover:bg-gray-100 transition-colors";
+
+function CtaButton({
+  cta,
+  variant,
+}: {
+  cta: HeroCta;
+  variant: "primary" | "secondary";
+}) {
+  const cls = variant === "primary" ? PRIMARY_CLS : SECONDARY_CLS;
+  const label = `${CTA_LABEL[cta]} →`;
+
+  // alert はページ内アンカーではなくモーダル直開きに統一（Banner の「アラート登録」と同じ動作）
+  if (cta === "alert") {
+    return (
+      <button
+        type="button"
+        onClick={() => requestOpenAlertModal("hero")}
+        className={cls}
+      >
+        {label}
+      </button>
+    );
+  }
+
+  // それ以外は同一ページ内アンカーへスクロール（Next <Link> は同ページ hash で効かない癖があるため生 <a>）
+  return (
+    <a href={CTA_HREF[cta]} className={cls}>
+      {label}
+    </a>
+  );
+}
 
 export default function HeadlineHero({
   jp,
@@ -49,20 +87,8 @@ export default function HeadlineHero({
         {copy.subline}
       </p>
       <div className="mt-6 flex flex-col sm:flex-row gap-3">
-        {/* 同一ページ内アンカー。Next.js <Link> は同ページ hash で scroll が効かない既知の癖が
-            あるため、生 <a> でブラウザネイティブのアンカー挙動に任せる */}
-        <a
-          href={CTA_HREF[copy.ctaPrimary]}
-          className="inline-flex items-center justify-center px-5 py-2.5 bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors"
-        >
-          {CTA_LABEL[copy.ctaPrimary]} →
-        </a>
-        <a
-          href={CTA_HREF[copy.ctaSecondary]}
-          className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-gray-900 text-gray-900 text-sm font-medium hover:bg-gray-100 transition-colors"
-        >
-          {CTA_LABEL[copy.ctaSecondary]} →
-        </a>
+        <CtaButton cta={copy.ctaPrimary} variant="primary" />
+        <CtaButton cta={copy.ctaSecondary} variant="secondary" />
       </div>
     </section>
   );

@@ -15,7 +15,13 @@ export default function DashboardSection({
 }) {
   const headingId = `dash-sect-${id}-heading`;
   return (
-    <section aria-labelledby={headingId} className="mb-10">
+    // id="..." はヒーロー CTA / Header 内アンカーリンクのスクロール先になる。
+    // scroll-margin-top は header / sticky 要素を見越した余白（globals.css 側で扱ってもよい）。
+    <section
+      id={id}
+      aria-labelledby={headingId}
+      className="mb-10 scroll-mt-4"
+    >
       <div className="mb-4">
         <h2
           id={headingId}

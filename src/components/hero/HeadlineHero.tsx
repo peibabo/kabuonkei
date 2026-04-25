@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { buildHeroCopy, type HeroCta } from "@/lib/headline";
 
 const CTA_HREF: Record<HeroCta, string> = {
@@ -50,18 +49,20 @@ export default function HeadlineHero({
         {copy.subline}
       </p>
       <div className="mt-6 flex flex-col sm:flex-row gap-3">
-        <Link
+        {/* 同一ページ内アンカー。Next.js <Link> は同ページ hash で scroll が効かない既知の癖が
+            あるため、生 <a> でブラウザネイティブのアンカー挙動に任せる */}
+        <a
           href={CTA_HREF[copy.ctaPrimary]}
           className="inline-flex items-center justify-center px-5 py-2.5 bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors"
         >
           {CTA_LABEL[copy.ctaPrimary]} →
-        </Link>
-        <Link
+        </a>
+        <a
           href={CTA_HREF[copy.ctaSecondary]}
           className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-gray-900 text-gray-900 text-sm font-medium hover:bg-gray-100 transition-colors"
         >
           {CTA_LABEL[copy.ctaSecondary]} →
-        </Link>
+        </a>
       </div>
     </section>
   );

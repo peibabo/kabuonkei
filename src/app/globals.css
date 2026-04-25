@@ -8,6 +8,11 @@
   --font-serif-jp-fallback: var(--font-serif-jp);
 }
 
+html {
+  /* ヒーロー / ヘッダー内アンカー (#alert-banner, #similar 等) のスムーススクロール */
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

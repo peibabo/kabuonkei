@@ -28,12 +28,13 @@ export default function DashboardHeader({
           <span className="text-gray-300" aria-hidden>
             /
           </span>
-          <Link
+          {/* 同一ページ内アンカーは生 <a> でブラウザネイティブのスクロール挙動に任せる */}
+          <a
             href="#alert-banner"
             className="text-gray-600 hover:text-gray-900 underline-offset-2 hover:underline"
           >
             アラート登録
-          </Link>
+          </a>
         </nav>
       </div>
 

@@ -156,6 +156,10 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 - **送信失敗確認**: `alerts:failures:{date}:{variant}` を手動で覗く
 - **購読者のエクスポート**（データ移行等）: `SCAN alerts:sub:*` + `HGETALL` を小さなスクリプトで
 - **Resend 枠監視**: 無料枠 3,000 通/月。購読者が増えてきたら有料化 or SendGrid/Brevo への差し替えを検討（`src/lib/alerts/resend.ts` の 1 ファイル差し替えで移行可）
+- **診断・復旧スクリプト**:
+  - `scripts/diagnose-alerts.ts <email>` — 指定 email の登録状態 / verified / variant index 所属 / 各 last-state を表示
+  - `scripts/repair-alert-indices.ts [--dry-run]` — 全 verified subscriber を `alerts:index:{variant}` に再登録し、`alerts:last-state:{us|jp}-fg` を DEL（再 dispatch を可能に）
+  - 実行前に `set -a; source .env.local; set +a` で Upstash 認証情報を環境変数に展開する
 
 ## テスト
 
@@ -166,6 +170,7 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 - `src/__tests__/alerts/email-templates.test.ts` — メール本文の必須要素
 - `src/__tests__/alerts/alert-banner.test.tsx` — Banner の状態分岐
 - `src/__tests__/alerts/alert-variant-checkboxes.test.tsx` — チェックボックス挙動
+- `src/__tests__/alerts/parse-variants.test.ts` — variants の配列/JSON 文字列両対応（Upstash auto-deserialize ガード）
 - `scripts/__tests__/check-temperature-alerts.test.ts` — CLI ヘルパー
 
 ## 後続の候補

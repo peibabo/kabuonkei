@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "/",
+    types: {
+      "application/atom+xml": [{ url: "/feed.xml", title: "株温計 Atom フィード" }],
+    },
   },
   openGraph: {
     title: "株温計 - 今日の相場、熱い？冷たい？",

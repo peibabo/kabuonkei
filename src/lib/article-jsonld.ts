@@ -40,12 +40,16 @@ export function buildArticleJsonLd(input: ArticleJsonLdInput): string {
     author: {
       "@type": "Person",
       name: input.authorName ?? "ao",
-      url: SITE_ORIGIN,
+      url: `${SITE_ORIGIN}/about`,
     },
     publisher: {
       "@type": "Organization",
       name: "リブラボ",
       url: SITE_ORIGIN,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_ORIGIN}/icon.svg`,
+      },
     },
   };
   if (input.imageUrl) {

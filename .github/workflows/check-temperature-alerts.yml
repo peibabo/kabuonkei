@@ -1,0 +1,61 @@
+name: Check Temperature Alerts
+
+on:
+  schedule:
+    # 米国版: 平日 JST 07:00 = UTC 22:00, Sun-Thu（X Bot 07:30 の直前）
+    - cron: '0 22 * * 0-4'
+    # 日本版: 平日 JST 17:15 = UTC 08:15, Mon-Fri（snapshot-japan-fg の 17:00 直後）
+    - cron: '15 8 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: 'us or jp'
+        required: true
+        default: 'us'
+        type: choice
+        options:
+          - us
+          - jp
+      dry_run:
+        description: 'dry-run (メール送信せず対象のみ出力)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - name: Resolve variant and dry-run from event
+        id: resolve
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "variant=${{ inputs.variant }}" >> "$GITHUB_OUTPUT"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "dry=--dry-run" >> "$GITHUB_OUTPUT"
+            else
+              echo "dry=" >> "$GITHUB_OUTPUT"
+            fi
+          elif [ "${{ github.event.schedule }}" = "0 22 * * 0-4" ]; then
+            echo "variant=us" >> "$GITHUB_OUTPUT"
+            echo "dry=" >> "$GITHUB_OUTPUT"
+          else
+            echo "variant=jp" >> "$GITHUB_OUTPUT"
+            echo "dry=" >> "$GITHUB_OUTPUT"
+          fi
+      - run: npm run alerts:check -- --variant ${{ steps.resolve.outputs.variant }} ${{ steps.resolve.outputs.dry }}
+        env:
+          KV_REST_API_URL: ${{ secrets.KV_REST_API_URL }}
+          KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ vars.RESEND_FROM_EMAIL || 'onboarding@resend.dev' }}
+          ALERTS_TOKEN_SECRET: ${{ secrets.ALERTS_TOKEN_SECRET }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}

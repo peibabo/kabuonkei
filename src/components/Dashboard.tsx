@@ -6,6 +6,7 @@ import ErrorView from "./dashboard/ErrorView";
 import DashboardHeader from "./dashboard/DashboardHeader";
 import DashboardFooter from "./dashboard/DashboardFooter";
 import DashboardSection from "./dashboard/DashboardSection";
+import TemperatureSection from "./dashboard/TemperatureSection";
 import TrendSection from "./dashboard/TrendSection";
 import StatsSection from "./dashboard/StatsSection";
 import PersonalizedHintCard from "./PersonalizedHintCard";
@@ -44,24 +45,37 @@ export default function Dashboard() {
         <AlertBanner japanScore={japanScore} usScore={usScore} />
       </div>
 
-      {/* 朝刊風ヒーロー（B 案）: 見出し + 4 タイル */}
+      {/* 朝刊風ヒーロー（B 案）: 見出し */}
       <HeadlineHero
         jp={japanScore}
         us={usScore}
         jpDelta={jpDelta}
         usDelta={usDelta}
       />
-      <TemperatureTiles
-        jp={japanScore}
-        us={usScore}
-        jpDelta={jpDelta}
-        usDelta={usDelta}
-        jpSparkline={data.japanSparkline}
-        usSparkline={data.usSparkline}
-      />
 
+      {/* サービスの肝: 株温計＝温度計 (半円ゲージ × 2) を直下に */}
       <DashboardSection
         id="now"
+        emoji="🌡️"
+        title="今の温度"
+        description="日本・米国の温度計と、直近の動き"
+      >
+        <TemperatureSection
+          japanFearGreed={data.japanFearGreed}
+          fearGreed={data.fearGreed}
+        />
+        <TemperatureTiles
+          jp={japanScore}
+          us={usScore}
+          jpDelta={jpDelta}
+          usDelta={usDelta}
+          jpSparkline={data.japanSparkline}
+          usSparkline={data.usSparkline}
+        />
+      </DashboardSection>
+
+      <DashboardSection
+        id="similar"
         emoji="🔁"
         title="今日の類似日"
         description="今の温度に最も近かった過去の日と、その後の動き"
@@ -72,13 +86,13 @@ export default function Dashboard() {
       <DashboardSection
         id="trend"
         emoji="📈"
-        title="温度の詳細と推移"
-        description="日米の温度ゲージと直近〜10年の温度スコアの時系列"
+        title="温度の推移"
+        description="直近〜10年の温度スコアの時系列"
       >
         <TrendSection
-          japanFearGreed={data.japanFearGreed}
-          fearGreed={data.fearGreed}
+          japanScore={japanScore ?? 50}
           vixChart={data.volatility[0]?.chart ?? []}
+          usScore={usScore}
         />
       </DashboardSection>
 

@@ -1,13 +1,13 @@
 # 公開サイトとしての運用
 
 ## ページ構成
-- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離。本体は **朝刊スタイル ヒーロー + 5 章構成**（B 案：2026-04-25 〜）：
+- `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離。本体は **朝刊ヒーロー + 6 章構成**（B 案：2026-04-25 〜）：
   - **🌡 ヘッダー** — `DashboardHeader`（タイトル + 紙面風「日付 + 第N号」帯 + アラート/About 導線）
-  - **📰 ヒーロー（章外）** — `HeadlineHero` + `TemperatureTiles`
+  - **📰 ヒーロー（章外）** — `HeadlineHero`
     - `src/components/hero/HeadlineHero.tsx`: 純粋関数 `src/lib/headline.ts`（決定木 v1）が日米スコア + 昨日比から「今日の見出し」一行コピー + サブテキスト + CTA 2 つを生成。罫線囲みの紙面風レイアウト（`font-serif-jp` Noto Serif JP 800）
-    - `src/components/hero/TemperatureTiles.tsx`: 4 タイル（JP / US / 平均 / 日米平均 昨日比）。各タイル下に独自実装の `src/components/hero/Sparkline.tsx`（軽量 SVG、Recharts 不使用）で直近推移を表示
-  - **🔁 今日の類似日** — `SimilarDaysSection`（旧「今の温度」を類似日単独セクションに）
-  - **📈 温度の詳細と推移** — `TrendSection` が日米半円ゲージ（`FearGreedGauge`）と推移チャート（`JapanTemperatureTrendCard` / `TemperatureTrendCard`）を内包。旧 `TemperatureSection.tsx` は削除
+  - **🌡 今の温度** — `TemperatureSection`（半円ゲージ × 2＝サービスの肝） + `TemperatureTiles`（補足 2 タイル: 日米平均 / 昨日比、独自 SVG `src/components/hero/Sparkline.tsx` で直近推移）
+  - **🔁 今日の類似日** — `SimilarDaysSection`
+  - **📈 温度の推移** — `TrendSection`（`JapanTemperatureTrendCard` + `TemperatureTrendCard`）
   - **📊 過去の傾向** — `StatsSection`
   - **👤 あなたへのヒント** — `PersonalizedHintCard`
   - **🔍 詳しく見る** — `CrossStatsCard` + `SectorHeatmapCard` + `PortfolioTeaserCard`

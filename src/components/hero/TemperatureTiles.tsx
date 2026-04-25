@@ -52,9 +52,11 @@ function deltaSub(delta: number | null): string {
 }
 
 /**
- * 4 タイル: JP / US / 平均 / 昨日比
- * Phase 1: 数字 + ラベル + サブテキスト
- * Phase 2 で各タイルに sparkline を追加予定
+ * 補足 2 タイル: 平均 / 昨日比
+ * 半円ゲージ (FearGreedGauge) が JP/US スコアの主役なので、
+ * ここでは「日米合算の温度感」と「動き」だけを見せる。
+ *
+ * 平均 sparkline は JP / US の 7 日推移を index 単位で平均した系列。
  */
 export default function TemperatureTiles({
   jp,
@@ -71,42 +73,36 @@ export default function TemperatureTiles({
   jpSparkline?: number[];
   usSparkline?: number[];
 }) {
-  const usLevel = getSentimentLevel(us);
-  const jpLevel = jp != null ? getSentimentLevel(jp) : null;
-
   const avg = jp != null ? Math.round((jp + us) / 2) : null;
   const avgLevel = avg != null ? getSentimentLevel(avg) : null;
+  const avgColor = avg != null ? getSentimentColor(avg) : undefined;
 
   // 平均の昨日比は「日米平均の昨日比」として算出（jp 取得不可なら US だけで）
   const avgDelta =
     jp != null && jpDelta != null ? (jpDelta + usDelta) / 2 : usDelta;
 
+  // 平均 sparkline: JP と US の sparkline を index ごとに平均（長さは短い方に揃える）
+  const avgSparkline = (() => {
+    if (!jpSparkline || jpSparkline.length === 0) return usSparkline;
+    if (!usSparkline || usSparkline.length === 0) return jpSparkline;
+    const len = Math.min(jpSparkline.length, usSparkline.length);
+    const jpTail = jpSparkline.slice(-len);
+    const usTail = usSparkline.slice(-len);
+    return jpTail.map((v, i) => (v + usTail[i]) / 2);
+  })();
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+    <div className="grid grid-cols-2 gap-3 mb-10">
       <Tile
-        label="🇯🇵 日本"
-        value={jp != null ? `${jp}°` : "—"}
-        sub={jpLevel ?? "データ取得待ち"}
-        color={jp != null ? getSentimentColor(jp) : undefined}
-        sparkline={jpSparkline}
-        sparklineLabel="日本の温度 直近 7 日"
-      />
-      <Tile
-        label="🇺🇸 米国"
-        value={`${us}°`}
-        sub={usLevel}
-        color={getSentimentColor(us)}
-        sparkline={usSparkline}
-        sparklineLabel="米国の温度 直近"
-      />
-      <Tile
-        label="平均"
+        label="日米平均"
         value={avg != null ? `${avg}°` : "—"}
         sub={avgLevel ?? "—"}
-        color={avg != null ? getSentimentColor(avg) : undefined}
+        color={avgColor}
+        sparkline={avgSparkline}
+        sparklineLabel="日米平均 直近"
       />
       <Tile
-        label="日米平均 昨日比"
+        label="昨日比（日米平均）"
         value={formatDelta(avgDelta)}
         sub={deltaSub(avgDelta)}
       />

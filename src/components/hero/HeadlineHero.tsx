@@ -2,7 +2,7 @@ import Link from "next/link";
 import { buildHeroCopy, type HeroCta } from "@/lib/headline";
 
 const CTA_HREF: Record<HeroCta, string> = {
-  "similar-days": "#now",
+  "similar-days": "#similar",
   hints: "#hint",
   alert: "#alert-banner",
 };

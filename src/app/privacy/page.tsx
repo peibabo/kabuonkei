@@ -19,13 +19,21 @@ export default function PrivacyPage() {
           1. 取得する情報
         </h2>
         <p>
-          当サイトは、ユーザーから氏名・メールアドレス等の個人情報を直接収集することはありません。ただし、サービス改善および利用状況の把握のため、以下の情報を自動的に取得する場合があります。
+          当サイトでは、サービス改善および利用状況の把握のため、以下の情報を自動的に取得する場合があります。
         </p>
         <ul className="list-disc pl-6 space-y-1 mt-2">
           <li>アクセス元の IP アドレス（匿名化された形で Google Analytics 上に記録）</li>
           <li>ブラウザ種別・OS・画面解像度・リファラー</li>
           <li>ページ閲覧履歴・滞在時間</li>
           <li>Cookie（後述）</li>
+        </ul>
+        <p className="mt-3">
+          また、温度アラート（メール通知）にご登録いただいた方に限り、以下の情報をご本人の任意提供により取得し、当サイトの管理下で保存します。
+        </p>
+        <ul className="list-disc pl-6 space-y-1 mt-2">
+          <li>メールアドレス</li>
+          <li>通知対象（米国/日本 × 極寒/過熱）の選択状態</li>
+          <li>登録日時・確認日時・配信履歴・配信状態（有効／解除済み）</li>
         </ul>
       </section>
 
@@ -38,6 +46,7 @@ export default function PrivacyPage() {
           <li>サービスの品質改善・不具合対応</li>
           <li>アクセス状況の分析および統計作成</li>
           <li>不正利用の防止</li>
+          <li>温度アラートメールの配信（ご登録いただいたメールアドレスに対してのみ）</li>
         </ul>
       </section>
 
@@ -115,7 +124,39 @@ export default function PrivacyPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          7. お問い合わせ
+          7. メール通知（温度アラート）の登録・解除
+        </h2>
+        <p>
+          温度アラートのご登録はトップページの登録フォームから任意で行っていただけます。ご登録後、確認メールのリンクをクリックして完了する二段階確認方式を採用しています。
+        </p>
+        <ul className="list-disc pl-6 space-y-1 mt-3">
+          <li>
+            配信の解除はメール末尾の「配信解除」リンクをクリックすることで即時に反映されます
+          </li>
+          <li>
+            解除後、登録いただいたメールアドレスおよび関連情報はシステムから速やかに削除されます。再登録時の誤発火防止用にメールアドレスのハッシュ値（元の値は復元不可）のみを最長 365 日間保持する場合があります
+          </li>
+          <li>
+            メールの配信には、業務委託先として Resend（Resend, Inc.）のサービスを利用します。Resend のプライバシーポリシーは{" "}
+            <a
+              href="https://resend.com/legal/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-gray-900"
+            >
+              こちら
+            </a>
+            をご確認ください
+          </li>
+          <li>
+            登録情報の保管には Upstash（Upstash, Inc.）の提供するデータベースサービスを業務委託先として利用します
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          8. お問い合わせ
         </h2>
         <p>
           本ポリシーに関するお問い合わせ、個人関連情報の取り扱いについてのご質問は、下記までご連絡ください。

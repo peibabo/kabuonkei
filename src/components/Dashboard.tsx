@@ -16,6 +16,7 @@ import PortfolioTeaserCard from "./PortfolioTeaserCard";
 import SimilarDaysSection from "./dashboard/SimilarDaysSection";
 import JapanMarketSection from "./dashboard/JapanMarketSection";
 import MarketDataSection from "./dashboard/MarketDataSection";
+import AlertBanner from "./alerts/AlertBanner";
 
 export default function Dashboard() {
   const { data, loading, error } = useMarketData();
@@ -30,6 +31,8 @@ export default function Dashboard() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <DashboardHeader lastUpdated={data.lastUpdated} />
+
+      <AlertBanner japanScore={japanScore} usScore={usScore} />
 
       <DashboardSection
         id="now"

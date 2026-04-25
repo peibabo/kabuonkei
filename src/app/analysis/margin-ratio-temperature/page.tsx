@@ -3,8 +3,10 @@ import Link from "next/link";
 import Script from "next/script";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import MarginRatioAnalysisBody from "@/components/analysis/MarginRatioAnalysisBody";
+import Breadcrumb from "@/components/Breadcrumb";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 
 const ARTICLE_PATH = "/analysis/margin-ratio-temperature";
 const ARTICLE_TITLE = "信用倍率 × 株温計 — 過去10年の徹底検証";
@@ -60,6 +62,13 @@ export default function MarginRatioTemperaturePage() {
     dateModified: analysis.generatedAt,
   });
 
+  const breadcrumbItems = [
+    { name: "ホーム", path: "/" },
+    { name: "分析記事", path: "/analysis" },
+    { name: "信用倍率 × 株温計" },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <>
       <Script
@@ -68,7 +77,14 @@ export default function MarginRatioTemperaturePage() {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
+      <Script
+        id="article-breadcrumb-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
       <StaticPageLayout title={ARTICLE_TITLE}>
+        <Breadcrumb items={breadcrumbItems} />
         <nav
           aria-label="目次"
           className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm not-prose"

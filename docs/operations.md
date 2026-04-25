@@ -45,8 +45,12 @@
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
 - **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap には `/`, `/about`, `/widget`, `/events`, `/guide` + 3 ガイド, `/analysis` + 分析記事, `/events/[slug]` 全件, `/terms`, `/privacy` を収録
 - **記事 JSON-LD**: `src/lib/article-jsonld.ts` の `buildArticleJsonLd({url, headline, description, datePublished, dateModified, imageUrl?})` で schema.org Article 用 JSON 文字列を生成し、記事ページで `<Script type="application/ld+json">` として埋め込む（分析記事で利用）
+- **WebSite + Organization JSON-LD**: `src/lib/website-jsonld.ts` の `buildWebSiteJsonLd()` を `src/app/layout.tsx` でグローバルに埋め込む。サイト名・運営組織（リブラボ）・ロゴを通知し、Google サイトリンク検索ボックス候補に乗せる
+- **BreadcrumbList JSON-LD + UI パンくず**: `src/lib/breadcrumb-jsonld.ts` の `buildBreadcrumbJsonLd(items)` と `src/components/Breadcrumb.tsx` を併用。`/events/[slug]`, `/portfolio`, `/analysis/*` で SERP のパンくず表示候補に乗せる
+- **manifest**: `src/app/manifest.ts`（Next.js が `/manifest.webmanifest` を自動配信）。PWA 対応とブランド情報の補強。アイコンは既存の `src/app/icon.svg` / `apple-icon.png` を流用
 - **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
 - **OG 画像**: `src/app/opengraph-image.tsx` で動的生成（`ImageResponse` + Google Fonts の Noto Sans JP サブセットを fetch）。手動の PNG 配置は不要。フォント取得（`loadGoogleFont` / `buildNotoSansJpFonts`）と温度計アイコン SVG は `src/lib/og/{fonts,thermometer-svg}.ts` に共通化されており、`/api/og/daily` 側も同じモジュールを参照する
+- **イベント詳細の関連リンク・公開日**: `src/lib/events.ts` の `getRelatedEvents(slug, limit)` で関連イベントを最大 3 件取得（手動キュレーション `relatedSlugs` 優先、未指定なら日付近接で自動補完）。`getEventPublishedAt()` でページ公開日を解決し、`<time dateTime>` で表示。既定値は `EVENTS_DEFAULT_PUBLISHED_AT` (= サイトリリース日 2026-04-19)
 
 ## 環境変数
 - `NEXT_PUBLIC_SITE_URL` — canonical / OGP / sitemap のベース URL

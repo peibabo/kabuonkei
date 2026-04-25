@@ -1,10 +1,19 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import ReactMarkdown from "react-markdown";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import EventTrendChart from "@/components/EventTrendChart";
-import { getEventsMeta, getEventBySlug, getEnrichedEntry } from "@/lib/events";
+import Breadcrumb from "@/components/Breadcrumb";
+import {
+  getEventsMeta,
+  getEventBySlug,
+  getEnrichedEntry,
+  getEventPublishedAt,
+  getRelatedEvents,
+} from "@/lib/events";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 import {
   getSimpleHistory,
   sliceByDaysAround,
@@ -150,9 +159,29 @@ export default async function EventPage({
   const usScoreOnDay =
     usHistory.find((p) => p.date === event.date)?.score ?? null;
 
+  const publishedAt = getEventPublishedAt(event);
+  const relatedEvents = getRelatedEvents(event.slug, 3);
+  const breadcrumbItems = [
+    { name: "ホーム", path: "/" },
+    { name: "主要イベント", path: "/events" },
+    { name: event.label },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <StaticPageLayout title={`📅 ${event.label}（${event.date}）`}>
+      <Script
+        id={`breadcrumb-jsonld-${event.slug}`}
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
+      <Breadcrumb items={breadcrumbItems} />
       <p className="text-base">{event.oneLiner}</p>
+      <p className="text-xs text-gray-500 not-prose">
+        公開日:{" "}
+        <time dateTime={publishedAt}>{publishedAt}</time>
+      </p>
 
       {event.longDescription && (
         <section className="mt-4">
@@ -236,13 +265,45 @@ export default async function EventPage({
         </div>
       </section>
 
+      {relatedEvents.length > 0 && (
+        <section className="mt-8 pt-6 border-t border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900 mb-3">
+            関連する歴史的イベント
+          </h2>
+          <ul className="grid grid-cols-1 gap-3 list-none pl-0">
+            {relatedEvents.map((rel) => (
+              <li key={rel.slug}>
+                <Link
+                  href={`/events/${rel.slug}?ref=related`}
+                  className="block border border-gray-200 rounded-lg p-3 hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+                    <span className="text-xs font-mono text-gray-500">
+                      {rel.date}
+                    </span>
+                    <span className="text-base font-semibold text-gray-900">
+                      {rel.label}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600">{rel.oneLiner}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
         <p>
           他のイベントと比較したい場合は{" "}
           <Link href="/" className="underline hover:text-gray-900">
             トップページの「今日の類似日」カード
           </Link>
-          {" "}から辿れます。
+          {" "}から辿れます。一覧は{" "}
+          <Link href="/events" className="underline hover:text-gray-900">
+            主要イベント一覧
+          </Link>
+          {" "}から。
         </p>
       </section>
     </StaticPageLayout>

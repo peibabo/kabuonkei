@@ -12,6 +12,12 @@ import type {
 export interface BuildMarketDataInputs {
   fearGreed: FearGreedData;
   japanFearGreed: JapanFearGreedData | null;
+  /** 直近スナップショットの日本版温度スコア。null なら直近観測なし。 */
+  previousJapanScore?: number | null;
+  /** 直近 7 日の日本版温度スコア（古い→新しい順）。 */
+  japanSparkline?: number[];
+  /** 直近 7 日の米国版温度スコア（古い→新しい順）。 */
+  usSparkline?: number[];
   volatility: VolatilityData[];
   indices: IndexData[];
   bonds: BondYieldData;
@@ -32,6 +38,9 @@ export function buildMarketData(inputs: BuildMarketDataInputs): MarketData {
   return {
     fearGreed: inputs.fearGreed,
     japanFearGreed: inputs.japanFearGreed,
+    previousJapanScore: inputs.previousJapanScore ?? null,
+    japanSparkline: inputs.japanSparkline ?? [],
+    usSparkline: inputs.usSparkline ?? [],
     volatility: inputs.volatility,
     indices: inputs.indices,
     bonds: inputs.bonds,

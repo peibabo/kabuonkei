@@ -11,8 +11,45 @@ import {
   fetchCommodities,
 } from "./indices";
 import { buildMarketData } from "./market-data/compose";
+import {
+  getFullSnapshots,
+  getSimpleHistory,
+} from "./japan-temperature-history";
 
 const japanMarketData = rawJapanMarketData as unknown as JapanMarketData;
+
+/**
+ * 直近観測の日本版温度スコアを返す。
+ * 優先順位: full5 スナップショットの末尾 → simple2 履歴の末尾 → null。
+ */
+function pickPreviousJapanScore(): number | null {
+  const snaps = getFullSnapshots();
+  if (snaps.length > 0) return snaps[snaps.length - 1].score;
+  const simple = getSimpleHistory();
+  if (simple.length > 0) return simple[simple.length - 1].score;
+  return null;
+}
+
+/**
+ * 直近 7 営業日（カレンダーで N 日相当）の日本版温度スコアを返す。
+ * simple2 履歴の末尾 7 件を採用。古い → 新しい順。
+ */
+function pickJapanSparkline(): number[] {
+  const simple = getSimpleHistory();
+  return simple.slice(-7).map((p) => p.score);
+}
+
+/**
+ * 米国版 sparkline。CNN は週次粒度（previousClose / oneWeekAgo / oneMonthAgo）しか取れないため、
+ * Phase 1 では oneWeekAgo → previousClose → 現在値 の 3 点を簡易表示する。
+ */
+function buildUsSparkline(
+  current: number,
+  previousClose: number,
+  oneWeekAgo: number,
+): number[] {
+  return [oneWeekAgo, previousClose, current];
+}
 
 /**
  * 全市場データを取得する。
@@ -58,6 +95,13 @@ export async function fetchAllMarketData(): Promise<MarketData> {
   return buildMarketData({
     fearGreed,
     japanFearGreed,
+    previousJapanScore: pickPreviousJapanScore(),
+    japanSparkline: pickJapanSparkline(),
+    usSparkline: buildUsSparkline(
+      fearGreed.score,
+      fearGreed.previousClose,
+      fearGreed.oneWeekAgo,
+    ),
     volatility,
     indices,
     bonds,

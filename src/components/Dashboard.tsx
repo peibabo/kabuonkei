@@ -6,7 +6,6 @@ import ErrorView from "./dashboard/ErrorView";
 import DashboardHeader from "./dashboard/DashboardHeader";
 import DashboardFooter from "./dashboard/DashboardFooter";
 import DashboardSection from "./dashboard/DashboardSection";
-import TemperatureSection from "./dashboard/TemperatureSection";
 import TrendSection from "./dashboard/TrendSection";
 import StatsSection from "./dashboard/StatsSection";
 import PersonalizedHintCard from "./PersonalizedHintCard";
@@ -17,6 +16,8 @@ import SimilarDaysSection from "./dashboard/SimilarDaysSection";
 import JapanMarketSection from "./dashboard/JapanMarketSection";
 import MarketDataSection from "./dashboard/MarketDataSection";
 import AlertBanner from "./alerts/AlertBanner";
+import HeadlineHero from "./hero/HeadlineHero";
+import TemperatureTiles from "./hero/TemperatureTiles";
 
 export default function Dashboard() {
   const { data, loading, error } = useMarketData();
@@ -28,35 +29,56 @@ export default function Dashboard() {
   const japanScore = data.japanFearGreed?.score ?? null;
   const usScore = data.fearGreed.score;
 
+  // 昨日比: US は CNN の previousClose、JP は直近スナップショットからの差分
+  const usDelta = usScore - data.fearGreed.previousClose;
+  const jpDelta =
+    japanScore != null && data.previousJapanScore != null
+      ? japanScore - data.previousJapanScore
+      : null;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <DashboardHeader lastUpdated={data.lastUpdated} />
 
-      <AlertBanner japanScore={japanScore} usScore={usScore} />
+      <div id="alert-banner">
+        <AlertBanner japanScore={japanScore} usScore={usScore} />
+      </div>
+
+      {/* 朝刊風ヒーロー（B 案）: 見出し + 4 タイル */}
+      <HeadlineHero
+        jp={japanScore}
+        us={usScore}
+        jpDelta={jpDelta}
+        usDelta={usDelta}
+      />
+      <TemperatureTiles
+        jp={japanScore}
+        us={usScore}
+        jpDelta={jpDelta}
+        usDelta={usDelta}
+        jpSparkline={data.japanSparkline}
+        usSparkline={data.usSparkline}
+      />
 
       <DashboardSection
         id="now"
-        emoji="🌡️"
-        title="今の温度"
-        description="日本・米国の最新温度と、過去に温度が近かった日"
+        emoji="🔁"
+        title="今日の類似日"
+        description="今の温度に最も近かった過去の日と、その後の動き"
       >
-        <TemperatureSection
-          japanFearGreed={data.japanFearGreed}
-          fearGreed={data.fearGreed}
-        />
         <SimilarDaysSection japanScore={japanScore} usScore={usScore} />
       </DashboardSection>
 
       <DashboardSection
         id="trend"
         emoji="📈"
-        title="温度の推移"
-        description="直近〜10年の温度スコアの時系列"
+        title="温度の詳細と推移"
+        description="日米の温度ゲージと直近〜10年の温度スコアの時系列"
       >
         <TrendSection
-          japanScore={japanScore ?? 50}
+          japanFearGreed={data.japanFearGreed}
+          fearGreed={data.fearGreed}
           vixChart={data.volatility[0]?.chart ?? []}
-          usScore={usScore}
         />
       </DashboardSection>
 

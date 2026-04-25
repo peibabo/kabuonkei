@@ -1,12 +1,21 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  /* 既定の本文フォント: 和文は Noto Sans JP、欧文/数字は Geist Sans のフォールバック */
+  --font-sans: var(--font-sans-jp), var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* 朝刊風の見出し用 */
+  --font-serif-jp-fallback: var(--font-serif-jp);
 }
 
 body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* 朝刊スタイルの紙面風要素で使う共通ユーティリティ */
+.font-serif-jp {
+  font-family: var(--font-serif-jp), "YuMincho", "Hiragino Mincho ProN",
+    "MS PMincho", serif;
 }
 
 @layer base {

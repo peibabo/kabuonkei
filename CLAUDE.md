@@ -42,6 +42,7 @@
 - [コード構成（src/lib / scripts/_lib の責務マップ）](docs/architecture.md)
 - [公開サイト運用（ページ / ウィジェット / シェア UX / SEO / X Bot / 環境変数）](docs/operations.md)
 - [プロジェクト仕様書（初期企画）](docs/spec.md)
+- [デザインシステム（朝刊スタイル / 紙面トーン / カラー / タイポ）](DESIGN.md) — トップ画面 B 案以降の Source of Truth
 
 ## 既知の制約
 

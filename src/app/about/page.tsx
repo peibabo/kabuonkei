@@ -1,16 +1,74 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import StaticPageLayout from "@/components/StaticPageLayout";
+import Breadcrumb from "@/components/Breadcrumb";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+
+const SITE_ORIGIN =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://kabuonkei.com";
 
 export const metadata: Metadata = {
   title: "株温計とは",
   description:
     "株温計は、日本市場と米国市場のセンチメント（恐怖・欲望）を1画面で俯瞰できる日本語Webサービスです。",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
+const ABOUT_JSONLD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "@id": `${SITE_ORIGIN}/about#page`,
+      url: `${SITE_ORIGIN}/about`,
+      name: "株温計とは",
+      isPartOf: { "@id": `${SITE_ORIGIN}/#website` },
+      mainEntity: { "@id": `${SITE_ORIGIN}/#organization` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_ORIGIN}/about#author`,
+      name: "ao",
+      url: `${SITE_ORIGIN}/about`,
+      jobTitle: "個人開発者・株温計 企画/分析担当",
+      worksFor: { "@id": `${SITE_ORIGIN}/#organization` },
+    },
+    {
+      "@type": "ContactPoint",
+      "@id": `${SITE_ORIGIN}/about#contact`,
+      contactType: "customer support",
+      email: "info@kabuonkei.com",
+      areaServed: "JP",
+      availableLanguage: ["ja"],
+    },
+  ],
+});
+
 export default function AboutPage() {
+  const breadcrumbItems = [
+    { name: "ホーム", path: "/" },
+    { name: "株温計とは" },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <StaticPageLayout title="🌡 株温計とは">
+      <Script
+        id="about-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: ABOUT_JSONLD }}
+      />
+      <Script
+        id="about-breadcrumb-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
+      <Breadcrumb items={breadcrumbItems} />
       <p>
         株温計（かぶおんけい）は、「今日の相場、熱い？冷たい？」を一目で把握できる日本語ダッシュボードです。
         日本市場と米国市場のセンチメント指標を 1 画面で俯瞰できるよう設計しています。
@@ -126,6 +184,39 @@ export default function AboutPage() {
           </Link>
           {" "}をご確認ください。
         </p>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          編集方針
+        </h2>
+        <ul className="list-disc pl-6 space-y-2 text-sm text-gray-700">
+          <li>
+            <strong>独自指標特化</strong>: 価格データの再配信ではなく、公開データから独自計算した
+            「市場温度スコア」と、その応用検証（{" "}
+            <Link href="/analysis" className="underline hover:text-gray-900">
+              分析記事
+            </Link>
+            ・{" "}
+            <Link href="/portfolio" className="underline hover:text-gray-900">
+              バーチャルポートフォリオ
+            </Link>
+            ）に集中する
+          </li>
+          <li>
+            <strong>正直な開示</strong>: バックテストの不利な結果（温度信号の純寄与が小さい / マイナスの局面など）も隠さず公開する
+          </li>
+          <li>
+            <strong>投資助言ではない</strong>: 個別銘柄の売買推奨は行わない。あくまで「相場の温度感を共通語彙にする」ことが目的
+          </li>
+          <li>
+            <strong>用語と前提の透明化</strong>: 使われる指標は{" "}
+            <Link href="/glossary" className="underline hover:text-gray-900">
+              用語集
+            </Link>
+            にまとめ、各分析記事には前提・バイアス・データ範囲の明示セクションを必ず置く
+          </li>
+        </ul>
       </section>
 
       <section>

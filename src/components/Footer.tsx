@@ -29,6 +29,15 @@ export default function Footer() {
           <Link href="/widget" className="hover:text-gray-900 hover:underline">
             ウィジェット
           </Link>
+          <Link href="/glossary" className="hover:text-gray-900 hover:underline">
+            用語集
+          </Link>
+          <a
+            href="/feed.xml"
+            className="hover:text-gray-900 hover:underline"
+          >
+            RSS
+          </a>
           <Link href="/terms" className="hover:text-gray-900 hover:underline">
             利用規約
           </Link>

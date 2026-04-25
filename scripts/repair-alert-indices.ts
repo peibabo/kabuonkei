@@ -34,16 +34,17 @@ async function main() {
     `🔧 variant index 復旧${dryRun ? " [DRY RUN]" : ""} (pattern=${pattern})`
   );
 
-  let cursor = 0;
+  let cursor: string | number = 0;
   let scanned = 0;
   let repaired = 0;
   const addedPerVariant: Record<string, number> = {};
 
   do {
-    const [next, keys] = (await redis.scan(cursor, {
+    const result: [string | number, string[]] = (await redis.scan(cursor, {
       match: pattern,
       count: 200,
-    })) as [number, string[]];
+    })) as unknown as [string | number, string[]];
+    const [next, keys] = result;
     cursor = Number(next);
 
     for (const key of keys) {

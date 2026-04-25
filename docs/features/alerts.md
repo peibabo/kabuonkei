@@ -157,6 +157,7 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 - **購読者のエクスポート**（データ移行等）: `SCAN alerts:sub:*` + `HGETALL` を小さなスクリプトで
 - **Resend 枠監視**: 無料枠 3,000 通/月。購読者が増えてきたら有料化 or SendGrid/Brevo への差し替えを検討（`src/lib/alerts/resend.ts` の 1 ファイル差し替えで移行可）
 - **診断・復旧スクリプト**:
+  - `scripts/list-alert-subscribers.ts [--verified-only] [--variant jp_hot]` — 全購読者を TSV で一覧（email / verified / variants / createdAt / verifiedAt）。標準エラーに variant 別カウントのサマリを出す
   - `scripts/diagnose-alerts.ts <email>` — 指定 email の登録状態 / verified / variant index 所属 / 各 last-state を表示
   - `scripts/repair-alert-indices.ts [--dry-run]` — 全 verified subscriber を `alerts:index:{variant}` に再登録し、`alerts:last-state:{us|jp}-fg` を DEL（再 dispatch を可能に）
   - 実行前に `set -a; source .env.local; set +a` で Upstash 認証情報を環境変数に展開する

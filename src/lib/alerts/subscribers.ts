@@ -101,18 +101,22 @@ export async function createOrUpdatePendingSubscriber(
   const verifyToken = createToken(uuid, "verify", now);
 
   const existingSub = existingUuid
-    ? await redis.hgetall<Record<string, string>>(subscriberKey(uuid))
+    ? await redis.hgetall<Record<string, unknown>>(subscriberKey(uuid))
     : null;
-  const wasVerified = existingSub?.verified === "true";
+  const wasVerified = isVerified(existingSub?.verified);
 
+  const existingCreatedAt =
+    typeof existingSub?.createdAt === "string" ? existingSub.createdAt : null;
+  const existingVerifiedAt =
+    typeof existingSub?.verifiedAt === "string" ? existingSub.verifiedAt : null;
   const subscriber: Record<string, string> = {
     uuid,
     email,
     emailHash,
     variants: JSON.stringify(variants),
     verified: wasVerified ? "true" : "false",
-    createdAt: existingSub?.createdAt ?? new Date(now).toISOString(),
-    verifiedAt: existingSub?.verifiedAt ?? "",
+    createdAt: existingCreatedAt ?? new Date(now).toISOString(),
+    verifiedAt: existingVerifiedAt ?? "",
     unsubscribeToken,
   };
 
@@ -203,23 +207,34 @@ export async function listVerifiedSubscribersForVariant(
   if (uuids.length === 0) return [];
   const result: AlertSubscriber[] = [];
   for (const uuid of uuids) {
-    const raw = await redis.hgetall<Record<string, string>>(
+    const raw = await redis.hgetall<Record<string, unknown>>(
       subscriberKey(uuid)
     );
     if (!raw) continue;
-    if (raw.verified !== "true") continue;
+    if (!isVerified(raw.verified)) continue;
     result.push({
-      uuid: raw.uuid,
-      email: raw.email,
-      emailHash: raw.emailHash,
+      uuid: typeof raw.uuid === "string" ? raw.uuid : uuid,
+      email: typeof raw.email === "string" ? raw.email : "",
+      emailHash: typeof raw.emailHash === "string" ? raw.emailHash : "",
       variants: parseVariants(raw.variants),
       verified: true,
-      createdAt: raw.createdAt,
-      verifiedAt: raw.verifiedAt || null,
-      unsubscribeToken: raw.unsubscribeToken,
+      createdAt: typeof raw.createdAt === "string" ? raw.createdAt : "",
+      verifiedAt:
+        typeof raw.verifiedAt === "string" && raw.verifiedAt
+          ? raw.verifiedAt
+          : null,
+      unsubscribeToken:
+        typeof raw.unsubscribeToken === "string" ? raw.unsubscribeToken : "",
     });
   }
   return result;
+}
+
+// Upstash Redis SDK は automaticDeserialization=true（デフォルト）のため、
+// hset で書き込んだ "true"/"false" 文字列が hgetall 時に boolean に変換される
+// ことがある。文字列・boolean どちらでも判定できるようにする。
+export function isVerified(raw: unknown): boolean {
+  return raw === true || raw === "true";
 }
 
 export function parseVariants(raw: unknown): AlertVariant[] {

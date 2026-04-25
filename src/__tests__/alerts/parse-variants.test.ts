@@ -1,5 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { parseVariants } from "@/lib/alerts/subscribers";
+import { isVerified, parseVariants } from "@/lib/alerts/subscribers";
+
+describe("isVerified", () => {
+  it("文字列 'true' / boolean true は verified", () => {
+    expect(isVerified("true")).toBe(true);
+    expect(isVerified(true)).toBe(true);
+  });
+
+  it("'false' / false / 未定義は verified ではない", () => {
+    expect(isVerified("false")).toBe(false);
+    expect(isVerified(false)).toBe(false);
+    expect(isVerified(undefined)).toBe(false);
+    expect(isVerified(null)).toBe(false);
+    expect(isVerified("")).toBe(false);
+  });
+
+  it("想定外の値（数値・オブジェクト）も verified 扱いしない", () => {
+    expect(isVerified(1)).toBe(false);
+    expect(isVerified({ value: true })).toBe(false);
+    expect(isVerified("True")).toBe(false);
+  });
+});
 
 describe("parseVariants", () => {
   it("undefined / null / 空文字 → []", () => {

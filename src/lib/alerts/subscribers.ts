@@ -222,14 +222,21 @@ export async function listVerifiedSubscribersForVariant(
   return result;
 }
 
-function parseVariants(raw: string | undefined): AlertVariant[] {
-  if (!raw) return [];
+export function parseVariants(raw: unknown): AlertVariant[] {
+  if (raw == null) return [];
+  const isValid = (v: unknown): v is AlertVariant =>
+    typeof v === "string" && ALERT_VARIANTS.includes(v as AlertVariant);
+  // Upstash Redis SDK は automaticDeserialization=true（デフォルト）のため、
+  // hset で書き込んだ JSON 文字列が hgetall 時に既に配列としてパースされている
+  // ケースがある。配列・文字列どちらも受け付ける。
+  if (Array.isArray(raw)) {
+    return raw.filter(isValid);
+  }
+  if (typeof raw !== "string") return [];
   try {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((v): v is AlertVariant =>
-      ALERT_VARIANTS.includes(v as AlertVariant)
-    );
+    return parsed.filter(isValid);
   } catch {
     return [];
   }

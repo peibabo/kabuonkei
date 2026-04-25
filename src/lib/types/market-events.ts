@@ -6,6 +6,10 @@ export interface EventMeta {
   oneLiner: string; // 1行の状況説明（カードヘッダ・OG画像向け）
   /** 詳細ページ本文。Markdown 文字列。段落区切りは `\n\n`、強調は `**...**`。未設定なら詳細セクションは描画されない */
   longDescription?: string;
+  /** ページ公開日 ISO date。未設定なら EVENTS_DEFAULT_PUBLISHED_AT が使用される */
+  publishedAt?: string;
+  /** 手動キュレーションした関連イベント slug（最大 3 件想定）。未設定なら日付近接の自動補完 */
+  relatedSlugs?: string[];
 }
 
 /** イベントごとに事前計算した将来リターン（日米指数の%表示） */

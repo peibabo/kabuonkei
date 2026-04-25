@@ -3,8 +3,10 @@ import Link from "next/link";
 import Script from "next/script";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import DivergenceAnalysisBody from "@/components/analysis/DivergenceAnalysisBody";
+import Breadcrumb from "@/components/Breadcrumb";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 
 const ARTICLE_PATH = "/analysis/temperature-divergence";
 const ARTICLE_TITLE =
@@ -70,6 +72,13 @@ export default function TemperatureDivergencePage() {
   const jpHot3mN = jpHotBand?.nikkei225["3m"];
   const jpHot3mSp = jpHotBand?.sp500["3m"];
 
+  const breadcrumbItems = [
+    { name: "ホーム", path: "/" },
+    { name: "分析記事", path: "/analysis" },
+    { name: "日米温度の乖離" },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <>
       <Script
@@ -78,7 +87,14 @@ export default function TemperatureDivergencePage() {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
+      <Script
+        id="article-breadcrumb-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
       <StaticPageLayout title={ARTICLE_TITLE}>
+        <Breadcrumb items={breadcrumbItems} />
         <nav
           aria-label="目次"
           className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm not-prose"

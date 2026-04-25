@@ -3,8 +3,10 @@ import Link from "next/link";
 import Script from "next/script";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import PortfolioBody from "@/components/portfolio/PortfolioBody";
+import Breadcrumb from "@/components/Breadcrumb";
 import { getPortfolioHistory } from "@/lib/portfolio";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 
 const ARTICLE_PATH = "/portfolio";
 const ARTICLE_TITLE = "温度連動バーチャルポートフォリオ（シミュレーション）";
@@ -63,6 +65,12 @@ export default function PortfolioPage() {
   const jpContrib = history.portfolios.jp.temperatureContribution;
   const usContrib = history.portfolios.us.temperatureContribution;
 
+  const breadcrumbItems = [
+    { name: "ホーム", path: "/" },
+    { name: "温度連動ポートフォリオ" },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <>
       <Script
@@ -71,7 +79,14 @@ export default function PortfolioPage() {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
+      <Script
+        id="portfolio-breadcrumb-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
       <StaticPageLayout title={`🧪 ${ARTICLE_TITLE}`}>
+        <Breadcrumb items={breadcrumbItems} />
         <div
           id="disclaimer"
           role="note"

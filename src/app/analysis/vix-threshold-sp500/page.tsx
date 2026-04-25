@@ -3,8 +3,10 @@ import Link from "next/link";
 import Script from "next/script";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import VixSp500AnalysisBody from "@/components/analysis/VixSp500AnalysisBody";
+import Breadcrumb from "@/components/Breadcrumb";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 
 const ARTICLE_PATH = "/analysis/vix-threshold-sp500";
 const ARTICLE_TITLE =
@@ -64,6 +66,13 @@ export default function VixThresholdSp500Page() {
   const highVixBand = analysis.primary.bands.find((b) => b.band === "30〜");
   const highVix3m = highVixBand?.sp500["3m"];
 
+  const breadcrumbItems = [
+    { name: "ホーム", path: "/" },
+    { name: "分析記事", path: "/analysis" },
+    { name: "VIX 30 超えと S&P500" },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <>
       <Script
@@ -72,7 +81,14 @@ export default function VixThresholdSp500Page() {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
+      <Script
+        id="article-breadcrumb-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
       <StaticPageLayout title={ARTICLE_TITLE}>
+        <Breadcrumb items={breadcrumbItems} />
         <nav
           aria-label="目次"
           className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm not-prose"

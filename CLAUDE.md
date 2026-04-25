@@ -41,6 +41,7 @@
 - [日本市場データ（JPX 需給）](docs/features/japan-market-data.md)
 - [コード構成（src/lib / scripts/_lib の責務マップ）](docs/architecture.md)
 - [公開サイト運用（ページ / ウィジェット / シェア UX / SEO / X Bot / 環境変数）](docs/operations.md)
+  - SEO の構造化データ: Article / WebSite + Organization / BreadcrumbList。`events-meta.json` の `relatedSlugs?: string[]`（手動キュレーション、未指定なら日付近接で自動補完）/ `publishedAt?: string`（既定はサイトリリース日 2026-04-19）は任意フィールド
 - [プロジェクト仕様書（初期企画）](docs/spec.md)
 - [デザインシステム（朝刊スタイル / 紙面トーン / カラー / タイポ）](DESIGN.md) — トップ画面 B 案以降の Source of Truth
 

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { buildWebSiteJsonLd } from "@/lib/website-jsonld";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -86,6 +88,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${notoSerifJp.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#fafaf7]">
+        <Script
+          id="website-jsonld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: buildWebSiteJsonLd() }}
+        />
         <div className="flex-1">{children}</div>
         <Footer />
         <GoogleAnalytics />

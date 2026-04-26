@@ -129,6 +129,23 @@ export default function MarginRatioTemperaturePage() {
           <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
             信用倍率とは
           </h2>
+          <p className="text-xs text-gray-500 mb-2">
+            ※ 関連用語の短い定義は{" "}
+            <Link
+              href="/glossary#margin-ratio"
+              className="underline hover:text-gray-700"
+            >
+              用語集「信用倍率」
+            </Link>
+            、{" "}
+            <Link
+              href="/glossary#kabuonkei-score"
+              className="underline hover:text-gray-700"
+            >
+              「市場温度スコア」
+            </Link>
+            にもまとめています。
+          </p>
           <p className="leading-relaxed">
             <strong>信用倍率</strong> = 信用買い残 ÷ 信用売り残。信用取引で買い建てしている投資家と売り建てしている投資家のバランスを示す需給指標です。JPX（日本取引所グループ）が毎週水曜日に前週金曜日時点の残高を公表しています。
           </p>

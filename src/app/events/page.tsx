@@ -28,6 +28,21 @@ export default function EventsIndexPage() {
         ページでは、その日の日米温度スコア、前後 ±90 日の温度推移、1M/3M/6M/1Y
         の実リターン、そして「当時の背景と市場心理」の解説を確認できます。
       </p>
+      <p className="text-xs text-gray-500 mt-2">
+        ※ 用語の短い定義は{" "}
+        <Link href="/glossary#kabuonkei-score" className="underline hover:text-gray-700">
+          用語集「市場温度スコア」
+        </Link>
+        ・{" "}
+        <Link href="/glossary#vix" className="underline hover:text-gray-700">
+          「VIX」
+        </Link>
+        ・{" "}
+        <Link href="/glossary#similar-days" className="underline hover:text-gray-700">
+          「類似日」
+        </Link>
+        にもまとめています。
+      </p>
 
       <ul className="grid grid-cols-1 gap-3 mt-4 list-none pl-0">
         {events.map((e) => {

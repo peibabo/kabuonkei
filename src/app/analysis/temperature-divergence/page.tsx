@@ -158,6 +158,30 @@ export default function TemperatureDivergencePage() {
           <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
             「温度差」とは
           </h2>
+          <p className="text-xs text-gray-500 mb-2">
+            ※ 関連用語の短い定義は{" "}
+            <Link
+              href="/glossary#kabuonkei-score"
+              className="underline hover:text-gray-700"
+            >
+              用語集「市場温度スコア」
+            </Link>
+            、{" "}
+            <Link
+              href="/glossary#vix"
+              className="underline hover:text-gray-700"
+            >
+              「VIX」
+            </Link>
+            、{" "}
+            <Link
+              href="/glossary#fear-greed-index"
+              className="underline hover:text-gray-700"
+            >
+              「Fear &amp; Greed Index」
+            </Link>
+            にもまとめています。
+          </p>
           <p className="leading-relaxed">
             株温計には日米それぞれ独立した温度スコア (0-100) があります。
           </p>

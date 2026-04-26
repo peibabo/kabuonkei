@@ -87,6 +87,30 @@ export default function PortfolioPage() {
       />
       <StaticPageLayout title={`🧪 ${ARTICLE_TITLE}`}>
         <Breadcrumb items={breadcrumbItems} />
+        <p className="text-xs text-gray-500 not-prose">
+          用語の短い定義は{" "}
+          <Link
+            href="/glossary#dca"
+            className="underline hover:text-gray-700"
+          >
+            「DCA（ドルコスト平均法）」
+          </Link>
+          ・{" "}
+          <Link
+            href="/glossary#drawdown"
+            className="underline hover:text-gray-700"
+          >
+            「最大ドローダウン」
+          </Link>
+          ・{" "}
+          <Link
+            href="/glossary#kabuonkei-score"
+            className="underline hover:text-gray-700"
+          >
+            「市場温度スコア」
+          </Link>
+          にもまとめています。
+        </p>
         <div
           id="disclaimer"
           role="note"

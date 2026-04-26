@@ -83,10 +83,33 @@ export default function AboutPage() {
         </h2>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            <strong>市場温度（日本版）</strong>: 日経225モメンタム、海外投資家フロー、信用倍率、裁定残バランス、ドル円モメンタムの 5 要素から算出した独自スコア
+            <strong>
+              <Link href="/glossary#kabuonkei-score" className="underline hover:text-gray-900">
+                市場温度
+              </Link>
+              （日本版）
+            </strong>
+            : 日経225モメンタム、海外投資家フロー、
+            <Link href="/glossary#margin-ratio" className="underline hover:text-gray-900">
+              信用倍率
+            </Link>
+            、
+            <Link href="/glossary#arbitrage-balance" className="underline hover:text-gray-900">
+              裁定残
+            </Link>
+            バランス、
+            <Link href="/glossary#usdjpy-momentum" className="underline hover:text-gray-900">
+              ドル円モメンタム
+            </Link>
+            の 5 要素から算出した独自スコア
           </li>
           <li>
-            <strong>Fear &amp; Greed（米国版）</strong>: CNN Fear &amp; Greed Index をベースに、S&amp;P500 に紐づくセンチメントを表示
+            <strong>
+              <Link href="/glossary#fear-greed-index" className="underline hover:text-gray-900">
+                Fear &amp; Greed（米国版）
+              </Link>
+            </strong>
+            : CNN Fear &amp; Greed Index をベースに、S&amp;P500 に紐づくセンチメントを表示
           </li>
           <li>
             <strong>温度推移チャート</strong>: 過去データから算出した温度スコアの時系列（最大 10 年）
@@ -95,7 +118,12 @@ export default function AboutPage() {
             <strong>過去の統計</strong>: 同じ温度帯だった過去の日経225 / S&amp;P500 の 1 / 3 / 6 ヶ月後リターン
           </li>
           <li>
-            <strong>今日の類似日</strong>: 今日の温度に最も近かった過去日 TOP5 と、その日以降のリターンをナラティブで表示
+            <strong>
+              <Link href="/glossary#similar-days" className="underline hover:text-gray-900">
+                今日の類似日
+              </Link>
+            </strong>
+            : 今日の温度に最も近かった過去日 TOP5 と、その日以降のリターンをナラティブで表示
           </li>
           <li>
             <strong>
@@ -109,7 +137,11 @@ export default function AboutPage() {
             : コロナショック・Brexit・令和のブラックマンデー等、14 件の主要市場イベントの当時の温度、前後の推移、その後のリターン、背景解説
           </li>
           <li>
-            <strong>日本市場の需給</strong>: 投資主体別売買動向・裁定残・信用倍率（JPX 公開データ）
+            <strong>日本市場の需給</strong>:{" "}
+            <Link href="/glossary#investor-type-trading" className="underline hover:text-gray-900">
+              投資主体別売買動向
+            </Link>
+            ・裁定残・信用倍率（JPX 公開データ）
           </li>
           <li>
             <strong>

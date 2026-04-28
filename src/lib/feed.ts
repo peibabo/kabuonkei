@@ -94,6 +94,17 @@ function collectEntries(): FeedEntry[] {
     updatedAt: portfolio.generatedAt,
   });
 
+  entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-vix`,
+    url: `${SITE_ORIGIN}/learn/what-is-vix`,
+    title:
+      "VIX（恐怖指数）とは？S&P500 の不安心理を測る指標を初心者向けに解説",
+    summary:
+      "VIX の定義・水準別の意味・過去20年データで「VIX 30 超え=危険」の通説を検証。日本投資家向けに日経225・ドル円との関係も解説。",
+    publishedAt: "2026-04-28",
+    updatedAt: "2026-04-28",
+  });
+
   for (const event of getEventsMeta()) {
     entries.push(buildEventEntry(event));
   }

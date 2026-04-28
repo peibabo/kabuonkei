@@ -20,6 +20,9 @@ export default function Footer() {
           <Link href="/guide" className="hover:text-gray-900 hover:underline">
             投資家タイプ別ガイド
           </Link>
+          <Link href="/learn" className="hover:text-gray-900 hover:underline">
+            解説記事
+          </Link>
           <Link href="/analysis" className="hover:text-gray-900 hover:underline">
             分析記事
           </Link>

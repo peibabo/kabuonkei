@@ -116,6 +116,17 @@ function collectEntries(): FeedEntry[] {
     updatedAt: "2026-04-28",
   });
 
+  entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-margin-ratio`,
+    url: `${SITE_ORIGIN}/learn/what-is-margin-ratio`,
+    title:
+      "信用倍率とは？見方・水準別の意味と、温度スコアと組み合わせて読むコツ",
+    summary:
+      "信用倍率（信用買い残÷信用売り残）の見方、JPX 公表データの読み方、「4 倍超え=過熱」通説の真偽、株温計の温度スコアと組み合わせた使いどころを解説。",
+    publishedAt: "2026-04-28",
+    updatedAt: "2026-04-28",
+  });
+
   for (const event of getEventsMeta()) {
     entries.push(buildEventEntry(event));
   }

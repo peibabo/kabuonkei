@@ -206,6 +206,14 @@ export default function GlossaryPage() {
               「信用倍率 × 株温計」分析記事
             </Link>
             では水準別の翌 1ヶ月・3ヶ月・6ヶ月の日経225 リターンを集計しています。
+            初心者向けの腰を据えた解説は{" "}
+            <Link
+              href="/learn/what-is-margin-ratio"
+              className="underline hover:text-gray-900"
+            >
+              「信用倍率とは？」
+            </Link>
+            にまとめています。
           </p>
         </section>
 

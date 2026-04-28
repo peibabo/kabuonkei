@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "what-is-margin-ratio",
+    icon: "📊",
+    title:
+      "信用倍率とは？見方・水準別の意味と、温度スコアと組み合わせて読むコツ",
+    description:
+      "信用倍率（信用買い残÷信用売り残）の意味、JPX 公表データの読み方、「4 倍超え=過熱」という通説の真偽、株温計の温度スコアと組み合わせた使いどころを初心者向けに解説。",
+    publishedAt: "2026-04-28",
+  },
+  {
     slug: "what-is-fear-greed",
     icon: "🌡️",
     title:

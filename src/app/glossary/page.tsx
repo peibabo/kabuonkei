@@ -117,7 +117,11 @@ export default function GlossaryPage() {
           <p className="text-base leading-relaxed mt-2 text-gray-600">
             株温計では、米国版「市場温度」を VIX から線形推定する主系列として採用しています。VIX をスコア 0〜100 に変換した結果と、
             Fear &amp; Greed Index の値はおおむね逆相関の関係にあり、VIX が高い局面ほど温度は冷たくなります。
-            VIX 水準別のリターン検証は{" "}
+            初心者向けの腰を据えた解説は{" "}
+            <Link href="/learn/what-is-vix" className="underline hover:text-gray-900">
+              「VIX（恐怖指数）とは？」
+            </Link>
+            、VIX 水準別のリターン検証は{" "}
             <Link href="/analysis/vix-threshold-sp500" className="underline hover:text-gray-900">
               「VIX が 30 を超えた日、その後 S&amp;P500 はどう動いたか？」
             </Link>

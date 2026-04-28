@@ -157,6 +157,14 @@ export default function GlossaryPage() {
           <p className="text-base leading-relaxed mt-2 text-gray-600">
             株温計の米国版温度はこの指数のコンセプトに着想を得ています。CNN 公式 API はサーバーサイドからの取得が bot 検知でブロックされるため、
             現時点では VIX ベースの線形推定値を主系列として表示しています（同等の方向感は得られます）。
+            7 要素の構成・日本版を独自に作った経緯は{" "}
+            <Link
+              href="/learn/what-is-fear-greed"
+              className="underline hover:text-gray-900"
+            >
+              「Fear &amp; Greed Index とは？CNN 米国版の中身と、日本版を株温計でどう作っているか」
+            </Link>
+            で解説しています。
           </p>
         </section>
 

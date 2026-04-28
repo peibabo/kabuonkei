@@ -105,6 +105,17 @@ function collectEntries(): FeedEntry[] {
     updatedAt: "2026-04-28",
   });
 
+  entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-fear-greed`,
+    url: `${SITE_ORIGIN}/learn/what-is-fear-greed`,
+    title:
+      "Fear & Greed Index とは？CNN 米国版の中身と、日本版を株温計でどう作っているか",
+    summary:
+      "CNN Fear & Greed Index の構成 7 要素・スコアの読み方を解説。日本版を作るとしたら何が違うのか、株温計の独自スコア (5 要素) と対比して整理。",
+    publishedAt: "2026-04-28",
+    updatedAt: "2026-04-28",
+  });
+
   for (const event of getEventsMeta()) {
     entries.push(buildEventEntry(event));
   }

@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "what-is-fear-greed",
+    icon: "🌡️",
+    title:
+      "Fear & Greed Index とは？CNN 米国版の中身と、日本版を株温計でどう作っているか",
+    description:
+      "CNN Fear & Greed Index の構成 7 要素・スコアの読み方・実用上の使いどころを解説。日本版を作るとしたら何が違うのかも、株温計の独自スコア（5 要素）と対比しながら整理します。",
+    publishedAt: "2026-04-28",
+  },
+  {
     slug: "what-is-vix",
     icon: "📉",
     title:

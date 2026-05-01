@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-17",
+  "generatedAt": "2026-05-01",
   "dataRange": {
-    "from": "2016-04-17",
-    "to": "2026-04-17"
+    "from": "2016-05-01",
+    "to": "2026-05-01"
   },
   "levels": [
     {
@@ -42,10 +42,10 @@
       "occurrences": 159,
       "sp500": {
         "1m": {
-          "avgReturn": 3.6,
+          "avgReturn": 3.7,
           "medianReturn": 4.7,
-          "winRate": 80.9,
-          "sampleSize": 157
+          "winRate": 81.1,
+          "sampleSize": 159
         },
         "3m": {
           "avgReturn": 6,
@@ -70,10 +70,10 @@
       "occurrences": 365,
       "sp500": {
         "1m": {
-          "avgReturn": 1,
-          "medianReturn": 2.2,
-          "winRate": 63.2,
-          "sampleSize": 353
+          "avgReturn": 1.2,
+          "medianReturn": 2.4,
+          "winRate": 64,
+          "sampleSize": 361
         },
         "3m": {
           "avgReturn": 3.6,
@@ -95,7 +95,7 @@
         61,
         80
       ],
-      "occurrences": 863,
+      "occurrences": 873,
       "sp500": {
         "1m": {
           "avgReturn": 0.7,
@@ -105,15 +105,15 @@
         },
         "3m": {
           "avgReturn": 3.5,
-          "medianReturn": 4.7,
-          "winRate": 78.6,
-          "sampleSize": 827
+          "medianReturn": 4.6,
+          "winRate": 78.8,
+          "sampleSize": 835
         },
         "6m": {
           "avgReturn": 5.5,
-          "medianReturn": 7.5,
-          "winRate": 78,
-          "sampleSize": 792
+          "medianReturn": 7.4,
+          "winRate": 78.3,
+          "sampleSize": 801
         }
       }
     },
@@ -123,25 +123,25 @@
         81,
         100
       ],
-      "occurrences": 1060,
+      "occurrences": 1050,
       "sp500": {
         "1m": {
           "avgReturn": 0.7,
           "medianReturn": 1.4,
-          "winRate": 69.5,
-          "sampleSize": 1060
+          "winRate": 69.8,
+          "sampleSize": 1050
         },
         "3m": {
-          "avgReturn": 1.9,
+          "avgReturn": 1.8,
           "medianReturn": 3.4,
-          "winRate": 74.4,
-          "sampleSize": 1059
+          "winRate": 74.2,
+          "sampleSize": 1050
         },
         "6m": {
-          "avgReturn": 5.2,
-          "medianReturn": 6.1,
-          "winRate": 78.9,
-          "sampleSize": 1037
+          "avgReturn": 5.3,
+          "medianReturn": 6.2,
+          "winRate": 78.7,
+          "sampleSize": 1028
         }
       }
     }

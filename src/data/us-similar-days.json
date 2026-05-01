@@ -1,61 +1,12 @@
 {
-  "generatedAt": "2026-04-22",
+  "generatedAt": "2026-05-01",
   "dataRange": {
-    "from": "2015-04-22",
-    "to": "2026-04-22"
+    "from": "2015-05-01",
+    "to": "2026-05-01"
   },
   "market": "us",
   "note": "VIXから推定した温度スコア（estimateFearGreedFromVix）。S&P500終値をベースに将来リターンを算出。",
   "daily": [
-    {
-      "date": "2015-04-22",
-      "score": 91,
-      "return1m": 0.9,
-      "return3m": 0.5,
-      "return6m": -3.5
-    },
-    {
-      "date": "2015-04-23",
-      "score": 92,
-      "return1m": -0.4,
-      "return3m": 0.1,
-      "return6m": -3.9
-    },
-    {
-      "date": "2015-04-24",
-      "score": 92,
-      "return1m": -0.6,
-      "return3m": -0.7,
-      "return6m": -4.7
-    },
-    {
-      "date": "2015-04-27",
-      "score": 90,
-      "return1m": 0.7,
-      "return3m": -2,
-      "return6m": -1.8
-    },
-    {
-      "date": "2015-04-28",
-      "score": 92,
-      "return1m": 0.3,
-      "return3m": -2.2,
-      "return6m": -2.1
-    },
-    {
-      "date": "2015-04-29",
-      "score": 89,
-      "return1m": 0,
-      "return3m": -0.6,
-      "return6m": -1.7
-    },
-    {
-      "date": "2015-04-30",
-      "score": 85,
-      "return1m": 1.3,
-      "return3m": 1.1,
-      "return6m": -0.9
-    },
     {
       "date": "2015-05-01",
       "score": 91,
@@ -18520,42 +18471,42 @@
       "score": 79,
       "return1m": -1.3,
       "return3m": 1.8,
-      "return6m": null
+      "return6m": 5.1
     },
     {
       "date": "2025-10-27",
       "score": 81,
       "return1m": -0.9,
       "return3m": 1.1,
-      "return6m": null
+      "return6m": 4.3
     },
     {
       "date": "2025-10-28",
       "score": 79,
       "return1m": -0.6,
       "return3m": 0.9,
-      "return6m": null
+      "return6m": 4.1
     },
     {
       "date": "2025-10-29",
       "score": 77,
       "return1m": -0.6,
       "return3m": 1.3,
-      "return6m": null
+      "return6m": 4.1
     },
     {
       "date": "2025-10-30",
       "score": 77,
       "return1m": -0.1,
       "return3m": 2.3,
-      "return6m": null
+      "return6m": 4.6
     },
     {
       "date": "2025-10-31",
       "score": 75,
       "return1m": -0.4,
       "return3m": 1.9,
-      "return6m": null
+      "return6m": 4.3
     },
     {
       "date": "2025-11-03",
@@ -18939,49 +18890,49 @@
       "date": "2026-01-22",
       "score": 81,
       "return1m": -1.1,
-      "return3m": null,
+      "return3m": 3.2,
       "return6m": null
     },
     {
       "date": "2026-01-23",
       "score": 80,
       "return1m": -1.1,
-      "return3m": null,
+      "return3m": 2.8,
       "return6m": null
     },
     {
       "date": "2026-01-26",
       "score": 80,
       "return1m": -0.1,
-      "return3m": null,
+      "return3m": 3.2,
       "return6m": null
     },
     {
       "date": "2026-01-27",
       "score": 79,
       "return1m": -1,
-      "return3m": null,
+      "return3m": 2.8,
       "return6m": null
     },
     {
       "date": "2026-01-28",
       "score": 79,
       "return1m": -1.4,
-      "return3m": null,
+      "return3m": 2.3,
       "return6m": null
     },
     {
       "date": "2026-01-29",
       "score": 77,
       "return1m": -1.3,
-      "return3m": null,
+      "return3m": 2.4,
       "return6m": null
     },
     {
       "date": "2026-01-30",
       "score": 75,
       "return1m": -0.8,
-      "return3m": null,
+      "return3m": 3.9,
       "return6m": null
     },
     {
@@ -19225,49 +19176,49 @@
     {
       "date": "2026-03-23",
       "score": 46,
-      "return1m": null,
+      "return1m": 8.5,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-03-24",
       "score": 43,
-      "return1m": null,
+      "return1m": 8.4,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-03-25",
       "score": 49,
-      "return1m": null,
+      "return1m": 8.7,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-03-26",
       "score": 42,
-      "return1m": null,
+      "return1m": 10.8,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-03-27",
       "score": 30,
-      "return1m": null,
+      "return1m": 12.6,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-03-30",
       "score": 31,
-      "return1m": null,
+      "return1m": 12.5,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-03-31",
       "score": 49,
-      "return1m": null,
+      "return1m": 10.4,
       "return3m": null,
       "return6m": null
     },
@@ -19365,6 +19316,55 @@
     {
       "date": "2026-04-21",
       "score": 68,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-22",
+      "score": 70,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-23",
+      "score": 69,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-24",
+      "score": 71,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-27",
+      "score": 73,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-28",
+      "score": 74,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-29",
+      "score": 71,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-04-30",
+      "score": 77,
       "return1m": null,
       "return3m": null,
       "return6m": null

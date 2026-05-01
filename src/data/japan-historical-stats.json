@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-22",
+  "generatedAt": "2026-05-01",
   "dataRange": {
-    "from": "2016-04-22",
-    "to": "2026-04-22"
+    "from": "2016-05-01",
+    "to": "2026-05-01"
   },
   "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。 TOPIX は連動ETF(1306.T)の日次終値を proxy として同スコアで集計（指数特性の違いによる感度差の比較用）。",
   "levels": [
@@ -111,10 +111,10 @@
       "occurrences": 677,
       "nikkei225": {
         "1m": {
-          "avgReturn": 0.7,
+          "avgReturn": 0.8,
           "medianReturn": 0.7,
-          "winRate": 55.9,
-          "sampleSize": 666
+          "winRate": 56.3,
+          "sampleSize": 673
         },
         "3m": {
           "avgReturn": 3.1,
@@ -131,10 +131,10 @@
       },
       "topix": {
         "1m": {
-          "avgReturn": 0.3,
+          "avgReturn": -0.3,
           "medianReturn": 0.4,
-          "winRate": 55.1,
-          "sampleSize": 666
+          "winRate": 55,
+          "sampleSize": 673
         },
         "3m": {
           "avgReturn": 2.5,
@@ -156,45 +156,45 @@
         61,
         80
       ],
-      "occurrences": 843,
+      "occurrences": 841,
       "nikkei225": {
         "1m": {
           "avgReturn": 0.7,
           "medianReturn": 1,
-          "winRate": 60.2,
-          "sampleSize": 835
+          "winRate": 60.1,
+          "sampleSize": 832
         },
         "3m": {
-          "avgReturn": 1.3,
+          "avgReturn": 1.4,
           "medianReturn": 0.5,
-          "winRate": 52.6,
-          "sampleSize": 798
+          "winRate": 52.8,
+          "sampleSize": 800
         },
         "6m": {
-          "avgReturn": 3.9,
-          "medianReturn": 0.7,
-          "winRate": 53.5,
-          "sampleSize": 795
+          "avgReturn": 3.8,
+          "medianReturn": 0.6,
+          "winRate": 53.3,
+          "sampleSize": 792
         }
       },
       "topix": {
         "1m": {
-          "avgReturn": -1.2,
+          "avgReturn": -1.3,
           "medianReturn": 0.8,
-          "winRate": 59.9,
-          "sampleSize": 835
+          "winRate": 59.7,
+          "sampleSize": 832
         },
         "3m": {
-          "avgReturn": 0.8,
-          "medianReturn": 1.2,
-          "winRate": 56.9,
-          "sampleSize": 798
+          "avgReturn": 0.2,
+          "medianReturn": 1.1,
+          "winRate": 56.4,
+          "sampleSize": 800
         },
         "6m": {
           "avgReturn": 3.1,
-          "medianReturn": 2.4,
-          "winRate": 60.1,
-          "sampleSize": 795
+          "medianReturn": 2.3,
+          "winRate": 60,
+          "sampleSize": 792
         }
       }
     },
@@ -204,45 +204,45 @@
         81,
         100
       ],
-      "occurrences": 350,
+      "occurrences": 353,
       "nikkei225": {
         "1m": {
           "avgReturn": 1.1,
           "medianReturn": 0.9,
-          "winRate": 56.8,
-          "sampleSize": 345
+          "winRate": 56.6,
+          "sampleSize": 343
         },
         "3m": {
           "avgReturn": 2.8,
           "medianReturn": 1.1,
-          "winRate": 57,
-          "sampleSize": 344
+          "winRate": 56.9,
+          "sampleSize": 343
         },
         "6m": {
-          "avgReturn": 5.3,
-          "medianReturn": 2.7,
-          "winRate": 64,
-          "sampleSize": 289
+          "avgReturn": 5.4,
+          "medianReturn": 2.8,
+          "winRate": 64.4,
+          "sampleSize": 292
         }
       },
       "topix": {
         "1m": {
           "avgReturn": 1.5,
           "medianReturn": 1.6,
-          "winRate": 67.4,
-          "sampleSize": 344
+          "winRate": 67.3,
+          "sampleSize": 342
         },
         "3m": {
-          "avgReturn": -0.4,
-          "medianReturn": 3,
-          "winRate": 70,
-          "sampleSize": 343
+          "avgReturn": -0.7,
+          "medianReturn": 2.9,
+          "winRate": 69.6,
+          "sampleSize": 342
         },
         "6m": {
-          "avgReturn": 0.7,
-          "medianReturn": 3.6,
-          "winRate": 68.1,
-          "sampleSize": 288
+          "avgReturn": -0.9,
+          "medianReturn": 3.4,
+          "winRate": 66.7,
+          "sampleSize": 291
         }
       }
     }

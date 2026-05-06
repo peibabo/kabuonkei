@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-04-30",
+    "generatedAt": "2026-05-06",
     "weeks": [
-      {
-        "weekLabel": "2026年3月第3週",
-        "startDate": "2026-03-16",
-        "endDate": "2026-03-19",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": -4919
-          },
-          {
-            "name": "個人",
-            "netAmount": 3092
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -578.1
-          },
-          {
-            "name": "投資信託",
-            "netAmount": 56
-          },
-          {
-            "name": "事業法人",
-            "netAmount": -1689.3
-          }
-        ]
-      },
       {
         "weekLabel": "2026年3月第4週",
         "startDate": "2026-03-23",
@@ -136,17 +109,39 @@
             "netAmount": 692.2
           }
         ]
+      },
+      {
+        "weekLabel": "2026年4月第4週",
+        "startDate": "2026-04-20",
+        "endDate": "2026-04-24",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": 8265.4
+          },
+          {
+            "name": "個人",
+            "netAmount": 1123.6
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -41.8
+          },
+          {
+            "name": "投資信託",
+            "netAmount": -1030.6
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 1199.1
+          }
+        ]
       }
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-04-30",
+    "generatedAt": "2026-05-06",
     "daily": [
-      {
-        "date": "2026-04-14",
-        "buyBalance": 1355.9,
-        "sellBalance": 34.6
-      },
       {
         "date": "2026-04-15",
         "buyBalance": 1365.8,
@@ -191,11 +186,16 @@
         "date": "2026-04-27",
         "buyBalance": 901.6,
         "sellBalance": 46.9
+      },
+      {
+        "date": "2026-04-28",
+        "buyBalance": 924.6,
+        "sellBalance": 46.2
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-04-30",
+    "generatedAt": "2026-05-06",
     "weekly": [
       {
         "date": "2026-03-27",

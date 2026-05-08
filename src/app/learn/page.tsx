@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "what-is-investor-flow",
+    icon: "🌐",
+    title:
+      "投資部門別売買動向とは？外国人投資家のフローを毎週どう読むか",
+    description:
+      "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。主要 6 区分の主体・外国人フローが日本市場の主役と言われる根拠（2024 年シェア値）・読み方のコツ 4 つ・株温計 C3 要素としての扱いまで整理。",
+    publishedAt: "2026-05-08",
+  },
+  {
     slug: "what-is-margin-ratio",
     icon: "📊",
     title:

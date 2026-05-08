@@ -127,6 +127,17 @@ function collectEntries(): FeedEntry[] {
     updatedAt: "2026-04-28",
   });
 
+  entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-investor-flow`,
+    url: `${SITE_ORIGIN}/learn/what-is-investor-flow`,
+    title:
+      "投資部門別売買動向とは？外国人投資家のフローを毎週どう読むか",
+    summary:
+      "投資部門別売買状況（JPX 毎週木曜公表）の主要 6 区分・外国人シェア（現物 59.1%/先物 75.7%、2024）・読み方のコツ・株温計 C3 要素としての扱いを解説。",
+    publishedAt: "2026-05-08",
+    updatedAt: "2026-05-08",
+  });
+
   for (const event of getEventsMeta()) {
     entries.push(buildEventEntry(event));
   }

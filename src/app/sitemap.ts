@@ -119,6 +119,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${siteUrl}/learn/what-is-investor-flow`,
+      lastModified: new Date("2026-05-08"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${siteUrl}/analysis/margin-ratio-temperature`,
       lastModified: marginAnalysisModified,
       changeFrequency: "monthly",

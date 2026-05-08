@@ -254,6 +254,14 @@ export default function GlossaryPage() {
               主要イベント一覧
             </Link>
             の各ページでも当時のフロー水準を解説対象にしています。
+            初心者向けの腰を据えた解説は{" "}
+            <Link
+              href="/learn/what-is-investor-flow"
+              className="underline hover:text-gray-900"
+            >
+              「投資部門別売買動向とは？」
+            </Link>
+            にまとめています。
           </p>
         </section>
 

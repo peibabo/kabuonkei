@@ -149,6 +149,17 @@ function collectEntries(): FeedEntry[] {
     updatedAt: "2026-05-08",
   });
 
+  entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-drawdown`,
+    url: `${SITE_ORIGIN}/learn/what-is-drawdown`,
+    title:
+      "ドローダウンとは？最大DDの意味と「リターンより怖い」理由を初心者向けに解説",
+    summary:
+      "ドローダウン (DD) と最大ドローダウンの意味・計算式・過去の S&P500/日経225 のDD実績・リターンより最大DDが大事な理由を解説。株温計の温度連動 PF が DD 抑制に効いていた検証結果との接続も整理。",
+    publishedAt: "2026-05-08",
+    updatedAt: "2026-05-08",
+  });
+
   for (const event of getEventsMeta()) {
     entries.push(buildEventEntry(event));
   }

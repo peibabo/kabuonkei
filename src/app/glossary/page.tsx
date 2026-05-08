@@ -234,6 +234,14 @@ export default function GlossaryPage() {
               トップの日本市場データセクション
             </Link>
             で最新の残高と推移をご覧いただけます。
+            初心者向けの腰を据えた解説は{" "}
+            <Link
+              href="/learn/what-is-arbitrage-balance"
+              className="underline hover:text-gray-900"
+            >
+              「裁定残とは？」
+            </Link>
+            にまとめています。
           </p>
         </section>
 

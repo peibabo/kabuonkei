@@ -138,6 +138,17 @@ function collectEntries(): FeedEntry[] {
     updatedAt: "2026-05-08",
   });
 
+  entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-arbitrage-balance`,
+    url: `${SITE_ORIGIN}/learn/what-is-arbitrage-balance`,
+    title:
+      "裁定残とは？裁定買い残・売り残の意味と SQ 前後で気にすべき理由",
+    summary:
+      "裁定残の見方を初心者向けに解説。裁定買い残と売り残の違い、JPX 毎営業日 16:00 公表の日次データ、メジャー SQ 前後の解消売り、株温計 C2 要素としての扱いを整理。",
+    publishedAt: "2026-05-08",
+    updatedAt: "2026-05-08",
+  });
+
   for (const event of getEventsMeta()) {
     entries.push(buildEventEntry(event));
   }

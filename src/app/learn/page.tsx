@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "what-is-drawdown",
+    icon: "📉",
+    title:
+      "ドローダウンとは？最大DDの意味と「リターンより怖い」理由を初心者向けに解説",
+    description:
+      "ドローダウン (DD) と最大ドローダウンの意味、計算式、過去の S&P500・日経225 のDD実績、なぜリターンより最大DDが投資判断で重要かを解説。株温計の温度連動ポートフォリオで見えた「温度信号は最大DDを抑制する道具」という結論への接続も整理。",
+    publishedAt: "2026-05-08",
+  },
+  {
     slug: "what-is-arbitrage-balance",
     icon: "⚖️",
     title:

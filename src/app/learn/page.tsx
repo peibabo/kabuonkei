@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "what-is-arbitrage-balance",
+    icon: "⚖️",
+    title:
+      "裁定残とは？裁定買い残・売り残の意味と SQ 前後で気にすべき理由",
+    description:
+      "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX 毎営業日 16:00 公表データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計の温度スコア C2 要素としての扱いまで整理。",
+    publishedAt: "2026-05-08",
+  },
+  {
     slug: "what-is-investor-flow",
     icon: "🌐",
     title:

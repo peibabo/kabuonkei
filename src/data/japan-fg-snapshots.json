@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-18T11:38:16.096Z",
+  "generatedAt": "2026-05-19T10:54:26.358Z",
   "method": "full5",
   "snapshots": [
     {
@@ -282,6 +282,19 @@
       "availableCount": 5,
       "components": {
         "nikkeiMa": 91,
+        "foreignFlow": 100,
+        "marginRatio": 100,
+        "arbitrage": 100,
+        "usdJpyMomentum": 57
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "score": 89,
+      "level": "沸騰",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 89,
         "foreignFlow": 100,
         "marginRatio": 100,
         "arbitrage": 100,

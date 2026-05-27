@@ -1,6 +1,6 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-05-21",
+    "generatedAt": "2026-05-27",
     "weeks": [
       {
         "weekLabel": "2026年4月第3週",
@@ -140,28 +140,8 @@
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-05-21",
+    "generatedAt": "2026-05-27",
     "daily": [
-      {
-        "date": "2026-05-01",
-        "buyBalance": 813.7,
-        "sellBalance": 46.5
-      },
-      {
-        "date": "2026-05-07",
-        "buyBalance": 821.5,
-        "sellBalance": 40.5
-      },
-      {
-        "date": "2026-05-08",
-        "buyBalance": 814.2,
-        "sellBalance": 30.6
-      },
-      {
-        "date": "2026-05-11",
-        "buyBalance": 771.3,
-        "sellBalance": 5.9
-      },
       {
         "date": "2026-05-12",
         "buyBalance": 769.4,
@@ -191,18 +171,32 @@
         "date": "2026-05-19",
         "buyBalance": 714,
         "sellBalance": 2.6
+      },
+      {
+        "date": "2026-05-20",
+        "buyBalance": 702.4,
+        "sellBalance": 0
+      },
+      {
+        "date": "2026-05-21",
+        "buyBalance": 685.7,
+        "sellBalance": 0
+      },
+      {
+        "date": "2026-05-22",
+        "buyBalance": 721.2,
+        "sellBalance": 0
+      },
+      {
+        "date": "2026-05-25",
+        "buyBalance": 797,
+        "sellBalance": 0
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-05-21",
+    "generatedAt": "2026-05-27",
     "weekly": [
-      {
-        "date": "2026-04-10",
-        "buyBalance": 51565.1,
-        "sellBalance": 9733.1,
-        "ratio": 5.3
-      },
       {
         "date": "2026-04-17",
         "buyBalance": 54859.7,
@@ -226,6 +220,12 @@
         "buyBalance": 60113.8,
         "sellBalance": 8789.5,
         "ratio": 6.84
+      },
+      {
+        "date": "2026-05-22",
+        "buyBalance": 60793.3,
+        "sellBalance": 9127.6,
+        "ratio": 6.66
       }
     ]
   }

@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-05-27",
+    "generatedAt": "2026-05-28",
     "weeks": [
-      {
-        "weekLabel": "2026年4月第3週",
-        "startDate": "2026-04-13",
-        "endDate": "2026-04-17",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": 9849.6
-          },
-          {
-            "name": "個人",
-            "netAmount": 3341.3
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -1845.8
-          },
-          {
-            "name": "投資信託",
-            "netAmount": -887.1
-          },
-          {
-            "name": "事業法人",
-            "netAmount": 692.2
-          }
-        ]
-      },
       {
         "weekLabel": "2026年4月第4週",
         "startDate": "2026-04-20",
@@ -136,17 +109,39 @@
             "netAmount": 2143.9
           }
         ]
+      },
+      {
+        "weekLabel": "2026年5月第3週",
+        "startDate": "2026-05-18",
+        "endDate": "2026-05-22",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": 4642.9
+          },
+          {
+            "name": "個人",
+            "netAmount": -1454.2
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -2073.4
+          },
+          {
+            "name": "投資信託",
+            "netAmount": 374.1
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 2689.9
+          }
+        ]
       }
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-05-27",
+    "generatedAt": "2026-05-28",
     "daily": [
-      {
-        "date": "2026-05-12",
-        "buyBalance": 769.4,
-        "sellBalance": 5.9
-      },
       {
         "date": "2026-05-13",
         "buyBalance": 743.2,
@@ -191,11 +186,16 @@
         "date": "2026-05-25",
         "buyBalance": 797,
         "sellBalance": 0
+      },
+      {
+        "date": "2026-05-26",
+        "buyBalance": 786.7,
+        "sellBalance": 0
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-05-27",
+    "generatedAt": "2026-05-28",
     "weekly": [
       {
         "date": "2026-04-17",

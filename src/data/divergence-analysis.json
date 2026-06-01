@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-01",
+  "generatedAt": "2026-06-01",
   "dataRange": {
-    "from": "2016-11-04",
-    "to": "2026-04-30"
+    "from": "2016-12-02",
+    "to": "2026-05-29"
   },
-  "sampleSize": 2382,
+  "sampleSize": 2384,
   "gapBands": [
     {
       "label": "米国が大幅優位 (≤ -20)",
@@ -43,25 +43,25 @@
     "bands": [
       {
         "band": "米国が大幅優位 (≤ -20)",
-        "occurrences": 943,
+        "occurrences": 942,
         "sp500": {
           "1m": {
             "avgReturn": 0.8,
             "medianReturn": 1.7,
-            "winRate": 69.7,
-            "sampleSize": 943
+            "winRate": 69.6,
+            "sampleSize": 942
           },
           "3m": {
             "avgReturn": 2.8,
             "medianReturn": 3.6,
             "winRate": 78.5,
-            "sampleSize": 943
+            "sampleSize": 942
           },
           "6m": {
             "avgReturn": 6.1,
-            "medianReturn": 7.2,
+            "medianReturn": 7.1,
             "winRate": 79.4,
-            "sampleSize": 943
+            "sampleSize": 942
           }
         },
         "nikkei225": {
@@ -69,56 +69,56 @@
             "avgReturn": 1,
             "medianReturn": 1.2,
             "winRate": 61.6,
-            "sampleSize": 886
+            "sampleSize": 885
           },
           "3m": {
             "avgReturn": 3.1,
-            "medianReturn": 2.8,
+            "medianReturn": 2.7,
             "winRate": 65,
-            "sampleSize": 886
+            "sampleSize": 885
           },
           "6m": {
-            "avgReturn": 6.2,
+            "avgReturn": 6.1,
             "medianReturn": 4.6,
             "winRate": 66.3,
-            "sampleSize": 888
+            "sampleSize": 887
           }
         },
         "spread": {
           "1m": 0.2,
           "3m": 0.3,
-          "6m": 0.1
+          "6m": 0
         }
       },
       {
         "band": "米国がやや優位 (-20〜-10)",
-        "occurrences": 333,
+        "occurrences": 332,
         "sp500": {
           "1m": {
             "avgReturn": 0.7,
             "medianReturn": 1.7,
-            "winRate": 63.1,
-            "sampleSize": 333
+            "winRate": 63,
+            "sampleSize": 332
           },
           "3m": {
             "avgReturn": 2.8,
-            "medianReturn": 4.3,
+            "medianReturn": 4.2,
             "winRate": 74.7,
             "sampleSize": 332
           },
           "6m": {
             "avgReturn": 4.2,
             "medianReturn": 4.9,
-            "winRate": 70.2,
-            "sampleSize": 329
+            "winRate": 70.1,
+            "sampleSize": 328
           }
         },
         "nikkei225": {
           "1m": {
-            "avgReturn": -0.1,
+            "avgReturn": -0.2,
             "medianReturn": 0.2,
-            "winRate": 52.7,
-            "sampleSize": 315
+            "winRate": 52.5,
+            "sampleSize": 314
           },
           "3m": {
             "avgReturn": 0.2,
@@ -128,26 +128,26 @@
           },
           "6m": {
             "avgReturn": 1.7,
-            "medianReturn": -0.8,
-            "winRate": 46.9,
-            "sampleSize": 311
+            "medianReturn": -0.9,
+            "winRate": 46.8,
+            "sampleSize": 310
           }
         },
         "spread": {
-          "1m": -0.8,
+          "1m": -0.9,
           "3m": -2.6,
           "6m": -2.5
         }
       },
       {
         "band": "ほぼ同温 (-10〜+10)",
-        "occurrences": 614,
+        "occurrences": 611,
         "sp500": {
           "1m": {
             "avgReturn": 1.1,
-            "medianReturn": 1.4,
-            "winRate": 67.5,
-            "sampleSize": 607
+            "medianReturn": 1.2,
+            "winRate": 67,
+            "sampleSize": 597
           },
           "3m": {
             "avgReturn": 3.2,
@@ -156,96 +156,96 @@
             "sampleSize": 585
           },
           "6m": {
-            "avgReturn": 6.3,
-            "medianReturn": 7.7,
-            "winRate": 76.1,
-            "sampleSize": 560
+            "avgReturn": 6.1,
+            "medianReturn": 7.5,
+            "winRate": 75.3,
+            "sampleSize": 543
           }
         },
         "nikkei225": {
           "1m": {
-            "avgReturn": 1.8,
+            "avgReturn": 1.7,
             "medianReturn": 1.7,
-            "winRate": 62.9,
-            "sampleSize": 563
+            "winRate": 62.3,
+            "sampleSize": 554
           },
           "3m": {
-            "avgReturn": 4.3,
+            "avgReturn": 4.4,
             "medianReturn": 2.6,
-            "winRate": 62,
-            "sampleSize": 542
+            "winRate": 61.9,
+            "sampleSize": 541
           },
           "6m": {
-            "avgReturn": 8.4,
-            "medianReturn": 5.8,
-            "winRate": 67.5,
-            "sampleSize": 517
+            "avgReturn": 8.3,
+            "medianReturn": 5.6,
+            "winRate": 66.5,
+            "sampleSize": 501
           }
         },
         "spread": {
-          "1m": 0.7,
-          "3m": 1.1,
-          "6m": 2.1
+          "1m": 0.6,
+          "3m": 1.2,
+          "6m": 2.2
         }
       },
       {
         "band": "日本がやや優位 (+10〜+20)",
-        "occurrences": 209,
+        "occurrences": 213,
         "sp500": {
           "1m": {
-            "avgReturn": 1.6,
-            "medianReturn": 2.6,
-            "winRate": 74.1,
-            "sampleSize": 201
+            "avgReturn": 1.8,
+            "medianReturn": 2.8,
+            "winRate": 75,
+            "sampleSize": 208
           },
           "3m": {
-            "avgReturn": 3.7,
+            "avgReturn": 3.8,
             "medianReturn": 4.3,
-            "winRate": 74.3,
-            "sampleSize": 191
+            "winRate": 74.5,
+            "sampleSize": 192
           },
           "6m": {
             "avgReturn": 9,
-            "medianReturn": 9.4,
-            "winRate": 80.9,
-            "sampleSize": 178
+            "medianReturn": 9.1,
+            "winRate": 81.1,
+            "sampleSize": 180
           }
         },
         "nikkei225": {
           "1m": {
-            "avgReturn": 1.8,
-            "medianReturn": 1.1,
-            "winRate": 58.4,
-            "sampleSize": 190
+            "avgReturn": 2.1,
+            "medianReturn": 1.4,
+            "winRate": 60.1,
+            "sampleSize": 198
           },
           "3m": {
-            "avgReturn": 5.3,
-            "medianReturn": 3.5,
-            "winRate": 67.8,
-            "sampleSize": 180
+            "avgReturn": 5.4,
+            "medianReturn": 3.6,
+            "winRate": 68.1,
+            "sampleSize": 182
           },
           "6m": {
-            "avgReturn": 8.8,
-            "medianReturn": 5,
-            "winRate": 66.7,
-            "sampleSize": 168
+            "avgReturn": 9.2,
+            "medianReturn": 5.3,
+            "winRate": 67.3,
+            "sampleSize": 171
           }
         },
         "spread": {
-          "1m": 0.2,
+          "1m": 0.3,
           "3m": 1.6,
-          "6m": -0.2
+          "6m": 0.2
         }
       },
       {
         "band": "日本が大幅優位 (≥ +20)",
-        "occurrences": 283,
+        "occurrences": 286,
         "sp500": {
           "1m": {
-            "avgReturn": 2.8,
-            "medianReturn": 3.8,
-            "winRate": 76.5,
-            "sampleSize": 277
+            "avgReturn": 2.9,
+            "medianReturn": 4,
+            "winRate": 77,
+            "sampleSize": 283
           },
           "3m": {
             "avgReturn": 5.7,
@@ -255,156 +255,81 @@
           },
           "6m": {
             "avgReturn": 10.5,
-            "medianReturn": 12,
-            "winRate": 79.1,
-            "sampleSize": 249
+            "medianReturn": 11.5,
+            "winRate": 80.5,
+            "sampleSize": 266
           }
         },
         "nikkei225": {
           "1m": {
-            "avgReturn": 2,
-            "medianReturn": 1.5,
-            "winRate": 69,
-            "sampleSize": 261
+            "avgReturn": 2.2,
+            "medianReturn": 1.6,
+            "winRate": 69.5,
+            "sampleSize": 266
           },
           "3m": {
-            "avgReturn": 5.3,
+            "avgReturn": 5.4,
             "medianReturn": 3.4,
-            "winRate": 64.6,
-            "sampleSize": 254
+            "winRate": 64.7,
+            "sampleSize": 255
           },
           "6m": {
-            "avgReturn": 8.9,
-            "medianReturn": 4.7,
-            "winRate": 73.2,
-            "sampleSize": 235
+            "avgReturn": 10,
+            "medianReturn": 5,
+            "winRate": 75,
+            "sampleSize": 252
           }
         },
         "spread": {
-          "1m": -0.8,
-          "3m": -0.4,
-          "6m": -1.6
+          "1m": -0.7,
+          "3m": -0.3,
+          "6m": -0.5
         }
       }
     ]
   },
   "joint": {
     "dataRange": {
-      "from": "2016-11-04",
-      "to": "2026-04-30"
+      "from": "2016-12-02",
+      "to": "2026-05-29"
     },
     "sampleSize": 2236,
     "cells": [
       {
         "gapBand": "ほぼ同温 (-10〜+10)",
-        "tempBand": "過熱",
-        "occurrences": 257,
-        "returns": {
-          "1m": {
-            "avgReturn": 1.3,
-            "medianReturn": 1.2,
-            "winRate": 61.5,
-            "sampleSize": 252
-          },
-          "3m": {
-            "avgReturn": 4.2,
-            "medianReturn": 2.5,
-            "winRate": 57,
-            "sampleSize": 235
-          },
-          "6m": {
-            "avgReturn": 6.8,
-            "medianReturn": 3.9,
-            "winRate": 57.8,
-            "sampleSize": 230
-          }
-        }
-      },
-      {
-        "gapBand": "米国が大幅優位 (≤ -20)",
-        "tempBand": "平温",
-        "occurrences": 371,
-        "returns": {
-          "1m": {
-            "avgReturn": 0.5,
-            "medianReturn": 0.6,
-            "winRate": 55.3,
-            "sampleSize": 369
-          },
-          "3m": {
-            "avgReturn": 2.5,
-            "medianReturn": 1.6,
-            "winRate": 58,
-            "sampleSize": 371
-          },
-          "6m": {
-            "avgReturn": 3.2,
-            "medianReturn": 1.3,
-            "winRate": 55.5,
-            "sampleSize": 371
-          }
-        }
-      },
-      {
-        "gapBand": "米国がやや優位 (-20〜-10)",
-        "tempBand": "過熱",
-        "occurrences": 182,
-        "returns": {
-          "1m": {
-            "avgReturn": 0.1,
-            "medianReturn": 0.8,
-            "winRate": 58.2,
-            "sampleSize": 182
-          },
-          "3m": {
-            "avgReturn": -0.6,
-            "medianReturn": 0.2,
-            "winRate": 51.4,
-            "sampleSize": 181
-          },
-          "6m": {
-            "avgReturn": 0.8,
-            "medianReturn": -1.1,
-            "winRate": 43.3,
-            "sampleSize": 178
-          }
-        }
-      },
-      {
-        "gapBand": "ほぼ同温 (-10〜+10)",
         "tempBand": "沸騰",
-        "occurrences": 158,
+        "occurrences": 147,
         "returns": {
           "1m": {
-            "avgReturn": 1.5,
-            "medianReturn": 1.6,
-            "winRate": 60.1,
-            "sampleSize": 158
+            "avgReturn": 1.1,
+            "medianReturn": 1.1,
+            "winRate": 57.1,
+            "sampleSize": 147
           },
           "3m": {
-            "avgReturn": 2.7,
-            "medianReturn": 1.6,
-            "winRate": 61.4,
-            "sampleSize": 158
+            "avgReturn": 2.4,
+            "medianReturn": 1,
+            "winRate": 58.5,
+            "sampleSize": 147
           },
           "6m": {
-            "avgReturn": 7.2,
-            "medianReturn": 4.9,
-            "winRate": 70.9,
-            "sampleSize": 141
+            "avgReturn": 7,
+            "medianReturn": 4.1,
+            "winRate": 68.5,
+            "sampleSize": 130
           }
         }
       },
       {
         "gapBand": "日本がやや優位 (+10〜+20)",
         "tempBand": "沸騰",
-        "occurrences": 86,
+        "occurrences": 87,
         "returns": {
           "1m": {
-            "avgReturn": 1.1,
-            "medianReturn": -0.1,
-            "winRate": 48.1,
-            "sampleSize": 79
+            "avgReturn": 1.7,
+            "medianReturn": 0.5,
+            "winRate": 52.3,
+            "sampleSize": 86
           },
           "3m": {
             "avgReturn": 3,
@@ -413,10 +338,10 @@
             "sampleSize": 79
           },
           "6m": {
-            "avgReturn": 5.2,
-            "medianReturn": 1.7,
-            "winRate": 58.2,
-            "sampleSize": 67
+            "avgReturn": 6.3,
+            "medianReturn": 2,
+            "winRate": 60,
+            "sampleSize": 70
           }
         }
       },
@@ -446,6 +371,31 @@
         }
       },
       {
+        "gapBand": "米国がやや優位 (-20〜-10)",
+        "tempBand": "過熱",
+        "occurrences": 181,
+        "returns": {
+          "1m": {
+            "avgReturn": 0.1,
+            "medianReturn": 0.7,
+            "winRate": 58,
+            "sampleSize": 181
+          },
+          "3m": {
+            "avgReturn": -0.6,
+            "medianReturn": 0.2,
+            "winRate": 51.4,
+            "sampleSize": 181
+          },
+          "6m": {
+            "avgReturn": 0.7,
+            "medianReturn": -1.1,
+            "winRate": 42.9,
+            "sampleSize": 177
+          }
+        }
+      },
+      {
         "gapBand": "米国が大幅優位 (≤ -20)",
         "tempBand": "過熱",
         "occurrences": 177,
@@ -467,6 +417,31 @@
             "medianReturn": -0.6,
             "winRate": 44.6,
             "sampleSize": 177
+          }
+        }
+      },
+      {
+        "gapBand": "米国が大幅優位 (≤ -20)",
+        "tempBand": "平温",
+        "occurrences": 370,
+        "returns": {
+          "1m": {
+            "avgReturn": 0.5,
+            "medianReturn": 0.6,
+            "winRate": 55.2,
+            "sampleSize": 368
+          },
+          "3m": {
+            "avgReturn": 2.5,
+            "medianReturn": 1.6,
+            "winRate": 57.8,
+            "sampleSize": 370
+          },
+          "6m": {
+            "avgReturn": 3.2,
+            "medianReturn": 1.3,
+            "winRate": 55.4,
+            "sampleSize": 370
           }
         }
       },
@@ -551,10 +526,10 @@
         "occurrences": 113,
         "returns": {
           "1m": {
-            "avgReturn": 1.9,
+            "avgReturn": 2,
             "medianReturn": 2,
-            "winRate": 63.4,
-            "sampleSize": 112
+            "winRate": 63.7,
+            "sampleSize": 113
           },
           "3m": {
             "avgReturn": 4.3,
@@ -667,6 +642,31 @@
             "medianReturn": -1.5,
             "winRate": 41.7,
             "sampleSize": 103
+          }
+        }
+      },
+      {
+        "gapBand": "ほぼ同温 (-10〜+10)",
+        "tempBand": "過熱",
+        "occurrences": 266,
+        "returns": {
+          "1m": {
+            "avgReturn": 1.3,
+            "medianReturn": 1.2,
+            "winRate": 61.7,
+            "sampleSize": 253
+          },
+          "3m": {
+            "avgReturn": 4.5,
+            "medianReturn": 3.9,
+            "winRate": 58.8,
+            "sampleSize": 245
+          },
+          "6m": {
+            "avgReturn": 6.6,
+            "medianReturn": 3.1,
+            "winRate": 56.9,
+            "sampleSize": 225
           }
         }
       },
@@ -826,16 +826,16 @@
         "occurrences": 63,
         "returns": {
           "1m": {
-            "avgReturn": 0.8,
+            "avgReturn": 0.9,
             "medianReturn": 0.4,
-            "winRate": 56.5,
-            "sampleSize": 62
+            "winRate": 57.1,
+            "sampleSize": 63
           },
           "3m": {
-            "avgReturn": 4.6,
-            "medianReturn": 2.9,
-            "winRate": 64.8,
-            "sampleSize": 54
+            "avgReturn": 4.9,
+            "medianReturn": 3.3,
+            "winRate": 66.1,
+            "sampleSize": 56
           },
           "6m": {
             "avgReturn": 6.2,
@@ -851,16 +851,16 @@
         "occurrences": 133,
         "returns": {
           "1m": {
-            "avgReturn": 1.7,
+            "avgReturn": 1.9,
             "medianReturn": 1.9,
-            "winRate": 71,
-            "sampleSize": 131
+            "winRate": 71.4,
+            "sampleSize": 133
           },
           "3m": {
-            "avgReturn": 3.2,
-            "medianReturn": 1.5,
-            "winRate": 61.9,
-            "sampleSize": 126
+            "avgReturn": 3.3,
+            "medianReturn": 1.7,
+            "winRate": 62.2,
+            "sampleSize": 127
           },
           "6m": {
             "avgReturn": 6.5,
@@ -873,13 +873,13 @@
       {
         "gapBand": "日本が大幅優位 (≥ +20)",
         "tempBand": "沸騰",
-        "occurrences": 78,
+        "occurrences": 81,
         "returns": {
           "1m": {
-            "avgReturn": 0.6,
-            "medianReturn": 0.2,
-            "winRate": 52,
-            "sampleSize": 75
+            "avgReturn": 0.9,
+            "medianReturn": 0.5,
+            "winRate": 53.8,
+            "sampleSize": 78
           },
           "3m": {
             "avgReturn": 3.7,
@@ -888,10 +888,10 @@
             "sampleSize": 75
           },
           "6m": {
-            "avgReturn": 3.4,
-            "medianReturn": 1.7,
-            "winRate": 57.1,
-            "sampleSize": 56
+            "avgReturn": 8.5,
+            "medianReturn": 2.9,
+            "winRate": 67.1,
+            "sampleSize": 73
           }
         }
       }
@@ -904,16 +904,16 @@
     "p75": 6,
     "p90": 22,
     "latest": {
-      "date": "2026-04-30",
-      "gap": 11
+      "date": "2026-05-29",
+      "gap": 18
     }
   },
   "latestContext": {
-    "date": "2026-04-30",
-    "jpScore": 88,
-    "usScore": 77,
-    "vix": 16.9,
-    "gap": 11,
+    "date": "2026-05-29",
+    "jpScore": 100,
+    "usScore": 82,
+    "vix": 15.3,
+    "gap": 18,
     "gapBand": "日本がやや優位 (+10〜+20)",
     "jpTempBand": "沸騰"
   },

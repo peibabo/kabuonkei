@@ -106,6 +106,17 @@ function collectEntries(): FeedEntry[] {
   });
 
   entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-advance-decline-ratio`,
+    url: `${SITE_ORIGIN}/learn/what-is-advance-decline-ratio`,
+    title:
+      "騰落レシオとは？水準別の意味と過熱・底値圏の見方を初心者向けに解説",
+    summary:
+      "騰落レシオ（値上がり銘柄数÷値下がり銘柄数）の意味、25 日移動平均の計算方法、「120 超え＝過熱／70 割れ＝底値圏」という水準別の目安、だましシグナルへの注意、株温計の市場温度スコアとの関係を解説。",
+    publishedAt: "2026-06-18",
+    updatedAt: "2026-06-18",
+  });
+
+  entries.push({
     id: `${SITE_ORIGIN}/learn/what-is-vix`,
     url: `${SITE_ORIGIN}/learn/what-is-vix`,
     title:

@@ -95,6 +95,17 @@ function collectEntries(): FeedEntry[] {
   });
 
   entries.push({
+    id: `${SITE_ORIGIN}/learn/when-to-buy-stocks`,
+    url: `${SITE_ORIGIN}/learn/when-to-buy-stocks`,
+    title:
+      "株の買い時はいつ？過熱感・底値の見極め方を指標から整理（まとめ）",
+    summary:
+      "「株の買い時」を 1 指標で当てる方法はない。センチメント・需給・リスク・マクロの 4 カテゴリで過熱感と底値圏を見極める考え方を、各指標の解説記事と市場温度スコアへの導線つきで整理したまとめ記事。",
+    publishedAt: "2026-06-18",
+    updatedAt: "2026-06-18",
+  });
+
+  entries.push({
     id: `${SITE_ORIGIN}/learn/what-is-vix`,
     url: `${SITE_ORIGIN}/learn/what-is-vix`,
     title:

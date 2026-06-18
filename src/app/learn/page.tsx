@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "when-to-buy-stocks",
+    icon: "🧭",
+    title:
+      "株の買い時はいつ？過熱感・底値の見極め方を指標から整理（まとめ）",
+    description:
+      "「株の買い時」を 1 指標で当てる方法はありません。センチメント・需給・リスク・マクロ（為替）の 4 カテゴリで過熱感と底値圏を見極める考え方を、各指標の解説記事と市場温度スコアへの導線つきで整理したまとめ記事。",
+    publishedAt: "2026-06-18",
+  },
+  {
     slug: "what-is-drawdown",
     icon: "📉",
     title:

@@ -106,6 +106,17 @@ function collectEntries(): FeedEntry[] {
   });
 
   entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-nikkei-vi`,
+    url: `${SITE_ORIGIN}/learn/what-is-nikkei-vi`,
+    title:
+      "日経VIとは？VIX との違いと日本市場の不安心理の測り方を初心者向けに解説",
+    summary:
+      "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX との違い、平時20前後／30超で警戒／40超でパニックという水準の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を解説。",
+    publishedAt: "2026-06-18",
+    updatedAt: "2026-06-18",
+  });
+
+  entries.push({
     id: `${SITE_ORIGIN}/learn/what-is-advance-decline-ratio`,
     url: `${SITE_ORIGIN}/learn/what-is-advance-decline-ratio`,
     title:

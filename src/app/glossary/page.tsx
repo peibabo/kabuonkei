@@ -55,6 +55,7 @@ const TERMS: GlossaryTerm[] = [
   { id: "margin-ratio", term: "信用倍率" },
   { id: "arbitrage-balance", term: "裁定残（裁定買い残・裁定売り残）" },
   { id: "investor-type-trading", term: "投資主体別売買動向" },
+  { id: "advance-decline-ratio", term: "騰落レシオ" },
   { id: "usdjpy-momentum", term: "ドル円モメンタム" },
   { id: "drawdown", term: "ドローダウン（DD）と最大ドローダウン" },
   { id: "dca", term: "DCA（ドルコスト平均法）" },
@@ -268,6 +269,30 @@ export default function GlossaryPage() {
               className="underline hover:text-gray-900"
             >
               「投資部門別売買動向とは？」
+            </Link>
+            にまとめています。
+          </p>
+        </section>
+
+        <section id="advance-decline-ratio" className="scroll-mt-16">
+          <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            騰落レシオ
+          </h2>
+          <p className="text-base leading-relaxed">
+            騰落レシオは<strong>「値上がり銘柄数 ÷ 値下がり銘柄数 × 100」</strong>で計算する需給・過熱感指標です。
+            通常は直近 25 営業日の合計で割る<strong>25 日騰落レシオ</strong>が使われます。個別株価ではなく「上がった銘柄と下がった銘柄の数」に注目するため、
+            指数では見えにくい<strong>市場の幅（マーケット・ブレッド）</strong>を映すのが特徴です。
+            目安として<strong>120 超えで過熱・警戒、100 前後で中立、70 割れで売られすぎ・底値圏</strong>と語られますが、
+            強い上昇トレンドでは過熱が続くこともあり、単独で売買を判断する指標ではありません。
+          </p>
+          <p className="text-base leading-relaxed mt-2 text-gray-600">
+            株温計の市場温度スコアは騰落レシオを直接の構成要素にはしていませんが、「相場の過熱／冷え込みを掴む」狙いは共通です。
+            初心者向けの腰を据えた解説は{" "}
+            <Link
+              href="/learn/what-is-advance-decline-ratio"
+              className="underline hover:text-gray-900"
+            >
+              「騰落レシオとは？」
             </Link>
             にまとめています。
           </p>

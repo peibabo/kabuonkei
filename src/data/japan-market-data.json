@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-06-17",
+    "generatedAt": "2026-06-18",
     "weeks": [
-      {
-        "weekLabel": "2026年5月第1週",
-        "startDate": "2026-05-07",
-        "endDate": "2026-05-08",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": 12096.5
-          },
-          {
-            "name": "個人",
-            "netAmount": -4684
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -500.5
-          },
-          {
-            "name": "投資信託",
-            "netAmount": -2694.3
-          },
-          {
-            "name": "事業法人",
-            "netAmount": -745.1
-          }
-        ]
-      },
       {
         "weekLabel": "2026年5月第2週",
         "startDate": "2026-05-11",
@@ -136,17 +109,39 @@
             "netAmount": 3543.8
           }
         ]
+      },
+      {
+        "weekLabel": "2026年6月第2週",
+        "startDate": "2026-06-08",
+        "endDate": "2026-06-12",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": -4871.2
+          },
+          {
+            "name": "個人",
+            "netAmount": -5250.5
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -21
+          },
+          {
+            "name": "投資信託",
+            "netAmount": 887.9
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 3170
+          }
+        ]
       }
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-06-17",
+    "generatedAt": "2026-06-18",
     "daily": [
-      {
-        "date": "2026-06-02",
-        "buyBalance": 657.7,
-        "sellBalance": 0
-      },
       {
         "date": "2026-06-03",
         "buyBalance": 711,
@@ -191,11 +186,16 @@
         "date": "2026-06-15",
         "buyBalance": 676.7,
         "sellBalance": 2.8
+      },
+      {
+        "date": "2026-06-16",
+        "buyBalance": 676.2,
+        "sellBalance": 2.9
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-06-17",
+    "generatedAt": "2026-06-18",
     "weekly": [
       {
         "date": "2026-05-15",

@@ -29,6 +29,15 @@ interface LearnArticle {
 
 const ARTICLES: LearnArticle[] = [
   {
+    slug: "what-is-nikkei-vi",
+    icon: "🌡️",
+    title:
+      "日経VIとは？VIX との違いと日本市場の不安心理の測り方を初心者向けに解説",
+    description:
+      "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX との違い（対象指数・算出元）、平時20前後／30超で警戒／40超でパニックという水準別の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を初心者向けに整理。",
+    publishedAt: "2026-06-18",
+  },
+  {
     slug: "what-is-drawdown",
     icon: "📉",
     title:

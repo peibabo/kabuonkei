@@ -101,6 +101,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${siteUrl}/learn/what-is-nikkei-vi`,
+      lastModified: new Date("2026-06-18"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${siteUrl}/learn/what-is-advance-decline-ratio`,
       lastModified: new Date("2026-06-18"),
       changeFrequency: "monthly",

@@ -101,6 +101,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${siteUrl}/learn/what-is-usdjpy-momentum`,
+      lastModified: new Date("2026-06-18"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${siteUrl}/learn/what-is-vix`,
       lastModified: new Date("2026-04-28"),
       changeFrequency: "monthly",

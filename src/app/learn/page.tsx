@@ -38,6 +38,24 @@ const ARTICLES: LearnArticle[] = [
     publishedAt: "2026-06-18",
   },
   {
+    slug: "what-is-usdjpy-momentum",
+    icon: "💴",
+    title:
+      "円安・円高と株価の関係とは？リスクオフで円高になる仕組みを初心者向けに解説",
+    description:
+      "なぜ円安は日本株に追い風で円高は逆風なのか、リスクオフで「円高＋株安」が同時に起きる仕組み（円キャリー巻き戻し）、単純な逆相関では読めない注意点、株温計が使う「ドル円モメンタム」（C5 要素）を初心者向けに整理。",
+    publishedAt: "2026-06-18",
+  },
+  {
+    slug: "what-is-nikkei-vi",
+    icon: "🌡️",
+    title:
+      "日経VIとは？VIX との違いと日本市場の不安心理の測り方を初心者向けに解説",
+    description:
+      "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX との違い（対象指数・算出元）、平時20前後／30超で警戒／40超でパニックという水準別の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を初心者向けに整理。",
+    publishedAt: "2026-06-18",
+  },
+  {
     slug: "what-is-advance-decline-ratio",
     icon: "📈",
     title:

@@ -316,7 +316,7 @@ export default function WhatIsAdvanceDeclineRatioPage() {
             >
               市場温度スコア（日本版）
             </Link>
-            は、C1（日経225 の移動平均乖離率）・C2（裁定残）・C3（海外勢フロー）・C4（信用倍率）・C5（ドル円モメンタム）の
+            は、C1（日経225 の移動平均乖離率）・C2（海外勢フロー）・C3（信用倍率）・C4（裁定残）・C5（ドル円モメンタム）の
             5 要素から算出しており、<strong>騰落レシオは現状の構成要素には含まれていません</strong>。
           </p>
           <p className="text-base leading-relaxed mt-3">

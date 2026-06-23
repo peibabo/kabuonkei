@@ -10,7 +10,7 @@ const ARTICLE_PATH = "/learn/what-is-arbitrage-balance";
 const ARTICLE_TITLE =
   "裁定残とは？裁定買い残・売り残の意味と SQ 前後で気にすべき理由";
 const ARTICLE_DESCRIPTION =
-  "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX が毎営業日 16:00 に公表する日次データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計の温度スコア C2 要素としての扱いまでまとめます。";
+  "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX が毎営業日 16:00 に公表する日次データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計の温度スコア C4 要素としての扱いまでまとめます。";
 const PUBLISHED_AT = "2026-05-08";
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ const TOC_ITEMS = [
   { href: "#two-balances", label: "裁定買い残と裁定売り残の違い" },
   { href: "#sq", label: "SQ 前後で何が起きるか" },
   { href: "#how-to-read", label: "読み方のコツ 4 つ" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計 C2 要素）" },
+  { href: "#temperature", label: "温度スコアとの関係（株温計 C4 要素）" },
   { href: "#where", label: "毎日どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -138,7 +138,7 @@ export default function WhatIsArbitrageBalancePage() {
             </li>
             <li>
               ただし<strong>絶対水準だけでは判断材料にならない</strong>のが実情。
-              株温計では裁定残バランスを温度スコアの C2 要素として、他 4 要素と合わせて統合しています
+              株温計では裁定残バランスを温度スコアの C4 要素として、他 4 要素と合わせて統合しています
             </li>
           </ul>
         </section>
@@ -217,7 +217,7 @@ export default function WhatIsArbitrageBalancePage() {
           <p className="text-base leading-relaxed mt-3">
             実務的には<strong>「買い残 − 売り残」</strong>を「裁定残バランス」として見ることが多く、
             このバランスが大きくプラス（買い残優勢）なら現物売り圧力、大きくマイナスなら現物買い圧力が積み上がっている、
-            と読みます。<strong>株温計の C2 要素はこの「バランス」をスコア化</strong>しています。
+            と読みます。<strong>株温計の C4 要素はこの「バランス」をスコア化</strong>しています。
           </p>
         </section>
 
@@ -294,11 +294,11 @@ export default function WhatIsArbitrageBalancePage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計 C2 要素）
+            温度スコアとの関係（株温計 C4 要素）
           </h2>
           <p className="text-base leading-relaxed">
             株温計の<strong>日本版「市場温度スコア」</strong>では、
-            裁定残のバランス（買い残 − 売り残）を<strong>C2 要素</strong>として組み込んでいます。
+            裁定残のバランス（買い残 − 売り残）を<strong>C4 要素</strong>として組み込んでいます。
             裁定買い残優勢が長期分布の中で高水準なら<strong>「過熱（熱い）」側に温度を引き上げる</strong>、
             裁定売り残優勢が高水準なら<strong>「冷え込み（冷たい）」側に引き下げる</strong>方向に働きます。
           </p>
@@ -318,20 +318,20 @@ export default function WhatIsArbitrageBalancePage() {
                   <td>日経225 の 125 日移動平均との乖離率</td>
                   <td>結果としての株価</td>
                 </tr>
-                <tr className="bg-amber-50">
-                  <td className="font-semibold">C2</td>
-                  <td>裁定残バランス</td>
-                  <td>本記事の主題（証券会社・機関投資家の自己ポジション）</td>
-                </tr>
                 <tr>
-                  <td className="font-semibold">C3</td>
+                  <td className="font-semibold">C2</td>
                   <td>投資主体別売買動向（外国人フロー）</td>
                   <td>海外投資家</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">C4</td>
+                  <td className="font-semibold">C3</td>
                   <td>信用倍率</td>
                   <td>個人投資家</td>
+                </tr>
+                <tr className="bg-amber-50">
+                  <td className="font-semibold">C4</td>
+                  <td>裁定残バランス</td>
+                  <td>本記事の主題（証券会社・機関投資家の自己ポジション）</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">C5</td>
@@ -343,7 +343,7 @@ export default function WhatIsArbitrageBalancePage() {
           </div>
 
           <p className="text-base leading-relaxed mt-3">
-            注目したいのは、<strong>C2（裁定残）/ C3（外国人）/ C4（信用倍率）</strong>がそれぞれ
+            注目したいのは、<strong>C4（裁定残）/ C2（外国人）/ C3（信用倍率）</strong>がそれぞれ
             <strong>異なる主体（自己 / 外国人 / 個人）の動き</strong>を別個に拾っている設計です。
             裁定残単独だと SQ 前後のノイズに振り回されがちですが、
             5 要素の等ウェイト平均で統合することでノイズを相殺し、より安定した「市場の温度」として読めるようにしています。
@@ -373,7 +373,7 @@ export default function WhatIsArbitrageBalancePage() {
             </li>
             <li>
               <strong>株温計のトップページ</strong>: 日本市場データセクションで裁定残バランスの直近水準と推移を可視化。
-              温度スコアの C2 要素として既に組み込まれた数値も毎日反映
+              温度スコアの C4 要素として既に組み込まれた数値も毎日反映
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

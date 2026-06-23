@@ -10,7 +10,7 @@ const ARTICLE_PATH = "/learn/what-is-investor-flow";
 const ARTICLE_TITLE =
   "投資部門別売買動向とは？外国人投資家のフローを毎週どう読むか";
 const ARTICLE_DESCRIPTION =
-  "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。外国人投資家・個人・自己・投資信託など主体別の現物/先物の売買フローを、株温計の温度スコア C3 要素としての扱いも含めて整理。なぜ外国人フローが日本市場の主役と言われるのかも具体的な数字で示します。";
+  "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。外国人投資家・個人・自己・投資信託など主体別の現物/先物の売買フローを、株温計の温度スコア C2 要素としての扱いも含めて整理。なぜ外国人フローが日本市場の主役と言われるのかも具体的な数字で示します。";
 const PUBLISHED_AT = "2026-05-08";
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ const TOC_ITEMS = [
   { href: "#categories", label: "主要な投資主体 6 区分" },
   { href: "#foreign", label: "なぜ外国人フローが主役なのか" },
   { href: "#how-to-read", label: "読み方のコツ 4 つ" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計 C3 要素）" },
+  { href: "#temperature", label: "温度スコアとの関係（株温計 C2 要素）" },
   { href: "#where", label: "毎週どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -169,7 +169,7 @@ export default function WhatIsInvestorFlowPage() {
               個人と外国人は<strong>逆方向に動くことが多い</strong>。外国人売り越し → 個人買い向かい、というパターンは下落相場の代表的なサイン
             </li>
             <li>
-              株温計では外国人フローを日本版温度スコアの<strong>C3 要素</strong>として組み込み、毎週の売買を温度に反映させています
+              株温計では外国人フローを日本版温度スコアの<strong>C2 要素</strong>として組み込み、毎週の売買を温度に反映させています
             </li>
           </ul>
         </section>
@@ -307,11 +307,11 @@ export default function WhatIsInvestorFlowPage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計 C3 要素）
+            温度スコアとの関係（株温計 C2 要素）
           </h2>
           <p className="text-base leading-relaxed">
             株温計の<strong>日本版「市場温度スコア」</strong>では、外国人投資家のフローを
-            <strong>C3 要素</strong>として組み込んでいます。具体的には、JPX 公表の週次データから
+            <strong>C2 要素</strong>として組み込んでいます。具体的には、JPX 公表の週次データから
             外国人の現物買越額を追跡し、長期分布の中での相対水準（スコア化）に変換しています。
           </p>
 
@@ -330,20 +330,20 @@ export default function WhatIsInvestorFlowPage() {
                   <td>日経225 の 125 日移動平均との乖離率</td>
                   <td>結果としての株価（外国人フローの帰結）</td>
                 </tr>
-                <tr>
-                  <td className="font-semibold">C2</td>
-                  <td>裁定残バランス</td>
-                  <td>主に証券会社の自己ポジション（独立）</td>
-                </tr>
                 <tr className="bg-amber-50">
-                  <td className="font-semibold">C3</td>
+                  <td className="font-semibold">C2</td>
                   <td>投資主体別売買動向（外国人フロー）</td>
                   <td>本記事の主題</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">C4</td>
+                  <td className="font-semibold">C3</td>
                   <td>信用倍率</td>
                   <td>個人投資家のポジション偏り（外国人と独立、逆相関しやすい）</td>
+                </tr>
+                <tr>
+                  <td className="font-semibold">C4</td>
+                  <td>裁定残バランス</td>
+                  <td>主に証券会社の自己ポジション（独立）</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">C5</td>
@@ -355,7 +355,7 @@ export default function WhatIsInvestorFlowPage() {
           </div>
 
           <p className="text-base leading-relaxed mt-3">
-            注目したいのは<strong>C3（外国人フロー）と C4（信用倍率）の対角配置</strong>です。
+            注目したいのは<strong>外国人フロー（C2）と信用倍率（C3）を別要素として捉えている点</strong>です。
             外国人の動きと個人の動きを別々の要素で捉えることで、
             「外国人売り越し × 個人買い越し」のような典型パターンが温度スコアの中で互いに打ち消し合い、
             相対的に温度が中立に保たれる仕組みになっています。
@@ -385,7 +385,7 @@ export default function WhatIsInvestorFlowPage() {
             </li>
             <li>
               <strong>株温計のトップページ</strong>: 日本市場データセクションで外国人投資家フローの
-              直近水準と推移を可視化。温度スコアの C3 要素として既に組み込まれた数値も毎日反映
+              直近水準と推移を可視化。温度スコアの C2 要素として既に組み込まれた数値も毎日反映
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

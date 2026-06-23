@@ -175,8 +175,8 @@ export default function GlossaryPage() {
           </h2>
           <p className="text-base leading-relaxed">
             <strong>市場温度スコア</strong>は、株温計が公開データから独自計算する 0〜100 のセンチメント指標です。
-            日本版は C1（日経225 の 125 日移動平均との乖離率）、C2（裁定残バランス）、C3（投資主体別の海外勢フロー）、
-            C4（信用倍率）、C5（USDJPY 50 日モメンタム）の 5 要素を等ウェイト平均して算出しており、
+            日本版は C1（日経225 の 125 日移動平均との乖離率）、C2（投資主体別の海外勢フロー）、C3（信用倍率）、
+            C4（裁定残バランス）、C5（USDJPY 50 日モメンタム）の 5 要素を等ウェイト平均して算出しており、
             米国版は VIX を主系列とした推定値で表示しています。
             <strong> 0 に近いほど「冷たい（悲観）」、100 に近いほど「熱い（楽観）」</strong>という設計です。
           </p>
@@ -201,7 +201,7 @@ export default function GlossaryPage() {
             水準感は時代や個別銘柄構成によって変動します。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計では信用倍率を日本版温度スコアの C4 要素として組み込み、
+            株温計では信用倍率を日本版温度スコアの C3 要素として組み込み、
             {" "}
             <Link href="/analysis/margin-ratio-temperature" className="underline hover:text-gray-900">
               「信用倍率 × 株温計」分析記事
@@ -229,7 +229,7 @@ export default function GlossaryPage() {
             <strong>裁定買い残の急増は将来の現物売り（解消売り）要因</strong>として警戒され、SQ（先物・オプションの清算日）前後の需給を読む材料になります。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計の日本版スコアでは裁定残の推移を C2 要素として参照し、
+            株温計の日本版スコアでは裁定残の推移を C4 要素として参照し、
             {" "}
             <Link href="/" className="underline hover:text-gray-900">
               トップの日本市場データセクション
@@ -257,7 +257,7 @@ export default function GlossaryPage() {
             と言われ、市場の方向感を最も大きく左右する主体としてフォーカスされます。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計では外国人フローを日本版スコアの C3 要素に組み込んでおり、過去の暴落局面では
+            株温計では外国人フローを日本版スコアの C2 要素に組み込んでおり、過去の暴落局面では
             {" "}
             <Link href="/events" className="underline hover:text-gray-900">
               主要イベント一覧

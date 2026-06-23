@@ -45,7 +45,7 @@ const TOC_ITEMS = [
   { href: "#bands", label: "水準別の意味（経験則の目安）" },
   { href: "#myth", label: "「4 倍超え＝危険」は本当か" },
   { href: "#pitfalls", label: "見方の注意点 4 つ" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計 C4 要素）" },
+  { href: "#temperature", label: "温度スコアとの関係（株温計 C3 要素）" },
   { href: "#where", label: "毎週どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -165,7 +165,7 @@ export default function WhatIsMarginRatioPage() {
               単独指標としては<strong>意外と頼りない</strong>シグナルでした
             </li>
             <li>
-              本領発揮するのは<strong>「市場温度との組合せ」</strong>。株温計は信用倍率を C4 要素として、
+              本領発揮するのは<strong>「市場温度との組合せ」</strong>。株温計は信用倍率を C3 要素として、
               他 4 要素（モメンタム・需給・外国人フロー・為替）と等ウェイトで統合した日本版温度スコアを毎日公開しています
             </li>
             <li>
@@ -312,11 +312,11 @@ export default function WhatIsMarginRatioPage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計 C4 要素）
+            温度スコアとの関係（株温計 C3 要素）
           </h2>
           <p className="text-base leading-relaxed">
             株温計の<strong>日本版「市場温度スコア」</strong>は、5 つの要素を等ウェイトで統合した独自指標です。
-            信用倍率はそのうちの<strong>C4 要素</strong>として組み込まれています。
+            信用倍率はそのうちの<strong>C3 要素</strong>として組み込まれています。
           </p>
 
           <div className="overflow-x-auto not-prose mt-4">
@@ -336,18 +336,18 @@ export default function WhatIsMarginRatioPage() {
                 </tr>
                 <tr>
                   <td className="font-semibold">C2</td>
-                  <td>裁定残バランス</td>
-                  <td>同じ「需給系」で補完関係</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C3</td>
                   <td>外国人投資家フロー</td>
                   <td>主体（外国人）視点で補完</td>
                 </tr>
                 <tr className="bg-amber-50">
-                  <td className="font-semibold">C4</td>
+                  <td className="font-semibold">C3</td>
                   <td>信用倍率</td>
                   <td>本記事の主題（個人投資家のポジション偏り）</td>
+                </tr>
+                <tr>
+                  <td className="font-semibold">C4</td>
+                  <td>裁定残バランス</td>
+                  <td>同じ「需給系」で補完関係</td>
                 </tr>
                 <tr>
                   <td className="font-semibold">C5</td>
@@ -360,7 +360,7 @@ export default function WhatIsMarginRatioPage() {
 
           <p className="text-base leading-relaxed mt-3">
             ねらいは<strong>「信用倍率の弱さを他要素で補強する」</strong>こと。
-            信用倍率は単独では精度が出にくい一方、<strong>需給系（C2）と主体（C3）と組み合わさるとシグナルとしての強さが増す</strong>
+            信用倍率は単独では精度が出にくい一方、<strong>需給系（C4=裁定残）と主体（C2=外国人フロー）と組み合わさるとシグナルとしての強さが増す</strong>
             傾向があります。株温計の温度スコアは「信用倍率も見ているが、それだけに頼っていない」という設計です。
           </p>
           <p className="text-base leading-relaxed mt-3">
@@ -396,7 +396,7 @@ export default function WhatIsMarginRatioPage() {
             </li>
             <li>
               <strong>株温計のトップページ</strong>: 日本市場データセクションで最新の信用倍率と推移、
-              および温度スコアの C4 要素として組み込まれた数値を表示
+              および温度スコアの C3 要素として組み込まれた数値を表示
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

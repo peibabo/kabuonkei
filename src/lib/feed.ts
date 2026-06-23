@@ -95,6 +95,17 @@ function collectEntries(): FeedEntry[] {
   });
 
   entries.push({
+    id: `${SITE_ORIGIN}/learn/what-is-usdjpy-momentum`,
+    url: `${SITE_ORIGIN}/learn/what-is-usdjpy-momentum`,
+    title:
+      "円安・円高と株価の関係とは？リスクオフで円高になる仕組みを初心者向けに解説",
+    summary:
+      "なぜ円安は日本株に追い風で円高は逆風なのか、リスクオフで「円高＋株安」が同時に起きる仕組み（円キャリー巻き戻し）、単純な逆相関では読めない注意点、株温計が使うドル円モメンタム（C5 要素）を解説。",
+    publishedAt: "2026-06-18",
+    updatedAt: "2026-06-18",
+  });
+
+  entries.push({
     id: `${SITE_ORIGIN}/learn/what-is-nikkei-vi`,
     url: `${SITE_ORIGIN}/learn/what-is-nikkei-vi`,
     title:

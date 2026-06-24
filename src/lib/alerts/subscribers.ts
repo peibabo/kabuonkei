@@ -85,16 +85,10 @@ export async function createOrUpdatePendingSubscriber(
   const redis = getRedis();
   const emailHash = hashEmail(email);
 
-  const blocklisted = await redis.get<string>(blocklistKey(emailHash));
-  if (blocklisted) {
-    return {
-      uuid: "",
-      verifyToken: "",
-      unsubscribeToken: "",
-      isNew: false,
-    };
-  }
-
+  // 配信解除済み（blocklist 入り）でも再登録は許可する。本人が再びベルから
+  // 登録 → 確認メールのリンクを踏む、というダブルオプトインが「再び受け取りたい」
+  // という意思の証明になるため。爆撃対策は IP/email レート制限が担う。
+  // blocklist は verifySubscriber 成功時にクリアする（下記参照）。
   const existingUuid = await redis.get<string>(emailIndexKey(emailHash));
   const uuid = existingUuid ?? randomUUID();
   const unsubscribeToken = createToken(uuid, "unsubscribe", now);
@@ -163,6 +157,11 @@ export async function verifySubscriber(
     verifiedAt: new Date(now).toISOString(),
   });
   await redis.del(verifyPendingKey(tokenHash));
+  // 過去に配信解除していた場合の blocklist を解除する。verify クリック＝本人が
+  // 再受信を望んだ証明なので、ここで消して診断・将来ロジックの整合を保つ。
+  if (typeof sub.emailHash === "string" && sub.emailHash) {
+    await redis.del(blocklistKey(sub.emailHash));
+  }
   for (const v of variants) {
     await redis.sadd(variantIndexKey(v), uuid);
   }

@@ -73,7 +73,7 @@
   - 9:00 以降だと日本市場が開いて「今日の温度」と言えない非対称が生じるため、寄り前時間帯に限定
   - 日本版は `snapshot-japan-fg.yml`（平日17:00 JST）で取得済みのデータを反映 = **前営業日引け時点**
   - 米国版は直前の米国引け（JST 5:00〜6:00）時点の VIX/F&G = 完全確定データ
-- **投稿内容**: テキスト中心。極端温度（score ≤ 20 or ≥ 80）時のみ動的生成画像（`/api/og/daily`）を添付
+- **投稿内容**: テキスト＋画像。日米いずれかのスコアが取得できていれば毎日、動的生成画像（`/api/og/daily`）を添付する（`shouldAttachImage`）。画像を添付しないと X が投稿本文の URL からトップページの静的 `og:image`（デフォルトの「株温計」画像）をスクレイプしてしまうため、通常日も温度入りキャプチャを必ず添付する。極端温度（score ≤ 20 or ≥ 80）時はテキスト側のヘッダーが「⚠️ 極寒アラート」「🔥 沸騰アラート」に変化する
 - **投稿スクリプト**: `scripts/post-daily-temperature-tweet.ts`（`npm run post:daily-tweet`、`-- --dry-run` で投稿せず出力確認）
 - **動的OG画像**: `src/app/api/og/daily/route.tsx`（`ImageResponse` で日米温度を可視化した1200×630 PNG）
 - **自動実行**: `.github/workflows/post-daily-tweet.yml`（cron `30 22 * * 0-4`、手動 workflow_dispatch も可）

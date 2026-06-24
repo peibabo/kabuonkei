@@ -135,26 +135,23 @@ describe("buildTweetBody", () => {
 });
 
 describe("shouldAttachImage", () => {
-  it("両方 null → false", () => {
+  it("両方 null → false（日米とも欠損）", () => {
     expect(shouldAttachImage(null, null)).toBe(false);
   });
-  it("日米とも中庸 → false", () => {
-    expect(shouldAttachImage(50, 55)).toBe(false);
+  it("日米とも中庸（通常日）→ true（毎日添付）", () => {
+    expect(shouldAttachImage(50, 55)).toBe(true);
   });
-  it("日本が極寒(20) → true（境界値）", () => {
+  it("日本が極寒(20) → true", () => {
     expect(shouldAttachImage(20, 50)).toBe(true);
   });
-  it("日本が21 → false（境界外）", () => {
-    expect(shouldAttachImage(21, 50)).toBe(false);
-  });
-  it("米国が沸騰(80) → true（境界値）", () => {
+  it("米国が沸騰(80) → true", () => {
     expect(shouldAttachImage(50, 80)).toBe(true);
   });
-  it("米国が79 → false（境界外）", () => {
-    expect(shouldAttachImage(50, 79)).toBe(false);
+  it("日本のみ定義 → true", () => {
+    expect(shouldAttachImage(74, null)).toBe(true);
   });
-  it("日本のみ定義+極寒 → true", () => {
-    expect(shouldAttachImage(10, null)).toBe(true);
+  it("米国のみ定義 → true", () => {
+    expect(shouldAttachImage(null, 68)).toBe(true);
   });
 });
 

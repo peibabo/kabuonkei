@@ -77,13 +77,18 @@ export interface TweetContext {
   siteUrl: string;
 }
 
-/** 日米いずれかが極端温度 (score ≤ 20 or ≥ 80) */
+/**
+ * 日米いずれかのスコアが取得できていれば温度入りキャプチャを添付する。
+ * 両方欠損のときだけ false（この場合は投稿自体がスキップされる）。
+ * 以前は極端温度 (≤20 / ≥80) の日だけ添付していたが、通常日は X が
+ * トップページの静的 og:image をスクレイプしデフォルト画像になっていたため、
+ * 毎日 /api/og/daily の動的画像を添付する方針に変更した。
+ */
 export function shouldAttachImage(
   japanScore: number | null,
   usScore: number | null,
 ): boolean {
-  const extreme = (s: number | null) => s != null && (s <= 20 || s >= 80);
-  return extreme(japanScore) || extreme(usScore);
+  return japanScore != null || usScore != null;
 }
 
 function extremeBadge(
@@ -395,7 +400,7 @@ async function main() {
   console.log("\n---- 投稿文 ----");
   console.log(text);
   console.log("----------------");
-  console.log(`画像添付: ${attach ? "あり（極端温度）" : "なし（通常日）"}`);
+  console.log(`画像添付: ${attach ? "あり（温度キャプチャ）" : "なし（日米とも欠損）"}`);
   console.log(`加重文字数(概算): ${weighted}/280`);
 
   if (weighted > 280) {

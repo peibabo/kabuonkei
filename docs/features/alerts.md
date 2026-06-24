@@ -57,7 +57,7 @@
 | `alerts:rate:ip:{ip}` | Int（INCR） | IP レート制限 5/10min | 10min |
 | `alerts:rate:email:{emailHash}` | Int（INCR） | email レート制限 3/1h | 1h |
 | `alerts:failures:{YYYY-MM-DD(JST)}:{variant}` | Set | 送信失敗ログ | 30d |
-| `alerts:blocklist:{emailHash}` | String | 配信解除後の再登録ブロック（ハッシュのみ） | 365d |
+| `alerts:blocklist:{emailHash}` | String | 配信解除した記録（ハッシュのみ）。再登録はブロックせず、verify 成功時に自動クリア。診断・分析用 | 365d |
 
 ## HMAC トークン（`src/lib/alerts/tokens.ts`）
 
@@ -77,6 +77,7 @@
 - **レート制限**: IP 5/10min、email 3/1h
 - **Email enumeration 防止**: 既存 email 再登録時、および rate-limit 超過時も成功レスポンス文言を返す
 - **Double opt-in**: 確認メール経由でのみ verified
+- **配信解除後の再登録**: 解除すると `alerts:blocklist:{emailHash}` を記録するが、再登録はブロックしない（旧仕様は 365 日無音ブロックで、解除済みユーザーが「確認メールを送信しました」と表示されたまま二度と登録できないトラップだった）。再登録時は通常どおり確認メールを送り、verify 成功＝本人の再受信意思の証明として blocklist を自動クリアする。爆撃対策は IP/email レート制限が担う
 - **reCAPTCHA 不採用**: MVP では UX 優先。被害が出たら Cloudflare Turnstile を追加
 
 ## API Route Handlers
@@ -158,7 +159,7 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 - **Resend 枠監視**: 無料枠 3,000 通/月。購読者が増えてきたら有料化 or SendGrid/Brevo への差し替えを検討（`src/lib/alerts/resend.ts` の 1 ファイル差し替えで移行可）
 - **診断・復旧スクリプト**:
   - `scripts/list-alert-subscribers.ts [--verified-only] [--variant jp_hot]` — 全購読者を TSV で一覧（email / verified / variants / createdAt / verifiedAt）。標準エラーに variant 別カウントのサマリを出す
-  - `scripts/diagnose-alerts.ts <email>` — 指定 email の登録状態 / verified / variant index 所属 / 各 last-state を表示
+  - `scripts/diagnose-alerts.ts <email>` — 指定 email の登録状態 / verified / variant index 所属 / 各 last-state / blocklist（配信解除記録）/ email rate-limit カウンタを表示
   - `scripts/repair-alert-indices.ts [--dry-run]` — 全 verified subscriber を `alerts:index:{variant}` に再登録し、`alerts:last-state:{us|jp}-fg` を DEL（再 dispatch を可能に）
   - 実行前に `set -a; source .env.local; set +a` で Upstash 認証情報を環境変数に展開する
 

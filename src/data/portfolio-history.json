@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-06-25",
   "dataRange": {
     "from": "2016-04-22",
-    "to": "2026-06-24"
+    "to": "2026-06-25"
   },
   "rule": {
     "bands": [
@@ -19912,6 +19912,14 @@
           "benchmarkDca": 268.69,
           "equityRatio": 0.5112,
           "score": 100
+        },
+        {
+          "date": "2026-06-24",
+          "nav": 274.26,
+          "benchmark": 393.65,
+          "benchmarkDca": 266.33,
+          "equityRatio": 0.509,
+          "score": 100
         }
       ],
       "trades": [
@@ -20445,30 +20453,30 @@
         }
       ],
       "stats": {
-        "totalReturn": 175.5,
-        "benchmarkReturn": 297.15,
-        "alpha": -121.65,
-        "cagr": 10.48,
-        "benchmarkCagr": 14.53,
+        "totalReturn": 174.26,
+        "benchmarkReturn": 293.65,
+        "alpha": -119.39,
+        "cagr": 10.43,
+        "benchmarkCagr": 14.42,
         "maxDrawdown": -27.52,
         "benchmarkMaxDrawdown": -31.8,
-        "sharpe": 0.74,
+        "sharpe": 0.73,
         "benchmarkSharpe": 0.77,
-        "dcaReturn": 168.69,
-        "dcaCagr": 10.21,
+        "dcaReturn": 166.33,
+        "dcaCagr": 10.11,
         "dcaMaxDrawdown": -24.07,
         "dcaSharpe": 0.77,
-        "alphaVsDca": 6.81
+        "alphaVsDca": 7.93
       },
       "current": {
-        "date": "2026-06-23",
+        "date": "2026-06-24",
         "score": 100,
         "band": "沸騰",
-        "equityRatio": 0.5112,
-        "cashRatio": 0.4888,
-        "nav": 275.5,
-        "benchmark": 397.15,
-        "benchmarkDca": 268.69
+        "equityRatio": 0.509,
+        "cashRatio": 0.491,
+        "nav": 274.26,
+        "benchmark": 393.65,
+        "benchmarkDca": 266.33
       },
       "endState": {
         "equityUnits": 0.0020179588117602465,
@@ -41016,6 +41024,14 @@
           "benchmarkDca": 211.47,
           "equityRatio": 0.6491,
           "score": 68
+        },
+        {
+          "date": "2026-06-24",
+          "nav": 255.31,
+          "benchmark": 351.8,
+          "benchmarkDca": 211.26,
+          "equityRatio": 0.6489,
+          "score": 71
         }
       ],
       "trades": [
@@ -41493,30 +41509,30 @@
         }
       ],
       "stats": {
-        "totalReturn": 155.48,
-        "benchmarkReturn": 252.15,
-        "alpha": -96.67,
-        "cagr": 9.66,
-        "benchmarkCagr": 13.18,
+        "totalReturn": 155.31,
+        "benchmarkReturn": 251.8,
+        "alpha": -96.49,
+        "cagr": 9.65,
+        "benchmarkCagr": 13.16,
         "maxDrawdown": -29.17,
         "benchmarkMaxDrawdown": -33.92,
         "sharpe": 0.74,
         "benchmarkSharpe": 0.78,
-        "dcaReturn": 111.47,
-        "dcaCagr": 7.64,
+        "dcaReturn": 111.26,
+        "dcaCagr": 7.63,
         "dcaMaxDrawdown": -18.34,
         "dcaSharpe": 0.73,
-        "alphaVsDca": 44.01
+        "alphaVsDca": 44.05
       },
       "current": {
-        "date": "2026-06-23",
-        "score": 68,
+        "date": "2026-06-24",
+        "score": 71,
         "band": "過熱",
-        "equityRatio": 0.6491,
-        "cashRatio": 0.3509,
-        "nav": 255.48,
-        "benchmark": 352.15,
-        "benchmarkDca": 211.47
+        "equityRatio": 0.6489,
+        "cashRatio": 0.3511,
+        "nav": 255.31,
+        "benchmark": 351.8,
+        "benchmarkDca": 211.26
       },
       "endState": {
         "equityUnits": 0.022515009379180047,

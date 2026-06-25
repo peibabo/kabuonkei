@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-06-24",
+    "generatedAt": "2026-06-25",
     "weeks": [
-      {
-        "weekLabel": "2026年5月第2週",
-        "startDate": "2026-05-11",
-        "endDate": "2026-05-15",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": 5346.4
-          },
-          {
-            "name": "個人",
-            "netAmount": 1671.1
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -2365.6
-          },
-          {
-            "name": "投資信託",
-            "netAmount": 342.7
-          },
-          {
-            "name": "事業法人",
-            "netAmount": 2143.9
-          }
-        ]
-      },
       {
         "weekLabel": "2026年5月第3週",
         "startDate": "2026-05-18",
@@ -136,17 +109,39 @@
             "netAmount": 3170
           }
         ]
+      },
+      {
+        "weekLabel": "2026年6月第3週",
+        "startDate": "2026-06-15",
+        "endDate": "2026-06-19",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": 10680.7
+          },
+          {
+            "name": "個人",
+            "netAmount": -4701.2
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -1347.1
+          },
+          {
+            "name": "投資信託",
+            "netAmount": -5511
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 1975.2
+          }
+        ]
       }
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-06-24",
+    "generatedAt": "2026-06-25",
     "daily": [
-      {
-        "date": "2026-06-09",
-        "buyBalance": 722.7,
-        "sellBalance": 0.6
-      },
       {
         "date": "2026-06-10",
         "buyBalance": 649.9,
@@ -191,11 +186,16 @@
         "date": "2026-06-22",
         "buyBalance": 626.7,
         "sellBalance": 6.3
+      },
+      {
+        "date": "2026-06-23",
+        "buyBalance": 615.8,
+        "sellBalance": 4.6
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-06-24",
+    "generatedAt": "2026-06-25",
     "weekly": [
       {
         "date": "2026-05-22",

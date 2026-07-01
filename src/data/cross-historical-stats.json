@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-01",
+  "generatedAt": "2026-07-01",
   "dataRange": {
-    "from": "2016-06-01",
-    "to": "2026-06-01"
+    "from": "2016-07-01",
+    "to": "2026-07-01"
   },
   "note": "参考値。温度と対象市場が異なるため、同一市場の統計より相関が弱い可能性があります。日付の結合は UTC 日付ベースの簡易結合で、厳密なイベントスタディではありません。",
   "directions": {
@@ -51,10 +51,10 @@
               "sampleSize": 151
             },
             "3m": {
-              "avgReturn": 6.1,
-              "medianReturn": 4.9,
-              "winRate": 77,
-              "sampleSize": 148
+              "avgReturn": 6.6,
+              "medianReturn": 5.1,
+              "winRate": 77.5,
+              "sampleSize": 151
             },
             "6m": {
               "avgReturn": 12.6,
@@ -70,25 +70,25 @@
             41,
             60
           ],
-          "occurrences": 335,
+          "occurrences": 334,
           "stats": {
             "1m": {
-              "avgReturn": 1.4,
+              "avgReturn": 1.3,
               "medianReturn": 1.3,
-              "winRate": 63.3,
-              "sampleSize": 335
+              "winRate": 63.1,
+              "sampleSize": 333
             },
             "3m": {
-              "avgReturn": 4.7,
-              "medianReturn": 2.5,
-              "winRate": 64.2,
-              "sampleSize": 316
+              "avgReturn": 5.9,
+              "medianReturn": 3,
+              "winRate": 65.9,
+              "sampleSize": 331
             },
             "6m": {
-              "avgReturn": 10.2,
-              "medianReturn": 6.2,
-              "winRate": 72.5,
-              "sampleSize": 313
+              "avgReturn": 10,
+              "medianReturn": 6,
+              "winRate": 72.3,
+              "sampleSize": 311
             }
           }
         },
@@ -98,25 +98,25 @@
             61,
             80
           ],
-          "occurrences": 837,
+          "occurrences": 843,
           "stats": {
             "1m": {
-              "avgReturn": 1.3,
-              "medianReturn": 1.3,
-              "winRate": 59.5,
-              "sampleSize": 822
+              "avgReturn": 1.4,
+              "medianReturn": 1.4,
+              "winRate": 59.8,
+              "sampleSize": 826
             },
             "3m": {
               "avgReturn": 4.2,
               "medianReturn": 4.3,
-              "winRate": 66.7,
-              "sampleSize": 802
+              "winRate": 66.2,
+              "sampleSize": 791
             },
             "6m": {
               "avgReturn": 7.1,
-              "medianReturn": 4.8,
-              "winRate": 64.6,
-              "sampleSize": 768
+              "medianReturn": 4.6,
+              "winRate": 64.3,
+              "sampleSize": 762
             }
           }
         },
@@ -126,25 +126,25 @@
             81,
             100
           ],
-          "occurrences": 973,
+          "occurrences": 967,
           "stats": {
             "1m": {
-              "avgReturn": 0.7,
+              "avgReturn": 0.8,
               "medianReturn": 0.9,
-              "winRate": 59.8,
-              "sampleSize": 969
+              "winRate": 60.2,
+              "sampleSize": 963
             },
             "3m": {
               "avgReturn": 1.9,
               "medianReturn": 1.1,
-              "winRate": 57.6,
-              "sampleSize": 971
+              "winRate": 57.3,
+              "sampleSize": 963
             },
             "6m": {
-              "avgReturn": 4.4,
+              "avgReturn": 4.7,
               "medianReturn": 2.3,
-              "winRate": 60.3,
-              "sampleSize": 952
+              "winRate": 60.5,
+              "sampleSize": 956
             }
           }
         }
@@ -223,10 +223,10 @@
               "sampleSize": 653
             },
             "3m": {
-              "avgReturn": 2.6,
+              "avgReturn": 2.7,
               "medianReturn": 3.6,
-              "winRate": 71.6,
-              "sampleSize": 644
+              "winRate": 71.9,
+              "sampleSize": 652
             },
             "6m": {
               "avgReturn": 5,
@@ -242,25 +242,25 @@
             61,
             80
           ],
-          "occurrences": 819,
+          "occurrences": 827,
           "stats": {
             "1m": {
               "avgReturn": 0.7,
               "medianReturn": 1.6,
-              "winRate": 67.9,
-              "sampleSize": 806
+              "winRate": 67.6,
+              "sampleSize": 819
             },
             "3m": {
-              "avgReturn": 2,
-              "medianReturn": 3.8,
-              "winRate": 71.6,
-              "sampleSize": 784
+              "avgReturn": 2.1,
+              "medianReturn": 3.9,
+              "winRate": 72.1,
+              "sampleSize": 798
             },
             "6m": {
-              "avgReturn": 4.2,
+              "avgReturn": 4.3,
               "medianReturn": 4.4,
-              "winRate": 66.3,
-              "sampleSize": 759
+              "winRate": 66.4,
+              "sampleSize": 762
             }
           }
         },
@@ -270,25 +270,25 @@
             81,
             100
           ],
-          "occurrences": 332,
+          "occurrences": 324,
           "stats": {
             "1m": {
-              "avgReturn": 1.5,
-              "medianReturn": 1.6,
-              "winRate": 75.5,
-              "sampleSize": 327
+              "avgReturn": 1.6,
+              "medianReturn": 1.7,
+              "winRate": 74.3,
+              "sampleSize": 311
             },
             "3m": {
-              "avgReturn": 3.4,
+              "avgReturn": 3.3,
               "medianReturn": 4.1,
-              "winRate": 81.4,
-              "sampleSize": 318
+              "winRate": 80.1,
+              "sampleSize": 297
             },
             "6m": {
-              "avgReturn": 8.1,
+              "avgReturn": 8.2,
               "medianReturn": 7.9,
-              "winRate": 93.4,
-              "sampleSize": 287
+              "winRate": 93.3,
+              "sampleSize": 284
             }
           }
         }

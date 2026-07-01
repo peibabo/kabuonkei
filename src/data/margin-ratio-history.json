@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-01",
+  "generatedAt": "2026-07-01",
   "dataRange": {
     "from": "2002-08-02",
-    "to": "2026-05-22"
+    "to": "2026-06-19"
   },
   "sources": {
     "consolidated": "https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rq1-att/tvdivq0000015969.xls",
@@ -7268,6 +7268,30 @@
       "buyBalance": 60793.3,
       "sellBalance": 9127.6,
       "ratio": 6.66
+    },
+    {
+      "date": "2026-05-29",
+      "buyBalance": 63915.4,
+      "sellBalance": 9028.2,
+      "ratio": 7.08
+    },
+    {
+      "date": "2026-06-05",
+      "buyBalance": 66958.7,
+      "sellBalance": 8882.8,
+      "ratio": 7.54
+    },
+    {
+      "date": "2026-06-12",
+      "buyBalance": 63733.1,
+      "sellBalance": 8742,
+      "ratio": 7.29
+    },
+    {
+      "date": "2026-06-19",
+      "buyBalance": 64756.4,
+      "sellBalance": 10161.3,
+      "ratio": 6.37
     }
   ]
 }

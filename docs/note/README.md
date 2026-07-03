@@ -44,6 +44,7 @@
 
 - **温度カード（アイキャッチ向け）**: `https://kabuonkei.com/api/og/daily?jp=<score>&us=<score>&date=YYYY-MM-DD` で任意スコア・任意日付の 1200×630 PNG を生成できる（X bot と同じエンドポイント）
 - **サイト UI（ゲージ・チャート）**: 本番サイトのスクリーンショット
+- **統計表**: note は markdown 表非対応。スタイル付き HTML を組んで headless browser で 2x スケール撮影し画像化する（例: `images/backtest-table.png`。免責文と `kabuonkei.com` クレジットを画像内に入れる）
 - 生成した図版は `docs/note/images/` に保存し、原稿から相対パスで参照する
 
 ## 投稿フロー

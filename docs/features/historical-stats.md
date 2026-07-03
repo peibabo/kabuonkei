@@ -43,6 +43,11 @@
 - UI: `src/components/HistoricalPercentileBadge.tsx` を `FearGreedGauge` のスコア直下に組み込み。下位 20% 以下は青系 + ❄️、上位 20% 以上は赤系 + 🔥、それ以外は灰色テキスト
 - 生成順序の依存: `japan-temperature-history.json` を読み込むため `generate:japan-temperature-history` の後に実行する必要あり（CI workflow で順序固定）
 
+## データ品質（異常クオートの除去）
+- Yahoo Finance の日足はまれに桁違いの異常クオートを返す（実例: 2026-03-30/31 に `1306.T` が約 1/10、`1629.T` が約 1/500 の価格で返り、温度帯別リターンに +49,000% 級の偽リターンが混入 → セクターヒートマップの商社・卸売 × 平温が「3ヶ月後 +135%」表示になる事故）
+- 対策: `scripts/_lib/shared.ts::sanitizeDailyCloses()` が各点を前後 ±5 営業日窓の中央値と比較し、3倍超 / 1/3 未満の乖離を破棄する。`fetchDailyCloses()` に組み込み済みなので全生成スクリプトが自動で保護される（除外時は `⚠️` ログ出力）
+- 閾値 3 倍は、コロナショック・令和のブラックマンデー級の正常な暴落（1日 -12%）には反応しない
+
 ## 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
 - GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析・セクターヒートマップ・スコア分布の7種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能

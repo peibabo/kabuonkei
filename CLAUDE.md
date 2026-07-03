@@ -40,7 +40,7 @@
 - [温度アラート（メール通知）](docs/features/alerts.md)
 - [日本市場データ（JPX 需給）](docs/features/japan-market-data.md)
 - [コード構成（src/lib / scripts/_lib の責務マップ）](docs/architecture.md)
-- [公開サイト運用（ページ / ウィジェット / シェア UX / SEO / X Bot / 環境変数）](docs/operations.md)
+- [公開サイト運用（ページ / ウィジェット / シェア UX / SEO / X Bot / note 連載 / 環境変数）](docs/operations.md)
   - SEO の構造化データ: Article / WebSite + Organization / BreadcrumbList / AboutPage + Person + ContactPoint。`events-meta.json` の `relatedSlugs?: string[]`（手動キュレーション、未指定なら日付近接で自動補完）/ `publishedAt?: string`（既定はサイトリリース日 2026-04-19）は任意フィールド
   - Atom フィード `/feed.xml` と用語集 `/glossary` あり。Footer から公開リンク済
   - 解説記事 `/learn/[slug]`（「○○とは？」クエリ対応）は `/glossary` × `/analysis` の中間レイヤー。公開済: `/learn/what-is-vix`、`/learn/what-is-fear-greed`、`/learn/what-is-margin-ratio`、`/learn/what-is-investor-flow`、`/learn/what-is-arbitrage-balance`、`/learn/what-is-drawdown`、`/learn/what-is-advance-decline-ratio`、`/learn/what-is-nikkei-vi`、`/learn/what-is-usdjpy-momentum`、`/learn/when-to-buy-stocks`（買い時まとめハブ）

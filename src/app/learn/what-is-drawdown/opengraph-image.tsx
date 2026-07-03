@@ -9,7 +9,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const charSet =
-    "ドローダウンとは最大DDの意味リターンより怖い理由株温計kabuonkei解説記事過去年抑制検証パーセント";
+    "ドローダウンとは最大DDの意味リターンより怖い理由株温計kabuonkei解説記事過去年SPリーマンバブル崩壊日経コロナショック約";
   const fonts = await buildNotoSansJpFonts(charSet);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(
@@ -146,12 +146,12 @@ export default async function Image() {
               }}
             >
               <span style={{ fontSize: 18, color: "#64748b" }}>
-                温度信号の DD 抑制効果
+                日経225 コロナショック
               </span>
               <span
-                style={{ fontSize: 36, fontWeight: 800, color: "#047857" }}
+                style={{ fontSize: 36, fontWeight: 800, color: "#dc2626" }}
               >
-                約 -3 pp 浅い
+                約 -31 %
               </span>
             </div>
           </div>

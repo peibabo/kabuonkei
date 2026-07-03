@@ -334,7 +334,7 @@ export default function GlossaryPage() {
             <Link href="/portfolio" className="underline hover:text-gray-900">
               温度連動バーチャルポートフォリオ
             </Link>
-            の検証で、温度信号が「リターン向上」よりも「最大DD 抑制（日米とも約 -3pp）」に効いていたことを開示しています。
+            の検証で、温度信号の純寄与がリターンでも最大DDでも限定的〜マイナスだったことを正直に開示しています。
             初心者向けの腰を据えた解説は{" "}
             <Link
               href="/learn/what-is-drawdown"

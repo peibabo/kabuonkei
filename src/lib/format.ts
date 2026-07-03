@@ -15,3 +15,18 @@ export function returnColorClass(value: number | null | undefined): string {
   if (value == null) return "text-gray-400";
   return value > 0 ? "text-red-500" : "text-green-500";
 }
+
+/**
+ * 最大DD の差分（自ポートフォリオDD − 比較対象DD、いずれも負値）を
+ * 「X.Xpp 浅い / 深い」形式で整形する。
+ * DD は負値なので、差分が正 = 自分のほうが浅い（改善）、負 = 深い（悪化）。
+ */
+export function formatDrawdownGap(diffPp: number): string {
+  const abs = Math.abs(diffPp).toFixed(1);
+  return diffPp >= 0 ? `${abs}pp 浅い` : `${abs}pp 深い`;
+}
+
+/** formatDrawdownGap と対になる色クラス（浅い=emerald / 深い=amber） */
+export function drawdownGapColorClass(diffPp: number): string {
+  return diffPp >= 0 ? "text-emerald-700" : "text-amber-700";
+}

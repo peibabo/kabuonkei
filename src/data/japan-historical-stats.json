@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-01",
+  "generatedAt": "2026-07-03",
   "dataRange": {
-    "from": "2016-07-01",
-    "to": "2026-07-01"
+    "from": "2016-07-03",
+    "to": "2026-07-03"
   },
   "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。 TOPIX は連動ETF(1306.T)の日次終値を proxy として同スコアで集計（指数特性の違いによる感度差の比較用）。",
   "levels": [
@@ -119,8 +119,8 @@
         "3m": {
           "avgReturn": 3.5,
           "medianReturn": 2.1,
-          "winRate": 57.9,
-          "sampleSize": 675
+          "winRate": 58,
+          "sampleSize": 676
         },
         "6m": {
           "avgReturn": 5.4,
@@ -131,16 +131,16 @@
       },
       "topix": {
         "1m": {
-          "avgReturn": 3.2,
+          "avgReturn": 0.4,
           "medianReturn": 0.5,
-          "winRate": 55.8,
-          "sampleSize": 674
+          "winRate": 55.7,
+          "sampleSize": 672
         },
         "3m": {
-          "avgReturn": 5.6,
+          "avgReturn": 2.6,
           "medianReturn": 1.9,
-          "winRate": 59.7,
-          "sampleSize": 675
+          "winRate": 59.6,
+          "sampleSize": 674
         },
         "6m": {
           "avgReturn": 4.2,
@@ -156,13 +156,13 @@
         61,
         80
       ],
-      "occurrences": 856,
+      "occurrences": 857,
       "nikkei225": {
         "1m": {
           "avgReturn": 0.9,
           "medianReturn": 1.1,
-          "winRate": 60.9,
-          "sampleSize": 849
+          "winRate": 61,
+          "sampleSize": 851
         },
         "3m": {
           "avgReturn": 1.9,
@@ -179,10 +179,10 @@
       },
       "topix": {
         "1m": {
-          "avgReturn": 0.3,
+          "avgReturn": 0.5,
           "medianReturn": 0.9,
-          "winRate": 61.5,
-          "sampleSize": 849
+          "winRate": 61.6,
+          "sampleSize": 851
         },
         "3m": {
           "avgReturn": 0.9,
@@ -191,9 +191,9 @@
           "sampleSize": 826
         },
         "6m": {
-          "avgReturn": 3,
-          "medianReturn": 2.3,
-          "winRate": 59.8,
+          "avgReturn": 3.6,
+          "medianReturn": 2.4,
+          "winRate": 60.3,
           "sampleSize": 789
         }
       }
@@ -207,42 +207,42 @@
       "occurrences": 338,
       "nikkei225": {
         "1m": {
-          "avgReturn": 1.2,
+          "avgReturn": 1.3,
           "medianReturn": 1,
-          "winRate": 57.3,
-          "sampleSize": 323
+          "winRate": 57.5,
+          "sampleSize": 322
         },
         "3m": {
-          "avgReturn": 2.7,
+          "avgReturn": 2.8,
           "medianReturn": 0.6,
-          "winRate": 54.7,
-          "sampleSize": 309
+          "winRate": 54.9,
+          "sampleSize": 308
         },
         "6m": {
           "avgReturn": 8.5,
           "medianReturn": 3,
-          "winRate": 64.7,
-          "sampleSize": 295
+          "winRate": 64.6,
+          "sampleSize": 294
         }
       },
       "topix": {
         "1m": {
           "avgReturn": 1.4,
           "medianReturn": 1.7,
-          "winRate": 68.4,
-          "sampleSize": 323
+          "winRate": 68.6,
+          "sampleSize": 322
         },
         "3m": {
-          "avgReturn": 3.1,
-          "medianReturn": 3.7,
-          "winRate": 72.5,
-          "sampleSize": 309
+          "avgReturn": 3.8,
+          "medianReturn": 3.8,
+          "winRate": 73.4,
+          "sampleSize": 308
         },
         "6m": {
           "avgReturn": 7.3,
           "medianReturn": 4.7,
-          "winRate": 73.6,
-          "sampleSize": 295
+          "winRate": 73.5,
+          "sampleSize": 294
         }
       }
     }

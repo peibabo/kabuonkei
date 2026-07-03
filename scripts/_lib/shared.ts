@@ -82,7 +82,52 @@ export function buildPeriodStats(returns: number[]): PeriodStats {
   };
 }
 
-/** YahooFinance.chart で日足終値の Map<日付, 終値> を取得 */
+/** 日付つき終値（sanitizeDailyCloses の入出力単位） */
+export interface DailyClose {
+  date: string;
+  close: number;
+}
+
+/**
+ * Yahoo Finance の日足にまれに混入する異常クオートを除去する。
+ *
+ * 実例: 2026-03-30/31 に 1306.T が本来の約 1/10（383円 → 37円）、
+ * 1629.T が約 1/500（288円 → 0.55円）で返り、温度帯別リターン統計に
+ * +49,000% 級の偽リターンが混入した（セクターヒートマップの
+ * 商社・卸売 × 平温 が「3ヶ月後 +135%」と表示される事故）。
+ *
+ * 各点を前後 ±windowRadius 営業日の窓の中央値と比較し、
+ * maxRatio 倍超 or 1/maxRatio 未満なら異常値として破棄する。
+ * 既定の 3 倍閾値は、コロナショックや令和のブラックマンデー級の
+ * 正常な暴落（1日 -12% 程度）にはまったく反応しない。
+ */
+export function sanitizeDailyCloses(
+  entries: DailyClose[],
+  windowRadius = 5,
+  maxRatio = 3
+): { kept: DailyClose[]; dropped: DailyClose[] } {
+  const dropped: DailyClose[] = [];
+  const kept = entries.filter((e, i) => {
+    const lo = Math.max(0, i - windowRadius);
+    const hi = Math.min(entries.length, i + windowRadius + 1);
+    const win = entries
+      .slice(lo, hi)
+      .map((x) => x.close)
+      .sort((a, b) => a - b);
+    const med = win[Math.floor(win.length / 2)];
+    if (!(med > 0) || !(e.close > 0)) {
+      dropped.push(e);
+      return false;
+    }
+    const ratio = e.close / med;
+    const ok = ratio < maxRatio && ratio > 1 / maxRatio;
+    if (!ok) dropped.push(e);
+    return ok;
+  });
+  return { kept, dropped };
+}
+
+/** YahooFinance.chart で日足終値の Map<日付, 終値> を取得（異常クオートは除外） */
 export async function fetchDailyCloses(
   yf: InstanceType<typeof YahooFinance>,
   symbol: string,
@@ -94,12 +139,20 @@ export async function fetchDailyCloses(
     period2,
     interval: "1d",
   });
-  const map = new Map<string, number>();
+  const entries: DailyClose[] = [];
   for (const q of result.quotes) {
     if (q.close != null) {
       const dateStr = new Date(q.date).toISOString().split("T")[0];
-      map.set(dateStr, q.close);
+      entries.push({ date: dateStr, close: q.close });
     }
   }
-  return map;
+  const { kept, dropped } = sanitizeDailyCloses(entries);
+  if (dropped.length > 0) {
+    console.warn(
+      `⚠️ ${symbol}: 異常クオート ${dropped.length} 件を除外 — ${dropped
+        .map((d) => `${d.date}=${d.close}`)
+        .join(", ")}`
+    );
+  }
+  return new Map(kept.map((e) => [e.date, e.close]));
 }

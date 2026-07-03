@@ -10,7 +10,7 @@ const ARTICLE_PATH = "/learn/what-is-drawdown";
 const ARTICLE_TITLE =
   "ドローダウンとは？最大DDの意味と「リターンより怖い」理由を初心者向けに解説";
 const ARTICLE_DESCRIPTION =
-  "ドローダウン (DD) と最大ドローダウンの意味、計算式、過去の S&P500・日経225 のDD実績、なぜリターンより最大DDが投資判断で重要かを解説。株温計のバーチャルポートフォリオ検証で見えた「温度信号は最大DDを抑制する道具」という結論との接続もまとめます。";
+  "ドローダウン (DD) と最大ドローダウンの意味、計算式、過去の S&P500・日経225 のDD実績、なぜリターンより最大DDが投資判断で重要かを解説。株温計のバーチャルポートフォリオによる「温度信号は最大DDを浅くしたのか」の正直な検証結果との接続もまとめます。";
 const PUBLISHED_AT = "2026-05-08";
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ const TOC_ITEMS = [
   { href: "#calc", label: "計算式と読み方" },
   { href: "#why", label: "なぜ最大DDが「リターンより怖い」のか" },
   { href: "#history", label: "S&P500・日経225 の歴史的DD" },
-  { href: "#kabuonkei", label: "株温計のDD抑制検証" },
+  { href: "#kabuonkei", label: "株温計のDD検証" },
   { href: "#how-to-mitigate", label: "DDを抑える 4 つの実用アプローチ" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -186,8 +186,8 @@ export default function WhatIsDrawdownPage() {
               <Link href="/portfolio" className="underline hover:text-gray-900">
                 バーチャルポートフォリオ検証
               </Link>
-              では、温度信号がリターン向上ではなく
-              <strong>最大DD抑制（日米とも約 -3pp 浅く）</strong>に効いていたことを正直に開示しています
+              では、温度信号がリターン向上にも最大DD抑制にも
+              <strong>プラスに働いていなかった</strong>ことを正直に開示しています（DD が買い持ちより浅いのは配分効果）
             </li>
           </ul>
         </section>
@@ -342,7 +342,7 @@ export default function WhatIsDrawdownPage() {
 
         <section id="kabuonkei" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            株温計のDD抑制検証
+            株温計のDD検証
           </h2>
           <p className="text-base leading-relaxed">
             株温計の独自検証として、<strong>市場温度スコアでポートフォリオの株/現金配分を動かしたら、最大DDが浅くなるか？</strong>{" "}
@@ -356,16 +356,15 @@ export default function WhatIsDrawdownPage() {
             ）。
           </p>
           <p className="text-base leading-relaxed mt-3">
-            検証結果は正直に書くと、<strong>「リターンの timing シグナルとしては限定的（特に米国はマイナス）、
-            一方で最大DD 抑制では日米とも約 -3pp の効果」</strong>でした。
-            つまり温度計は「リターンを上げる道具」というより、<strong>「最大DDを浅くする道具」</strong>として機能していた、
-            ということです。
+            検証結果は正直に書くと、<strong>「リターンの timing シグナルとしては限定的（特に米国はマイナス）で、
+            最大DD も同じ平均配分の定数戦略より日米とも 4pp 前後深い」</strong>でした。
+            買い持ちより DD が浅いのは温度の効果ではなく、平均株比率が 100% 未満という配分効果です。
+            つまりバックテスト上は、温度計は「リターンを上げる道具」でも「最大DDを浅くする道具」でもありませんでした。
           </p>
           <p className="text-base leading-relaxed mt-3">
-            個人投資家にとって、この役割分担は意外と理にかなっています。
-            「リターンを底上げするツール」を期待すると満足度は低いですが、
-            「<strong>暴落時に慌てて全部売らないための心理的・機械的なブレーキ</strong>」と捉えると、
-            温度信号の存在はちょうど良い距離感で価値を発揮します。
+            それでも個人投資家にとって意味があるとすれば、
+            「<strong>暴落時に慌てて全部売らないための心理的・機械的なブレーキ</strong>」という、数字に出にくい役割です。
+            温度計は極寒で「売る」代わりに「買い増す」規律を与えます（その分、下落の谷では DD が深くなる点は覚悟が必要です）。
           </p>
         </section>
 
@@ -433,7 +432,7 @@ export default function WhatIsDrawdownPage() {
               <Link href="/portfolio" className="underline hover:text-gray-900">
                 温度連動バーチャルポートフォリオ
               </Link>
-              （温度信号は最大DD 抑制ツール、という正直な検証）
+              （温度信号はリターンにもDD抑制にも効いていなかった、という正直な検証）
             </li>
             <li>
               主要イベント:{" "}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { getPortfolioHistory } from "@/lib/portfolio";
 import { trackEvent } from "@/lib/analytics";
+import { formatDrawdownGap, drawdownGapColorClass } from "@/lib/format";
 
 /**
  * Dashboard 第 5 章（詳しく見る）に配置するポートフォリオ導線カード。
@@ -29,12 +30,9 @@ export default function PortfolioTeaserCard() {
     ? "bg-amber-50 border border-amber-300 rounded-2xl shadow-md p-6"
     : "bg-white rounded-2xl shadow-md p-6";
 
-  // 一括買い持ちベンチマークの DD に対する改善幅（補助情報）
-  const jpDdImprovement =
-    jp.stats.benchmarkMaxDrawdown - jp.stats.maxDrawdown;
-  const usDdImprovement =
-    us.stats.benchmarkMaxDrawdown - us.stats.maxDrawdown;
-  // 積立(DCA)比の DD 差（正なら温度ルールのほうが深い = 積立のほうが DD 浅い）
+  // DD 差分（自PF − 比較対象。DD は負値なので正 = 温度ルールのほうが浅い）
+  const jpDdVsBuyHold = jp.stats.maxDrawdown - jp.stats.benchmarkMaxDrawdown;
+  const usDdVsBuyHold = us.stats.maxDrawdown - us.stats.benchmarkMaxDrawdown;
   const jpDdVsDca = jp.stats.maxDrawdown - jp.stats.dcaMaxDrawdown;
   const usDdVsDca = us.stats.maxDrawdown - us.stats.dcaMaxDrawdown;
 
@@ -85,16 +83,12 @@ export default function PortfolioTeaserCard() {
           </div>
           <div className="text-[11px] text-gray-400 mt-1">
             最大DD vs 買い持ち:{" "}
-            <span className="text-emerald-700">
-              +{jpDdImprovement.toFixed(1)}pp 浅い
+            <span className={drawdownGapColorClass(jpDdVsBuyHold)}>
+              {formatDrawdownGap(jpDdVsBuyHold)}
             </span>
             {" / "}vs 積立:{" "}
-            <span
-              className={
-                jpDdVsDca > 0 ? "text-amber-700" : "text-emerald-700"
-              }
-            >
-              {jpDdVsDca > 0 ? `+${jpDdVsDca.toFixed(1)}pp 深い` : `${Math.abs(jpDdVsDca).toFixed(1)}pp 浅い`}
+            <span className={drawdownGapColorClass(jpDdVsDca)}>
+              {formatDrawdownGap(jpDdVsDca)}
             </span>
           </div>
         </div>
@@ -118,16 +112,12 @@ export default function PortfolioTeaserCard() {
           </div>
           <div className="text-[11px] text-gray-400 mt-1">
             最大DD vs 買い持ち:{" "}
-            <span className="text-emerald-700">
-              +{usDdImprovement.toFixed(1)}pp 浅い
+            <span className={drawdownGapColorClass(usDdVsBuyHold)}>
+              {formatDrawdownGap(usDdVsBuyHold)}
             </span>
             {" / "}vs 積立:{" "}
-            <span
-              className={
-                usDdVsDca > 0 ? "text-amber-700" : "text-emerald-700"
-              }
-            >
-              {usDdVsDca > 0 ? `+${usDdVsDca.toFixed(1)}pp 深い` : `${Math.abs(usDdVsDca).toFixed(1)}pp 浅い`}
+            <span className={drawdownGapColorClass(usDdVsDca)}>
+              {formatDrawdownGap(usDdVsDca)}
             </span>
           </div>
         </div>

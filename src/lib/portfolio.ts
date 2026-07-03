@@ -81,7 +81,7 @@ export interface PortfolioTemperatureContribution {
   constantStats: PortfolioStats;
   /** 温度ルール total − 定数 total（pp。正なら温度信号がリターンに寄与） */
   alphaVsConstant: number;
-  /** 温度ルール maxDD − 定数 maxDD（pp。負なら温度信号が DD 抑制に寄与） */
+  /** 温度ルール maxDD − 定数 maxDD（pp。どちらも負値なので、負なら温度ルールのほうが DD が深い＝悪化） */
   ddVsConstant: number;
   /** 温度ルール Sharpe − 定数 Sharpe */
   sharpeVsConstant: number;

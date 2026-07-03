@@ -11,7 +11,7 @@ import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 const ARTICLE_PATH = "/portfolio";
 const ARTICLE_TITLE = "温度連動バーチャルポートフォリオ（シミュレーション）";
 const ARTICLE_DESCRIPTION =
-  "温度連動ポートフォリオが積立(DCA)を JP +38pp / US +42pp 上回る結果。ただし α の大半は「配分の高さ」由来で、温度信号の純寄与は限定的（JP +2.6pp / US -8pp）。最大DDは温度信号で日米とも -3pp 抑制。温度計は「リターン向上ツール」ではなく「DD 抑制ツール」として機能する、という正直な検証を公開。";
+  "温度連動ポートフォリオは積立(DCA)を日米ともに上回る。ただし α の大半は「配分の高さ」由来で、温度信号の純寄与はリターンでも最大DDでも限定的〜マイナス。温度計は timing ツールではなく「極寒で狼狽売りしないための規律」として使う、という正直な検証を公開。";
 const PUBLISHED_AT = "2026-04-23";
 
 export const metadata: Metadata = {
@@ -205,16 +205,18 @@ export default function PortfolioPage() {
                 α vs DCA の全体はプラスでも、<strong>温度で現金化した判断は裏目に出ていた</strong>のが実態
               </li>
               <li>
-                <strong>一方、最大DD 抑制には温度信号が効いている</strong>: 定数配分と比べて JP で{" "}
-                {jpContrib ? jpContrib.ddVsConstant.toFixed(1) : "—"}pp / US で{" "}
-                {usContrib ? usContrib.ddVsConstant.toFixed(1) : "—"}pp 浅く抑えている（どちらもマイナス = DD が浅い）
+                <strong>最大DD でも温度信号はプラスに働いていない</strong>: 定数配分と比べて JP で{" "}
+                {jpContrib ? Math.abs(jpContrib.ddVsConstant).toFixed(1) : "—"}pp / US で{" "}
+                {usContrib ? Math.abs(usContrib.ddVsConstant).toFixed(1) : "—"}pp <strong>深い</strong>。
+                極寒ほど株比率を上げる逆張りルールのため、下落の最終局面では定数配分より深く食らう
               </li>
             </ul>
           </div>
 
           <p className="text-base text-gray-800 leading-relaxed mb-3">
-            つまり温度計は、<strong>「リターンを上げるための timing シグナル」としては限定的〜逆効果</strong>です。
-            しかし<strong>「最大ドローダウンを抑えるリスク管理ツール」としては、日米とも -3pp 程度の効果が確かにあります</strong>。
+            つまり温度計は、<strong>「リターンを上げるための timing シグナル」としては限定的〜逆効果</strong>で、
+            <strong>最大ドローダウンも、同じ平均配分の定数戦略と比べると浅くなっていません</strong>
+            （買い持ちより浅いのは、温度の効果ではなく平均株比率が 100% 未満という配分効果です）。
             この正直な結果を踏まえると、このページが役に立つのは次のような方です:
           </p>
           <ul className="list-disc pl-6 space-y-1 text-base text-gray-800 mb-3">
@@ -226,7 +228,8 @@ export default function PortfolioPage() {
             </li>
             <li>
               暴落時に「売ってしまう」のを防ぐ仕組みが欲しい人 →{" "}
-              <strong>温度計は DD 抑制には効くので、心理的な支えになる</strong>
+              <strong>温度計は「極寒で売らずに買い増す」規律を与えます</strong>
+              （その分、下落の谷では DD がむしろ深くなる点は覚悟が必要）
             </li>
           </ul>
           <p className="text-base text-gray-800 leading-relaxed">
@@ -296,8 +299,8 @@ export default function PortfolioPage() {
             絶対リターンの順序は<strong>「一括買い持ち &gt; 温度ルール &gt; 月次積立」</strong>。
             温度ルールは月次積立（DCA）を JP +{jpStats.alphaVsDca.toFixed(1)}pp / US +{usStats.alphaVsDca.toFixed(1)}pp 上回りますが、
             その内訳を見ると、<strong>α の大半は「配分を高めに保った」効果由来で、温度信号の純寄与は限定的</strong>です（詳細は「ルール選定プロセスと温度信号の寄与度」セクションで）。
-            最大DD は一括買い持ちより浅い（JP -{(jpStats.benchmarkMaxDrawdown - jpStats.maxDrawdown).toFixed(1)}pp / US -{(usStats.benchmarkMaxDrawdown - usStats.maxDrawdown).toFixed(1)}pp 改善）一方、積立よりはやや深いという「中間」の位置付け。
-            <strong className="text-red-700">特に米国は積立より {(usStats.maxDrawdown - usStats.dcaMaxDrawdown).toFixed(1)}pp 深いので、暴落耐性は積立のほうが上</strong>です。
+            最大DD は一括買い持ちより浅い（JP {Math.abs(jpStats.maxDrawdown - jpStats.benchmarkMaxDrawdown).toFixed(1)}pp / US {Math.abs(usStats.maxDrawdown - usStats.benchmarkMaxDrawdown).toFixed(1)}pp 改善）一方、積立よりはやや深いという「中間」の位置付け。
+            <strong className="text-red-700">特に米国は積立より {Math.abs(usStats.maxDrawdown - usStats.dcaMaxDrawdown).toFixed(1)}pp 深いので、暴落耐性は積立のほうが上</strong>です。
           </p>
         </section>
 
@@ -423,8 +426,8 @@ export default function PortfolioPage() {
                   <td className="text-right font-mono text-gray-600">
                     {jpContrib ? jpContrib.constantStats.maxDrawdown.toFixed(1) : "—"}%
                   </td>
-                  <td className="text-right font-mono font-bold text-emerald-700">
-                    {jpContrib ? (jpContrib.ddVsConstant >= 0 ? "+" : "") + jpContrib.ddVsConstant.toFixed(2) : "—"}pp（浅い）
+                  <td className={`text-right font-mono font-bold ${jpContrib && jpContrib.ddVsConstant >= 0 ? "text-emerald-700" : "text-amber-700"}`}>
+                    {jpContrib ? `${jpContrib.ddVsConstant >= 0 ? "+" : ""}${jpContrib.ddVsConstant.toFixed(2)}pp（${jpContrib.ddVsConstant >= 0 ? "浅い" : "深い"}）` : "—"}
                   </td>
                 </tr>
                 <tr>
@@ -447,8 +450,8 @@ export default function PortfolioPage() {
                   <td className="text-right font-mono text-gray-600">
                     {usContrib ? usContrib.constantStats.maxDrawdown.toFixed(1) : "—"}%
                   </td>
-                  <td className="text-right font-mono font-bold text-emerald-700">
-                    {usContrib ? (usContrib.ddVsConstant >= 0 ? "+" : "") + usContrib.ddVsConstant.toFixed(2) : "—"}pp（浅い）
+                  <td className={`text-right font-mono font-bold ${usContrib && usContrib.ddVsConstant >= 0 ? "text-emerald-700" : "text-amber-700"}`}>
+                    {usContrib ? `${usContrib.ddVsConstant >= 0 ? "+" : ""}${usContrib.ddVsConstant.toFixed(2)}pp（${usContrib.ddVsConstant >= 0 ? "浅い" : "深い"}）` : "—"}
                   </td>
                 </tr>
               </tbody>
@@ -466,10 +469,11 @@ export default function PortfolioPage() {
               つまり「温度が沸騰したから売る / 極寒だから買う」という判断は、過去10年の両市場では期待ほど timing として効いていません
             </li>
             <li>
-              <strong>最大DD 抑制では温度信号が効いている</strong>:
-              日米とも定数配分より <strong>-3pp 程度 浅く</strong>抑えています。
-              これは「沸騰で株比率を落として暴落直前にリスクを減らした」一部の局面が効いた結果で、
-              <strong>温度計は「急落前に少しクッションを入れる道具」として機能</strong>しています
+              <strong>最大DD 抑制にも効いていない</strong>:
+              日米とも定数配分より <strong>4pp 前後 深く</strong>なっています。
+              沸騰で株比率を落とすクッション効果より、
+              <strong>極寒で株比率を 100% に上げたまま下落の最終局面を受け止める影響のほうが大きい</strong>ためで、
+              「急落前にクッションを入れる道具」としては機能していません
             </li>
             <li>
               <strong>α vs DCA のほとんどは「配分の高さ」由来</strong>:
@@ -479,11 +483,13 @@ export default function PortfolioPage() {
             </li>
           </ul>
           <p className="text-base leading-relaxed bg-blue-50 border border-blue-200 rounded-lg p-3">
-            💡 <strong>まとめ</strong>: 温度計は「リターンを上げるための timing シグナル」ではなく、
-            <strong>「暴落時に慌てて売らないための心理的・機械的なブレーキ」</strong>として使うのが、過去10年のデータから見える正直な役割です。
+            💡 <strong>まとめ</strong>: 過去10年のバックテストでは、温度信号の純寄与は
+            <strong>リターンでも最大DDでもプラスになっていません</strong>。
             積立(DCA)を上回る α の大半は、単に「株比率を高めに保った」から。
-            <strong>もし温度を一切見ず定数 70% で持ち続けていても、似たようなリターンは得られた</strong>可能性が高いという事実は、
+            <strong>もし温度を一切見ず定数 70% で持ち続けていても、リターン・最大DDとも同等以上だった</strong>可能性が高いという事実は、
             このサイトの価値提案を再考する材料でもあります。
+            それでも温度計に意味があるとすれば、<strong>「極寒で狼狽売りしない・沸騰で調子に乗らない」ための客観的な物差し</strong>という、
+            バックテストの数字には出にくい役割です。
           </p>
         </section>
 

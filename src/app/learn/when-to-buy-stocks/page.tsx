@@ -321,7 +321,7 @@ export default function WhenToBuyStocksPage() {
               <Link href="/portfolio" className="underline hover:text-gray-900">
                 バーチャルポートフォリオ検証
               </Link>
-              も公開しています。後者では「温度信号はリターン向上より<strong>最大DD 抑制</strong>に効いた」という正直な結果も開示しています。
+              も公開しています。後者では「温度信号の純寄与は<strong>リターンでも最大DDでも限定的〜マイナス</strong>だった」という正直な結果も開示しています。
             </p>
           </div>
         </section>

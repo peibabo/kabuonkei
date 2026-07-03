@@ -32,7 +32,7 @@
 
 | # | タイトル（仮） | 型 | 主データ | 状態 |
 |---|---|---|---|---|
-| 001 | 日本に「恐怖と欲望指数」が無かったので、自分で作った | 開発ストーリー | japan-historical-stats / japan-temperature-history | 原稿あり（[001-japan-fear-greed-story.md](001-japan-fear-greed-story.md)） |
+| 001 | 日本版「Fear & Greed Index」が無かったので、自分で作った | 開発ストーリー | japan-historical-stats / japan-temperature-history | 原稿あり（[001-japan-fear-greed-story.md](001-japan-fear-greed-story.md)） |
 | 002 | 市場が「極寒」の日に日経平均を買っていたら？勝率100%の検証 | データ検証 | japan-historical-stats | 予定（001のフック回収） |
 | 003 | VIXが30を超えた日、S&P500はどう動いたか | /analysis 転用 | vix-sp500-analysis | 予定 |
 | 004 | 信用倍率と市場温度のクロス分析 | データ検証 | margin-ratio-analysis | 予定 |

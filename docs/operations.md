@@ -49,6 +49,9 @@
 - **BreadcrumbList JSON-LD + UI パンくず**: `src/lib/breadcrumb-jsonld.ts` の `buildBreadcrumbJsonLd(items)` と `src/components/Breadcrumb.tsx` を併用。`/events/[slug]`, `/portfolio`, `/analysis/*` で SERP のパンくず表示候補に乗せる
 - **manifest**: `src/app/manifest.ts`（Next.js が `/manifest.webmanifest` を自動配信）。PWA 対応とブランド情報の補強。アイコンは既存の `src/app/icon.svg` / `apple-icon.png` を流用
 - **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
+- **アクセスレポート CLI**: `npm run report:analytics`（`scripts/report-analytics.ts`、`-- --days 28` で期間変更）。日別 PV / 流入元 / note 流入（utm_source=note）/ ページ別 TOP / Google 検索クエリ / sitemap インデックス数を一括表示
+  - 認証: サービスアカウント `kabuonkei-reader@kabuonkei-analytics.iam.gserviceaccount.com`（GA4 プロパティ 533599464 の閲覧者 + Search Console 制限付き）。キーファイル `~/.config/kabuonkei-analytics/sa-key.json` があればログイン不要で動作、無ければ gcloud ユーザー認証 + SA 偽装にフォールバック
+  - GA4 は lib-lab.net 所有・SC は個人 Gmail 所有だが、両方に SA を招待してあるため SA 一本で読める
 - **OG 画像**: `src/app/opengraph-image.tsx` で動的生成（`ImageResponse` + Google Fonts の Noto Sans JP サブセットを fetch）。手動の PNG 配置は不要。フォント取得（`loadGoogleFont` / `buildNotoSansJpFonts`）と温度計アイコン SVG は `src/lib/og/{fonts,thermometer-svg}.ts` に共通化されており、`/api/og/daily` 側も同じモジュールを参照する
 - **イベント詳細の関連リンク・公開日**: `src/lib/events.ts` の `getRelatedEvents(slug, limit)` で関連イベントを最大 3 件取得（手動キュレーション `relatedSlugs` 優先、未指定なら日付近接で自動補完）。`getEventPublishedAt()` でページ公開日を解決し、`<time dateTime>` で表示。既定値は `EVENTS_DEFAULT_PUBLISHED_AT` (= サイトリリース日 2026-04-19)
 - **Atom フィード `/feed.xml`**: `src/app/feed.xml/route.ts`（`src/lib/feed.ts` の `buildAtomFeed()`）。3 分析記事 + portfolio + 14 主要イベントを `updated` 降順で配信。Cache-Control は `s-maxage=3600, stale-while-revalidate=86400`。layout の `metadata.alternates.types["application/atom+xml"]` で `<link rel="alternate">` を出し、Footer にも公開リンクを掲載

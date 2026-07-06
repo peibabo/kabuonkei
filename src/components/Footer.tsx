@@ -29,6 +29,9 @@ export default function Footer() {
           <Link href="/portfolio" className="hover:text-gray-900 hover:underline">
             温度連動ポートフォリオ
           </Link>
+          <Link href="/alerts" className="hover:text-gray-900 hover:underline">
+            温度アラート
+          </Link>
           <Link href="/widget" className="hover:text-gray-900 hover:underline">
             ウィジェット
           </Link>

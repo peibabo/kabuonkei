@@ -5,11 +5,12 @@
 ## 全体像
 
 ```
-[Dashboard]
-    │ AlertBanner クリック
-    ▼
-[AlertSignupModal]  ─ POST /api/alerts/subscribe ─▶ Upstash Redis（pending）
-                                                 └▶ Resend（確認メール）
+[Dashboard]                    [/alerts ランディングページ]
+    │ AlertBanner クリック           │ インラインフォーム
+    ▼                              ▼
+[AlertSignupModal] ──────▶ [AlertSignupForm]
+                                │ POST /api/alerts/subscribe ─▶ Upstash Redis（pending）
+                                └────────────────────────────▶ Resend（確認メール）
     │
 ユーザーが確認メールのリンクを踏む
     ▼
@@ -101,10 +102,12 @@
 ## UI
 
 - **AlertBanner**（`src/components/alerts/AlertBanner.tsx`）: Dashboard 最上部に常設。score が極端域なら赤で強調し、初期チェックをその variant に限定
-- **AlertSignupModal**（`src/components/alerts/AlertSignupModal.tsx`）: ShareSheet パターン。Focus trap / ESC / body scroll lock、モバイルは bottom sheet
+- **AlertSignupForm**（`src/components/alerts/AlertSignupForm.tsx`）: 登録フォーム本体（email / honeypot / variant 選択 / 同意 / 送信 / 成功・エラー表示）。モーダルとランディングページで共用。GA イベントに `source: "modal" | "landing"` を付与
+- **AlertSignupModal**（`src/components/alerts/AlertSignupModal.tsx`）: ShareSheet パターンの外枠（Focus trap / ESC / body scroll lock、モバイルは bottom sheet）。中身は `AlertSignupForm`
 - **AlertVariantCheckboxes**（`src/components/alerts/AlertVariantCheckboxes.tsx`）: 4 択（米国/日本 × 極寒/過熱）、複数選択可
+- **`/alerts`**（`src/app/alerts/page.tsx`）: ランディングページ。機能説明 + 通知タイミング + インライン登録フォーム + FAQ。indexable（sitemap / フッターにも掲載）で、note 記事などの外部誘導リンクの受け皿（2026-07 に note-001 が 404 に誘導していた問題の恒久対応として新設）
 - **`/alerts/verified`・`/alerts/unsubscribed`**: 完了ページ（noindex）
-- GA4: `alerts_banner_clicked` / `alerts_subscribe_submitted` / `alerts_subscribe_success` / `alerts_subscribe_error`
+- GA4: `alerts_banner_clicked` / `alerts_subscribe_submitted` / `alerts_subscribe_success` / `alerts_subscribe_error`（subscribe 系は `source` パラメータ付き）
 
 ## 発火スクリプトと GitHub Actions
 
@@ -171,6 +174,7 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 - `src/__tests__/alerts/subscribe-validation.test.ts` — 入力バリデーション
 - `src/__tests__/alerts/email-templates.test.ts` — メール本文の必須要素
 - `src/__tests__/alerts/alert-banner.test.tsx` — Banner の状態分岐
+- `src/__tests__/alerts/alert-signup-form.test.tsx` — フォームの送信可否・成功/エラー表示・successAction
 - `src/__tests__/alerts/alert-variant-checkboxes.test.tsx` — チェックボックス挙動
 - `src/__tests__/alerts/parse-variants.test.ts` — variants の配列/JSON 文字列両対応（Upstash auto-deserialize ガード）
 - `scripts/__tests__/check-temperature-alerts.test.ts` — CLI ヘルパー

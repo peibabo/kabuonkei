@@ -44,6 +44,7 @@
   - SEO の構造化データ: Article / WebSite + Organization / BreadcrumbList / AboutPage + Person + ContactPoint。`events-meta.json` の `relatedSlugs?: string[]`（手動キュレーション、未指定なら日付近接で自動補完）/ `publishedAt?: string`（既定はサイトリリース日 2026-04-19）は任意フィールド
   - Atom フィード `/feed.xml` と用語集 `/glossary` あり。Footer から公開リンク済
   - 解説記事 `/learn/[slug]`（「○○とは？」クエリ対応）は `/glossary` × `/analysis` の中間レイヤー。公開済: `/learn/what-is-vix`、`/learn/what-is-fear-greed`、`/learn/what-is-margin-ratio`、`/learn/what-is-investor-flow`、`/learn/what-is-arbitrage-balance`、`/learn/what-is-drawdown`、`/learn/what-is-advance-decline-ratio`、`/learn/what-is-nikkei-vi`、`/learn/what-is-usdjpy-momentum`、`/learn/when-to-buy-stocks`（買い時まとめハブ）
+- [収益化: ASP 申請キット（申請文面 / 提携候補 / 掲載原則）](docs/monetization/asp-application-kit.md)
 - [プロジェクト仕様書（初期企画）](docs/spec.md)
 - [デザインシステム（朝刊スタイル / 紙面トーン / カラー / タイポ）](DESIGN.md) — トップ画面 B 案以降の Source of Truth
 

@@ -139,7 +139,7 @@ function similarDayForMarket(market: AlertMarket, score: number) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const site = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).replace(
+  const site = (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL).replace(
     /\/+$/,
     ""
   );

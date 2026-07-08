@@ -2,6 +2,24 @@
 
 独自データを掛け合わせた深掘り SEO 記事の置き場所。ペルソナ別の `/guide`、イベント別の `/events` とは別枠で、トピック×独自データのハイブリッド記事を貯める。収益化戦略上は「すでにメイン口座を持つ中級者」向けに信用取引サブ口座アフィなどの文脈適合 CTA を添える。
 
+## 第4弾: 温度帯×業種（`/analysis/sector-rotation-temperature`）
+
+「暴落時はディフェンシブ銘柄」の通説を検証する記事。極寒帯の後 3 ヶ月で最も戻ったのは機械・電機・鉄鋼（景気敏感）で、ディフェンシブ（食品・医薬品・電力ガス）との差は約 8pp という逆説がフック。SEO は「暴落時 強い業種」「セクターローテーション」系クエリ狙い。
+
+**データ層**:
+- **新規 JSON なし**。`src/data/japan-sector-heatmap.json`（`/sectors` と同一、毎月1日自動再生成）をそのまま読む。本文の数値（TOP3 業種名・リターン・勝率・グループ平均）はページ描画時に動的算出するので、月次再生成で記事の数字も自動追従する
+- `src/lib/sector-rotation.ts`: 温度帯起点の純粋関数群 — `getSectorRankingForLevel(level, period)`（全17業種の avgReturn 降順）/ `computeLevelAverages(period)`（帯別の全業種平均 = U字カーブ）/ `computeGroupAverage(codes, level, period)` + グループ定義 `DEFENSIVE_SECTOR_CODES`（食品/医薬品/電力ガス）・`CYCLICAL_SECTOR_CODES`（鉄鋼非鉄/機械/電機精密）
+
+**UI**:
+- `src/app/analysis/sector-rotation-temperature/page.tsx`: Server Component。結論先出し（動的数値）・目次・検証枠組み・`SectorRotationBody`・解釈（反発局面の対称性 / 沸騰は資源金融 / 電機は沸騰だけ12位）・注意点（極寒111日は V 字回復相場中心、重複サンプル等）・`InvestingBooksCTA`（`article="sector-rotation-temperature"`）・関連リンク
+- `src/components/analysis/SectorRotationBody.tsx`: Client Component。`PeriodSwitcher<1m|3m|6m>`、①帯別全業種平均（バー付き）②極寒 vs 沸騰 TOP5/WORST3 対比 ③ディフェンシブ vs 景気敏感の帯別比較。`trackEvent("analysis_view", {slug})`
+- `opengraph-image.tsx`: amber 系グラデ。極寒後3ヶ月 TOP3 vs ディフェンシブ平均の対比
+- 内部リンク: `/sectors` と相互リンク（記事⇄基データ）。sitemap（`lastModified = japan-sector-heatmap.json.generatedAt`）と `/feed.xml` に追加。`/analysis` インデックスの `analysisIndexModified` にもヒートマップ generatedAt を含める
+
+**テスト**:
+- `src/__tests__/sector-rotation.test.ts`: ランキング降順 / 帯平均が min-max 範囲内 / グループコードの実在性
+- `src/__tests__/sector-rotation-body.test.tsx`: 5温度帯・対比カード・期間切替・GA4 イベント
+
 ## 第3弾: 日米温度の乖離 × 将来リターン（`/analysis/temperature-divergence`）
 
 「日本だけ熱い・米国は冷静」のような日米センチメント乖離局面のその後を、過去約 10 年で検証する記事。Primary は 乖離バンド × {S&P500, 日経225} の前方リターン + N225-S&P500 平均スプレッド、Joint は 乖離バンド × 日本版温度バンドの 2D。**温度差 = JP score - US score** と定義し、5 バンド (`≤ -20 / -20〜-10 / -10〜+10 / +10〜+20 / ≥ +20`) で集計する。

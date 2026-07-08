@@ -6,6 +6,7 @@
 import { getMarginRatioAnalysis } from "./margin-ratio-analysis";
 import { getVixSp500Analysis } from "./vix-sp500-analysis";
 import { getDivergenceAnalysis } from "./divergence-analysis";
+import { getJapanSectorHeatmap } from "./japan-sector-heatmap";
 import { getPortfolioHistory } from "./portfolio";
 import { getEventsMeta, getEventPublishedAt } from "./events";
 import type { EventMeta } from "./types";
@@ -81,6 +82,17 @@ function collectEntries(): FeedEntry[] {
       "日本版・米国版の株温計スコアが大きく乖離した日について、日経225 と S&P500 の収斂・発散パターンを集計した分析。",
     publishedAt: "2026-04-24",
     updatedAt: divergence.generatedAt,
+  });
+
+  const sectorHeatmap = getJapanSectorHeatmap();
+  entries.push({
+    id: `${SITE_ORIGIN}/analysis/sector-rotation-temperature`,
+    url: `${SITE_ORIGIN}/analysis/sector-rotation-temperature`,
+    title: "暴落時に強い業種はどれ？— 温度帯×17業種の過去10年検証",
+    summary:
+      "市場温度が極寒（総悲観）だった日の後、TOPIX-17 の 17 業種がどう動いたかを過去 10 年で集計。極寒後に最も戻ったのはディフェンシブではなく機械・電機・鉄鋼という検証結果を公開。",
+    publishedAt: "2026-07-08",
+    updatedAt: sectorHeatmap.generatedAt,
   });
 
   const portfolio = getPortfolioHistory();

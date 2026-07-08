@@ -4,6 +4,7 @@ import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 import { getPortfolioHistory } from "@/lib/portfolio";
+import { getJapanSectorHeatmap } from "@/lib/japan-sector-heatmap";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
@@ -32,6 +33,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
   const portfolio = getPortfolioHistory();
   const portfolioModified = new Date(portfolio.generatedAt);
+  // セクターヒートマップは毎月1日に再生成されるので generatedAt を使う
+  const sectorHeatmap = getJapanSectorHeatmap();
+  const sectorHeatmapModified = new Date(sectorHeatmap.generatedAt);
 
   return [
     {
@@ -183,6 +187,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: portfolioModified,
       changeFrequency: "daily",
       priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/sectors`,
+      lastModified: sectorHeatmapModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
       url: `${siteUrl}/alerts`,

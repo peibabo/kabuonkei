@@ -31,7 +31,9 @@
 - 生成スクリプト: `npm run generate:sector-heatmap`（`scripts/generate-japan-sector-heatmap.ts`）。`aggregateLevelReturns` を各セクターで 1 回ずつ呼び出す実装（17 回）
 - データ構造: sector-major（`sectors[].levels[]`）— 温度帯 TOP N セクター抽出が容易
 - アクセサ: `src/lib/japan-sector-heatmap.ts`（`getJapanSectorHeatmap()` / `getSectorStatsForScore(score, sectorCode, period)` / `getTopSectorsForScore(score, period, limit=5)` — avgReturn 降順ランキング）
-- UI: `src/components/SectorHeatmapCard.tsx` を Dashboard の `CrossStatsCard` 直後にフル幅配置。1M/3M/6M の `PeriodSwitcher`（デフォルト 3M）、現在温度帯 TOP3 ピル、17×5 ヒートマップ表（日本式配色: 正=red / 負=green を alpha で強度表現）、現在温度帯の列を ring-1 で強調、サンプル数 30 未満の温度帯は薄色（参考値）
+- UI（2026-07 に専用ページ化）:
+  - **専用ページ `/sectors`**（`src/app/sectors/page.tsx` + `src/components/sectors/SectorsPageBody.tsx`）: 17×5 フルヒートマップ表（`src/components/sectors/SectorHeatmapTable.tsx`、日本式配色: 正=red / 負=green を alpha で強度表現、サンプル数 30 未満の温度帯は薄色）+ 温度帯別 TOP5（5 帯静的列挙、SEO テキスト兼用）+ 1M/3M/6M `PeriodSwitcher`（デフォルト 3M）。ページは静的生成し、`useMarketData()` でスコア取得後に現在帯の ring 強調と TOP5 コールアウトをプログレッシブ表示（スコア未取得でも全テーブル描画）。JSON-LD は Dataset（`src/lib/dataset-jsonld.ts`）+ BreadcrumbList
+  - **トップのコンパクトカード** `src/components/SectorHeatmapCard.tsx`: Dashboard の `CrossStatsCard` 直後。現在温度帯の TOP5 ピル（3M 固定）+ `/sectors?ref=dashboard_teaser` への導線（`trackEvent("sector_heatmap_teaser_click")`）。フルテーブルは持たない
 - 既知の制約: TOPIX-17 連動 ETF を proxy として使用（指数本体は Yahoo Finance で取得不可）。極寒帯はサンプル数 111 日 × 各 ETF = 参考値として扱うこと
 
 ## 歴史的位置づけ表示（Score Percentile）

@@ -121,6 +121,15 @@ export default function SectorsPage() {
             </li>
             <li>
               <Link
+                href="/analysis/sector-rotation-temperature"
+                className="underline hover:text-gray-900"
+              >
+                暴落時に強い業種はどれ？— 温度帯×17業種の検証記事
+              </Link>{" "}
+              — このデータを「業種選びの通説」の切り口で読み解いた分析
+            </li>
+            <li>
+              <Link
                 href="/analysis/margin-ratio-temperature"
                 className="underline hover:text-gray-900"
               >

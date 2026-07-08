@@ -4,6 +4,7 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
+import { getJapanSectorHeatmap } from "@/lib/japan-sector-heatmap";
 
 export const metadata: Metadata = {
   title: "分析記事",
@@ -31,7 +32,16 @@ export default function AnalysisIndexPage() {
   const marginAnalysis = getMarginRatioAnalysis();
   const vixAnalysis = getVixSp500Analysis();
   const divergenceAnalysis = getDivergenceAnalysis();
+  const sectorHeatmap = getJapanSectorHeatmap();
   const articles: AnalysisArticle[] = [
+    {
+      slug: "sector-rotation-temperature",
+      icon: "🔄",
+      title: "暴落時に強い業種はどれ？— 温度帯×17業種の過去10年検証",
+      description:
+        "「暴落時はディフェンシブ銘柄」は本当か？ 市場温度が極寒（総悲観）だった日の後、TOPIX-17 の 17 業種がどう動いたかを過去 10 年で集計。極寒後に最も戻ったのは食品や医薬品ではなく機械・電機・鉄鋼という意外な結果に。",
+      dateLabel: `最終更新: ${sectorHeatmap.generatedAt}`,
+    },
     {
       slug: "temperature-divergence",
       icon: "🌡️",

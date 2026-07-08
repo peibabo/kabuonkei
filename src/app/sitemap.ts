@@ -24,18 +24,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const vixAnalysisModified = new Date(vixAnalysis.generatedAt);
   const divergenceAnalysis = getDivergenceAnalysis();
   const divergenceAnalysisModified = new Date(divergenceAnalysis.generatedAt);
-  const analysisIndexModified = new Date(
-    Math.max(
-      marginAnalysisModified.getTime(),
-      vixAnalysisModified.getTime(),
-      divergenceAnalysisModified.getTime()
-    )
-  );
   const portfolio = getPortfolioHistory();
   const portfolioModified = new Date(portfolio.generatedAt);
   // セクターヒートマップは毎月1日に再生成されるので generatedAt を使う
   const sectorHeatmap = getJapanSectorHeatmap();
   const sectorHeatmapModified = new Date(sectorHeatmap.generatedAt);
+  const analysisIndexModified = new Date(
+    Math.max(
+      marginAnalysisModified.getTime(),
+      vixAnalysisModified.getTime(),
+      divergenceAnalysisModified.getTime(),
+      sectorHeatmapModified.getTime()
+    )
+  );
 
   return [
     {
@@ -179,6 +180,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/analysis/temperature-divergence`,
       lastModified: divergenceAnalysisModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/analysis/sector-rotation-temperature`,
+      lastModified: sectorHeatmapModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

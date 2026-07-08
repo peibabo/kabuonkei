@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { buildWebSiteJsonLd } from "@/lib/website-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import { buildDatasetJsonLd } from "@/lib/dataset-jsonld";
 import { getRelatedEvents, getEventPublishedAt } from "@/lib/events";
 
 describe("buildWebSiteJsonLd", () => {
@@ -56,6 +57,40 @@ describe("buildBreadcrumbJsonLd", () => {
     ) as { itemListElement: Array<{ item?: string }> };
     expect(parsed.itemListElement[0].item).toBeDefined();
     expect(parsed.itemListElement[1].item).toBeUndefined();
+  });
+});
+
+describe("buildDatasetJsonLd", () => {
+  it("returns a Dataset node with absolute URL and organization creator", () => {
+    const raw = buildDatasetJsonLd({
+      url: "/sectors",
+      name: "テストデータセット",
+      description: "説明",
+      dateModified: "2026-07-03",
+      temporalCoverage: { from: "2016-07-03", to: "2026-07-03" },
+    });
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    expect(parsed["@context"]).toBe("https://schema.org");
+    expect(parsed["@type"]).toBe("Dataset");
+    expect(parsed.url).toMatch(/^https?:\/\/.+\/sectors$/);
+    expect(parsed.dateModified).toBe("2026-07-03");
+    expect(parsed.temporalCoverage).toBe("2016-07-03/2026-07-03");
+    expect((parsed.creator as { "@type": string })["@type"]).toBe(
+      "Organization",
+    );
+  });
+
+  it("omits temporalCoverage when not provided", () => {
+    const parsed = JSON.parse(
+      buildDatasetJsonLd({
+        url: "https://example.com/data",
+        name: "n",
+        description: "d",
+        dateModified: "2026-01-01",
+      }),
+    ) as Record<string, unknown>;
+    expect(parsed.temporalCoverage).toBeUndefined();
+    expect(parsed.url).toBe("https://example.com/data");
   });
 });
 

@@ -10,7 +10,7 @@
   - **📈 温度の推移** — `TrendSection`（`JapanTemperatureTrendCard` + `TemperatureTrendCard`）
   - **📊 過去の傾向** — `StatsSection`
   - **👤 あなたへのヒント** — `PersonalizedHintCard`
-  - **🔍 詳しく見る** — `CrossStatsCard` + `SectorHeatmapCard` + `PortfolioTeaserCard`
+  - **🔍 詳しく見る** — `CrossStatsCard` + `SectorHeatmapCard`（現在温度帯 TOP5 + `/sectors` 導線のコンパクト版）+ `PortfolioTeaserCard`
   - **📉 市場の生データ** — `JapanMarketSection` + `MarketDataSection`
   各子セクションコンポーネントは外側の `mb-X` を持たず、親 `DashboardSection` の `mb-10` + `space-y-6` で章間/章内のスペーシングを統一する。号数は `src/lib/issue-number.ts` がリリース日 `2026-04-19` を第 1 号として JST カレンダー日数で算出
 - `/about` — サイト説明（`src/app/about/page.tsx`）
@@ -21,9 +21,10 @@
 - `/guide` — 投資家タイプ別ガイドのインデックスページ（`src/app/guide/page.tsx`）。`nisa-tsumitate` / `short-term-trader` / `fire-long-term` の 3 本をカード表示。各ガイドは単体 TSX（Markdown 化せず個別性重視）で `src/app/guide/[slug]/page.tsx`
 - `/analysis` — 深掘り分析記事のインデックスページ（`src/app/analysis/page.tsx`）。第1弾は `/analysis/margin-ratio-temperature`（信用倍率 × 株温計）。詳細は [分析記事ドキュメント](features/analysis.md) 参照
 - `/alerts` — 温度アラートのランディングページ（`src/app/alerts/page.tsx`）。機能説明 + FAQ + インライン登録フォーム（`AlertSignupForm`）。note 記事など外部からの誘導リンクの受け皿（indexable、canonical `/alerts`）。詳細は [温度アラートドキュメント](features/alerts.md) 参照
+- `/sectors` — 温度帯別 業種（セクター）ヒートマップの専用ページ（`src/app/sectors/page.tsx` + `src/components/sectors/SectorsPageBody.tsx`）。17業種 × 5温度帯フルテーブル + 温度帯別 TOP5。静的生成で、現在温度のハイライトのみ `useMarketData()` でプログレッシブ表示。JSON-LD は Dataset + BreadcrumbList。詳細は [過去統計ドキュメント](features/historical-stats.md) 参照
 - Dashboard 内の `StatsSection` 直後に `PersonalizedHintCard`（`src/components/PersonalizedHintCard.tsx`）を配置し、タブ切替で現在温度に応じた「あなたのスタイル別の読み方」を表示 → 該当ガイドへ遷移（`?ref=persona_hint`）。ヒント文言は純粋データ `src/lib/persona-hints.ts`（`PERSONA_HINTS` マトリクス / `getPersonaHint(persona, score)` / `isExtremeScore(score)`）。極寒/沸騰時はカード枠を amber 強調 + 注意書きを表示。選択したペルソナは localStorage（`kabuonkei.persona`）で保持し次回訪問時に復元。タブ切替は GA4 `persona_select` イベントを送信
 - `/about` `/widget` `/terms` `/privacy` `/events` `/guide` の外枠（`<main>` + 戻るリンク + `<h1>` + コンテンツ枠）は `src/components/StaticPageLayout.tsx` に共通化されており、各 page は `<StaticPageLayout title="...">` で本文のみを記述する
-- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）。`/about` `/events` `/guide` `/analysis` `/alerts` `/widget` `/terms` `/privacy` へのリンクを掲載
+- 全ページ共通フッター: `src/components/Footer.tsx`（`layout.tsx` で body 直下に配置、`mt-auto` で下端固定）。`/about` `/events` `/guide` `/analysis` `/portfolio` `/sectors` `/alerts` `/widget` `/glossary` `/terms` `/privacy` へのリンクを掲載
 
 ## 埋め込みウィジェット画像 API
 - `/widget/today` — 400×400 PNG を動的生成する Route Handler（`src/app/widget/today/route.tsx`）。他サイトが `<img src>` で貼れる SEO 資産（被リンク獲得目的）。内部で `fetchAllMarketData()` を呼び、日米の最新スコアを描画
@@ -44,10 +45,11 @@
 
 ## SEO / 計測
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
-- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap には `/`, `/about`, `/glossary`, `/widget`, `/events`, `/guide` + 3 ガイド, `/analysis` + 分析記事, `/alerts`, `/events/[slug]` 全件, `/terms`, `/privacy` を収録
+- **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap には `/`, `/about`, `/glossary`, `/widget`, `/events`, `/guide` + 3 ガイド, `/analysis` + 分析記事, `/portfolio`, `/sectors`, `/alerts`, `/events/[slug]` 全件, `/terms`, `/privacy` を収録
 - **記事 JSON-LD**: `src/lib/article-jsonld.ts` の `buildArticleJsonLd({url, headline, description, datePublished, dateModified, imageUrl?})` で schema.org Article 用 JSON 文字列を生成し、記事ページで `<Script type="application/ld+json">` として埋め込む（分析記事で利用）
 - **WebSite + Organization JSON-LD**: `src/lib/website-jsonld.ts` の `buildWebSiteJsonLd()` を `src/app/layout.tsx` でグローバルに埋め込む。サイト名・運営組織（リブラボ）・ロゴを通知し、Google サイトリンク検索ボックス候補に乗せる
-- **BreadcrumbList JSON-LD + UI パンくず**: `src/lib/breadcrumb-jsonld.ts` の `buildBreadcrumbJsonLd(items)` と `src/components/Breadcrumb.tsx` を併用。`/events/[slug]`, `/portfolio`, `/analysis/*` で SERP のパンくず表示候補に乗せる
+- **BreadcrumbList JSON-LD + UI パンくず**: `src/lib/breadcrumb-jsonld.ts` の `buildBreadcrumbJsonLd(items)` と `src/components/Breadcrumb.tsx` を併用。`/events/[slug]`, `/portfolio`, `/sectors`, `/analysis/*` で SERP のパンくず表示候補に乗せる
+- **Dataset JSON-LD**: `src/lib/dataset-jsonld.ts` の `buildDatasetJsonLd({url, name, description, dateModified, temporalCoverage?})`。記事ではない統計データページ（`/sectors`）で Article の代わりに使用
 - **manifest**: `src/app/manifest.ts`（Next.js が `/manifest.webmanifest` を自動配信）。PWA 対応とブランド情報の補強。アイコンは既存の `src/app/icon.svg` / `apple-icon.png` を流用
 - **GA4**: `src/components/GoogleAnalytics.tsx`。`NEXT_PUBLIC_GA_ID` 未設定なら何も出さない（開発時の安全策）
 - **アクセスレポート CLI**: `npm run report:analytics`（`scripts/report-analytics.ts`、`-- --days 28` で期間変更）。日別 PV / 流入元 / note 流入（utm_source=note）/ ページ別 TOP / Google 検索クエリ / sitemap インデックス数を一括表示

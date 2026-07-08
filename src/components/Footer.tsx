@@ -29,6 +29,9 @@ export default function Footer() {
           <Link href="/portfolio" className="hover:text-gray-900 hover:underline">
             温度連動ポートフォリオ
           </Link>
+          <Link href="/sectors" className="hover:text-gray-900 hover:underline">
+            業種別ヒートマップ
+          </Link>
           <Link href="/alerts" className="hover:text-gray-900 hover:underline">
             温度アラート
           </Link>

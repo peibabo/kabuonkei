@@ -45,6 +45,7 @@ import type {
 import {
   formatJstFullDateLabel,
   jstIsoDate,
+  missingSendEnv,
   pickFreshJpScore,
   variantOf,
 } from "./_lib/alert-state";
@@ -151,6 +152,17 @@ async function main() {
   console.log(
     `🔔 温度アラートチェック [variant=${args.variant}]${args.dryRun ? " [DRY RUN]" : ""} ${dateLabel}`
   );
+
+  // 本送信に必要な環境変数のプリフライト。送信ループ到達後に気づくと
+  // Redis の last-state だけ進んで発火が消化されてしまう（失報）ため、ここで中断する
+  if (!args.dryRun) {
+    const missing = missingSendEnv(process.env);
+    if (missing.length > 0) {
+      console.error(`環境変数が未設定のため処理中断: ${missing.join(", ")}`);
+      process.exitCode = 1;
+      return;
+    }
+  }
 
   const score =
     args.variant === "us" ? await fetchUsScore() : fetchJpScore();

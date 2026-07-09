@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   formatJstFullDateLabel,
   jstIsoDate,
+  missingSendEnv,
   pickFreshJpScore,
   variantOf,
 } from "../_lib/alert-state";
@@ -64,6 +65,22 @@ describe("pickFreshJpScore", () => {
       { date: today, score: "67" as unknown as number },
     ];
     expect(pickFreshJpScore(snapshots, today).ok).toBe(false);
+  });
+});
+
+describe("missingSendEnv", () => {
+  it("両方設定済みなら空配列", () => {
+    expect(
+      missingSendEnv({ RESEND_API_KEY: "re_x", RESEND_FROM_EMAIL: "alerts@kabuonkei.com" })
+    ).toEqual([]);
+  });
+
+  it("未設定・空文字のキーを列挙する", () => {
+    expect(missingSendEnv({ RESEND_API_KEY: "re_x" })).toEqual(["RESEND_FROM_EMAIL"]);
+    expect(missingSendEnv({ RESEND_API_KEY: "re_x", RESEND_FROM_EMAIL: "" })).toEqual([
+      "RESEND_FROM_EMAIL",
+    ]);
+    expect(missingSendEnv({})).toEqual(["RESEND_API_KEY", "RESEND_FROM_EMAIL"]);
   });
 });
 

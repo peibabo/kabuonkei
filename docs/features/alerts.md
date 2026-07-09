@@ -117,6 +117,7 @@
   - **JP スコアの鮮度ガード**（`pickFreshJpScore()`、`scripts/_lib/alert-state.ts`）: 最新エントリの日付が今日（JST）でなければ採用せず exit 1（状態も更新しない）。snapshot job の遅延/失敗時に前日値で誤発火/失報するのを防ぐ
   - **閾値 20/80 の単一ソース**: `src/lib/alerts/state-transition.ts` の `COLD_THRESHOLD` / `HOT_THRESHOLD`。UI 文言（/alerts・AlertBanner・AlertSignupForm・AlertVariantCheckboxes）、メールテンプレート、X bot・シェア文言はすべてここを参照
   - **温度帯ラベルは実スコアから導出**: hot アラートの「過熱/沸騰」表記は `getSentimentLevel(score)` で決める。スコアちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）で、メール/ツイート/シェア文言とサイト表示のラベル食い違いを防ぐ
+  - **送信環境変数のプリフライト**（`missingSendEnv()`）: dry-run 以外では `RESEND_API_KEY` / `RESEND_FROM_EMAIL` 未設定なら送信ループ・状態更新に進む前に exit 1。ワークフロー側も `onboarding@resend.dev` への暗黙フォールバックを置かない（サンドボックス送信元だと実購読者に届かず沈黙失敗するため。初期運用でサンドボックスを使う場合は Repository Variable に明示的に設定する）
   - 対象購読者の列挙 → Resend 送信（120ms スロットル）→ 失敗は `alerts:failures:*` に記録
   - `--dry-run` で Redis 書き込みと Resend 呼び出しをスキップ
 - `.github/workflows/check-temperature-alerts.yml`

@@ -51,6 +51,26 @@ jobs:
             echo "variant=jp" >> "$GITHUB_OUTPUT"
             echo "dry=" >> "$GITHUB_OUTPUT"
           fi
+      # snapshot-japan-fg (17:00 JST) の commit が cron 遅延でまだ push されていない場合に備え、
+      # 今日(JST)の日付のスナップショットが main に現れるまで最大 12 分ポーリングする。
+      # タイムアウトしてもここでは失敗させず、スクリプト側の鮮度ガード（前日値なら exit 1）に委ねる。
+      - name: Wait for today's JP snapshot (jp variant only)
+        if: steps.resolve.outputs.variant == 'jp'
+        run: |
+          FILE=src/data/japan-fg-snapshots.json
+          TODAY=$(TZ=Asia/Tokyo date +%F)
+          for i in $(seq 1 6); do
+            LATEST=$(node -e "const s=require('./$FILE').snapshots; console.log(s[s.length-1]?.date ?? '')")
+            if [ "$LATEST" = "$TODAY" ]; then
+              echo "今日のスナップショットを確認: $LATEST"
+              exit 0
+            fi
+            echo "スナップショットが古い (latest=$LATEST, today=$TODAY)。120秒待って再取得 ($i/6)"
+            sleep 120
+            git fetch origin main --depth 1
+            git checkout origin/main -- "$FILE"
+          done
+          echo "::warning::今日のスナップショットを取得できませんでした。スクリプト側の鮮度ガードで中断されます"
       - run: npm run alerts:check -- --variant ${{ steps.resolve.outputs.variant }} ${{ steps.resolve.outputs.dry }}
         env:
           KV_REST_API_URL: ${{ secrets.KV_REST_API_URL }}

@@ -76,6 +76,8 @@ jobs:
           KV_REST_API_URL: ${{ secrets.KV_REST_API_URL }}
           KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          RESEND_FROM_EMAIL: ${{ vars.RESEND_FROM_EMAIL || 'onboarding@resend.dev' }}
+          # サンドボックス（onboarding@resend.dev）への暗黙フォールバックは沈黙失敗の原因になるため
+          # 既定値を置かない。未設定ならスクリプト側のプリフライトが exit 1 で落とす
+          RESEND_FROM_EMAIL: ${{ vars.RESEND_FROM_EMAIL }}
           ALERTS_TOKEN_SECRET: ${{ secrets.ALERTS_TOKEN_SECRET }}
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}

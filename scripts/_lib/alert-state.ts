@@ -38,6 +38,17 @@ export function pickFreshJpScore(
   return { ok: true, score: latest.score };
 }
 
+/**
+ * 本送信（dry-run 以外）に必要な環境変数のうち未設定のものを返す。
+ *
+ * RESEND_FROM_EMAIL はワークフロー側で既定値を置かない（サンドボックス
+ * onboarding@resend.dev への暗黙フォールバックは実購読者に届かず沈黙失敗する）ため、
+ * 送信ループや Redis 状態更新に進む前にここで検知して中断する。
+ */
+export function missingSendEnv(env: Record<string, string | undefined>): string[] {
+  return ["RESEND_API_KEY", "RESEND_FROM_EMAIL"].filter((k) => !env[k]);
+}
+
 /** "2026/04/24(金)" 形式のラベル */
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"] as const;
 export function formatJstFullDateLabel(date: Date = new Date()): string {

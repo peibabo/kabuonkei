@@ -45,6 +45,7 @@ import type {
 import {
   formatJstFullDateLabel,
   jstIsoDate,
+  pickFreshJpScore,
   variantOf,
 } from "./_lib/alert-state";
 
@@ -98,10 +99,12 @@ function fetchJpScore(): number | null {
     const raw = JSON.parse(readFileSync(JP_SNAPSHOTS_PATH, "utf-8")) as {
       snapshots: Array<{ date: string; score: number }>;
     };
-    const snapshots = raw.snapshots ?? [];
-    if (snapshots.length === 0) return null;
-    const latest = snapshots[snapshots.length - 1];
-    return latest?.score ?? null;
+    const picked = pickFreshJpScore(raw.snapshots, jstIsoDate());
+    if (!picked.ok) {
+      console.error(`JP スコア不採用: ${picked.reason}`);
+      return null;
+    }
+    return picked.score;
   } catch (err) {
     console.error("JP snapshot 読み込み失敗:", err);
     return null;

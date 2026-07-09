@@ -31,6 +31,10 @@ import {
   getSentimentDescription,
 } from "../src/lib/sentiment";
 import { findSimilarDays } from "../src/lib/similar-days/find";
+import {
+  COLD_THRESHOLD,
+  HOT_THRESHOLD,
+} from "../src/lib/alerts/state-transition";
 import { formatJstDateLabel } from "../src/lib/jst-date";
 import type {
   ChartPoint,
@@ -97,8 +101,10 @@ function extremeBadge(
 ): string | null {
   const scores = [japanScore, usScore].filter((s): s is number => s != null);
   if (scores.length === 0) return null;
-  if (Math.min(...scores) <= 20) return "⚠️ 極寒アラート";
-  if (Math.max(...scores) >= 80) return "🔥 沸騰アラート";
+  if (Math.min(...scores) <= COLD_THRESHOLD) return "⚠️ 極寒アラート";
+  const max = Math.max(...scores);
+  // ちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）なので実スコアから導出
+  if (max >= HOT_THRESHOLD) return `🔥 ${getSentimentLevel(max)}アラート`;
   return null;
 }
 

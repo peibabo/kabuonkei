@@ -1,4 +1,5 @@
-import { getSentimentDescription } from "./sentiment";
+import { getSentimentDescription, getSentimentLevel } from "./sentiment";
+import { COLD_THRESHOLD, HOT_THRESHOLD } from "./alerts/state-transition";
 
 export interface ShareTextInput {
   market: "jp" | "us";
@@ -19,11 +20,13 @@ function extremeHeader(
     (s): s is number => s != null,
   );
   if (scores.length === 0) return null;
-  if (Math.min(...scores) <= 20) {
+  if (Math.min(...scores) <= COLD_THRESHOLD) {
     return `⚠️ 極寒アラート ${dateLabel}`;
   }
-  if (Math.max(...scores) >= 80) {
-    return `🔥 沸騰アラート ${dateLabel}`;
+  const max = Math.max(...scores);
+  // ちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）なので実スコアから導出
+  if (max >= HOT_THRESHOLD) {
+    return `🔥 ${getSentimentLevel(max)}アラート ${dateLabel}`;
   }
   return null;
 }

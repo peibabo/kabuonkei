@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import AlertSignupModal from "./AlertSignupModal";
 import { trackEvent } from "@/lib/analytics";
 import { subscribeOpenAlertModal } from "@/lib/alert-modal-bus";
+import { COLD_THRESHOLD, HOT_THRESHOLD } from "@/lib/alerts/state-transition";
 import type { AlertVariant } from "@/lib/types";
 
 interface Props {
@@ -12,10 +13,10 @@ interface Props {
 }
 
 function isCold(score: number | null): boolean {
-  return score != null && score <= 20;
+  return score != null && score <= COLD_THRESHOLD;
 }
 function isHot(score: number | null): boolean {
-  return score != null && score >= 80;
+  return score != null && score >= HOT_THRESHOLD;
 }
 
 export default function AlertBanner({ japanScore, usScore }: Props) {
@@ -93,7 +94,7 @@ export default function AlertBanner({ japanScore, usScore }: Props) {
           ) : (
             <>
               <p className="text-sm font-semibold text-gray-900">
-                🔔 極端温度（≤20 or ≥80）になったらメールでお知らせ
+                🔔 極端温度（≤{COLD_THRESHOLD} or ≥{HOT_THRESHOLD}）になったらメールでお知らせ
               </p>
               <p className="text-xs text-gray-600 mt-0.5">
                 連続発火なし・いつでもワンクリック解除。

@@ -1,5 +1,12 @@
 import type { AlertFireDecision, AlertState } from "@/lib/types";
 
+/**
+ * アラート発火閾値の単一ソース。
+ * UI 文言（/alerts ページ・AlertBanner・AlertSignupForm・AlertVariantCheckboxes）、
+ * メールテンプレート、X bot のアラート行はすべてここを参照する。
+ * 値を変える場合は docs/features/alerts.md と公開済みコンテンツ（note 記事等）の
+ * 「20°以下 / 80°以上」表記との整合も確認すること。
+ */
 export const COLD_THRESHOLD = 20;
 export const HOT_THRESHOLD = 80;
 export const COLD_HYSTERESIS = 25;

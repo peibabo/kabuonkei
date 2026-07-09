@@ -1,4 +1,6 @@
 import type { AlertKind, AlertMarket, AlertVariant } from "@/lib/types";
+import { getSentimentDescription, getSentimentLevel } from "@/lib/sentiment";
+import { COLD_THRESHOLD, HOT_THRESHOLD } from "./state-transition";
 
 export interface EmailContent {
   subject: string;
@@ -30,10 +32,10 @@ export interface AlertEmailInput {
 }
 
 const VARIANT_LABEL_JP: Record<AlertVariant, string> = {
-  us_cold: "米国 極寒（≤20）",
-  us_hot: "米国 過熱（≥80）",
-  jp_cold: "日本 極寒（≤20）",
-  jp_hot: "日本 過熱（≥80）",
+  us_cold: `米国 極寒（≤${COLD_THRESHOLD}）`,
+  us_hot: `米国 過熱（≥${HOT_THRESHOLD}）`,
+  jp_cold: `日本 極寒（≤${COLD_THRESHOLD}）`,
+  jp_hot: `日本 過熱（≥${HOT_THRESHOLD}）`,
 };
 
 export function variantLabel(variant: AlertVariant): string {
@@ -45,9 +47,9 @@ const MARKET_LABEL: Record<AlertMarket, string> = {
   jp: "日本",
 };
 
-const KIND_LABEL: Record<AlertKind, { sentiment: string; description: string; emoji: string }> = {
-  cold: { sentiment: "極寒", description: "総悲観", emoji: "⚠️" },
-  hot: { sentiment: "過熱・沸騰", description: "総楽観", emoji: "🔥" },
+const KIND_EMOJI: Record<AlertKind, string> = {
+  cold: "⚠️",
+  hot: "🔥",
 };
 
 function escapeHtml(s: string): string {
@@ -110,7 +112,14 @@ ${input.unsubscribeUrl}
 
 export function buildAlertEmail(input: AlertEmailInput): EmailContent {
   const market = MARKET_LABEL[input.market];
-  const kind = KIND_LABEL[input.kind];
+  // 温度帯ラベルは kind の固定文言ではなく実スコアから導出する。
+  // スコアちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）で、
+  // メールとサイト表示のラベル食い違いを避ける。
+  const kind = {
+    emoji: KIND_EMOJI[input.kind],
+    sentiment: getSentimentLevel(input.score),
+    description: getSentimentDescription(input.score),
+  };
   const subject = `${kind.emoji} 【株温計】${market}市場が${kind.sentiment}圏に突入（スコア${input.score}）`;
 
   const similarLine = input.similarDay

@@ -57,7 +57,7 @@ describe("buildAlertEmail", () => {
     expect(r.html).toContain("スコア 15 / 100");
   });
 
-  it("過熱の件名に🔥 / 過熱・沸騰", () => {
+  it("hot でスコア 81 以上なら「沸騰（総楽観）」", () => {
     const r = buildAlertEmail({
       market: "jp",
       kind: "hot",
@@ -67,7 +67,35 @@ describe("buildAlertEmail", () => {
       unsubscribeUrl: "https://kabuonkei.com/api/alerts/unsubscribe?token=x",
     });
     expect(r.subject).toContain("日本");
+    expect(r.subject).toContain("沸騰");
+    expect(r.text).toContain("沸騰（総楽観）");
+  });
+
+  it("hot でスコアちょうど 80 なら温度計ゲージと同じ「過熱（強気）」", () => {
+    const r = buildAlertEmail({
+      market: "jp",
+      kind: "hot",
+      score: 80,
+      dateLabelJst: "2026/04/24(金)",
+      dashboardUrl: "https://kabuonkei.com/",
+      unsubscribeUrl: "https://kabuonkei.com/api/alerts/unsubscribe?token=x",
+    });
     expect(r.subject).toContain("過熱");
+    expect(r.subject).not.toContain("沸騰");
+    expect(r.text).toContain("過熱（強気）");
+  });
+
+  it("cold でスコアちょうど 20 は「極寒（総悲観）」", () => {
+    const r = buildAlertEmail({
+      market: "us",
+      kind: "cold",
+      score: 20,
+      dateLabelJst: "2026/04/24(金)",
+      dashboardUrl: "https://kabuonkei.com/",
+      unsubscribeUrl: "https://kabuonkei.com/api/alerts/unsubscribe?token=x",
+    });
+    expect(r.subject).toContain("極寒");
+    expect(r.text).toContain("極寒（総悲観）");
   });
 
   it("類似日を含める", () => {

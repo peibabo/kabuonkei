@@ -6,11 +6,14 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 import AlertSignupForm from "@/components/alerts/AlertSignupForm";
 import { ALERT_VARIANTS } from "@/lib/types";
+import {
+  COLD_THRESHOLD,
+  HOT_THRESHOLD,
+} from "@/lib/alerts/state-transition";
 
 const PAGE_PATH = "/alerts";
 const PAGE_TITLE = "温度アラート — 極寒・過熱をメールでお知らせ";
-const PAGE_DESCRIPTION =
-  "株温計の温度アラートは、米国・日本の市場温度が極寒（≤20）または過熱（≥80）に突入した瞬間だけメールで知らせる無料通知サービス。毎日は届かない、本当に極端な日だけの通知です。";
+const PAGE_DESCRIPTION = `株温計の温度アラートは、米国・日本の市場温度が極寒（≤${COLD_THRESHOLD}）または過熱（≥${HOT_THRESHOLD}）に突入した瞬間だけメールで知らせる無料通知サービス。毎日は届かない、本当に極端な日だけの通知です。`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -56,7 +59,7 @@ export default function AlertsPage() {
         <Breadcrumb items={breadcrumbItems} />
 
         <p>
-          市場の温度が<strong>極寒（≤20）</strong>または<strong>過熱（≥80）</strong>
+          市場の温度が<strong>極寒（≤{COLD_THRESHOLD}）</strong>または<strong>過熱（≥{HOT_THRESHOLD}）</strong>
           に突入したタイミングだけ、メールでお知らせする無料の通知サービスです。
           毎日は届きません。歴史的にリターンの分布が偏る「本当に極端な日」だけをお知らせします。
         </p>

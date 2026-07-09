@@ -1,6 +1,7 @@
 "use client";
 
 import type { AlertVariant } from "@/lib/types";
+import { COLD_THRESHOLD, HOT_THRESHOLD } from "@/lib/alerts/state-transition";
 
 interface Props {
   value: AlertVariant[];
@@ -16,10 +17,10 @@ interface Row {
 }
 
 const ROWS: Row[] = [
-  { id: "jp_cold", market: "日本", kind: "極寒 (≤20)", hint: "総悲観・逆張り妙味" },
-  { id: "jp_hot", market: "日本", kind: "過熱 (≥80)", hint: "総楽観・警戒" },
-  { id: "us_cold", market: "米国", kind: "極寒 (≤20)", hint: "VIX 跳ね・総悲観" },
-  { id: "us_hot", market: "米国", kind: "過熱 (≥80)", hint: "S&P500 総楽観・警戒" },
+  { id: "jp_cold", market: "日本", kind: `極寒 (≤${COLD_THRESHOLD})`, hint: "総悲観・逆張り妙味" },
+  { id: "jp_hot", market: "日本", kind: `過熱 (≥${HOT_THRESHOLD})`, hint: "総楽観・警戒" },
+  { id: "us_cold", market: "米国", kind: `極寒 (≤${COLD_THRESHOLD})`, hint: "VIX 跳ね・総悲観" },
+  { id: "us_hot", market: "米国", kind: `過熱 (≥${HOT_THRESHOLD})`, hint: "S&P500 総楽観・警戒" },
 ];
 
 export default function AlertVariantCheckboxes({

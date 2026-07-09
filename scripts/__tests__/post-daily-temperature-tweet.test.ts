@@ -100,11 +100,18 @@ describe("buildTweetBody", () => {
     expect(text.startsWith("⚠️ 極寒アラート 4/19(月) 寄り前")).toBe(true);
   });
 
-  it("沸騰アラート（score ≥ 80）で先頭バッジが付く", () => {
+  it("沸騰アラート（score ≥ 81）で先頭バッジが付く", () => {
     const text = buildTweetBody(
       ctx({ japanScore: 60, japanLevel: "過熱", usScore: 85, usLevel: "沸騰" }),
     );
     expect(text.startsWith("🔥 沸騰アラート 4/19(月) 寄り前")).toBe(true);
+  });
+
+  it("スコアちょうど 80 は温度計ゲージと同じ「過熱アラート」", () => {
+    const text = buildTweetBody(
+      ctx({ japanScore: 60, japanLevel: "過熱", usScore: 80, usLevel: "過熱" }),
+    );
+    expect(text.startsWith("🔥 過熱アラート 4/19(月) 寄り前")).toBe(true);
   });
 
   it("通常日は 🌡 プレフィックスで開始", () => {

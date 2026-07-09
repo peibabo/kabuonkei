@@ -51,6 +51,18 @@ describe("buildShareText", () => {
     expect(text.split("\n")[0]).toBe("🔥 沸騰アラート 4/21(火)");
   });
 
+  it("スコアちょうど 80 は温度計ゲージと同じ「過熱アラート」（沸騰は 81 以上）", () => {
+    const text = buildShareText({
+      ...baseInput,
+      market: "jp",
+      japanScore: 80,
+      usScore: 60,
+      japanLevel: "過熱",
+      usLevel: "平温",
+    });
+    expect(text.split("\n")[0]).toBe("🔥 過熱アラート 4/21(火)");
+  });
+
   it("US スコアが 15（極寒）なら極寒アラートヘッダーが付く", () => {
     const text = buildShareText({
       ...baseInput,

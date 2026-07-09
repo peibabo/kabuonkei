@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import AlertVariantCheckboxes from "./AlertVariantCheckboxes";
 import { trackEvent } from "@/lib/analytics";
+import { COLD_THRESHOLD, HOT_THRESHOLD } from "@/lib/alerts/state-transition";
 import type { AlertVariant } from "@/lib/types";
 
 interface Props {
@@ -126,7 +127,7 @@ export default function AlertSignupForm({
   return (
     <form onSubmit={handleSubmit} noValidate>
       <p className="mt-3 text-sm text-gray-600">
-        米国/日本の温度が極端（≤20 極寒 or ≥80 過熱）になったタイミングでメールでお知らせします。連続発火を防ぐため、状態が変化した瞬間のみ送信します。
+        米国/日本の温度が極端（≤{COLD_THRESHOLD} 極寒 or ≥{HOT_THRESHOLD} 過熱）になったタイミングでメールでお知らせします。連続発火を防ぐため、状態が変化した瞬間のみ送信します。
       </p>
 
       <label className="block mt-4">

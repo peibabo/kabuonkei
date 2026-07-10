@@ -131,6 +131,8 @@
 # Resend
 RESEND_API_KEY=
 RESEND_FROM_EMAIL=onboarding@resend.dev  # 独自ドメイン整備後に alerts@kabuonkei.com に切替
+# ↑ GitHub Actions 側は Secret ではなく Repository Variable（vars.RESEND_FROM_EMAIL）に設定する
+#   （2026-07 障害: Secret 側に登録されていて vars が空 → プリフライトで exit 1）
 
 # Upstash Redis（Vercel Marketplace の "Upstash for Redis" 統合で自動注入）
 KV_REST_API_URL=
@@ -150,7 +152,7 @@ ALERTS_ALLOWED_ORIGINS=
 
 1. Resend Dashboard → Domains → `kabuonkei.com` を追加
 2. 指示される DNS レコード（SPF / DKIM × 2-3 / DMARC）を追加
-3. 検証完了後、`RESEND_FROM_EMAIL=alerts@kabuonkei.com` へ切替（Vercel + GitHub Secrets 両方）
+3. 検証完了後、`RESEND_FROM_EMAIL=alerts@kabuonkei.com` へ切替（Vercel の環境変数 + GitHub の Repository Variable 両方）
 
 DMARC 推奨値:
 ```

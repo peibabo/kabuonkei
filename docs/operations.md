@@ -67,8 +67,8 @@
 - `NEXT_PUBLIC_GA_ID` — Google Analytics 4 の測定 ID
 - `GOOGLE_SITE_VERIFICATION` — Google Search Console サイト所有権確認コード
 - `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` — X（Twitter）Bot 投稿用（OAuth 1.0a User Context、Read and Write 権限）
-- `RESEND_API_KEY` — Resend の送信 API Key（温度アラートメール）
-- `RESEND_FROM_EMAIL` — 送信元アドレス（初期は `onboarding@resend.dev`、独自ドメイン検証後に `alerts@kabuonkei.com` へ）
+- `RESEND_API_KEY` — Resend の送信 API Key（温度アラートメール）。株温計専用アカウント（info@kabuonkei.com、無料枠は 1 Verified Domain のため kabunote.jp とはアカウント分離）
+- `RESEND_FROM_EMAIL` — 送信元アドレス。`alerts@kabuonkei.com`（2026-07-10 にドメイン検証を完了しサンドボックスから切替済み。GitHub Actions 側は Secret ではなく Repository Variable）
 - `KV_REST_API_URL` / `KV_REST_API_TOKEN` — Upstash Redis REST（Vercel Marketplace の Upstash for Redis 統合で自動注入。GitHub Actions 側は Secrets に同名で手動コピー）
 - `ALERTS_TOKEN_SECRET` — 確認/配信解除トークンの HMAC 秘密鍵（32 バイト以上、`openssl rand -hex 32`）
 - `ALERTS_ALLOWED_ORIGINS` — `/api/alerts/subscribe` の Origin ホワイトリスト（カンマ区切り、任意）

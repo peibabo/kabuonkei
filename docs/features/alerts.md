@@ -130,9 +130,11 @@
 ```
 # Resend
 RESEND_API_KEY=
-RESEND_FROM_EMAIL=onboarding@resend.dev  # 独自ドメイン整備後に alerts@kabuonkei.com に切替
+RESEND_FROM_EMAIL=alerts@kabuonkei.com  # 2026-07-10 ドメイン検証完了・サンドボックスから切替済み
 # ↑ GitHub Actions 側は Secret ではなく Repository Variable（vars.RESEND_FROM_EMAIL）に設定する
 #   （2026-07 障害: Secret 側に登録されていて vars が空 → プリフライトで exit 1）
+# Resend アカウントは株温計専用（info@kabuonkei.com）。無料枠は 1 Verified Domain のため
+# kabunote.jp を持つ既存アカウントとは分離した
 
 # Upstash Redis（Vercel Marketplace の "Upstash for Redis" 統合で自動注入）
 KV_REST_API_URL=
@@ -146,20 +148,24 @@ ALERTS_TOKEN_SECRET=  # openssl rand -hex 32
 ALERTS_ALLOWED_ORIGINS=
 ```
 
-## DNS 設定（独自ドメインに切替えるとき）
+## DNS 設定（2026-07-10 実施済み）
 
-初期は `onboarding@resend.dev` で運用し、メール到達性を改善したくなったら `kabuonkei.com` で検証する。
+`kabuonkei.com` は Resend で検証済み（Tokyo リージョン）。Xserver の DNS に以下を追加した:
 
-1. Resend Dashboard → Domains → `kabuonkei.com` を追加
-2. 指示される DNS レコード（SPF / DKIM × 2-3 / DMARC）を追加
-3. 検証完了後、`RESEND_FROM_EMAIL=alerts@kabuonkei.com` へ切替（Vercel の環境変数 + GitHub の Repository Variable 両方）
+| ホスト名 | 種別 | 内容 |
+|---|---|---|
+| `resend._domainkey` | TXT | DKIM 公開鍵（`p=MIGf...`、Resend Dashboard 固有値） |
+| `send` | MX (優先度10) | `feedback-smtp.ap-northeast-1.amazonses.com` |
+| `send` | TXT | `v=spf1 include:amazonses.com ~all` |
+
+既存の Google Workspace 用レコード（ルート SPF / `google._domainkey` / `_dmarc`）とはセレクタ・サブドメインが別なので競合しない。切替時は `RESEND_FROM_EMAIL=alerts@kabuonkei.com` を Vercel の環境変数 + GitHub の Repository Variable 両方に設定し、Vercel は再デプロイで反映（環境変数は次のデプロイから有効）。
 
 DMARC 推奨値:
 ```
 _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.com"
 ```
 
-**注意**: Resend 無料プランは Verified Domain 1 個まで。他プロジェクトで使用中なら Resend 有料プラン ($20/月) 必要。
+**注意**: Resend 無料プランは Verified Domain 1 個まで（+3,000通/月・100通/日）。kabunote.jp が既存アカウントを使用していたため、株温計は専用アカウント（info@kabuonkei.com）を新設して無料枠内で分離運用している。
 
 ## 運用観点
 

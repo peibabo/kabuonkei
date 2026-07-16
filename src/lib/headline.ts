@@ -9,6 +9,8 @@
  * - 決定木はレベル組み合わせ (5×5) を「状態キー」に写像し、文言は状態キー別の
  *   バリエーションプール（base + トレンド候補 + streak 候補）から JST 日付で決定的に選ぶ。
  *   同一日は常に同じ文言、状態が続く日は毎日別の文言に回る。
+ * - 接近オーバーライド: レベルが違ってもスコア差 < 10 なら「だけ」等の対比断言をやめ、
+ *   「日米ほぼ同温」系の見出しに切替（境界の丸め誤差を対比として報じない）。
  * - 極端値 (≤20 or ≥80) で primary CTA を「アラート」に切り替え。
  */
 
@@ -47,7 +49,7 @@ function levelKey(level: SentimentLevel): "cold-extreme" | "cold" | "neutral" | 
   }
 }
 
-/** 決定木が返す状態キー（既存 15 状態 + jp データ欠損の us-only） */
+/** 決定木が返す状態キー（既存 15 状態 + jp データ欠損の us-only + 接近 4 状態） */
 export type HeadlineStateKey =
   | "both-boiling"
   | "both-hot"
@@ -64,13 +66,53 @@ export type HeadlineStateKey =
   | "us-hot-solo"
   | "jp-cold-solo"
   | "us-cold-solo"
-  | "us-only";
+  | "us-only"
+  | `near-${NearBoundaryKey}`;
 
-/** レベル組み合わせ → 状態キー。分岐構造は v1 の決定木をそのまま踏襲 */
+/**
+ * 接近オーバーライドの境界キー。
+ * スコア差 < NEAR_GAP_THRESHOLD でレベルが異なるのは隣接レベルのみ
+ * （非隣接の最小差は 21）なので、レベル境界 4 本のいずれかに定まる。
+ */
+export type NearBoundaryKey = "boiling-hot" | "hot-neutral" | "neutral-cold" | "cold-frozen";
+
+/** レベルが違ってもこの差未満なら「ほぼ同温」として扱う */
+const NEAR_GAP_THRESHOLD = 10;
+
+type MarketName = "日本" | "米国";
+
+/**
+ * 日米のレベルが異なりスコア差 < NEAR_GAP_THRESHOLD のとき、
+ * 跨いでいる境界キーと高低の市場名を返す。該当しなければ null。
+ */
+export function resolveNearBoundary(
+  jp: number | null,
+  us: number,
+): { key: NearBoundaryKey; hi: MarketName; lo: MarketName } | null {
+  if (jp == null) return null;
+  if (getSentimentLevel(jp) === getSentimentLevel(us)) return null;
+  if (Math.abs(jp - us) >= NEAR_GAP_THRESHOLD) return null;
+
+  const hiScore = Math.max(jp, us);
+  const key: NearBoundaryKey =
+    hiScore > 80 ? "boiling-hot"
+    : hiScore > 60 ? "hot-neutral"
+    : hiScore > 40 ? "neutral-cold"
+    : "cold-frozen";
+  const hi: MarketName = jp > us ? "日本" : "米国";
+  const lo: MarketName = hi === "日本" ? "米国" : "日本";
+  return { key, hi, lo };
+}
+
+/**
+ * レベル組み合わせ → 状態キー。分岐構造は v1 の決定木をそのまま踏襲。
+ * 接近状態（near-*）はレベルでなくスコア差で決まるため、ここでは返さない
+ * （buildHeroCopy が resolveNearBoundary で先に判定する）。
+ */
 export function getHeadlineStateKey(
   jpLevel: SentimentLevel | null,
   usLevel: SentimentLevel,
-): HeadlineStateKey {
+): Exclude<HeadlineStateKey, `near-${NearBoundaryKey}`> {
   if (jpLevel == null) return "us-only";
 
   const jp = levelKey(jpLevel);
@@ -115,15 +157,19 @@ interface HeadlinePool {
   streak?: ReadonlyArray<(n: number) => string>;
 }
 
-export const HEADLINE_POOLS: Record<Exclude<HeadlineStateKey, "us-only">, HeadlinePool> = {
+/** 決定木プールを持つ状態キー（us-only と接近状態は専用プールを使う） */
+type PooledStateKey = Exclude<HeadlineStateKey, "us-only" | `near-${NearBoundaryKey}`>;
+
+export const HEADLINE_POOLS: Record<PooledStateKey, HeadlinePool> = {
   // ---- 高頻度状態（実出現率 35.5% / 30.4% / 19.2%）は厚めに ----
   "jp-boiling-solo": {
+    // 相手側は過熱〜極寒まであり得るため「落ち着き」等の断定はせず相対表現に留める
     base: [
       "日本だけ、沸騰している。",
-      "熱源は東京。米国は落ち着き。",
+      "熱源は東京。米国は一段下。",
       "日本市場、ひとり沸騰。",
       "東京の熱、なお冷めず。",
-      "沸くのは日本、静かな米国。",
+      "沸くのは日本、米国は一歩後ろ。",
       "日本の温度計、振り切れたまま。",
     ],
     up: ["日本、さらに熱を上げる。", "東京の沸騰、勢いを増す。"],
@@ -184,9 +230,10 @@ export const HEADLINE_POOLS: Record<Exclude<HeadlineStateKey, "us-only">, Headli
 
   // ---- 片側 solo 系 ----
   "us-boiling-solo": {
+    // 相手側は過熱〜極寒まであり得るため「落ち着き」等の断定はせず相対表現に留める
     base: [
       "米国だけ、沸騰している。",
-      "熱源はニューヨーク。日本は落ち着き。",
+      "熱源はニューヨーク。日本は一段下。",
       "米国市場、ひとり沸騰。",
     ],
   },
@@ -231,6 +278,33 @@ export const HEADLINE_POOLS: Record<Exclude<HeadlineStateKey, "us-only">, Headli
       "温度差くっきり。熱い米国、冷える日本。",
     ],
   },
+};
+
+/**
+ * 接近オーバーライド時の文言プール。高い側・低い側の市場名を受けて生成する。
+ * 「だけ」「ねじれ」のような対比の断言はせず、両市場が近いことを主語にする。
+ */
+export const NEAR_POOLS: Record<NearBoundaryKey, ReadonlyArray<(hi: MarketName, lo: MarketName) => string>> = {
+  "boiling-hot": [
+    (hi) => `日米とも高温圏。${hi}が半歩先、沸騰の域。`,
+    (hi) => `ほぼ同温の日米。${hi}は沸点越え。`,
+    (hi) => `${hi}がわずかに先行。日米そろって熱い。`,
+  ],
+  "hot-neutral": [
+    (hi) => `日米ほぼ同温。${hi}がやや熱め。`,
+    (hi) => `平温と過熱の境目。${hi}が半歩上。`,
+    (hi) => `温度差はわずか。${hi}が先に熱を帯びる。`,
+  ],
+  "neutral-cold": [
+    (_hi, lo) => `日米ほぼ同温。${lo}がやや冷え。`,
+    (_hi, lo) => `平温と冷えの境目。${lo}が半歩下。`,
+    (_hi, lo) => `温度差はわずか。${lo}が先に冷えている。`,
+  ],
+  "cold-frozen": [
+    (_hi, lo) => `日米そろって低温圏。${lo}は凍える域。`,
+    (_hi, lo) => `ほぼ同温の冷え込み。${lo}が一段深い。`,
+    (_hi, lo) => `${lo}がわずかに下、日米とも寒い。`,
+  ],
 };
 
 /** jp データ欠損時の見出し（レベル文言を含むため関数生成） */
@@ -309,7 +383,7 @@ export function pickHeadlineVariant(
 
 /** 状態キー + トレンド + streak からその日の候補リストを組み立てる */
 function collectCandidates(
-  stateKey: Exclude<HeadlineStateKey, "us-only">,
+  stateKey: PooledStateKey,
   trend: DeltaDirection,
   jpStreak: number | null | undefined,
 ): string[] {
@@ -389,12 +463,20 @@ export function buildHeroCopy(
   const dayNumber = extras.dayNumber ?? 0;
 
   const stateKey = getHeadlineStateKey(jpLevel, usLevel);
+  const near = resolveNearBoundary(inputs.jp, inputs.us);
 
   let headline: string | null;
   if (stateKey === "us-only") {
     headline = pickHeadlineVariant(
       stateKey,
       US_ONLY_HEADLINES.map((fn) => fn(usLevel)),
+      dayNumber,
+    );
+  } else if (near) {
+    // 接近オーバーライド: レベル差は境界の丸め誤差なので対比の断言をしない
+    headline = pickHeadlineVariant(
+      `near-${near.key}`,
+      NEAR_POOLS[near.key].map((fn) => fn(near.hi, near.lo)),
       dayNumber,
     );
   } else {

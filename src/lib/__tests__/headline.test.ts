@@ -3,8 +3,11 @@ import {
   buildHeroCopy,
   getHeadlineStateKey,
   pickHeadlineVariant,
+  resolveNearBoundary,
   HEADLINE_POOLS,
+  NEAR_POOLS,
   type HeadlineStateKey,
+  type NearBoundaryKey,
 } from "../headline";
 
 // 各レベルの中心スコア
@@ -56,7 +59,7 @@ describe("buildHeroCopy - 主見出しはプール候補から選ばれる", () 
   for (const c of STATE_CASES) {
     if (c.key === "us-only") continue;
     it(`${c.key} の headline は base プールのいずれか（Δ0・streak なし）`, () => {
-      const pool = HEADLINE_POOLS[c.key as Exclude<HeadlineStateKey, "us-only">];
+      const pool = HEADLINE_POOLS[c.key as keyof typeof HEADLINE_POOLS];
       // 全 dayNumber で base 候補内に収まることを確認
       for (let day = 0; day < pool.base.length * 2; day++) {
         const r = buildHeroCopy(
@@ -188,6 +191,117 @@ describe("buildHeroCopy - streak 候補", () => {
         { dayNumber: day, jpStreak: 2 },
       );
       expect(r.headline).not.toMatch(/日目|日続く/);
+    }
+  });
+});
+
+describe("resolveNearBoundary", () => {
+  const CASES: Array<{
+    jp: number; us: number; key: NearBoundaryKey; hi: "日本" | "米国";
+  }> = [
+    { jp: 75, us: 81, key: "boiling-hot", hi: "米国" },
+    { jp: 85, us: 78, key: "boiling-hot", hi: "日本" },
+    { jp: 61, us: 60, key: "hot-neutral", hi: "日本" },
+    { jp: 55, us: 62, key: "hot-neutral", hi: "米国" },
+    { jp: 38, us: 45, key: "neutral-cold", hi: "米国" },
+    { jp: 44, us: 39, key: "neutral-cold", hi: "日本" },
+    { jp: 18, us: 25, key: "cold-frozen", hi: "米国" },
+    { jp: 22, us: 15, key: "cold-frozen", hi: "日本" },
+  ];
+  for (const c of CASES) {
+    it(`JP ${c.jp} × US ${c.us} → ${c.key}（高い側: ${c.hi}）`, () => {
+      const r = resolveNearBoundary(c.jp, c.us);
+      expect(r).not.toBeNull();
+      expect(r!.key).toBe(c.key);
+      expect(r!.hi).toBe(c.hi);
+      expect(r!.lo).toBe(c.hi === "日本" ? "米国" : "日本");
+    });
+  }
+
+  it("差がちょうど 10 は非該当", () => {
+    expect(resolveNearBoundary(71, 81)).toBeNull();
+  });
+
+  it("レベルが同じなら差が小さくても null", () => {
+    expect(resolveNearBoundary(75, 78)).toBeNull();
+  });
+
+  it("jp null → null", () => {
+    expect(resolveNearBoundary(null, 81)).toBeNull();
+  });
+});
+
+describe("buildHeroCopy - 接近オーバーライド", () => {
+  function nearCandidates(key: NearBoundaryKey, hi: "日本" | "米国"): string[] {
+    const lo = hi === "日本" ? "米国" : "日本";
+    return NEAR_POOLS[key].map((fn) => fn(hi, lo));
+  }
+
+  it("JP 75 × US 81（差6）→ boiling-hot の接近見出し。「だけ」は出ない", () => {
+    for (let day = 0; day < 6; day++) {
+      const r = buildHeroCopy(
+        { jp: 75, us: 81, jpDelta: 0, usDelta: 0 },
+        { dayNumber: day },
+      );
+      expect(nearCandidates("boiling-hot", "米国")).toContain(r.headline);
+      expect(r.headline).not.toContain("だけ");
+    }
+  });
+
+  it("JP 61 × US 60（差1）→ hot-neutral の接近見出し", () => {
+    const r = buildHeroCopy({ jp: 61, us: 60, jpDelta: 0, usDelta: 0 });
+    expect(nearCandidates("hot-neutral", "日本")).toContain(r.headline);
+  });
+
+  it("JP 70 × US 81（差11）→ 従来の us-boiling-solo プール", () => {
+    for (let day = 0; day < 6; day++) {
+      const r = buildHeroCopy(
+        { jp: 70, us: 81, jpDelta: 0, usDelta: 0 },
+        { dayNumber: day },
+      );
+      expect(HEADLINE_POOLS["us-boiling-solo"].base).toContain(r.headline);
+    }
+  });
+
+  it("JP 75 × US 78（同レベル・差3）→ near にならず both-hot プール", () => {
+    const r = buildHeroCopy({ jp: 75, us: 78, jpDelta: 0, usDelta: 0 });
+    expect(HEADLINE_POOLS["both-hot"].base).toContain(r.headline);
+  });
+
+  it("接近見出しにも dayNumber ローテーションが効く", () => {
+    const inputs = { jp: 75, us: 81, jpDelta: 0, usDelta: 0 };
+    const a = buildHeroCopy(inputs, { dayNumber: 100 }).headline;
+    const b = buildHeroCopy(inputs, { dayNumber: 101 }).headline;
+    expect(a).not.toBe(b);
+    // 同一日は同一文言
+    expect(buildHeroCopy(inputs, { dayNumber: 100 }).headline).toBe(a);
+  });
+
+  it("接近時は streak・トレンド候補が混ざらない（near プールのみ）", () => {
+    for (let day = 0; day < 10; day++) {
+      const r = buildHeroCopy(
+        { jp: 75, us: 81, jpDelta: 8, usDelta: 8 },
+        { dayNumber: day, jpStreak: 18 },
+      );
+      expect(nearCandidates("boiling-hot", "米国")).toContain(r.headline);
+    }
+  });
+});
+
+describe("HEADLINE_POOLS - solo 文言の妥当性", () => {
+  it("boiling-solo 系に相手側を「落ち着き」「静か」と断定する文言がない", () => {
+    for (const key of ["jp-boiling-solo", "us-boiling-solo"] as const) {
+      const pool = HEADLINE_POOLS[key];
+      const all = [
+        ...pool.base,
+        ...(pool.up ?? []),
+        ...(pool.down ?? []),
+        ...(pool.streak ?? []).map((fn) => fn(5)),
+      ];
+      for (const text of all) {
+        expect(text).not.toContain("落ち着き");
+        expect(text).not.toContain("静か");
+      }
     }
   });
 });

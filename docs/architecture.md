@@ -17,7 +17,7 @@
 - `similar-days.ts`: 類似日検索（`findSimilarDays` / 日本・米国のアクセサ / イベントラベル取得）
 - `format.ts`: 共通フォーマッタ（`formatReturn` / `returnColorClass`）
 - `jst-date.ts`: JST 日付関連の共通ユーティリティ（`formatJstDateLabel` — "M/D(曜)" 形式 / `formatJstDateTimeLabel` — Unix ms → "M/D HH:MM JST" 形式。null/NaN は "—" / `getJstDateKey` — "YYYY-MM-DD" キー / `getJstDayNumber` — JST 通日番号。見出しの日替わりローテーションシード）
-- `headline.ts`: トップ画面ヒーロー「今日の見出し」生成の純粋関数（決定木 v2）。`getHeadlineStateKey` でレベル組み合わせを 16 状態キーに写像し、`HEADLINE_POOLS`（base + 昨日比 ±5 のトレンド候補 + 日本レベル 3 日以上連続の streak 候補）から `dayNumber` で決定的に日替わり選択（`buildHeroCopy`）
+- `headline.ts`: トップ画面ヒーロー「今日の見出し」生成の純粋関数（決定木 v2）。`getHeadlineStateKey` でレベル組み合わせを 16 状態キーに写像し、`HEADLINE_POOLS`（base + 昨日比 ±5 のトレンド候補 + 日本レベル 3 日以上連続の streak 候補）から `dayNumber` で決定的に日替わり選択（`buildHeroCopy`）。レベルが違ってもスコア差 < 10 なら `resolveNearBoundary` の接近オーバーライドで `NEAR_POOLS`（「日米ほぼ同温」系）に切替し、境界の丸め誤差を対比として報じない
 - `level-streak.ts`: 現在の日本温度レベルの連続営業日数を `japan-fg-snapshots.json` から計算する純粋関数（`computeJapanLevelStreak`）。`fetchAllMarketData` がサーバ側で呼び、`MarketData.japanLevelStreak` として配信
 
 ## `scripts/_lib/` 配下

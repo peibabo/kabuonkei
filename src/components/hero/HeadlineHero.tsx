@@ -1,6 +1,7 @@
 "use client";
 
 import { buildHeroCopy, type HeroCta } from "@/lib/headline";
+import { getJstDayNumber } from "@/lib/jst-date";
 import { requestOpenAlertModal } from "@/lib/alert-modal-bus";
 
 const CTA_HREF: Record<Exclude<HeroCta, "alert">, string> = {
@@ -55,6 +56,7 @@ export default function HeadlineHero({
   us,
   jpDelta,
   usDelta,
+  jpStreak,
   similarCount,
   winRate3m,
 }: {
@@ -62,12 +64,15 @@ export default function HeadlineHero({
   us: number;
   jpDelta: number | null;
   usDelta: number;
+  /** 現在の日本レベルの連続営業日数（当日含む）。null = 不明 */
+  jpStreak?: number | null;
   similarCount?: number;
   winRate3m?: number;
 }) {
+  // Dashboard はクライアントフェッチ後にのみ描画されるため SSR とのずれは生じない
   const copy = buildHeroCopy(
     { jp, us, jpDelta, usDelta },
-    { similarCount, winRate3m },
+    { similarCount, winRate3m, jpStreak, dayNumber: getJstDayNumber() },
   );
 
   return (

@@ -49,6 +49,7 @@ export default function Dashboard() {
         us={usScore}
         jpDelta={jpDelta}
         usDelta={usDelta}
+        jpStreak={data.japanLevelStreak}
       />
 
       {/* サービスの肝: 株温計＝温度計 (半円ゲージ × 2) を直下に */}

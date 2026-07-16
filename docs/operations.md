@@ -4,7 +4,7 @@
 - `/` — メインダッシュボード（`src/app/page.tsx` → `Dashboard.tsx`）。データ取得と 15 分ポーリングは `src/components/dashboard/useMarketData.ts`、補助 UI は `src/components/dashboard/{LoadingView,ErrorView,DashboardHeader,DashboardFooter}.tsx` に分離。本体は **朝刊ヒーロー + 6 章構成**（B 案：2026-04-25 〜）：
   - **🌡 ヘッダー** — `DashboardHeader`（タイトル + 紙面風「日付 + 第N号」帯 + アラート/About 導線）
   - **📰 ヒーロー（章外）** — `HeadlineHero`
-    - `src/components/hero/HeadlineHero.tsx`: 純粋関数 `src/lib/headline.ts`（決定木 v1）が日米スコア + 昨日比から「今日の見出し」一行コピー + サブテキスト + CTA 2 つを生成。罫線囲みの紙面風レイアウト（`font-serif-jp` Noto Serif JP 800）
+    - `src/components/hero/HeadlineHero.tsx`: 純粋関数 `src/lib/headline.ts`（決定木 v2: 状態キー × 文言プール × JST 日付ローテーション）が日米スコア + 昨日比から「今日の見出し」一行コピー + サブテキスト（数値前日比つき） + CTA 2 つを生成。各状態に複数の言い換え候補を持ち、`getJstDayNumber()`（`src/lib/jst-date.ts`）シードで日替わり選択（同一日はリロードしても同文言）。昨日比 ±5 以上でトレンド候補、日本レベルが 3 営業日以上続くと「N日目」候補（連続日数は `src/lib/level-streak.ts` の `computeJapanLevelStreak` が `japan-fg-snapshots.json` からサーバ計算し `MarketData.japanLevelStreak` で配信）が候補プールに加わる。罫線囲みの紙面風レイアウト（`font-serif-jp` Noto Serif JP 800）
   - **🌡 今の温度** — `TemperatureSection`（半円ゲージ × 2＝サービスの肝） + `TemperatureTiles`（補足 2 タイル: 日米平均 / 昨日比、独自 SVG `src/components/hero/Sparkline.tsx` で直近推移）
   - **🔁 今日の類似日** — `SimilarDaysSection`
   - **📈 温度の推移** — `TrendSection`（`JapanTemperatureTrendCard` + `TemperatureTrendCard`）

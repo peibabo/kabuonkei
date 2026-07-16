@@ -15,6 +15,8 @@ import {
   getFullSnapshots,
   getSimpleHistory,
 } from "./japan-temperature-history";
+import { computeJapanLevelStreak } from "./level-streak";
+import { getJstDateKey } from "./jst-date";
 
 const japanMarketData = rawJapanMarketData as unknown as JapanMarketData;
 
@@ -96,6 +98,11 @@ export async function fetchAllMarketData(): Promise<MarketData> {
     fearGreed,
     japanFearGreed,
     previousJapanScore: pickPreviousJapanScore(),
+    japanLevelStreak: computeJapanLevelStreak({
+      currentScore: japanFearGreed?.score ?? null,
+      snapshots: getFullSnapshots(),
+      todayJstKey: getJstDateKey(),
+    }),
     japanSparkline: pickJapanSparkline(),
     usSparkline: buildUsSparkline(
       fearGreed.score,

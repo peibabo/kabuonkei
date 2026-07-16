@@ -129,6 +129,23 @@ describe("buildMarketData", () => {
     expect(result.lastUpdated).toBe("2026-04-20 10:00:00 JST");
   });
 
+  it("japanLevelStreak を透過し、省略時は null になる", () => {
+    const base = {
+      fearGreed: stubFearGreed,
+      japanFearGreed: null,
+      volatility: stubVolatility,
+      indices: stubIndices,
+      bonds: stubBonds,
+      forex: stubForex,
+      commodities: stubCommodities,
+      now: 0,
+    };
+    expect(buildMarketData(base).japanLevelStreak).toBeNull();
+    expect(
+      buildMarketData({ ...base, japanLevelStreak: 5 }).japanLevelStreak,
+    ).toBe(5);
+  });
+
   it("japanFearGreed が与えられればそのまま保持する", () => {
     const jfg: JapanFearGreedData = {
       score: 55,

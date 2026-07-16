@@ -18,6 +18,12 @@ export interface MarketData {
    */
   previousJapanScore: number | null;
   /**
+   * 現在の日本版温度レベル（極寒〜沸騰）の連続営業日数（当日含む）。
+   * `japan-fg-snapshots.json`（full5 法）由来。null なら不明（日本スコア欠損時）。
+   * トップ画面ヒーローの「N日目」見出しに使う。
+   */
+  japanLevelStreak: number | null;
+  /**
    * 直近 7 日間の日本版温度スコア（古い→新しい順）。
    * トップ画面ヒーロータイル内 sparkline 用。空配列なら表示しない。
    */

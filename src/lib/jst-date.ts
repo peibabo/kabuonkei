@@ -29,6 +29,26 @@ export function formatJstFullDateLabel(date: Date | number = new Date()): string
 }
 
 /**
+ * 指定日（省略時は現在時刻）を JST に変換し、"YYYY-MM-DD" 形式のキーを返す。
+ * 例: 2026-07-16T02:00+09:00 → "2026-07-16"
+ */
+export function getJstDateKey(date: Date = new Date()): string {
+  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  const year = jst.getUTCFullYear();
+  const month = String(jst.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(jst.getUTCDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * JST 基準の通日番号（1970-01-01 JST からの経過日数）を返す。
+ * 見出しの日替わりローテーションのシードに使う。JST の日付が変わると必ず +1 される。
+ */
+export function getJstDayNumber(date: Date = new Date()): number {
+  return Math.floor((date.getTime() + 9 * 60 * 60 * 1000) / 86_400_000);
+}
+
+/**
  * Unix ミリ秒を JST に変換し、"M/D HH:MM JST" 形式のラベルを返す。
  * null / undefined / NaN のときは "—" を返す。
  * 例: 1713657300000 (2024-04-21 07:15 UTC) → "4/21 16:15 JST"

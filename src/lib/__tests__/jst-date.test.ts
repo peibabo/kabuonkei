@@ -3,6 +3,8 @@ import {
   formatJstDateLabel,
   formatJstDateTimeLabel,
   formatJstFullDateLabel,
+  getJstDateKey,
+  getJstDayNumber,
 } from "../jst-date";
 
 describe("formatJstDateLabel", () => {
@@ -37,6 +39,37 @@ describe("formatJstDateTimeLabel", () => {
     expect(formatJstDateTimeLabel(null)).toBe("—");
     expect(formatJstDateTimeLabel(undefined)).toBe("—");
     expect(formatJstDateTimeLabel(NaN)).toBe("—");
+  });
+});
+
+describe("getJstDateKey", () => {
+  it("UTC 日付を JST の YYYY-MM-DD に整形する（ゼロ埋め）", () => {
+    const utc = new Date(Date.UTC(2026, 6, 5, 1, 0, 0)); // JST 7/5 10:00
+    expect(getJstDateKey(utc)).toBe("2026-07-05");
+  });
+
+  it("JST 深夜 0 時境界: UTC 14:59 は当日、15:00 は翌日", () => {
+    expect(getJstDateKey(new Date(Date.UTC(2026, 6, 15, 14, 59, 59)))).toBe("2026-07-15");
+    expect(getJstDateKey(new Date(Date.UTC(2026, 6, 15, 15, 0, 0)))).toBe("2026-07-16");
+  });
+});
+
+describe("getJstDayNumber", () => {
+  it("JST 深夜 0 時境界（UTC 15:00）で +1 される", () => {
+    const before = getJstDayNumber(new Date(Date.UTC(2026, 6, 15, 14, 59, 59)));
+    const after = getJstDayNumber(new Date(Date.UTC(2026, 6, 15, 15, 0, 0)));
+    expect(after).toBe(before + 1);
+  });
+
+  it("同一 JST 日内では時刻によらず同値", () => {
+    const morning = getJstDayNumber(new Date(Date.UTC(2026, 6, 15, 22, 0, 0))); // JST 7/16 07:00
+    const night = getJstDayNumber(new Date(Date.UTC(2026, 6, 16, 14, 0, 0))); // JST 7/16 23:00
+    expect(morning).toBe(night);
+  });
+
+  it("1970-01-01 JST 内は 0", () => {
+    // UTC 1969-12-31 15:00 = JST 1970-01-01 00:00
+    expect(getJstDayNumber(new Date(Date.UTC(1969, 11, 31, 15, 0, 0)))).toBe(0);
   });
 });
 

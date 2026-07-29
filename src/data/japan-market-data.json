@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-07-23",
+    "generatedAt": "2026-07-29",
     "weeks": [
-      {
-        "weekLabel": "2026年6月第2週",
-        "startDate": "2026-06-08",
-        "endDate": "2026-06-12",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": -4871.2
-          },
-          {
-            "name": "個人",
-            "netAmount": -5250.5
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -21
-          },
-          {
-            "name": "投資信託",
-            "netAmount": 887.9
-          },
-          {
-            "name": "事業法人",
-            "netAmount": 3170
-          }
-        ]
-      },
       {
         "weekLabel": "2026年6月第3週",
         "startDate": "2026-06-15",
@@ -136,32 +109,39 @@
             "netAmount": 820.8
           }
         ]
+      },
+      {
+        "weekLabel": "2026年7月第3週",
+        "startDate": "2026-07-13",
+        "endDate": "2026-07-17",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": -2587.1
+          },
+          {
+            "name": "個人",
+            "netAmount": 3728.6
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": 617.2
+          },
+          {
+            "name": "投資信託",
+            "netAmount": -756.9
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 1138.6
+          }
+        ]
       }
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-07-23",
+    "generatedAt": "2026-07-29",
     "daily": [
-      {
-        "date": "2026-07-07",
-        "buyBalance": 657.3,
-        "sellBalance": 15.9
-      },
-      {
-        "date": "2026-07-08",
-        "buyBalance": 668.8,
-        "sellBalance": 12.1
-      },
-      {
-        "date": "2026-07-09",
-        "buyBalance": 643.5,
-        "sellBalance": 10.2
-      },
-      {
-        "date": "2026-07-10",
-        "buyBalance": 659,
-        "sellBalance": 11.9
-      },
       {
         "date": "2026-07-13",
         "buyBalance": 653.9,
@@ -191,18 +171,32 @@
         "date": "2026-07-21",
         "buyBalance": 661.5,
         "sellBalance": 37.5
+      },
+      {
+        "date": "2026-07-22",
+        "buyBalance": 652.4,
+        "sellBalance": 40
+      },
+      {
+        "date": "2026-07-23",
+        "buyBalance": 639.4,
+        "sellBalance": 39.4
+      },
+      {
+        "date": "2026-07-24",
+        "buyBalance": 630.4,
+        "sellBalance": 36.9
+      },
+      {
+        "date": "2026-07-27",
+        "buyBalance": 668.1,
+        "sellBalance": 35.5
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-07-23",
+    "generatedAt": "2026-07-29",
     "weekly": [
-      {
-        "date": "2026-06-19",
-        "buyBalance": 64756.4,
-        "sellBalance": 10161.3,
-        "ratio": 6.37
-      },
       {
         "date": "2026-06-26",
         "buyBalance": 70167.3,
@@ -226,6 +220,12 @@
         "buyBalance": 67097.4,
         "sellBalance": 6814.1,
         "ratio": 9.85
+      },
+      {
+        "date": "2026-07-24",
+        "buyBalance": 64769.4,
+        "sellBalance": 7252.6,
+        "ratio": 8.93
       }
     ]
   }

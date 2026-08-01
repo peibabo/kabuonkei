@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-03",
+  "generatedAt": "2026-08-01",
   "dataRange": {
-    "from": "2016-07-03",
-    "to": "2026-07-03"
+    "from": "2016-08-01",
+    "to": "2026-08-01"
   },
   "note": "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコアによる過去統計。本体スコア(5要素)の過去データはC2/C3/C4が未整備のため再現不可。 TOPIX は連動ETF(1306.T)の日次終値を proxy として同スコアで集計（指数特性の違いによる感度差の比較用）。",
   "levels": [
@@ -108,45 +108,45 @@
         41,
         60
       ],
-      "occurrences": 676,
+      "occurrences": 677,
       "nikkei225": {
         "1m": {
           "avgReturn": 0.8,
           "medianReturn": 0.7,
-          "winRate": 56.4,
-          "sampleSize": 674
+          "winRate": 56.3,
+          "sampleSize": 673
         },
         "3m": {
           "avgReturn": 3.5,
           "medianReturn": 2.1,
-          "winRate": 58,
-          "sampleSize": 676
+          "winRate": 57.9,
+          "sampleSize": 675
         },
         "6m": {
           "avgReturn": 5.4,
           "medianReturn": 3.1,
           "winRate": 59.4,
-          "sampleSize": 663
+          "sampleSize": 662
         }
       },
       "topix": {
         "1m": {
           "avgReturn": 0.4,
           "medianReturn": 0.5,
-          "winRate": 55.7,
-          "sampleSize": 672
+          "winRate": 55.6,
+          "sampleSize": 671
         },
         "3m": {
           "avgReturn": 2.6,
           "medianReturn": 1.9,
           "winRate": 59.6,
-          "sampleSize": 674
+          "sampleSize": 673
         },
         "6m": {
           "avgReturn": 4.2,
-          "medianReturn": 2.8,
+          "medianReturn": 2.7,
           "winRate": 60.9,
-          "sampleSize": 663
+          "sampleSize": 662
         }
       }
     },
@@ -156,45 +156,45 @@
         61,
         80
       ],
-      "occurrences": 857,
+      "occurrences": 859,
       "nikkei225": {
         "1m": {
           "avgReturn": 0.9,
           "medianReturn": 1.1,
           "winRate": 61,
-          "sampleSize": 851
+          "sampleSize": 853
         },
         "3m": {
-          "avgReturn": 1.9,
-          "medianReturn": 0.7,
-          "winRate": 54.2,
-          "sampleSize": 826
+          "avgReturn": 2,
+          "medianReturn": 0.8,
+          "winRate": 54.6,
+          "sampleSize": 832
         },
         "6m": {
-          "avgReturn": 3.9,
+          "avgReturn": 4,
           "medianReturn": 0.6,
-          "winRate": 53.1,
-          "sampleSize": 789
+          "winRate": 53.2,
+          "sampleSize": 791
         }
       },
       "topix": {
         "1m": {
           "avgReturn": 0.5,
           "medianReturn": 0.9,
-          "winRate": 61.6,
-          "sampleSize": 851
+          "winRate": 61.7,
+          "sampleSize": 853
         },
         "3m": {
           "avgReturn": 0.9,
-          "medianReturn": 1.5,
-          "winRate": 58.2,
-          "sampleSize": 826
+          "medianReturn": 1.6,
+          "winRate": 58.5,
+          "sampleSize": 832
         },
         "6m": {
           "avgReturn": 3.6,
           "medianReturn": 2.4,
-          "winRate": 60.3,
-          "sampleSize": 789
+          "winRate": 60.4,
+          "sampleSize": 791
         }
       }
     },
@@ -204,45 +204,45 @@
         81,
         100
       ],
-      "occurrences": 338,
+      "occurrences": 335,
       "nikkei225": {
         "1m": {
-          "avgReturn": 1.3,
-          "medianReturn": 1,
-          "winRate": 57.5,
+          "avgReturn": 1,
+          "medianReturn": 0.8,
+          "winRate": 54.7,
           "sampleSize": 322
         },
         "3m": {
-          "avgReturn": 2.8,
-          "medianReturn": 0.6,
-          "winRate": 54.9,
-          "sampleSize": 308
+          "avgReturn": 3.3,
+          "medianReturn": 1.7,
+          "winRate": 58.4,
+          "sampleSize": 303
         },
         "6m": {
-          "avgReturn": 8.5,
-          "medianReturn": 3,
-          "winRate": 64.6,
-          "sampleSize": 294
+          "avgReturn": 9.6,
+          "medianReturn": 3.2,
+          "winRate": 64.5,
+          "sampleSize": 293
         }
       },
       "topix": {
         "1m": {
-          "avgReturn": 1.4,
-          "medianReturn": 1.7,
-          "winRate": 68.6,
+          "avgReturn": 1.3,
+          "medianReturn": 1.6,
+          "winRate": 66.5,
           "sampleSize": 322
         },
         "3m": {
-          "avgReturn": 3.8,
-          "medianReturn": 3.8,
-          "winRate": 73.4,
-          "sampleSize": 308
+          "avgReturn": 4.1,
+          "medianReturn": 4.1,
+          "winRate": 75.9,
+          "sampleSize": 303
         },
         "6m": {
-          "avgReturn": 7.3,
-          "medianReturn": 4.7,
-          "winRate": 73.5,
-          "sampleSize": 294
+          "avgReturn": 7.6,
+          "medianReturn": 5.5,
+          "winRate": 73.4,
+          "sampleSize": 293
         }
       }
     }

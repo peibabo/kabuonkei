@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-09-09",
+    "generatedAt": "2026-09-10",
     "weeks": [
-      {
-        "weekLabel": "2026年7月第5週",
-        "startDate": "2026-07-27",
-        "endDate": "2026-07-31",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": -4903.4
-          },
-          {
-            "name": "個人",
-            "netAmount": -3928.3
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -3184.4
-          },
-          {
-            "name": "投資信託",
-            "netAmount": 49.1
-          },
-          {
-            "name": "事業法人",
-            "netAmount": 4082.5
-          }
-        ]
-      },
       {
         "weekLabel": "2026年8月第1週",
         "startDate": "2026-08-03",
@@ -136,17 +109,39 @@
             "netAmount": 2126.9
           }
         ]
+      },
+      {
+        "weekLabel": "2026年9月第1週",
+        "startDate": "2026-08-31",
+        "endDate": "2026-09-04",
+        "entities": [
+          {
+            "name": "海外投資家",
+            "netAmount": 7288.5
+          },
+          {
+            "name": "個人",
+            "netAmount": -545.7
+          },
+          {
+            "name": "信託銀行",
+            "netAmount": -4427.2
+          },
+          {
+            "name": "投資信託",
+            "netAmount": -2980.7
+          },
+          {
+            "name": "事業法人",
+            "netAmount": 2664.4
+          }
+        ]
       }
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-09-09",
+    "generatedAt": "2026-09-10",
     "daily": [
-      {
-        "date": "2026-08-25",
-        "buyBalance": 630.3,
-        "sellBalance": 40.2
-      },
       {
         "date": "2026-08-26",
         "buyBalance": 625.1,
@@ -191,11 +186,16 @@
         "date": "2026-09-07",
         "buyBalance": 584.4,
         "sellBalance": 25.1
+      },
+      {
+        "date": "2026-09-08",
+        "buyBalance": 565.8,
+        "sellBalance": 24
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-09-09",
+    "generatedAt": "2026-09-10",
     "weekly": [
       {
         "date": "2026-08-07",

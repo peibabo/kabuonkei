@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-17",
   "dataRange": {
     "from": "2016-04-22",
-    "to": "2026-09-15"
+    "to": "2026-09-17"
   },
   "rule": {
     "bands": [
@@ -41912,6 +41912,22 @@
           "benchmarkDca": 215.94,
           "equityRatio": 0.6495,
           "score": 76
+        },
+        {
+          "date": "2026-09-15",
+          "nav": 258.67,
+          "benchmark": 362.68,
+          "benchmarkDca": 214.97,
+          "equityRatio": 0.6485,
+          "score": 76
+        },
+        {
+          "date": "2026-09-16",
+          "nav": 257.92,
+          "benchmark": 361.06,
+          "benchmarkDca": 214.01,
+          "equityRatio": 0.6475,
+          "score": 74
         }
       ],
       "trades": [
@@ -42357,30 +42373,30 @@
         }
       ],
       "stats": {
-        "totalReturn": 159.43,
-        "benchmarkReturn": 264.32,
-        "alpha": -104.89,
-        "cagr": 9.6,
-        "benchmarkCagr": 13.24,
+        "totalReturn": 157.92,
+        "benchmarkReturn": 261.06,
+        "alpha": -103.14,
+        "cagr": 9.54,
+        "benchmarkCagr": 13.14,
         "maxDrawdown": -29.17,
         "benchmarkMaxDrawdown": -33.92,
         "sharpe": 0.74,
-        "benchmarkSharpe": 0.79,
-        "dcaReturn": 115.94,
-        "dcaCagr": 7.69,
+        "benchmarkSharpe": 0.78,
+        "dcaReturn": 114.01,
+        "dcaCagr": 7.59,
         "dcaMaxDrawdown": -18.02,
-        "dcaSharpe": 0.74,
-        "alphaVsDca": 43.49
+        "dcaSharpe": 0.73,
+        "alphaVsDca": 43.91
       },
       "current": {
-        "date": "2026-09-14",
-        "score": 76,
+        "date": "2026-09-16",
+        "score": 74,
         "band": "過熱",
-        "equityRatio": 0.6495,
-        "cashRatio": 0.3505,
-        "nav": 259.43,
-        "benchmark": 364.32,
-        "benchmarkDca": 215.94
+        "equityRatio": 0.6475,
+        "cashRatio": 0.3525,
+        "nav": 257.92,
+        "benchmark": 361.06,
+        "benchmarkDca": 214.01
       },
       "endState": {
         "equityUnits": 0.022112905684330983,

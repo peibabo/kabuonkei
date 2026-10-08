@@ -1,34 +1,7 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-10-07",
+    "generatedAt": "2026-10-08",
     "weeks": [
-      {
-        "weekLabel": "2026年8月第4週",
-        "startDate": "2026-08-24",
-        "endDate": "2026-08-28",
-        "entities": [
-          {
-            "name": "海外投資家",
-            "netAmount": -1747.2
-          },
-          {
-            "name": "個人",
-            "netAmount": -535.4
-          },
-          {
-            "name": "信託銀行",
-            "netAmount": -2002.9
-          },
-          {
-            "name": "投資信託",
-            "netAmount": -568.7
-          },
-          {
-            "name": "事業法人",
-            "netAmount": 2126.9
-          }
-        ]
-      },
       {
         "weekLabel": "2026年9月第1週",
         "startDate": "2026-08-31",
@@ -86,13 +59,8 @@
     ]
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-10-07",
+    "generatedAt": "2026-10-08",
     "daily": [
-      {
-        "date": "2026-09-17",
-        "buyBalance": 823.9,
-        "sellBalance": 9.1
-      },
       {
         "date": "2026-09-18",
         "buyBalance": 900.7,
@@ -137,11 +105,16 @@
         "date": "2026-10-05",
         "buyBalance": 755.2,
         "sellBalance": 14.7
+      },
+      {
+        "date": "2026-10-06",
+        "buyBalance": 779.2,
+        "sellBalance": 12.5
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-10-07",
+    "generatedAt": "2026-10-08",
     "weekly": [
       {
         "date": "2026-09-04",

@@ -1,16 +1,11 @@
 {
   "investorTrading": {
-    "generatedAt": "2026-11-04",
+    "generatedAt": "2026-11-05",
     "weeks": []
   },
   "arbitrageBalance": {
-    "generatedAt": "2026-11-04",
+    "generatedAt": "2026-11-05",
     "daily": [
-      {
-        "date": "2026-10-19",
-        "buyBalance": 857.6,
-        "sellBalance": 12.2
-      },
       {
         "date": "2026-10-20",
         "buyBalance": 808.7,
@@ -55,11 +50,16 @@
         "date": "2026-10-30",
         "buyBalance": 821.5,
         "sellBalance": 19.3
+      },
+      {
+        "date": "2026-11-02",
+        "buyBalance": 809.2,
+        "sellBalance": 17.3
       }
     ]
   },
   "marginTrading": {
-    "generatedAt": "2026-11-04",
+    "generatedAt": "2026-11-05",
     "weekly": []
   }
 }

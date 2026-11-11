@@ -2,45 +2,20 @@
  * JPX 信用取引残高 (margin trading balance) 取得ヘルパ
  *
  * 2種類のソースをサポート:
- * 1. 週次 Excel ファイル (mtseisan{YYYYMMDD}00.xls) — 直近数週のみ
+ * 1. 週次 Excel ファイル ({YYYYMMDD}_mtcurrent.xlsx、2026-10 下旬〜) — 直近数週のみ
  * 2. 連結履歴 Excel (margin/06.html 経由 tvdivq00000*.xls) — 2002 年以降の全週次
  */
 
-import * as XLSX from "xlsx";
 import type { MarginTradingWeek } from "../../src/lib/types/japan-market";
+import { JPX_BASE, digitsToIso, firstSheetRows, parseNumberCell } from "./jpx-common";
+import { round1 } from "./shared";
 
-const USER_AGENT =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-
-const JPX_BASE = "https://www.jpx.co.jp";
 export const JPX_MARGIN_WEEKLY_URL = `${JPX_BASE}/markets/statistics-equities/margin/04.html`;
 export const JPX_MARGIN_HISTORY_URL = `${JPX_BASE}/markets/statistics-equities/margin/06.html`;
 
-export async function fetchBuffer(url: string): Promise<Buffer> {
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
-  return Buffer.from(await res.arrayBuffer());
-}
-
-export async function fetchText(url: string): Promise<string> {
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
-  return res.text();
-}
-
-function parseNumberCell(val: unknown): number {
-  if (typeof val === "number") return val;
-  if (typeof val === "string") {
-    const cleaned = val.replace(/,/g, "").replace(/▲/g, "-").trim();
-    const n = Number(cleaned);
-    return isNaN(n) ? 0 : n;
-  }
-  return 0;
-}
-
 /** 百万円 → 億円（小数第1位） */
 function hyakumanYenToOkuYen(hyakumanYen: number): number {
-  return Math.round((hyakumanYen / 100) * 10) / 10;
+  return round1(hyakumanYen / 100);
 }
 
 /** Excel シリアル日付 (1900-01-01 = 1) を ISO YYYY-MM-DD に変換 */
@@ -54,50 +29,39 @@ function computeRatio(buyOku: number, sellOku: number): number {
   return sellOku > 0 ? Math.round((buyOku / sellOku) * 100) / 100 : 0;
 }
 
-// --- 週次 (mtseisan*.xls) ---
+// --- 週次 (*_mtcurrent.xlsx) ---
 
-/** 04.html から mtseisan*.xls URL と 申込日を抽出 */
+/** 04.html から週次ファイル URL と申込日を抽出（日付降順） */
 export function extractWeeklyMarginLinks(
   html: string
 ): { url: string; date: string }[] {
-  const regex = /href="([^"]*mtseisan(\d{10})\.xls)"/g;
+  const regex = /href="([^"]*\/(\d{8})_mtcurrent\.xlsx)"/g;
   const links: { url: string; date: string }[] = [];
   let match: RegExpExecArray | null;
   while ((match = regex.exec(html)) !== null) {
-    const digits = match[2];
-    const yyyy = digits.slice(0, 4);
-    const mm = digits.slice(4, 6);
-    const dd = digits.slice(6, 8);
-    links.push({
-      url: JPX_BASE + match[1],
-      date: `${yyyy}-${mm}-${dd}`,
-    });
+    links.push({ url: JPX_BASE + match[1], date: digitsToIso(match[2]) });
   }
   links.sort((a, b) => b.date.localeCompare(a.date));
   return links;
 }
 
-/** 単週の Excel をパースし MarginTradingWeek を返す */
+/**
+ * 単週の Excel をパースし MarginTradingWeek を返す。
+ * 「信用取引残高合計」行の次 (金額, 百万円) 行の二市場 col 4 = 売残 / col 6 = 買残 を使う。
+ */
 export function parseWeeklyMarginXls(
   buffer: Buffer,
   date: string
 ): MarginTradingWeek | null {
-  const wb = XLSX.read(buffer);
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const rows = firstSheetRows(buffer);
+  const totalIdx = rows.findIndex((r) =>
+    String(r?.[1] ?? "").includes("信用取引残高合計")
+  );
+  const valueRow = totalIdx >= 0 ? rows[totalIdx + 1] : undefined;
+  if (!valueRow || !String(valueRow[3] ?? "").includes("金額")) return null;
 
-  let valueRow: unknown[] | null = null;
-  for (let i = 0; i < rows.length; i++) {
-    const cellStr = String(rows[i]?.[1] ?? "");
-    if (cellStr.includes("二市場計")) {
-      if (i + 1 < rows.length) valueRow = rows[i + 1];
-      break;
-    }
-  }
-  if (!valueRow) return null;
-
-  const sellBalance = parseNumberCell(valueRow[11]);
-  const buyBalance = parseNumberCell(valueRow[13]);
+  const sellBalance = parseNumberCell(valueRow[4]);
+  const buyBalance = parseNumberCell(valueRow[6]);
   if (buyBalance === 0 && sellBalance === 0) return null;
 
   const sellOku = hyakumanYenToOkuYen(sellBalance);
@@ -145,9 +109,7 @@ export function extractHistoryExcelUrl(html: string): string | null {
  * データ行は「数値の col 0 (30000 <= serial <= 60000)」で識別。
  */
 export function parseHistoryMarginXls(buffer: Buffer): MarginTradingWeek[] {
-  const wb = XLSX.read(buffer);
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const rows = firstSheetRows(buffer);
 
   const out: MarginTradingWeek[] = [];
   for (const row of rows) {

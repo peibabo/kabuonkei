@@ -63,7 +63,7 @@
 「信用倍率 4 倍超えは危険か」を過去10年データで検証する記事。
 
 **データ層**:
-- `src/data/margin-ratio-history.json`: JPX 公開の「信用取引現在高 過去推移表」（`margin/06.html` の連結 Excel `tvdivq0000015969.xls`）を取得して 2002-08 以降の週次信用倍率を `{date, buyBalance, sellBalance, ratio}[]` として保存。直近数週は `margin/04.html` の個別 `mtseisan*.xls` でギャップ埋めする。生成スクリプト: `npm run generate:margin-history`（`scripts/backfill-margin-ratio-history.ts`）
+- `src/data/margin-ratio-history.json`: JPX 公開の「信用取引現在高 過去推移表」（`margin/06.html` の連結 Excel `tvdivq0000015969.xls`）を取得して 2002-08 以降の週次信用倍率を `{date, buyBalance, sellBalance, ratio}[]` として保存。直近数週は `margin/04.html` の個別週次ファイル（`*_mtcurrent.xlsx`、旧 `mtseisan*.xls`）でギャップ埋めする。※ 2026-11 時点で `margin/06.html` は 404（JPX のページ改編）。連結履歴の再取得には URL の追従が必要生成スクリプト: `npm run generate:margin-history`（`scripts/backfill-margin-ratio-history.ts`）
 - `src/data/margin-ratio-analysis.json`: 上記履歴 × `japan-temperature-history.json` × Yahoo `^N225` を結合し、信用倍率バンド (`〜3倍 / 3〜4倍 / 4〜5倍 / 5倍〜`) × 温度バンド (`SENTIMENT_RANGES`) の 2D joint セルごとに 1ヶ月/3ヶ月/6ヶ月の日経225 前方リターンを集計したもの。加えて 1D マージナル・信用倍率 quartile・最新 context を格納。生成スクリプト: `npm run generate:margin-analysis`（`scripts/generate-margin-ratio-analysis.ts`）
 - 結合は **申込日（金曜）基準**で anchor。温度スコアは申込日 or 7 日以内の直近営業日、base price は ^N225 の申込日 or 直近営業日終値。JPX 公表は T+5 営業日遅れだが 1ヶ月以上の horizon では影響小という注記を記事内に明記
 

@@ -2,7 +2,8 @@
  * JPX 信用取引残高 (margin trading balance) 取得ヘルパ
  *
  * 2種類のソースをサポート:
- * 1. 週次 Excel ファイル (mtseisan{YYYYMMDD}00.xls) — 直近数週のみ
+ * 1. 週次 Excel ファイル — 直近数週のみ
+ *    旧: mtseisan{YYYYMMDD}00.xls / 新 (2026-10 下旬〜): {YYYYMMDD}_mtcurrent.xlsx
  * 2. 連結履歴 Excel (margin/06.html 経由 tvdivq00000*.xls) — 2002 年以降の全週次
  */
 
@@ -54,17 +55,18 @@ function computeRatio(buyOku: number, sellOku: number): number {
   return sellOku > 0 ? Math.round((buyOku / sellOku) * 100) / 100 : 0;
 }
 
-// --- 週次 (mtseisan*.xls) ---
+// --- 週次 (mtseisan*.xls / *_mtcurrent.xlsx) ---
 
-/** 04.html から mtseisan*.xls URL と 申込日を抽出 */
+/** 04.html から週次ファイル URL と申込日を抽出（新旧ファイル名の両方に対応） */
 export function extractWeeklyMarginLinks(
   html: string
 ): { url: string; date: string }[] {
-  const regex = /href="([^"]*mtseisan(\d{10})\.xls)"/g;
+  const regex =
+    /href="([^"]*(?:mtseisan(\d{8})00\.xls|\/(\d{8})_mtcurrent\.xlsx))"/g;
   const links: { url: string; date: string }[] = [];
   let match: RegExpExecArray | null;
   while ((match = regex.exec(html)) !== null) {
-    const digits = match[2];
+    const digits = match[2] ?? match[3];
     const yyyy = digits.slice(0, 4);
     const mm = digits.slice(4, 6);
     const dd = digits.slice(6, 8);
@@ -77,6 +79,36 @@ export function extractWeeklyMarginLinks(
   return links;
 }
 
+/**
+ * 週次ファイルから二市場合計の売残・買残 (百万円) を取り出す。
+ * 新形式: 「信用取引残高合計」行の次 (金額) 行、col 4 = 売残 / col 6 = 買残
+ * 旧形式: 「二市場計」行の次 (金額) 行、col 11 = 売残 / col 13 = 買残
+ */
+function findWeeklyMarginValues(
+  rows: unknown[][]
+): { sell: number; buy: number } | null {
+  for (let i = 0; i < rows.length; i++) {
+    const cellStr = String(rows[i]?.[1] ?? "");
+    if (cellStr.includes("信用取引残高合計")) {
+      const valueRow = rows[i + 1];
+      if (!valueRow || !String(valueRow[3] ?? "").includes("金額")) return null;
+      return {
+        sell: parseNumberCell(valueRow[4]),
+        buy: parseNumberCell(valueRow[6]),
+      };
+    }
+    if (cellStr.includes("二市場計")) {
+      const valueRow = rows[i + 1];
+      if (!valueRow) return null;
+      return {
+        sell: parseNumberCell(valueRow[11]),
+        buy: parseNumberCell(valueRow[13]),
+      };
+    }
+  }
+  return null;
+}
+
 /** 単週の Excel をパースし MarginTradingWeek を返す */
 export function parseWeeklyMarginXls(
   buffer: Buffer,
@@ -86,18 +118,10 @@ export function parseWeeklyMarginXls(
   const ws = wb.Sheets[wb.SheetNames[0]];
   const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
-  let valueRow: unknown[] | null = null;
-  for (let i = 0; i < rows.length; i++) {
-    const cellStr = String(rows[i]?.[1] ?? "");
-    if (cellStr.includes("二市場計")) {
-      if (i + 1 < rows.length) valueRow = rows[i + 1];
-      break;
-    }
-  }
-  if (!valueRow) return null;
+  const values = findWeeklyMarginValues(rows);
+  if (!values) return null;
 
-  const sellBalance = parseNumberCell(valueRow[11]);
-  const buyBalance = parseNumberCell(valueRow[13]);
+  const { sell: sellBalance, buy: buyBalance } = values;
   if (buyBalance === 0 && sellBalance === 0) return null;
 
   const sellOku = hyakumanYenToOkuYen(sellBalance);

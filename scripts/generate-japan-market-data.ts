@@ -4,6 +4,7 @@
  * JPXの公開データから以下を取得し、JSON化する:
  * 1. 投資部門別売買状況（週次Excel）
  * 2. 裁定取引に係る現物ポジション（日次Excel）
+ * 3. 信用取引残高（週次Excel）
  *
  * 実行: npx tsx scripts/generate-japan-market-data.ts
  */
@@ -11,14 +12,26 @@
 import * as XLSX from "xlsx";
 import { writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
+import {
+  JPX_INVESTOR_TYPE_URL,
+  extractInvestorLinks,
+  parseInvestorXlsx,
+} from "./_lib/jpx-investor";
+import {
+  JPX_MARGIN_WEEKLY_URL,
+  extractWeeklyMarginLinks,
+  parseWeeklyMarginXls,
+} from "./_lib/jpx-margin";
+import type {
+  InvestorTradingWeek,
+  MarginTradingWeek,
+} from "../src/lib/types/japan-market";
 
 const USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 const JPX_BASE = "https://www.jpx.co.jp";
-const INVESTOR_TYPE_URL = `${JPX_BASE}/markets/statistics-equities/investor-type/`;
 const ARBITRAGE_URL = `${JPX_BASE}/markets/statistics-equities/program/index.html`;
-const MARGIN_URL = `${JPX_BASE}/markets/statistics-equities/margin/04.html`;
 
 const WEEKS_TO_FETCH = 12;
 const ARBITRAGE_DAYS_TO_FETCH = 60; // 約12週分の営業日
@@ -45,11 +58,6 @@ async function fetchText(url: string): Promise<string> {
   return res.text();
 }
 
-/** 千円 → 億円に変換（小数第1位） */
-function senYenToOkuYen(senYen: number): number {
-  return Math.round((senYen / 100_000) * 10) / 10;
-}
-
 /** 千株 → 百万株に変換（小数第1位） */
 function senKabuToHyakumanKabu(senKabu: number): number {
   return Math.round((senKabu / 1_000) * 10) / 10;
@@ -64,131 +72,6 @@ function parseNumber(val: unknown): number {
     return isNaN(n) ? 0 : n;
   }
   return 0;
-}
-
-// --- 投資部門別売買状況 ---
-
-interface InvestorTradingEntity {
-  name: string;
-  netAmount: number;
-}
-
-interface InvestorTradingWeek {
-  weekLabel: string;
-  startDate: string;
-  endDate: string;
-  entities: InvestorTradingEntity[];
-}
-
-/** HTMLからstock_val_1_*.xlsのURLを抽出 */
-function extractInvestorLinks(html: string): string[] {
-  const regex = /href="([^"]*stock_val_1_[^"]*\.xls)"/g;
-  const links: string[] = [];
-  let match;
-  while ((match = regex.exec(html)) !== null) {
-    links.push(JPX_BASE + match[1]);
-  }
-  return links;
-}
-
-/** 週ラベルから日付範囲を抽出: "2026年4月第2週 2026/4 week2  ( 4/6 - 4/10 )" */
-function parseWeekLabel(
-  row3: string
-): { weekLabel: string; startDate: string; endDate: string } | null {
-  // 年と月を抽出
-  const yearMatch = row3.match(/(\d{4})年(\d{1,2})月第(\d)週/);
-  if (!yearMatch) return null;
-  const year = yearMatch[1];
-  const month = yearMatch[2].padStart(2, "0");
-  const weekNum = yearMatch[3];
-
-  // 括弧内の日付範囲を抽出: ( 4/6 - 4/10 ) or ( 12/30 - 1/5 )
-  const rangeMatch = row3.match(/\(\s*(\d{1,2})\/(\d{1,2})\s*-\s*(\d{1,2})\/(\d{1,2})\s*\)/);
-  if (!rangeMatch) return null;
-
-  const startMonth = rangeMatch[1].padStart(2, "0");
-  const startDay = rangeMatch[2].padStart(2, "0");
-  const endMonth = rangeMatch[3].padStart(2, "0");
-  const endDay = rangeMatch[4].padStart(2, "0");
-
-  // 年をまたぐ場合（12月→1月）の対応
-  const startYear =
-    parseInt(startMonth) > parseInt(month)
-      ? String(parseInt(year) - 1)
-      : year;
-  const endYear =
-    parseInt(endMonth) < parseInt(startMonth)
-      ? String(parseInt(year) + 1)
-      : startYear === year
-        ? year
-        : year;
-
-  return {
-    weekLabel: `${year}年${parseInt(month)}月第${weekNum}週`,
-    startDate: `${startYear}-${startMonth}-${startDay}`,
-    endDate: `${endYear}-${endMonth}-${endDay}`,
-  };
-}
-
-/** Excelから投資主体別の差引きデータを抽出 */
-function parseInvestorExcel(buffer: Buffer): InvestorTradingWeek | null {
-  const wb = XLSX.read(buffer);
-  // TSE Primeシートを使用（最も注目される市場）
-  const sheetName =
-    wb.SheetNames.find((n) => n.includes("Prime")) ?? wb.SheetNames[0];
-  const ws = wb.Sheets[sheetName];
-  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-  // Row3: 週ラベル
-  const row3 = String(rows[3]?.[0] ?? "");
-  const weekInfo = parseWeekLabel(row3);
-  if (!weekInfo) {
-    console.warn("  週ラベルをパースできません:", row3);
-    return null;
-  }
-
-  // 投資主体ごとの差引きを抽出
-  // 差引きは「当週」列（右側）のBalanceカラムから取得
-  // パターン: 「売り」行のBalance列 or 「買い」行のBalance列に値がある
-  const entities: InvestorTradingEntity[] = [];
-
-  const targetEntities: { label: string; displayName: string }[] = [
-    { label: "海外投資家", displayName: "海外投資家" },
-    { label: "個　人", displayName: "個人" },
-    { label: "信託銀行", displayName: "信託銀行" },
-    { label: "投資信託", displayName: "投資信託" },
-    { label: "事業法人", displayName: "事業法人" },
-  ];
-
-  for (const { label, displayName } of targetEntities) {
-    // ラベルの行を探す
-    let netAmount = 0;
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-      if (!row || String(row[0] ?? "") !== label) continue;
-
-      // 「売り」行: row[i], 「買い」行: row[i+1]
-      // 当週の差引きは右側 — index 10 にある
-      const sellBalance = parseNumber(rows[i]?.[10]);
-      const buyBalance = parseNumber(rows[i + 1]?.[10]);
-
-      // 差引き: 売りBalanceがマイナス（売越）、買いBalanceがプラス（買越）
-      // どちらかに値が入っている
-      if (sellBalance !== 0) {
-        netAmount = sellBalance; // 売越（負の値）
-      } else if (buyBalance !== 0) {
-        netAmount = buyBalance; // 買越（正の値）
-      }
-      break;
-    }
-
-    entities.push({
-      name: displayName,
-      netAmount: senYenToOkuYen(netAmount),
-    });
-  }
-
-  return { ...weekInfo, entities };
 }
 
 // --- 裁定残 ---
@@ -267,87 +150,6 @@ function parseArbitrageExcel(
   };
 }
 
-// --- 信用取引残高 ---
-
-interface MarginTradingWeek {
-  date: string;
-  buyBalance: number;
-  sellBalance: number;
-  ratio: number;
-}
-
-/** 百万円 → 億円に変換（小数第1位） */
-function hyakumanYenToOkuYen(hyakumanYen: number): number {
-  return Math.round((hyakumanYen / 100) * 10) / 10;
-}
-
-/** HTMLからmtseisan*.xlsのURLと日付を抽出 */
-function extractMarginLinks(html: string): { url: string; date: string }[] {
-  const regex = /href="([^"]*mtseisan(\d{10})\.xls)"/g;
-  const links: { url: string; date: string }[] = [];
-  let match;
-  while ((match = regex.exec(html)) !== null) {
-    const digits = match[2]; // e.g. "2026041000"
-    const yyyy = digits.slice(0, 4);
-    const mm = digits.slice(4, 6);
-    const dd = digits.slice(6, 8);
-    links.push({
-      url: JPX_BASE + match[1],
-      date: `${yyyy}-${mm}-${dd}`,
-    });
-  }
-  // 日付降順でソート
-  links.sort((a, b) => b.date.localeCompare(a.date));
-  return links;
-}
-
-/** 信用取引残高Excelをパース（二市場計・金額ベース） */
-function parseMarginExcel(
-  buffer: Buffer,
-  date: string
-): MarginTradingWeek | null {
-  const wb = XLSX.read(buffer);
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-  // "二市場計" を含む行を探し、その次の行（金額行）を取得
-  let valueRow: unknown[] | null = null;
-  for (let i = 0; i < rows.length; i++) {
-    const cellStr = String(rows[i]?.[1] ?? "");
-    if (cellStr.includes("二市場計")) {
-      // 次の行が金額行（"金額Val."）
-      if (i + 1 < rows.length) {
-        valueRow = rows[i + 1];
-      }
-      break;
-    }
-  }
-
-  if (!valueRow) {
-    console.warn(`  信用残データが見つかりません: ${date}`);
-    return null;
-  }
-
-  const sellBalance = parseNumber(valueRow[11]); // 合計 売残高（百万円）
-  const buyBalance = parseNumber(valueRow[13]); // 合計 買残高（百万円）
-
-  if (buyBalance === 0 && sellBalance === 0) {
-    console.warn(`  信用残が0です: ${date}`);
-    return null;
-  }
-
-  const sellOku = hyakumanYenToOkuYen(sellBalance);
-  const buyOku = hyakumanYenToOkuYen(buyBalance);
-  const ratio = sellOku > 0 ? Math.round((buyOku / sellOku) * 100) / 100 : 0;
-
-  return {
-    date,
-    buyBalance: buyOku,
-    sellBalance: sellOku,
-    ratio,
-  };
-}
-
 // --- メイン ---
 
 async function main() {
@@ -355,18 +157,18 @@ async function main() {
 
   // --- 投資部門別売買状況 ---
   console.log("■ 投資部門別売買状況の取得...");
-  const investorHtml = await fetchText(INVESTOR_TYPE_URL);
+  const investorHtml = await fetchText(JPX_INVESTOR_TYPE_URL);
   const investorLinks = extractInvestorLinks(investorHtml);
   console.log(`  ${investorLinks.length} 件のリンクを検出`);
 
   const weeks: InvestorTradingWeek[] = [];
   const linksToFetch = investorLinks.slice(0, WEEKS_TO_FETCH);
 
-  for (const url of linksToFetch) {
+  for (const link of linksToFetch) {
     try {
-      console.log(`  取得中: ${url.split("/").pop()}`);
-      const buf = await fetchBuffer(url);
-      const week = parseInvestorExcel(buf);
+      console.log(`  取得中: ${link.url.split("/").pop()}`);
+      const buf = await fetchBuffer(link.url);
+      const week = parseInvestorXlsx(buf, link);
       if (week) {
         weeks.push(week);
         console.log(`    → ${week.weekLabel} (${week.startDate}〜${week.endDate})`);
@@ -412,8 +214,8 @@ async function main() {
 
   // --- 信用取引残高 ---
   console.log("■ 信用取引残高の取得...");
-  const marginHtml = await fetchText(MARGIN_URL);
-  const marginLinks = extractMarginLinks(marginHtml);
+  const marginHtml = await fetchText(JPX_MARGIN_WEEKLY_URL);
+  const marginLinks = extractWeeklyMarginLinks(marginHtml);
   console.log(`  ${marginLinks.length} 件のリンクを検出`);
 
   const marginWeekly: MarginTradingWeek[] = [];
@@ -422,7 +224,8 @@ async function main() {
     try {
       console.log(`  取得中: ${url.split("/").pop()} (${date})`);
       const buf = await fetchBuffer(url);
-      const week = parseMarginExcel(buf, date);
+      const week = parseWeeklyMarginXls(buf, date);
+      if (!week) console.warn(`  信用残データが見つかりません: ${date}`);
       if (week) {
         marginWeekly.push(week);
         console.log(`    → 買残: ${week.buyBalance}億円, 売残: ${week.sellBalance}億円, 倍率: ${week.ratio}倍`);

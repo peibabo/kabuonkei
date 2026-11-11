@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import * as XLSX from "xlsx";
 import { extractInvestorLinks, parseInvestorXlsx } from "../_lib/jpx-investor";
 import { extractWeeklyMarginLinks, parseWeeklyMarginXls } from "../_lib/jpx-margin";
+import { extractArbitrageLinks, parseArbitrageXls } from "../_lib/jpx-arbitrage";
 
 function toXlsxBuffer(rows: unknown[][]): Buffer {
   const wb = XLSX.utils.book_new();
@@ -113,20 +114,20 @@ describe("parseInvestorXlsx", () => {
 });
 
 describe("extractWeeklyMarginLinks", () => {
-  it("新形式 *_mtcurrent.xlsx と旧形式 mtseisan*.xls の両方を抽出する", () => {
+  it("*_mtcurrent.xlsx を日付降順で抽出する", () => {
     const html = `
+      <a href="/m-att/20261030_mtcurrent.xlsx">x</a>
       <a href="/m-att/20261106_mtcurrent.xlsx">x</a>
-      <a href="/m-att/20261106_mtcurrent.pdf">x</a>
-      <a href="/m-att/mtseisan2026101600.xls">x</a>`;
+      <a href="/m-att/20261106_mtcurrent.pdf">x</a>`;
     expect(extractWeeklyMarginLinks(html)).toEqual([
       { url: "https://www.jpx.co.jp/m-att/20261106_mtcurrent.xlsx", date: "2026-11-06" },
-      { url: "https://www.jpx.co.jp/m-att/mtseisan2026101600.xls", date: "2026-10-16" },
+      { url: "https://www.jpx.co.jp/m-att/20261030_mtcurrent.xlsx", date: "2026-10-30" },
     ]);
   });
 });
 
 describe("parseWeeklyMarginXls", () => {
-  it("新形式は「信用取引残高合計」の金額行（二市場）から売残・買残を取る", () => {
+  it("「信用取引残高合計」の金額行（二市場）から売残・買残を取る", () => {
     const rows: unknown[][] = [
       [null, 46332],
       [],
@@ -142,20 +143,44 @@ describe("parseWeeklyMarginXls", () => {
     });
   });
 
-  it("旧形式は「二市場計」の次行 col 11 / 13 から取る", () => {
-    const value: unknown[] = Array(14).fill(null);
-    value[11] = 795910;
-    value[13] = 6645610;
-    const rows: unknown[][] = [[null, "二市場計"], value];
-    expect(parseWeeklyMarginXls(toXlsxBuffer(rows), "2026-09-11")).toEqual({
-      date: "2026-09-11",
-      buyBalance: 66456.1,
-      sellBalance: 7959.1,
-      ratio: 8.35,
+  it("該当行がなければ null", () => {
+    expect(parseWeeklyMarginXls(toXlsxBuffer([[null, "foo"]]), "2026-11-06")).toBeNull();
+  });
+});
+
+describe("extractArbitrageLinks", () => {
+  it("YYMMDD.xls を日付降順で抽出する", () => {
+    const html = `
+      <a href="/p-att/261106.xls">x</a>
+      <a href="/p-att/261109.xls">x</a>
+      <a href="/p-att/261109.pdf">x</a>`;
+    expect(extractArbitrageLinks(html)).toEqual([
+      { url: "https://www.jpx.co.jp/p-att/261109.xls", date: "2026-11-09" },
+      { url: "https://www.jpx.co.jp/p-att/261106.xls", date: "2026-11-06" },
+    ]);
+  });
+});
+
+describe("parseArbitrageXls", () => {
+  it("現物ポジション見出し後の株数行から売残 col 6 / 買残 col 12 を百万株で返す", () => {
+    const position: unknown[] = Array(13).fill(null);
+    position[1] = "株　　数";
+    position[6] = 4512;
+    position[12] = 786034;
+    const rows: unknown[][] = [
+      [null, "１．裁定取引に係る売買状況"],
+      [null, "株　　数", null, null, null, null, 1, null, null, null, null, null, 2],
+      [null, "２．裁定取引に係る現物ポジション"],
+      position,
+    ];
+    expect(parseArbitrageXls(toXlsxBuffer(rows), "2026-11-09")).toEqual({
+      date: "2026-11-09",
+      buyBalance: 786,
+      sellBalance: 4.5,
     });
   });
 
-  it("該当行がなければ null", () => {
-    expect(parseWeeklyMarginXls(toXlsxBuffer([[null, "foo"]]), "2026-11-06")).toBeNull();
+  it("見出しがなければ null", () => {
+    expect(parseArbitrageXls(toXlsxBuffer([[null, "株　　数"]]), "2026-11-09")).toBeNull();
   });
 });

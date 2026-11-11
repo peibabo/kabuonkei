@@ -7,23 +7,19 @@
  * 旧形式のファイルは investor-type ページから消えているため新形式のみ対応する。
  */
 
-import * as XLSX from "xlsx";
 import type {
   InvestorTradingEntity,
   InvestorTradingWeek,
 } from "../../src/lib/types/japan-market";
+import { JPX_BASE, digitsToIso, firstSheetRows, parseNumberCell } from "./jpx-common";
+import { round1 } from "./shared";
 
-const JPX_BASE = "https://www.jpx.co.jp";
 export const JPX_INVESTOR_TYPE_URL = `${JPX_BASE}/markets/statistics-equities/investor-type/`;
 
 export interface InvestorLink {
   url: string;
   startDate: string;
   endDate: string;
-}
-
-function digitsToIso(d: string): string {
-  return `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
 }
 
 /** investor-type ページから週次 xlsx の URL と期間を抽出（終了日降順） */
@@ -42,36 +38,23 @@ export function extractInvestorLinks(html: string): InvestorLink[] {
   return links;
 }
 
-function parseNumberCell(val: unknown): number {
-  if (typeof val === "number") return val;
-  if (typeof val === "string") {
-    const cleaned = val.replace(/,/g, "").replace(/▲/g, "-").trim();
-    const n = Number(cleaned);
-    return isNaN(n) ? 0 : n;
-  }
-  return 0;
-}
-
 /** 千円 → 億円（小数第1位） */
 function senYenToOkuYen(senYen: number): number {
-  return Math.round((senYen / 100_000) * 10) / 10;
+  return round1(senYen / 100_000);
 }
 
 /**
  * 横持ちレイアウトの列定義。各区分は「売 / 買 / 差引 / 合計」の 4 列で、
  * headerCol は区分見出しが入っている列（= 売の列）。差引は headerCol + 2。
  * 海外投資家は「法人」「個人」、個人は「現金」「信用」に分かれているので合算する。
+ * 先頭列の見出しに name が含まれることを検証してから読む。
  */
-const ENTITY_COLUMNS: {
-  name: string;
-  keyword: string;
-  headerCols: number[];
-}[] = [
-  { name: "海外投資家", keyword: "海外投資家", headerCols: [19, 23] },
-  { name: "個人", keyword: "個人", headerCols: [11, 15] },
-  { name: "信託銀行", keyword: "信託銀行", headerCols: [51] },
-  { name: "投資信託", keyword: "投資信託", headerCols: [31] },
-  { name: "事業法人", keyword: "事業法人", headerCols: [35] },
+const ENTITY_COLUMNS: { name: string; headerCols: number[] }[] = [
+  { name: "海外投資家", headerCols: [19, 23] },
+  { name: "個人", headerCols: [11, 15] },
+  { name: "信託銀行", headerCols: [51] },
+  { name: "投資信託", headerCols: [31] },
+  { name: "事業法人", headerCols: [35] },
 ];
 
 const HEADER_ROWS = 7;
@@ -95,14 +78,12 @@ export function parseInvestorXlsx(
   buffer: Buffer,
   link: Pick<InvestorLink, "startDate" | "endDate">
 ): InvestorTradingWeek | null {
-  const wb = XLSX.read(buffer);
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const rows = firstSheetRows(buffer);
 
   // 列配置が想定どおりか見出しで検証（レイアウト再変更の検知用）
-  for (const { keyword, headerCols } of ENTITY_COLUMNS) {
-    if (!headerContains(rows, headerCols[0], keyword)) {
-      console.warn(`  見出し「${keyword}」が列 ${headerCols[0]} にありません`);
+  for (const { name, headerCols } of ENTITY_COLUMNS) {
+    if (!headerContains(rows, headerCols[0], name)) {
+      console.warn(`  見出し「${name}」が列 ${headerCols[0]} にありません`);
       return null;
     }
   }

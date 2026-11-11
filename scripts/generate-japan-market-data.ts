@@ -9,9 +9,14 @@
  * 実行: npx tsx scripts/generate-japan-market-data.ts
  */
 
-import * as XLSX from "xlsx";
 import { writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
+import { fetchBuffer, fetchText } from "./_lib/jpx-common";
+import {
+  JPX_ARBITRAGE_URL,
+  extractArbitrageLinks,
+  parseArbitrageXls,
+} from "./_lib/jpx-arbitrage";
 import {
   JPX_INVESTOR_TYPE_URL,
   extractInvestorLinks,
@@ -22,132 +27,26 @@ import {
   extractWeeklyMarginLinks,
   parseWeeklyMarginXls,
 } from "./_lib/jpx-margin";
+import { sleep } from "./_lib/shared";
 import type {
+  ArbitrageBalanceDay,
   InvestorTradingWeek,
   MarginTradingWeek,
 } from "../src/lib/types/japan-market";
 
-const USER_AGENT =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-
-const JPX_BASE = "https://www.jpx.co.jp";
-const ARBITRAGE_URL = `${JPX_BASE}/markets/statistics-equities/program/index.html`;
-
 const WEEKS_TO_FETCH = 12;
 const ARBITRAGE_DAYS_TO_FETCH = 60; // 約12週分の営業日
 
-// --- ユーティリティ ---
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-async function fetchBuffer(url: string): Promise<Buffer> {
-  const res = await fetch(url, {
-    headers: { "User-Agent": USER_AGENT },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
-  return Buffer.from(await res.arrayBuffer());
-}
-
-async function fetchText(url: string): Promise<string> {
-  const res = await fetch(url, {
-    headers: { "User-Agent": USER_AGENT },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
-  return res.text();
-}
-
-/** 千株 → 百万株に変換（小数第1位） */
-function senKabuToHyakumanKabu(senKabu: number): number {
-  return Math.round((senKabu / 1_000) * 10) / 10;
-}
-
-/** 数値文字列のカンマを除去してパース */
-function parseNumber(val: unknown): number {
-  if (typeof val === "number") return val;
-  if (typeof val === "string") {
-    const cleaned = val.replace(/,/g, "").replace(/▲/g, "-").trim();
-    const n = Number(cleaned);
-    return isNaN(n) ? 0 : n;
+/**
+ * 取得 0 件は JPX 側のファイル名・レイアウト変更の兆候。空データで上書きコミットされると
+ * 日本版スコアの要素が黙って欠損するため、書き出し前に失敗させて CI で気付けるようにする。
+ */
+function assertNonEmpty(label: string, items: unknown[]): void {
+  if (items.length === 0) {
+    throw new Error(
+      `${label}が 0 件です。JPX のファイル名・レイアウト変更を確認してください`
+    );
   }
-  return 0;
-}
-
-// --- 裁定残 ---
-
-interface ArbitrageBalanceDay {
-  date: string;
-  buyBalance: number;
-  sellBalance: number;
-}
-
-/** HTMLから裁定取引Excelのリンクを抽出 */
-function extractArbitrageLinks(html: string): { url: string; date: string }[] {
-  // ファイル名パターン: YYMMDD.xls
-  const regex = /href="([^"]*\/(\d{6})\.xls)"/g;
-  const links: { url: string; date: string }[] = [];
-  let match;
-  while ((match = regex.exec(html)) !== null) {
-    const yymmdd = match[2];
-    const yy = yymmdd.slice(0, 2);
-    const mm = yymmdd.slice(2, 4);
-    const dd = yymmdd.slice(4, 6);
-    const year = parseInt(yy) > 50 ? `19${yy}` : `20${yy}`;
-    links.push({
-      url: JPX_BASE + match[1],
-      date: `${year}-${mm}-${dd}`,
-    });
-  }
-  // 日付降順でソート
-  links.sort((a, b) => b.date.localeCompare(a.date));
-  return links;
-}
-
-/** 裁定残Excelをパース */
-function parseArbitrageExcel(
-  buffer: Buffer,
-  date: string
-): ArbitrageBalanceDay | null {
-  const wb = XLSX.read(buffer);
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-  // Row 8: "２．裁定取引に係る現物ポジション..."
-  // Row 11: 株数行 — 売りポジション合計(index 6), 買いポジション合計(index 12)
-  // まず「ポジション」セクションのヘッダー行を見つけ、その後の「株　　数」行を取得
-  let positionRow: unknown[] | null = null;
-  let foundPositionSection = false;
-  for (let i = 0; i < rows.length; i++) {
-    const cellStr = String(rows[i]?.[1] ?? "");
-    if (cellStr.includes("裁定取引に係る現物ポジション")) {
-      foundPositionSection = true;
-      continue;
-    }
-    if (foundPositionSection && cellStr.includes("株")) {
-      positionRow = rows[i];
-      break;
-    }
-  }
-
-  if (!positionRow) {
-    console.warn(`  裁定残データが見つかりません: ${date}`);
-    return null;
-  }
-
-  const sellBalance = parseNumber(positionRow[6]);
-  const buyBalance = parseNumber(positionRow[12]);
-
-  if (buyBalance === 0 && sellBalance === 0) {
-    console.warn(`  裁定残が0です: ${date}`);
-    return null;
-  }
-
-  return {
-    date,
-    buyBalance: senKabuToHyakumanKabu(buyBalance),
-    sellBalance: senKabuToHyakumanKabu(sellBalance),
-  };
 }
 
 // --- メイン ---
@@ -186,7 +85,7 @@ async function main() {
 
   // --- 裁定残 ---
   console.log("■ 裁定残の取得...");
-  const arbitrageHtml = await fetchText(ARBITRAGE_URL);
+  const arbitrageHtml = await fetchText(JPX_ARBITRAGE_URL);
   const arbitrageLinks = extractArbitrageLinks(arbitrageHtml);
   console.log(`  ${arbitrageLinks.length} 件のリンクを検出`);
 
@@ -197,9 +96,11 @@ async function main() {
     try {
       console.log(`  取得中: ${url.split("/").pop()} (${date})`);
       const buf = await fetchBuffer(url);
-      const day = parseArbitrageExcel(buf, date);
+      const day = parseArbitrageXls(buf, date);
       if (day) {
         daily.push(day);
+      } else {
+        console.warn(`  裁定残データが見つかりません: ${date}`);
       }
     } catch (err) {
       console.warn(`  スキップ: ${err}`);
@@ -225,10 +126,11 @@ async function main() {
       console.log(`  取得中: ${url.split("/").pop()} (${date})`);
       const buf = await fetchBuffer(url);
       const week = parseWeeklyMarginXls(buf, date);
-      if (!week) console.warn(`  信用残データが見つかりません: ${date}`);
       if (week) {
         marginWeekly.push(week);
         console.log(`    → 買残: ${week.buyBalance}億円, 売残: ${week.sellBalance}億円, 倍率: ${week.ratio}倍`);
+      } else {
+        console.warn(`  信用残データが見つかりません: ${date}`);
       }
     } catch (err) {
       console.warn(`  スキップ: ${err}`);
@@ -240,6 +142,10 @@ async function main() {
   marginWeekly.sort((a, b) => a.date.localeCompare(b.date));
 
   console.log(`  合計 ${marginWeekly.length} 週分取得\n`);
+
+  assertNonEmpty("投資部門別売買状況", weeks);
+  assertNonEmpty("裁定残", daily);
+  assertNonEmpty("信用取引残高", marginWeekly);
 
   // --- JSON出力 ---
   const output = {

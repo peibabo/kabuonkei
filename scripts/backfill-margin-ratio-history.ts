@@ -5,7 +5,7 @@
  * 2002 年以降の全週次データを margin-ratio-history.json に書き出す。
  *
  * また、直近数週は 06.html の連結ファイルに未反映の場合があるので、
- * 04.html (最新週次 mtseisan*.xls) からも取得し、最新情報でギャップ埋めする。
+ * 04.html (最新週次 *_mtcurrent.xlsx) からも取得し、最新情報でギャップ埋めする。
  *
  * 実行: npm run generate:margin-history
  *   or: npx tsx scripts/backfill-margin-ratio-history.ts
@@ -18,11 +18,10 @@ import {
   JPX_MARGIN_WEEKLY_URL,
   extractHistoryExcelUrl,
   extractWeeklyMarginLinks,
-  fetchBuffer,
-  fetchText,
   parseHistoryMarginXls,
   parseWeeklyMarginXls,
 } from "./_lib/jpx-margin";
+import { fetchBuffer, fetchText } from "./_lib/jpx-common";
 import { sleep } from "./_lib/shared";
 import type { MarginTradingWeek } from "../src/lib/types/japan-market";
 

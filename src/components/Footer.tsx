@@ -32,6 +32,12 @@ export default function Footer() {
           <Link href="/sectors" className="hover:text-gray-900 hover:underline">
             業種別ヒートマップ
           </Link>
+          <Link href="/stock" className="hover:text-gray-900 hover:underline">
+            銘柄別の温度
+          </Link>
+          <Link href="/ranking" className="hover:text-gray-900 hover:underline">
+            温度ランキング
+          </Link>
           <Link href="/alerts" className="hover:text-gray-900 hover:underline">
             温度アラート
           </Link>

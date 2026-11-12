@@ -5,6 +5,7 @@ import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 import { getPortfolioHistory } from "@/lib/portfolio";
 import { getJapanSectorHeatmap } from "@/lib/japan-sector-heatmap";
+import { getStockCodes, getStockTemperatureFile } from "@/lib/stock-temperature";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
@@ -15,6 +16,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency: "yearly",
     priority: 0.5,
+  }));
+
+  // 銘柄別温度は毎営業日再生成されるので generatedAt を使う
+  const stockModified = new Date(getStockTemperatureFile().generatedAt);
+  const stockRoutes: MetadataRoute.Sitemap = [
+    { path: "/stock", priority: 0.7 },
+    { path: "/ranking", priority: 0.7 },
+    ...getStockCodes().map((code) => ({ path: `/stock/${code}`, priority: 0.5 })),
+  ].map(({ path, priority }) => ({
+    url: `${siteUrl}${path}`,
+    lastModified: stockModified,
+    changeFrequency: "daily",
+    priority,
   }));
 
   // 分析記事は月次で再生成されるので lastModified には generatedAt を使う
@@ -220,5 +234,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
     ...eventRoutes,
+    ...stockRoutes,
   ];
 }

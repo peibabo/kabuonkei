@@ -224,13 +224,23 @@ export function findPriceOnOrAfter(
   return null;
 }
 
+/**
+ * イベント日から基準日（最初の営業日）までに許容する日数。連休をまたぐ補完は通すが、
+ * 価格データの取得範囲より前のイベントを、範囲の先頭日で黙って代用しないための上限。
+ */
+const MAX_ANCHOR_GAP_DAYS = 10;
+
+function daysBetween(from: string, to: string): number {
+  return (Date.parse(to) - Date.parse(from)) / 86_400_000;
+}
+
 export function computeEventReturns(
   priceMap: Map<string, number>,
   sortedDates: string[],
   eventDate: string,
 ): EnrichedReturns {
   const anchor = findPriceOnOrAfter(priceMap, sortedDates, eventDate);
-  if (anchor == null) {
+  if (anchor == null || daysBetween(eventDate, anchor.date) > MAX_ANCHOR_GAP_DAYS) {
     return { return1m: null, return3m: null, return6m: null, return1y: null };
   }
   const r1m = findForwardPrice(priceMap, sortedDates, anchor.date, 30);
@@ -245,19 +255,46 @@ export function computeEventReturns(
   };
 }
 
-/** events-meta.json の各イベントについて、日経225 と S&P500 のリターンを事前計算 */
-function generateEventsEnriched(
+/**
+ * events-meta.json の各イベントについて、日経225 と S&P500 のリターンを事前計算。
+ *
+ * 類似日用の価格データは「今日から YEARS_BACK 年」のローリング窓なので、時間が経つと
+ * 古いイベント（2015-08-24 のチャイナショック等）が窓の外に出る。最古のイベントが
+ * 窓より前にある場合は、イベント用に価格を取り直す。
+ */
+async function generateEventsEnriched(
   jp: JapanResult,
   us: UsResult,
-): EventEnrichedFile {
+  period2: string,
+): Promise<EventEnrichedFile> {
   const metaPath = resolve(__dirname, "../src/data/events-meta.json");
   const events = JSON.parse(readFileSync(metaPath, "utf-8")) as EventMeta[];
+
+  let nikkeiMap = jp.nikkeiMap;
+  let nikkeiDates = jp.nikkeiDates;
+  let sp500Map = us.sp500Map;
+  let sp500Dates = us.sp500Dates;
+
+  const earliestEvent = events.map((e) => e.date).sort()[0];
+  const windowStart = [nikkeiDates[0], sp500Dates[0]].sort().at(-1);
+  if (earliestEvent && windowStart && earliestEvent < windowStart) {
+    const from = new Date(Date.parse(earliestEvent) - 14 * 86_400_000)
+      .toISOString()
+      .split("T")[0];
+    console.log(`  最古のイベント ${earliestEvent} が取得範囲外のため、${from} から価格を取り直し`);
+    await sleep(2000);
+    nikkeiMap = await fetchDailyCloses(yahooFinance, "^N225", from, period2);
+    await sleep(2000);
+    sp500Map = await fetchDailyCloses(yahooFinance, "^GSPC", from, period2);
+    nikkeiDates = [...nikkeiMap.keys()].sort();
+    sp500Dates = [...sp500Map.keys()].sort();
+  }
 
   const entries: EventEnrichedEntry[] = events.map((e) => ({
     slug: e.slug,
     date: e.date,
-    jp: computeEventReturns(jp.nikkeiMap, jp.nikkeiDates, e.date),
-    us: computeEventReturns(us.sp500Map, us.sp500Dates, e.date),
+    jp: computeEventReturns(nikkeiMap, nikkeiDates, e.date),
+    us: computeEventReturns(sp500Map, sp500Dates, e.date),
   }));
 
   return {
@@ -290,7 +327,7 @@ async function main() {
   console.log(`✅ ${usPath}`);
 
   console.log("\n=== イベント 1M/3M/6M/1Y リターン事前計算 ===");
-  const enriched = generateEventsEnriched(japan, us);
+  const enriched = await generateEventsEnriched(japan, us, period2);
   const enrichedPath = resolve(outDir, "events-enriched.json");
   writeFileSync(enrichedPath, JSON.stringify(enriched, null, 2), "utf-8");
   console.log(`✅ ${enrichedPath}（${enriched.entries.length} 件）`);

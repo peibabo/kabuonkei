@@ -17,7 +17,7 @@
 - `/widget` — 埋め込みウィジェットの案内ページ（`src/app/widget/page.tsx`）。ライブプレビュー + コピー可能な embed HTML（`src/app/widget/_components/EmbedCodeBlock.tsx`）を表示。HTML 生成は純粋関数 `buildEmbedSnippet`（`src/app/widget/_lib/embed-snippet.ts`）に分離してユニットテスト対象化
 - `/terms` — 利用規約 + 免責事項（`src/app/terms/page.tsx`）。金融情報サイトのため「投資助言ではない」旨を明記
 - `/privacy` — プライバシーポリシー（`src/app/privacy/page.tsx`）
-- `/events` — 主要イベント14件のインデックスページ（`src/app/events/page.tsx`）。日付降順でカード表示、各カードから詳細ページ `/events/[slug]?ref=events_index` へ遷移。`StaticPageLayout` ベース
+- `/events` — 主要イベント15件のインデックスページ（`src/app/events/page.tsx`）。日付降順でカード表示、各カードから詳細ページ `/events/[slug]?ref=events_index` へ遷移。`StaticPageLayout` ベース
 - `/guide` — 投資家タイプ別ガイドのインデックスページ（`src/app/guide/page.tsx`）。`nisa-tsumitate` / `short-term-trader` / `fire-long-term` の 3 本をカード表示。各ガイドは単体 TSX（Markdown 化せず個別性重視）で `src/app/guide/[slug]/page.tsx`
 - `/analysis` — 深掘り分析記事のインデックスページ（`src/app/analysis/page.tsx`）。第1弾は `/analysis/margin-ratio-temperature`（信用倍率 × 株温計）。詳細は [分析記事ドキュメント](features/analysis.md) 参照
 - `/alerts` — 温度アラートのランディングページ（`src/app/alerts/page.tsx`）。機能説明 + FAQ + インライン登録フォーム（`AlertSignupForm`）。note 記事など外部からの誘導リンクの受け皿（indexable、canonical `/alerts`）。詳細は [温度アラートドキュメント](features/alerts.md) 参照

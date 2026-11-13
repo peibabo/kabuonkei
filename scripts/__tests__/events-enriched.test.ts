@@ -81,6 +81,24 @@ describe("computeEventReturns", () => {
     });
   });
 
+  it("returns null when the event predates the price data (範囲の先頭日で代用しない)", () => {
+    const { priceMap, sortedDates } = buildMap();
+    // データは 2020-01-01 始まり。2019-12-01 のイベントは 31 日離れているので計算しない
+    const r = computeEventReturns(priceMap, sortedDates, "2019-12-01");
+    expect(r).toEqual({
+      return1m: null,
+      return3m: null,
+      return6m: null,
+      return1y: null,
+    });
+  });
+
+  it("anchors to the next trading day when the gap is within a holiday break", () => {
+    const { priceMap, sortedDates } = buildMap();
+    const r = computeEventReturns(priceMap, sortedDates, "2019-12-28");
+    expect(r.return1m).not.toBeNull();
+  });
+
   it("returns null for forward returns when data is too short", () => {
     // 60日分しかないデータ: 1M は取れるが 3M/6M/1Y は null
     const priceMap = new Map<string, number>();

@@ -594,7 +594,7 @@ export default function PortfolioPage() {
             </li>
             <li>
               <Link href="/events" className="underline hover:text-gray-900 font-semibold">
-                主要イベント一覧（14 件）
+                主要イベント一覧（15 件）
               </Link>{" "}
               — コロナショック / 令和のブラックマンデー / Brexit 等、過去の大型イベントを温度付きで振り返り、
               現在との距離感を測る

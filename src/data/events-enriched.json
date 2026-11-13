@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-22",
+  "generatedAt": "2026-11-13",
   "entries": [
     {
       "slug": "china-shock-2015",
@@ -223,6 +223,22 @@
         "return3m": 1.8,
         "return6m": -4.7,
         "return1y": 13.3
+      }
+    },
+    {
+      "slug": "ai-regulation-shock-2026",
+      "date": "2026-11-06",
+      "jp": {
+        "return1m": null,
+        "return3m": null,
+        "return6m": null,
+        "return1y": null
+      },
+      "us": {
+        "return1m": null,
+        "return3m": null,
+        "return6m": null,
+        "return1y": null
       }
     }
   ]

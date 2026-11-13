@@ -25,6 +25,7 @@
     "generate:portfolio-history": "npx tsx scripts/generate-portfolio-history.ts",
     "generate:stock-temperatures": "npx tsx scripts/generate-stock-temperatures.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts",
+    "backfill:japan-fg": "npx tsx scripts/backfill-japan-fg-snapshots.ts",
     "snapshot:portfolio": "npx tsx scripts/snapshot-portfolio.ts",
     "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts",
     "alerts:check": "npx tsx scripts/check-temperature-alerts.ts",

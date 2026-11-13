@@ -3,7 +3,9 @@
  *
  * 2種類のソースをサポート:
  * 1. 週次 Excel ファイル ({YYYYMMDD}_mtcurrent.xlsx、2026-10 下旬〜) — 直近数週のみ
- * 2. 連結履歴 Excel (margin/06.html 経由 tvdivq00000*.xls) — 2002 年以降の全週次
+ * 2. 連結履歴 Excel (margin/05.html「信用取引現在高過去推移表」経由) — 2002 年以降の全週次
+ *    - 旧形式 `{YYYYMMDD}_mtsk.xls`: 2002-08 〜 2026-09-18 申込分（更新終了）
+ *    - 新形式 `tvdivq*.xlsx`: 2026-09-25 申込分以降（一般信用・制度信用別の列が追加された）
  */
 
 import type { MarginTradingWeek } from "../../src/lib/types/japan-market";
@@ -11,7 +13,7 @@ import { JPX_BASE, digitsToIso, firstSheetRows, parseNumberCell } from "./jpx-co
 import { round1 } from "./shared";
 
 export const JPX_MARGIN_WEEKLY_URL = `${JPX_BASE}/markets/statistics-equities/margin/04.html`;
-export const JPX_MARGIN_HISTORY_URL = `${JPX_BASE}/markets/statistics-equities/margin/06.html`;
+export const JPX_MARGIN_HISTORY_URL = `${JPX_BASE}/markets/statistics-equities/margin/05.html`;
 
 /** 百万円 → 億円（小数第1位） */
 function hyakumanYenToOkuYen(hyakumanYen: number): number {
@@ -74,49 +76,78 @@ export function parseWeeklyMarginXls(
   };
 }
 
-// --- 連結履歴 (06.html) ---
+// --- 連結履歴 (05.html) ---
 
-/**
- * 06.html から「信用取引現在高」本体の Excel URL を動的に抽出。
- * 2本 (合計 / 一般信用・制度信用別) あるので「信用取引現在高」本体を第2位置から取得。
- * JPX のページ構造に依存するため、失敗時は null を返す。
- */
-export function extractHistoryExcelUrl(html: string): string | null {
-  // "信用取引現在高" を含む th と、その後の .xls リンクをペアで探す
-  // 簡易実装: <th>...信用取引現在高</th> 以降で最初に出る xls リンクを採用
-  // ただし一般信用取引・制度信用取引別の方が先に出るので、
-  // 2 つの .xls を取得して 2 番目 (= 合計) を使う
-  const linkRe = /href="([^"]*\/margin\/[^"]*\.xls)"/g;
-  const links: string[] = [];
-  let m: RegExpExecArray | null;
-  while ((m = linkRe.exec(html)) !== null) {
-    const url = m[1];
-    if (url.includes("/mtseisan")) continue; // 週次ファイルは除外
-    links.push(JPX_BASE + url);
-  }
-  if (links.length < 2) return null;
-  return links[1]; // 2 番目が合計
+export interface HistoryExcelUrls {
+  /** 旧形式の連結履歴（〜2026-09-18 申込分）。`*_mtsk.xls` */
+  legacy: string | null;
+  /** 新形式の連結履歴（2026-09-25 申込分〜）。ページ先頭の `.xlsx` */
+  current: string | null;
 }
 
 /**
- * 連結履歴 Excel をパース。
- * 列仕様 (row index 0-based):
+ * 05.html から連結履歴 Excel の URL を抽出する。
+ *
+ * ページには 3 本のファイルが並ぶ:
+ *   - 信用取引現在高（新形式 .xlsx、毎週追記される）
+ *   - 信用取引現在高（一般信用取引・制度信用取引別）`*_mtgk.xls` ← 使わない
+ *   - 信用取引現在高 `*_mtsk.xls`（旧形式、2026-09-18 申込分で更新終了）
+ * JPX のページ構造に依存するため、見つからないものは null を返す。
+ */
+export function extractHistoryExcelUrls(html: string): HistoryExcelUrls {
+  const linkRe = /href="([^"]*\/margin\/[^"]*\.xlsx?)"/g;
+  let legacy: string | null = null;
+  let current: string | null = null;
+  let m: RegExpExecArray | null;
+  while ((m = linkRe.exec(html)) !== null) {
+    const url = m[1];
+    if (/_mtsk\.xls$/.test(url)) {
+      legacy ??= JPX_BASE + url;
+    } else if (url.endsWith(".xlsx") && !url.includes("_mtcurrent")) {
+      current ??= JPX_BASE + url;
+    }
+  }
+  return { legacy, current };
+}
+
+/**
+ * ヘッダ行から「合計」ブロックの開始列を探す。
+ * 旧形式は col 9、新形式（一般信用の列が増えた）は col 13。見つからなければ null。
+ */
+function findTotalColumn(rows: unknown[][]): number | null {
+  for (const row of rows.slice(0, 10)) {
+    if (!row) continue;
+    for (let i = 1; i < row.length; i++) {
+      const cell = String(row[i] ?? "");
+      if (cell.startsWith("合計") && /Total/i.test(cell)) return i;
+    }
+  }
+  return null;
+}
+
+/**
+ * 連結履歴 Excel をパース（旧形式・新形式の両対応）。
+ * 「合計 Total」ブロックの並びは共通で、開始列を t とすると:
  *   col 0: Excel シリアル日付 (申込日 = 金曜)
- *   col 9: 合計 売残 株数 (千株)
- *   col 10: 合計 売残 金額 (百万円) ← sellBalance
- *   col 11: 合計 買残 株数 (千株)
- *   col 12: 合計 買残 金額 (百万円) ← buyBalance
+ *   col t: 合計 売残 株数 (千株)
+ *   col t+1: 合計 売残 金額 (百万円) ← sellBalance
+ *   col t+2: 合計 買残 株数 (千株)
+ *   col t+3: 合計 買残 金額 (百万円) ← buyBalance
+ * 旧形式は t=9、新形式は t=13。ヘッダから t を特定できない場合は
+ * 別の列を黙って読まないよう空配列を返す。
  * データ行は「数値の col 0 (30000 <= serial <= 60000)」で識別。
  */
 export function parseHistoryMarginXls(buffer: Buffer): MarginTradingWeek[] {
   const rows = firstSheetRows(buffer);
+  const totalCol = findTotalColumn(rows);
+  if (totalCol == null) return [];
 
   const out: MarginTradingWeek[] = [];
   for (const row of rows) {
     const serial = row?.[0];
     if (typeof serial !== "number" || serial < 30000 || serial > 60000) continue;
-    const sellMan = parseNumberCell(row[10]);
-    const buyMan = parseNumberCell(row[12]);
+    const sellMan = parseNumberCell(row[totalCol + 1]);
+    const buyMan = parseNumberCell(row[totalCol + 3]);
     if (sellMan <= 0 && buyMan <= 0) continue;
     const sellOku = hyakumanYenToOkuYen(sellMan);
     const buyOku = hyakumanYenToOkuYen(buyMan);

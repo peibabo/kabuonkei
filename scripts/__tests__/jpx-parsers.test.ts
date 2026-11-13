@@ -1,7 +1,12 @@
 import { describe, it, expect } from "vitest";
 import * as XLSX from "xlsx";
 import { extractInvestorLinks, parseInvestorXlsx } from "../_lib/jpx-investor";
-import { extractWeeklyMarginLinks, parseWeeklyMarginXls } from "../_lib/jpx-margin";
+import {
+  extractHistoryExcelUrls,
+  extractWeeklyMarginLinks,
+  parseHistoryMarginXls,
+  parseWeeklyMarginXls,
+} from "../_lib/jpx-margin";
 import { extractArbitrageLinks, parseArbitrageXls } from "../_lib/jpx-arbitrage";
 import { extractListedFileUrl, parseListedXlsx } from "../_lib/jpx-listed";
 
@@ -146,6 +151,73 @@ describe("parseWeeklyMarginXls", () => {
 
   it("該当行がなければ null", () => {
     expect(parseWeeklyMarginXls(toXlsxBuffer([[null, "foo"]]), "2026-11-06")).toBeNull();
+  });
+});
+
+describe("extractHistoryExcelUrls", () => {
+  const base = "/markets/statistics-equities/margin/tvdivq0000001rq1-att";
+
+  it("05.html から旧形式 (_mtsk.xls) と新形式 (.xlsx) の URL を取り出す", () => {
+    const html = `
+      <th>信用取引現在高</th>
+      <a href="${base}/tvdivq0000015969.xlsx" rel="external">
+      <a href="${base}/tvdivq0000015980.pdf" rel="external">
+      <th>信用取引現在高（一般信用取引・制度信用取引別）</th>
+      <a href="${base}/20260925_mtgk.xls" rel="external">
+      <th>信用取引現在高</th>
+      <a href="${base}/20260925_mtsk.xls" rel="external">`;
+    expect(extractHistoryExcelUrls(html)).toEqual({
+      legacy: `https://www.jpx.co.jp${base}/20260925_mtsk.xls`,
+      current: `https://www.jpx.co.jp${base}/tvdivq0000015969.xlsx`,
+    });
+  });
+
+  it("一般信用・制度信用別 (_mtgk.xls) や週次ファイルは拾わない", () => {
+    const html = `
+      <a href="${base}/20260925_mtgk.xls">
+      <a href="/markets/statistics-equities/margin/x-att/20261106_mtcurrent.xlsx">`;
+    expect(extractHistoryExcelUrls(html)).toEqual({ legacy: null, current: null });
+  });
+});
+
+describe("parseHistoryMarginXls", () => {
+  /** 2026-09-25 = Excel シリアル 46290 */
+  const SERIAL = 46290;
+
+  it("旧形式: 合計ブロックが col 9 から始まる", () => {
+    const header = ["月日", "委託 Customers' Account", null, null, null, "自己 Members' Account", null, null, null, "合計   Total"];
+    const row: unknown[] = new Array(22).fill(0);
+    row[0] = SERIAL;
+    row[10] = 884460; // 売残 金額（百万円）
+    row[12] = 6455990; // 買残 金額（百万円）
+    const weeks = parseHistoryMarginXls(toXlsxBuffer([["信用取引現在高"], header, row]));
+    expect(weeks).toEqual([
+      { date: "2026-09-25", buyBalance: 64559.9, sellBalance: 8844.6, ratio: 7.3 },
+    ]);
+  });
+
+  it("新形式: 一般信用の列が増えて合計ブロックが col 13 にずれても合計を読む", () => {
+    const header: unknown[] = new Array(14).fill(null);
+    header[0] = "月日";
+    header[1] = "制度信用取引 Standardized Margin Trading";
+    header[9] = "一般信用取引 Negotiable Margin Trading";
+    header[13] = "合計 Total";
+    const row: unknown[] = new Array(26).fill(0);
+    row[0] = SERIAL;
+    row[10] = 476220; // 一般信用 売残（旧形式で合計が入っていた列）
+    row[12] = 2905644; // 一般信用 買残
+    row[14] = 1047238; // 合計 売残 金額
+    row[16] = 6463837; // 合計 買残 金額
+    const weeks = parseHistoryMarginXls(toXlsxBuffer([["信用取引現在高"], header, row]));
+    expect(weeks).toEqual([
+      { date: "2026-09-25", buyBalance: 64638.4, sellBalance: 10472.4, ratio: 6.17 },
+    ]);
+  });
+
+  it("ヘッダから合計の列を特定できなければ空配列（別の列を黙って読まない）", () => {
+    const row: unknown[] = new Array(26).fill(100);
+    row[0] = SERIAL;
+    expect(parseHistoryMarginXls(toXlsxBuffer([["月日", "委託"], row]))).toEqual([]);
   });
 });
 

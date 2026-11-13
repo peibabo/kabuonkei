@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-01",
+  "generatedAt": "2026-11-13",
   "dataRange": {
-    "from": "2017-03-08",
-    "to": "2026-08-31"
+    "from": "2017-05-19",
+    "to": "2026-11-12"
   },
-  "sampleSize": 2383,
+  "sampleSize": 2386,
   "gapBands": [
     {
       "label": "米国が大幅優位 (≤ -20)",
@@ -43,68 +43,68 @@
     "bands": [
       {
         "band": "米国が大幅優位 (≤ -20)",
-        "occurrences": 928,
+        "occurrences": 924,
         "sp500": {
           "1m": {
-            "avgReturn": 0.8,
+            "avgReturn": 0.7,
             "medianReturn": 1.7,
-            "winRate": 69.9,
-            "sampleSize": 918
+            "winRate": 68.7,
+            "sampleSize": 904
           },
           "3m": {
-            "avgReturn": 2.8,
+            "avgReturn": 2.7,
             "medianReturn": 3.7,
-            "winRate": 77.9,
-            "sampleSize": 918
+            "winRate": 76.2,
+            "sampleSize": 871
           },
           "6m": {
             "avgReturn": 6.1,
-            "medianReturn": 7.4,
-            "winRate": 78.9,
-            "sampleSize": 918
+            "medianReturn": 7.1,
+            "winRate": 77.6,
+            "sampleSize": 867
           }
         },
         "nikkei225": {
           "1m": {
-            "avgReturn": 1,
-            "medianReturn": 1.3,
-            "winRate": 61.7,
-            "sampleSize": 861
+            "avgReturn": 0.9,
+            "medianReturn": 1.1,
+            "winRate": 60.9,
+            "sampleSize": 849
           },
           "3m": {
-            "avgReturn": 3.1,
-            "medianReturn": 2.7,
-            "winRate": 64,
-            "sampleSize": 861
+            "avgReturn": 3,
+            "medianReturn": 2.4,
+            "winRate": 62.2,
+            "sampleSize": 818
           },
           "6m": {
-            "avgReturn": 6.3,
-            "medianReturn": 4.8,
-            "winRate": 65.5,
-            "sampleSize": 863
+            "avgReturn": 6.1,
+            "medianReturn": 4,
+            "winRate": 64,
+            "sampleSize": 816
           }
         },
         "spread": {
           "1m": 0.2,
           "3m": 0.3,
-          "6m": 0.2
+          "6m": 0
         }
       },
       {
         "band": "米国がやや優位 (-20〜-10)",
-        "occurrences": 336,
+        "occurrences": 342,
         "sp500": {
           "1m": {
-            "avgReturn": 0.6,
-            "medianReturn": 1.6,
-            "winRate": 62.5,
-            "sampleSize": 328
+            "avgReturn": 0.5,
+            "medianReturn": 1.5,
+            "winRate": 60.6,
+            "sampleSize": 340
           },
           "3m": {
-            "avgReturn": 2.8,
-            "medianReturn": 4.2,
-            "winRate": 74.3,
-            "sampleSize": 327
+            "avgReturn": 2.7,
+            "medianReturn": 4.1,
+            "winRate": 73.5,
+            "sampleSize": 332
           },
           "6m": {
             "avgReturn": 4.2,
@@ -115,16 +115,16 @@
         },
         "nikkei225": {
           "1m": {
-            "avgReturn": -0.2,
-            "medianReturn": 0.2,
-            "winRate": 52.3,
-            "sampleSize": 310
+            "avgReturn": -0.4,
+            "medianReturn": 0,
+            "winRate": 50.5,
+            "sampleSize": 321
           },
           "3m": {
-            "avgReturn": 0.2,
-            "medianReturn": -0.5,
-            "winRate": 47.9,
-            "sampleSize": 309
+            "avgReturn": 0.1,
+            "medianReturn": -0.6,
+            "winRate": 47.6,
+            "sampleSize": 313
           },
           "6m": {
             "avgReturn": 1.9,
@@ -134,57 +134,57 @@
           }
         },
         "spread": {
-          "1m": -0.8,
+          "1m": -0.9,
           "3m": -2.6,
           "6m": -2.3
         }
       },
       {
         "band": "ほぼ同温 (-10〜+10)",
-        "occurrences": 607,
+        "occurrences": 608,
         "sp500": {
           "1m": {
-            "avgReturn": 1.1,
+            "avgReturn": 1,
             "medianReturn": 1.2,
-            "winRate": 65.7,
-            "sampleSize": 604
+            "winRate": 65.5,
+            "sampleSize": 606
           },
           "3m": {
-            "avgReturn": 3.3,
-            "medianReturn": 4.6,
-            "winRate": 71.3,
-            "sampleSize": 578
+            "avgReturn": 3.2,
+            "medianReturn": 4.4,
+            "winRate": 72.3,
+            "sampleSize": 606
           },
           "6m": {
-            "avgReturn": 6.3,
-            "medianReturn": 7.8,
-            "winRate": 75.7,
-            "sampleSize": 552
+            "avgReturn": 6.4,
+            "medianReturn": 7.9,
+            "winRate": 76.4,
+            "sampleSize": 569
           }
         },
         "nikkei225": {
           "1m": {
             "avgReturn": 1.8,
             "medianReturn": 1.9,
-            "winRate": 62.9,
-            "sampleSize": 563
+            "winRate": 62.8,
+            "sampleSize": 565
           },
           "3m": {
-            "avgReturn": 5.2,
-            "medianReturn": 3.5,
-            "winRate": 64.6,
-            "sampleSize": 539
+            "avgReturn": 4.8,
+            "medianReturn": 3,
+            "winRate": 63.4,
+            "sampleSize": 565
           },
           "6m": {
-            "avgReturn": 9.9,
-            "medianReturn": 7.6,
-            "winRate": 66.9,
-            "sampleSize": 508
+            "avgReturn": 10,
+            "medianReturn": 7.7,
+            "winRate": 67,
+            "sampleSize": 525
           }
         },
         "spread": {
-          "1m": 0.7,
-          "3m": 1.9,
+          "1m": 0.8,
+          "3m": 1.6,
           "6m": 3.6
         }
       },
@@ -201,14 +201,14 @@
           "3m": {
             "avgReturn": 4.2,
             "medianReturn": 4.5,
-            "winRate": 76.9,
-            "sampleSize": 212
+            "winRate": 77.9,
+            "sampleSize": 222
           },
           "6m": {
-            "avgReturn": 9,
-            "medianReturn": 9.4,
-            "winRate": 82.3,
-            "sampleSize": 192
+            "avgReturn": 9.2,
+            "medianReturn": 9.7,
+            "winRate": 83.9,
+            "sampleSize": 211
           }
         },
         "nikkei225": {
@@ -219,22 +219,22 @@
             "sampleSize": 208
           },
           "3m": {
-            "avgReturn": 6.5,
-            "medianReturn": 4.4,
-            "winRate": 70.2,
-            "sampleSize": 198
+            "avgReturn": 6.1,
+            "medianReturn": 3.9,
+            "winRate": 68.8,
+            "sampleSize": 208
           },
           "6m": {
-            "avgReturn": 10.4,
-            "medianReturn": 6.5,
-            "winRate": 69.2,
-            "sampleSize": 182
+            "avgReturn": 10.9,
+            "medianReturn": 8.1,
+            "winRate": 71.6,
+            "sampleSize": 197
           }
         },
         "spread": {
           "1m": 0,
-          "3m": 2.3,
-          "6m": 1.4
+          "3m": 1.9,
+          "6m": 1.7
         }
       },
       {
@@ -249,15 +249,15 @@
           },
           "3m": {
             "avgReturn": 5.9,
-            "medianReturn": 5.9,
-            "winRate": 81.1,
-            "sampleSize": 286
+            "medianReturn": 5.6,
+            "winRate": 81.4,
+            "sampleSize": 290
           },
           "6m": {
-            "avgReturn": 10.5,
-            "medianReturn": 11.5,
-            "winRate": 80.7,
-            "sampleSize": 270
+            "avgReturn": 10.6,
+            "medianReturn": 11.6,
+            "winRate": 81.8,
+            "sampleSize": 285
           }
         },
         "nikkei225": {
@@ -268,124 +268,124 @@
             "sampleSize": 273
           },
           "3m": {
-            "avgReturn": 6.1,
+            "avgReturn": 6,
             "medianReturn": 3.7,
-            "winRate": 66.5,
-            "sampleSize": 269
+            "winRate": 65.9,
+            "sampleSize": 273
           },
           "6m": {
-            "avgReturn": 10.1,
-            "medianReturn": 5.2,
-            "winRate": 75.3,
-            "sampleSize": 255
+            "avgReturn": 10.4,
+            "medianReturn": 5.5,
+            "winRate": 75.7,
+            "sampleSize": 268
           }
         },
         "spread": {
           "1m": -0.7,
-          "3m": 0.2,
-          "6m": -0.4
+          "3m": 0.1,
+          "6m": -0.2
         }
       }
     ]
   },
   "joint": {
     "dataRange": {
-      "from": "2017-03-08",
-      "to": "2026-08-31"
+      "from": "2017-05-19",
+      "to": "2026-11-12"
     },
-    "sampleSize": 2236,
+    "sampleSize": 2238,
     "cells": [
       {
         "gapBand": "米国が大幅優位 (≤ -20)",
         "tempBand": "平温",
-        "occurrences": 368,
+        "occurrences": 359,
         "returns": {
           "1m": {
-            "avgReturn": 0.5,
+            "avgReturn": 0.4,
             "medianReturn": 0.6,
-            "winRate": 56.2,
-            "sampleSize": 356
+            "winRate": 55.3,
+            "sampleSize": 351
           },
           "3m": {
-            "avgReturn": 2.5,
-            "medianReturn": 1.6,
-            "winRate": 56.4,
-            "sampleSize": 358
+            "avgReturn": 2.4,
+            "medianReturn": 1,
+            "winRate": 53.4,
+            "sampleSize": 335
           },
           "6m": {
-            "avgReturn": 3.2,
-            "medianReturn": 1.7,
-            "winRate": 54.2,
-            "sampleSize": 358
+            "avgReturn": 2.9,
+            "medianReturn": 0.4,
+            "winRate": 51.7,
+            "sampleSize": 331
           }
         }
       },
       {
         "gapBand": "米国が大幅優位 (≤ -20)",
         "tempBand": "冷え込み",
-        "occurrences": 266,
+        "occurrences": 273,
         "returns": {
           "1m": {
-            "avgReturn": 1.8,
-            "medianReturn": 2.3,
-            "winRate": 68.8,
-            "sampleSize": 266
+            "avgReturn": 1.6,
+            "medianReturn": 2,
+            "winRate": 67.8,
+            "sampleSize": 261
           },
           "3m": {
             "avgReturn": 6.1,
-            "medianReturn": 4.8,
-            "winRate": 82.6,
-            "sampleSize": 264
+            "medianReturn": 4.5,
+            "winRate": 81.4,
+            "sampleSize": 247
           },
           "6m": {
             "avgReturn": 11.2,
             "medianReturn": 11.7,
-            "winRate": 86.8,
-            "sampleSize": 266
+            "winRate": 85.9,
+            "sampleSize": 249
           }
         }
       },
       {
         "gapBand": "米国が大幅優位 (≤ -20)",
         "tempBand": "過熱",
-        "occurrences": 167,
+        "occurrences": 165,
         "returns": {
           "1m": {
-            "avgReturn": -0.2,
+            "avgReturn": -0.1,
             "medianReturn": 0.3,
-            "winRate": 52.1,
-            "sampleSize": 167
+            "winRate": 51.5,
+            "sampleSize": 165
           },
           "3m": {
             "avgReturn": -2.5,
-            "medianReturn": -2.3,
-            "winRate": 35.3,
-            "sampleSize": 167
+            "medianReturn": -2.4,
+            "winRate": 34.8,
+            "sampleSize": 164
           },
           "6m": {
-            "avgReturn": 0.1,
+            "avgReturn": -0.1,
             "medianReturn": -0.9,
-            "winRate": 41.3,
-            "sampleSize": 167
+            "winRate": 40.2,
+            "sampleSize": 164
           }
         }
       },
       {
         "gapBand": "米国がやや優位 (-20〜-10)",
         "tempBand": "過熱",
-        "occurrences": 187,
+        "occurrences": 190,
         "returns": {
           "1m": {
-            "avgReturn": 0,
-            "medianReturn": 0.7,
-            "winRate": 57.8,
-            "sampleSize": 180
+            "avgReturn": -0.3,
+            "medianReturn": 0.4,
+            "winRate": 54.7,
+            "sampleSize": 190
           },
           "3m": {
-            "avgReturn": -0.6,
-            "medianReturn": 0.1,
-            "winRate": 51.1,
-            "sampleSize": 180
+            "avgReturn": -0.7,
+            "medianReturn": 0,
+            "winRate": 50.3,
+            "sampleSize": 183
           },
           "6m": {
             "avgReturn": 1.1,
@@ -403,14 +403,14 @@
           "1m": {
             "avgReturn": 0.6,
             "medianReturn": 0.8,
-            "winRate": 52.7,
-            "sampleSize": 129
+            "winRate": 52.3,
+            "sampleSize": 130
           },
           "3m": {
-            "avgReturn": 3.2,
-            "medianReturn": 1.7,
-            "winRate": 62.9,
-            "sampleSize": 116
+            "avgReturn": 2.3,
+            "medianReturn": 1.1,
+            "winRate": 59.2,
+            "sampleSize": 130
           },
           "6m": {
             "avgReturn": 11.5,
@@ -463,17 +463,17 @@
             "sampleSize": 34
           },
           "6m": {
-            "avgReturn": 18.9,
-            "medianReturn": 21.3,
-            "winRate": 93.8,
-            "sampleSize": 32
+            "avgReturn": 19.3,
+            "medianReturn": 22.4,
+            "winRate": 94.1,
+            "sampleSize": 34
           }
         }
       },
       {
         "gapBand": "ほぼ同温 (-10〜+10)",
         "tempBand": "冷え込み",
-        "occurrences": 25,
+        "occurrences": 26,
         "returns": {
           "1m": {
             "avgReturn": 2.9,
@@ -513,10 +513,10 @@
             "sampleSize": 113
           },
           "6m": {
-            "avgReturn": 10.2,
-            "medianReturn": 6.7,
-            "winRate": 71.4,
-            "sampleSize": 105
+            "avgReturn": 10.9,
+            "medianReturn": 7.4,
+            "winRate": 72.7,
+            "sampleSize": 110
           }
         }
       },
@@ -598,19 +598,19 @@
       {
         "gapBand": "米国がやや優位 (-20〜-10)",
         "tempBand": "平温",
-        "occurrences": 104,
+        "occurrences": 106,
         "returns": {
           "1m": {
-            "avgReturn": -1.2,
-            "medianReturn": -1.8,
-            "winRate": 36.5,
-            "sampleSize": 104
+            "avgReturn": -1.3,
+            "medianReturn": -1.9,
+            "winRate": 36.2,
+            "sampleSize": 105
           },
           "3m": {
             "avgReturn": 0.5,
-            "medianReturn": -1.5,
-            "winRate": 40.8,
-            "sampleSize": 103
+            "medianReturn": -1.3,
+            "winRate": 41.3,
+            "sampleSize": 104
           },
           "6m": {
             "avgReturn": 1.3,
@@ -628,20 +628,20 @@
           "1m": {
             "avgReturn": 1.8,
             "medianReturn": 1.9,
-            "winRate": 64.6,
-            "sampleSize": 280
+            "winRate": 64.8,
+            "sampleSize": 281
           },
           "3m": {
-            "avgReturn": 4.9,
-            "medianReturn": 4.2,
-            "winRate": 61.3,
-            "sampleSize": 269
+            "avgReturn": 4.6,
+            "medianReturn": 3.8,
+            "winRate": 60.9,
+            "sampleSize": 281
           },
           "6m": {
-            "avgReturn": 7.9,
-            "medianReturn": 6.4,
-            "winRate": 60.6,
-            "sampleSize": 246
+            "avgReturn": 7.8,
+            "medianReturn": 6.8,
+            "winRate": 60.5,
+            "sampleSize": 258
           }
         }
       },
@@ -688,10 +688,10 @@
             "sampleSize": 33
           },
           "6m": {
-            "avgReturn": 14.6,
-            "medianReturn": 18,
-            "winRate": 90.3,
-            "sampleSize": 31
+            "avgReturn": 15.1,
+            "medianReturn": 20.2,
+            "winRate": 90.9,
+            "sampleSize": 33
           }
         }
       },
@@ -813,10 +813,10 @@
             "sampleSize": 63
           },
           "6m": {
-            "avgReturn": 6.7,
-            "medianReturn": 0.8,
-            "winRate": 56.1,
-            "sampleSize": 57
+            "avgReturn": 8.1,
+            "medianReturn": 5.3,
+            "winRate": 60.3,
+            "sampleSize": 63
           }
         }
       },
@@ -834,14 +834,14 @@
           "3m": {
             "avgReturn": 4.2,
             "medianReturn": 2.4,
-            "winRate": 63.9,
-            "sampleSize": 133
+            "winRate": 64.2,
+            "sampleSize": 134
           },
           "6m": {
-            "avgReturn": 6.6,
-            "medianReturn": 4.4,
-            "winRate": 70.9,
-            "sampleSize": 127
+            "avgReturn": 7.3,
+            "medianReturn": 4.6,
+            "winRate": 72.2,
+            "sampleSize": 133
           }
         }
       },
@@ -857,16 +857,16 @@
             "sampleSize": 84
           },
           "3m": {
-            "avgReturn": 4.1,
-            "medianReturn": 1,
-            "winRate": 54.3,
-            "sampleSize": 81
+            "avgReturn": 3.8,
+            "medianReturn": 0.6,
+            "winRate": 52.4,
+            "sampleSize": 84
           },
           "6m": {
-            "avgReturn": 9,
-            "medianReturn": 2.9,
-            "winRate": 68,
-            "sampleSize": 75
+            "avgReturn": 8.7,
+            "medianReturn": 3.1,
+            "winRate": 67.5,
+            "sampleSize": 80
           }
         }
       },
@@ -882,40 +882,40 @@
             "sampleSize": 96
           },
           "3m": {
-            "avgReturn": 3.7,
-            "medianReturn": 2.5,
-            "winRate": 62.8,
-            "sampleSize": 86
+            "avgReturn": 3.1,
+            "medianReturn": 1.9,
+            "winRate": 60.4,
+            "sampleSize": 96
           },
           "6m": {
-            "avgReturn": 9,
-            "medianReturn": 2.7,
-            "winRate": 64.1,
-            "sampleSize": 78
+            "avgReturn": 9.3,
+            "medianReturn": 3.7,
+            "winRate": 67.1,
+            "sampleSize": 85
           }
         }
       }
     ]
   },
   "gapQuantiles": {
-    "p10": -45,
-    "p25": -31,
+    "p10": -43,
+    "p25": -30,
     "p50": -13,
     "p75": 7,
     "p90": 22,
     "latest": {
-      "date": "2026-08-31",
-      "gap": -13
+      "date": "2026-11-12",
+      "gap": -31
     }
   },
   "latestContext": {
-    "date": "2026-08-31",
-    "jpScore": 71,
-    "usScore": 84,
-    "vix": 14.9,
-    "gap": -13,
-    "gapBand": "米国がやや優位 (-20〜-10)",
-    "jpTempBand": "過熱"
+    "date": "2026-11-12",
+    "jpScore": 40,
+    "usScore": 71,
+    "vix": 18.7,
+    "gap": -31,
+    "gapBand": "米国が大幅優位 (≤ -20)",
+    "jpTempBand": "冷え込み"
   },
   "note": "日本版株温計スコア (C1+C5 簡易) と米国版温度スコア (VIX 由来) の差 (gap = JP - US) を、両指標が計算できる 2016 年以降の米国取引日基準で算出。Primary は乖離バンド × {S&P500, 日経225} の 1M/3M/6M 前方リターン (および N225-S&P500 平均スプレッド)、Joint は乖離バンド × 日本版温度バンド × 日経225 のクロス集計。正の gap = 日本が相対的に熱い、負の gap = 米国が相対的に熱い。"
 }

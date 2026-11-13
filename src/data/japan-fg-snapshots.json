@@ -1525,364 +1525,364 @@
     },
     {
       "date": "2026-09-30",
-      "score": 57,
+      "score": 52,
       "level": "平温",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 64,
-        "foreignFlow": 47,
-        "marginRatio": 66,
+        "foreignFlow": 40,
+        "marginRatio": 52,
         "arbitrage": 94,
         "usdJpyMomentum": 12
       }
     },
     {
       "date": "2026-10-01",
-      "score": 60,
+      "score": 55,
       "level": "平温",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 74,
-        "foreignFlow": 57,
-        "marginRatio": 66,
+        "foreignFlow": 43,
+        "marginRatio": 52,
         "arbitrage": 93,
         "usdJpyMomentum": 12
       }
     },
     {
       "date": "2026-10-02",
-      "score": 60,
+      "score": 54,
       "level": "平温",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 70,
-        "foreignFlow": 57,
-        "marginRatio": 66,
+        "foreignFlow": 43,
+        "marginRatio": 52,
         "arbitrage": 93,
         "usdJpyMomentum": 13
       }
     },
     {
       "date": "2026-10-05",
-      "score": 62,
-      "level": "過熱",
+      "score": 56,
+      "level": "平温",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 79,
-        "foreignFlow": 57,
-        "marginRatio": 66,
+        "foreignFlow": 43,
+        "marginRatio": 52,
         "arbitrage": 93,
         "usdJpyMomentum": 15
       }
     },
     {
       "date": "2026-10-06",
-      "score": 62,
-      "level": "過熱",
+      "score": 57,
+      "level": "平温",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 81,
-        "foreignFlow": 57,
-        "marginRatio": 66,
+        "foreignFlow": 43,
+        "marginRatio": 52,
         "arbitrage": 93,
         "usdJpyMomentum": 15
       }
     },
     {
       "date": "2026-10-07",
-      "score": 60,
-      "level": "平温",
+      "score": 61,
+      "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 77,
-        "foreignFlow": 57,
-        "marginRatio": 66,
+        "foreignFlow": 43,
+        "marginRatio": 84,
         "arbitrage": 81,
         "usdJpyMomentum": 18
       }
     },
     {
       "date": "2026-10-08",
-      "score": 64,
+      "score": 65,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 72,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 84,
         "arbitrage": 84,
         "usdJpyMomentum": 38
       }
     },
     {
       "date": "2026-10-09",
-      "score": 67,
+      "score": 68,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 70,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 84,
         "arbitrage": 84,
         "usdJpyMomentum": 55
       }
     },
     {
       "date": "2026-10-13",
-      "score": 66,
+      "score": 67,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 64,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 84,
         "arbitrage": 84,
         "usdJpyMomentum": 56
       }
     },
     {
       "date": "2026-10-14",
-      "score": 68,
+      "score": 69,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 63,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 84,
         "arbitrage": 91,
         "usdJpyMomentum": 58
       }
     },
     {
       "date": "2026-10-15",
-      "score": 62,
+      "score": 63,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 45,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 85,
         "arbitrage": 91,
         "usdJpyMomentum": 47
       }
     },
     {
       "date": "2026-10-16",
-      "score": 64,
+      "score": 65,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 49,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 85,
         "arbitrage": 91,
         "usdJpyMomentum": 51
       }
     },
     {
       "date": "2026-10-19",
-      "score": 62,
+      "score": 63,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 47,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 85,
         "arbitrage": 91,
         "usdJpyMomentum": 45
       }
     },
     {
       "date": "2026-10-20",
-      "score": 61,
+      "score": 62,
       "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 43,
-        "foreignFlow": 61,
-        "marginRatio": 66,
+        "foreignFlow": 49,
+        "marginRatio": 85,
         "arbitrage": 91,
         "usdJpyMomentum": 42
       }
     },
     {
       "date": "2026-10-21",
-      "score": 56,
-      "level": "平温",
+      "score": 73,
+      "level": "過熱",
       "availableCount": 5,
       "components": {
         "nikkeiMa": 45,
-        "foreignFlow": 43,
-        "marginRatio": 66,
+        "foreignFlow": 92,
+        "marginRatio": 100,
         "arbitrage": 86,
         "usdJpyMomentum": 41
       }
     },
     {
       "date": "2026-10-22",
-      "score": 56,
-      "level": "平温",
-      "availableCount": 4,
+      "score": 71,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 36,
-        "foreignFlow": 50,
-        "marginRatio": 66,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 85,
         "usdJpyMomentum": 36
       }
     },
     {
       "date": "2026-10-23",
-      "score": 55,
-      "level": "平温",
-      "availableCount": 4,
+      "score": 71,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 35,
-        "foreignFlow": 50,
-        "marginRatio": 66,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 85,
         "usdJpyMomentum": 33
       }
     },
     {
       "date": "2026-10-26",
-      "score": 55,
-      "level": "平温",
-      "availableCount": 4,
+      "score": 71,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 32,
-        "foreignFlow": 50,
-        "marginRatio": 66,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 85,
         "usdJpyMomentum": 38
       }
     },
     {
       "date": "2026-10-27",
-      "score": 57,
-      "level": "平温",
-      "availableCount": 4,
+      "score": 72,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 38,
-        "foreignFlow": 50,
-        "marginRatio": 66,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 85,
         "usdJpyMomentum": 39
       }
     },
     {
       "date": "2026-10-28",
-      "score": 59,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 74,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 41,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 94,
         "arbitrage": 86,
         "usdJpyMomentum": 49
       }
     },
     {
       "date": "2026-10-29",
-      "score": 60,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 75,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 44,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 94,
         "arbitrage": 94,
         "usdJpyMomentum": 43
       }
     },
     {
       "date": "2026-10-30",
-      "score": 57,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 73,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 37,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 94,
         "arbitrage": 94,
         "usdJpyMomentum": 40
       }
     },
     {
       "date": "2026-11-02",
-      "score": 57,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 73,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 36,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 94,
         "arbitrage": 94,
         "usdJpyMomentum": 42
       }
     },
     {
       "date": "2026-11-04",
-      "score": 51,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 70,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 32,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 94,
         "arbitrage": 77,
         "usdJpyMomentum": 45
       }
     },
     {
       "date": "2026-11-05",
-      "score": 49,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 69,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 26,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 79,
         "usdJpyMomentum": 41
       }
     },
     {
       "date": "2026-11-06",
-      "score": 41,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 65,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 7,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 79,
         "usdJpyMomentum": 38
       }
     },
     {
       "date": "2026-11-09",
-      "score": 44,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 66,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 14,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 79,
         "usdJpyMomentum": 39
       }
     },
     {
       "date": "2026-11-10",
-      "score": 48,
-      "level": "平温",
-      "availableCount": 3,
+      "score": 69,
+      "level": "過熱",
+      "availableCount": 5,
       "components": {
         "nikkeiMa": 23,
-        "foreignFlow": 50,
-        "marginRatio": 50,
+        "foreignFlow": 100,
+        "marginRatio": 100,
         "arbitrage": 79,
         "usdJpyMomentum": 41
       }

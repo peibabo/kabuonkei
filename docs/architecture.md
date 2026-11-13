@@ -26,6 +26,7 @@
 
 - `shared.ts`: 生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export
 - `snapshot-merge.ts`: 日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）。`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化
+- `snapshot-backfill.ts`: 日本版FGスナップショットの C2 / C3 を「その日に公表済みだった JPX データ」で再計算する純粋関数（`recomputeEntry` / `weeksAvailableOn` / `availableFrom`）。`scripts/backfill-japan-fg-snapshots.ts`（`npm run backfill:japan-fg`）が使う。`scripts/__tests__/snapshot-backfill.test.ts` でユニットテスト化
 - `trading-date.ts`: 「どの営業日のデータか」を実行時刻ではなく日経225 の最終取引時刻から決める純粋関数（`resolveTradingDate` / `toJstIsoDate`）。スナップショットの日付とアラートの鮮度ガードが共用。`scripts/__tests__/trading-date.test.ts` でユニットテスト化
 - `stats-aggregator.ts`: 日米の過去統計生成スクリプトで共通する温度帯別リターン集計関数 `aggregateLevelReturns<K>` に加え、分析記事用の 2D 集計関数 `aggregateJointReturns<K>` を提供。`scripts/__tests__/{stats-aggregator,joint-aggregator}.test.ts` でユニットテスト化
 - `jpx-common.ts`: JPX 取得系の共通ヘルパ（`JPX_BASE` / `fetchBuffer` / `fetchText` / `firstSheetRows` / `parseNumberCell` / `digitsToIso`）。下記 `jpx-*.ts` が利用

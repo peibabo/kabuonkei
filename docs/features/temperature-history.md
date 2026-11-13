@@ -13,14 +13,15 @@
 **B: 簡易10年版（`src/data/japan-temperature-history.json`）**
 - `^N225` + `USDJPY=X` の過去10年日次データから C1（125日MA乖離）+ C5（50日モメンタム）の2要素等ウェイト平均スコアを算出
 - 生成スクリプト: `npm run generate:japan-temperature-history`（`scripts/generate-japan-temperature-history.ts`）
-- 平日 JST 17:00 に `snapshot-japan-fg.yml` で本体スナップショットと同時にフル再生成（Area が今日まで連続するように毎営業日リフレッシュ）。月1回 `update-historical-stats.yml` でも再生成（バックアップ）
+- 平日 JST 17 時台に `snapshot-japan-fg.yml` で本体スナップショットと同時にフル再生成（Area が今日まで連続するように毎営業日リフレッシュ）。月1回 `update-historical-stats.yml` でも再生成（バックアップ）
 
 **A: 本体5要素版の日次スナップショット（`src/data/japan-fg-snapshots.json`）**
 - 現時点の5要素フルスコアを `computeJapanFearGreed()` で算出し、日次でJSONに追記
 - 生成スクリプト: `npm run snapshot:japan-fg`（`scripts/snapshot-japan-fear-greed.ts`）
-- 平日 JST 17:00（東証クローズ後）に `snapshot-japan-fg.yml` で自動実行（同ワークフロー内で簡易版 B も同時に再生成し、両ファイルを1コミットで push）
+- 平日 JST 17 時台（東証クローズ後）に `snapshot-japan-fg.yml` で自動実行（同ワークフロー内で簡易版 B も同時に再生成し、両ファイルを1コミットで push）
 - 配列は日付昇順、同日エントリが既にあれば上書き
 - **エントリの日付は実行日ではなく日経225 の最終取引日（JST）**（`resolveTradingDate()`、`scripts/_lib/trading-date.ts`）。GitHub Actions の schedule は数時間遅延して翌日未明に走ることがあり、実行日の日付で記録すると 1 営業日後ろにずれるため（2026-08-27〜11-12 の分は git 履歴から復元して補正済み）
+- **C2 / C3 の過去分補正（2026-09-30〜11-10）**: JPX のファイル形式変更で投資部門別売買状況と信用倍率の取得が止まっていた期間は、古いデータのまま、または欠損値 50 で記録されていた。`npm run backfill:japan-fg`（`scripts/backfill-japan-fg-snapshots.ts`、`-- --write` で書き換え）で C2 / C3 を「その日に公表済みだったデータ」から再計算し、スコアと温度帯を更新済み（C1 / C4 / C5 は記録値のまま）。反映日のルールは通常運用と同じで、公表日（信用倍率は週末日の 3 営業日後、投資部門別は 4 営業日後）以降の最初の水曜・木曜。正常だった 2026-08-27〜09-29 と復旧後の 11-11・11-12 の記録値を、このルールで完全に再現できることを確認している
 - 休場日（祝日など、最終取引から 20 時間超）の実行は、直近営業日のエントリが既にあれば何も書かない（2026-09 以前の祝日日付のエントリは従来仕様の名残り）
 
 **UI**: `src/components/JapanTemperatureTrendCard.tsx`（1M/3M/6M/1Y/5Y/10Y 切替）。

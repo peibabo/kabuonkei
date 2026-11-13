@@ -8,7 +8,6 @@ import { JPX_BASE, firstSheetRows } from "./jpx-common";
 export const JPX_LISTED_URL = `${JPX_BASE}/markets/statistics-equities/misc/01.html`;
 
 export interface ListedIssue {
-  code: string;
   name: string;
   sector33: string;
 }
@@ -21,7 +20,7 @@ export function extractListedFileUrl(html: string): string | null {
 
 /**
  * 列: 0 日付 / 1 コード / 2 銘柄名 / 3 市場・商品区分 / 4 33業種コード / 5 33業種区分 ...
- * 見出しで列位置を検証し、ずれていれば空 Map を返す。
+ * 証券コードをキーにした Map を返す。見出しで列位置を検証し、ずれていれば空 Map を返す。
  * 銘柄名は全角英数を NFKC で半角に寄せる（"ＬＩＮＥヤフー" → "LINEヤフー"）。
  */
 export function parseListedXlsx(buffer: Buffer): Map<string, ListedIssue> {
@@ -36,7 +35,6 @@ export function parseListedXlsx(buffer: Buffer): Map<string, ListedIssue> {
     const sector33 = String(row?.[5] ?? "").trim();
     if (!code || !sector33 || sector33 === "-") continue;
     out.set(code, {
-      code,
       name: String(row[2] ?? "").normalize("NFKC").trim(),
       sector33,
     });

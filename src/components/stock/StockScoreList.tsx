@@ -1,60 +1,51 @@
-import type { StockSummary } from "@/lib/stock-temperature";
+import { getSentimentTextClass } from "@/lib/sentiment";
+import { ranksWithTies, type StockSummary } from "@/lib/stock-temperature/stats";
 import { formatScoreDiff } from "@/lib/stock-temperature/format";
 
 interface Props {
   items: StockSummary[];
-  /** 先頭に順位を表示する */
-  ranked?: boolean;
-  /** 業種の列を表示する */
-  showSector?: boolean;
-  /** 前日比の列を表示する */
-  showDiff?: boolean;
+  /**
+   * 指定するとランキング表示（順位・業種・前日比の列を出す）。
+   * items はこの値で並び済みであること。同じ値は同順位になる。
+   * 省略時は銘柄と温度だけのコンパクトな一覧。
+   */
+  rankBy?: "score" | "d1";
 }
 
-/** 温度帯の色（sentiment.ts の getSentimentColor と同じ色）。行ごとの inline style を避ける */
-function scoreClass(score: number): string {
-  if (score <= 20) return "text-blue-600";
-  if (score <= 40) return "text-sky-500";
-  if (score <= 60) return "text-yellow-600";
-  if (score <= 80) return "text-orange-600";
-  return "text-red-600";
-}
+/** 銘柄ページ内の表と共通の見た目。セルのクラスは行数ぶん繰り返さず table 側にまとめる */
+export const STOCK_TABLE_CLASS =
+  "w-full text-sm border-collapse [&_td]:py-1 [&_th]:py-1 [&_th]:font-normal [&_thead_tr]:border-b [&_thead_tr]:border-gray-200 [&_thead_tr]:text-gray-500 [&_tbody_tr]:border-b [&_tbody_tr]:border-gray-100 [&_a]:underline";
 
 /**
- * 銘柄名・温度の一覧表（/stock と /ranking で共用）。
+ * 銘柄名・温度の一覧表（/stock・/ranking・銘柄ページの同業種リンクで共用）。
  * 1ページに数百行並ぶため、next/link（クライアントコンポーネントで行ごとに
- * props がペイロードに載る）ではなく素の <a> を使い、セルのクラスは table 側にまとめて
- * HTML サイズを抑えている。
+ * props がペイロードに載る）ではなく素の <a> を使って HTML サイズを抑えている。
  */
-export default function StockScoreList({
-  items,
-  ranked = false,
-  showSector = false,
-  showDiff = true,
-}: Props) {
+export default function StockScoreList({ items, rankBy }: Props) {
+  const ranks = rankBy ? ranksWithTies(items, (s) => s[rankBy]) : null;
   return (
-    <table className="w-full text-sm border-collapse [&_td]:py-1 [&_th]:py-1 [&_th]:font-normal [&_tbody_tr]:border-b [&_tbody_tr]:border-gray-100 [&_a]:underline">
+    <table className={STOCK_TABLE_CLASS}>
       <thead>
-        <tr className="border-b border-gray-200 text-gray-500">
-          {ranked && <th className="text-right pr-2 w-8">順位</th>}
+        <tr>
+          {ranks && <th className="text-right pr-2 w-8">順位</th>}
           <th className="text-left">銘柄</th>
-          {showSector && <th className="text-left hidden sm:table-cell">業種</th>}
+          {ranks && <th className="text-left hidden sm:table-cell">業種</th>}
           <th className="text-right">温度</th>
-          {showDiff && <th className="text-right">前日比</th>}
+          {ranks && <th className="text-right">前日比</th>}
         </tr>
       </thead>
       <tbody>
         {items.map((s, i) => (
           <tr key={s.code}>
-            {ranked && <td className="pr-2 text-right text-gray-500">{i + 1}</td>}
+            {ranks && <td className="pr-2 text-right text-gray-500">{ranks[i]}</td>}
             <td>
               <a href={`/stock/${s.code}`}>{s.name}</a>（{s.code}）
             </td>
-            {showSector && <td className="text-gray-600 hidden sm:table-cell">{s.sector}</td>}
-            <td className={`text-right font-semibold ${scoreClass(s.score)}`}>
+            {ranks && <td className="text-gray-600 hidden sm:table-cell">{s.sector}</td>}
+            <td className={`text-right font-semibold ${getSentimentTextClass(s.score)}`}>
               {s.score}
             </td>
-            {showDiff && <td className="text-right">{formatScoreDiff(s.d1)}</td>}
+            {ranks && <td className="text-right">{formatScoreDiff(s.d1)}</td>}
           </tr>
         ))}
       </tbody>

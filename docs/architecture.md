@@ -5,7 +5,7 @@
 責務ごとにファイルを分割している。主な役割と公開 API：
 
 - `types.ts`: 型定義の公開エントリポイント（barrel）。実体はドメインごとに `src/lib/types/` 配下へ分割（`common.ts` / `sentiment.ts` / `us-fear-greed.ts` / `japan-fear-greed.ts` / `japan-market.ts` / `similar-days.ts` / `market.ts`）。外部 import パスは `@/lib/types` のまま維持
-- `sentiment.ts`: 温度スコア → 温度帯 / 説明 / 色 への判定関数（`getSentimentLevel` / `getSentimentDescription` / `getSentimentColor`）
+- `sentiment.ts`: 温度スコア → 温度帯 / 説明 / 色 への判定関数（`getSentimentLevel` / `getSentimentDescription` / `getSentimentColor` / `getSentimentTextClass`）と温度帯一覧 `SENTIMENT_LEVELS`
 - `yahoo.ts`: yahoo-finance2 の薄いラッパー（`fetchQuote` / `fetchChart` / 共有インスタンス）。`fetchQuote` は `price` / `change` / `changePercent` に加え `marketTime: number | null`（= Yahoo Finance の `regularMarketTime` を Unix ms に正規化した値）を返す。UI カードに「データ時刻」キャプションを出すための情報源で、`VolatilityData` / `IndexData` / `BondYieldData` / `ForexData` / `CommodityData` いずれも `marketTime` フィールドを持つ（全指標共通の JST 表記で表示）
 - `fear-greed.ts`: 米国版 Fear & Greed の取得（`fetchFearGreedIndex`）と VIX ベース推定（`estimateFearGreedFromVix`）
 - `indices.ts`: VIX / 主要指数 / 米国10年債利回り / 為替 / コモディティの取得。取得対象のシンボル一覧は `src/lib/indices/symbols.ts`（`VOLATILITY_SYMBOLS` / `INDEX_SYMBOLS` / `BOND_YIELD_SYMBOL` / `FOREX_SYMBOL` / `COMMODITY_SYMBOLS`）に集約
@@ -19,7 +19,7 @@
 - `jst-date.ts`: JST 日付関連の共通ユーティリティ（`formatJstDateLabel` — "M/D(曜)" 形式 / `formatJstDateTimeLabel` — Unix ms → "M/D HH:MM JST" 形式。null/NaN は "—" / `getJstDateKey` — "YYYY-MM-DD" キー / `getJstDayNumber` — JST 通日番号。見出しの日替わりローテーションシード）
 - `headline.ts`: トップ画面ヒーロー「今日の見出し」生成の純粋関数（決定木 v2）。`getHeadlineStateKey` でレベル組み合わせを 16 状態キーに写像し、`HEADLINE_POOLS`（base + 昨日比 ±5 のトレンド候補 + 日本レベル 3 日以上連続の streak 候補）から `dayNumber` で決定的に日替わり選択（`buildHeroCopy`）。レベルが違ってもスコア差 < 10 なら `resolveNearBoundary` の接近オーバーライドで `NEAR_POOLS`（「日米ほぼ同温」系）に切替し、境界の丸め誤差を対比として報じない
 - `level-streak.ts`: 現在の日本温度レベルの連続営業日数を `japan-fg-snapshots.json` から計算する純粋関数（`computeJapanLevelStreak`）。`fetchAllMarketData` がサーバ側で呼び、`MarketData.japanLevelStreak` として配信
-- `stock-temperature/`: 銘柄別の株価の温度。`score.ts`（`computeStockTemperatureSeries`: 125日MA乖離 ÷ 直近250日の振れ幅 = z 値を ±2σ で 0〜100 に）/ `stats.ts`（前日・週・月比、90日統計、1年分位、順位、ランキング、業種グループ化の純関数）/ `format.ts` / `index.ts`（`stock-temperatures.json` のアクセサ）。詳細は [docs/features/stock-temperature.md](features/stock-temperature.md)
+- `stock-temperature/`: 銘柄別の株価の温度。`score.ts`（`computeStockTemperatureSeries`: 125日MA乖離 ÷ 直近250日の振れ幅 = z 値を ±2σ で 0〜100 に）/ `stats.ts`（前日・週・月比、90日統計、1年分位、順位、ランキング、業種グループ化の純関数）/ `format.ts` / `metadata.ts`（3ページ共通のメタ情報）/ `types.ts`（対象範囲 `UNIVERSES`）/ `index.ts`（`stock-temperatures.json` のアクセサ）。詳細は [docs/features/stock-temperature.md](features/stock-temperature.md)
 
 ## `scripts/_lib/` 配下
 

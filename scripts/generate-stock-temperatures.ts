@@ -1,7 +1,7 @@
 /**
  * 銘柄別温度データ生成スクリプト
  *
- * 対象（src/data/nikkei225-constituents.json）の各銘柄について Yahoo Finance から
+ * 対象（UNIVERSE の構成銘柄一覧）の各銘柄について Yahoo Finance から
  * 約3年分の終値を取得し、銘柄別温度（src/lib/stock-temperature/score.ts）の
  * 直近1年分を src/data/stock-temperatures.json に書き出す。
  * 公開方針（独自指標特化）に従い、終値などの生の価格は保存しない。
@@ -11,7 +11,7 @@
  */
 
 import YahooFinance from "yahoo-finance2";
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { fetchDailyCloses, sleep } from "./_lib/shared";
 import { fetchBuffer, fetchText } from "./_lib/jpx-common";
@@ -21,35 +21,40 @@ import {
   parseListedXlsx,
 } from "./_lib/jpx-listed";
 import { computeStockTemperatureSeries } from "../src/lib/stock-temperature/score";
-import type {
-  StockTemperatureEntry,
-  StockTemperatureFile,
+import { isoDaysAgo } from "../src/lib/stock-temperature/stats";
+import {
+  UNIVERSES,
+  type StockTemperatureEntry,
+  type StockTemperatureFile,
+  type UniverseKey,
 } from "../src/lib/stock-temperature/types";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
+const UNIVERSE: UniverseKey = "nikkei225";
 const FETCH_YEARS = 3.3; // 125日MA + 250日σ + 1年分の出力に必要な期間
 const OUTPUT_DAYS = 366;
 /** これを下回る成功率なら書き出さずに失敗させる（取得元の仕様変更検知） */
 const MIN_SUCCESS_RATE = 0.9;
 const DATA_DIR = resolve(__dirname, "../src/data");
+const OUT_PATH = resolve(DATA_DIR, "stock-temperatures.json");
 
 function parseCodesArg(): string[] | null {
   const arg = process.argv.find((a) => a.startsWith("--codes="));
   return arg ? arg.slice("--codes=".length).split(",").filter(Boolean) : null;
 }
 
-function isoDaysAgo(base: string, days: number): string {
-  const d = new Date(`${base}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() - days);
-  return d.toISOString().slice(0, 10);
+/** 前回の出力。取得に失敗した銘柄の値を引き継ぐために読む */
+function readPreviousStocks(): Record<string, StockTemperatureEntry> {
+  if (!existsSync(OUT_PATH)) return {};
+  return (JSON.parse(readFileSync(OUT_PATH, "utf-8")) as StockTemperatureFile).stocks;
 }
 
 async function main() {
   console.log("=== 銘柄別温度データ生成 ===\n");
 
   const constituents = JSON.parse(
-    readFileSync(resolve(DATA_DIR, "nikkei225-constituents.json"), "utf-8")
+    readFileSync(resolve(DATA_DIR, UNIVERSES[UNIVERSE].constituentsFile), "utf-8")
   ) as { codes: string[] };
   const codes = parseCodesArg() ?? constituents.codes;
 
@@ -104,6 +109,16 @@ async function main() {
     );
   }
 
+  // 一時的な取得失敗でページが消えない（404 にならない）よう、前回の値を引き継ぐ。
+  // 引き継いだ銘柄はページ上の「終値時点」の日付が古いままになる
+  const previous = readPreviousStocks();
+  for (const code of failed) {
+    if (previous[code]) {
+      stocks[code] = previous[code];
+      console.warn(`  ${code}: 前回の値を引き継ぎました`);
+    }
+  }
+
   const asOf = Object.values(stocks)
     .map((s) => s.history[s.history.length - 1][0])
     .sort()
@@ -111,13 +126,12 @@ async function main() {
   const output: StockTemperatureFile = {
     generatedAt: now.toISOString(),
     asOf,
-    universe: "nikkei225",
+    universe: UNIVERSE,
     stocks,
   };
-  const outPath = resolve(DATA_DIR, "stock-temperatures.json");
-  writeFileSync(outPath, JSON.stringify(output) + "\n", "utf-8");
+  writeFileSync(OUT_PATH, JSON.stringify(output) + "\n", "utf-8");
   console.log(
-    `\n✅ ${Object.keys(stocks).length} 銘柄（失敗 ${failed.length}）を書き出しました: ${outPath}`
+    `\n✅ ${Object.keys(stocks).length} 銘柄（取得失敗 ${failed.length}）を書き出しました: ${OUT_PATH}`
   );
 }
 

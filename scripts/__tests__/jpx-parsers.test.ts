@@ -202,9 +202,9 @@ describe("jpx-listed", () => {
       [20261031, 1305, "ｉＦｒｅｅＥＴＦ", "ETF・ETN", "-", "-"],
     ];
     const m = parseListedXlsx(toXlsxBuffer(rows));
-    expect([...m.values()]).toEqual([
-      { code: "4689", name: "LINEヤフー", sector33: "情報・通信業" },
-      { code: "285A", name: "キオクシアホールディングス", sector33: "電気機器" },
+    expect([...m]).toEqual([
+      ["4689", { name: "LINEヤフー", sector33: "情報・通信業" }],
+      ["285A", { name: "キオクシアホールディングス", sector33: "電気機器" }],
     ]);
   });
 

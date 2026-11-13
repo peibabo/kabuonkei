@@ -9,12 +9,16 @@ import {
   buildRankings,
   computeChanges,
   computeRangeStats,
-  countByBand,
+  countByLevel,
   groupBySector,
+  historySpanDays,
+  isoDaysAgo,
   rankOf,
+  ranksWithTies,
   recentHistory,
   sortByScoreDesc,
-  topPercentInYear,
+  summarize,
+  topPercent,
   type StockSummary,
 } from "../stock-temperature/stats";
 import { formatJaDate, formatScoreDiff } from "../stock-temperature/format";
@@ -105,11 +109,23 @@ describe("recentHistory / computeRangeStats", () => {
   });
 });
 
-describe("topPercentInYear / countByBand", () => {
+describe("isoDaysAgo / historySpanDays", () => {
+  it("月・年をまたいで日付を戻す", () => {
+    expect(isoDaysAgo("2026-11-09", 7)).toBe("2026-11-02");
+    expect(isoDaysAgo("2026-01-05", 30)).toBe("2025-12-06");
+  });
+
+  it("最初の日から最新日までの暦日数", () => {
+    expect(historySpanDays(H)).toBe(39);
+    expect(historySpanDays([])).toBe(0);
+  });
+});
+
+describe("topPercent / countByLevel", () => {
   it("最新値以上だった日の割合（最低 1%）", () => {
-    expect(topPercentInYear(H)).toBe(33); // 75 以上は 80 と当日 75 の 2/6 日
-    expect(topPercentInYear([["2026-11-09", 10]])).toBe(100);
-    expect(topPercentInYear([])).toBeNull();
+    expect(topPercent(H)).toBe(33); // 75 以上は 80 と当日 75 の 2/6 日
+    expect(topPercent([["2026-11-09", 10]])).toBe(100);
+    expect(topPercent([])).toBeNull();
   });
 
   it("温度帯の境界（20/40/60/80 は下側の帯）", () => {
@@ -117,12 +133,12 @@ describe("topPercentInYear / countByBand", () => {
       `2026-01-${String(i + 1).padStart(2, "0")}`,
       s,
     ]);
-    expect(countByBand(pts)).toEqual([2, 2, 1, 2, 2]);
+    expect(countByLevel(pts)).toEqual({ 極寒: 2, 冷え込み: 2, 平温: 1, 過熱: 2, 沸騰: 2 });
   });
 });
 
 function s(code: string, score: number, d1: number | null, sector = "電気機器"): StockSummary {
-  return { code, name: `銘柄${code}`, sector, date: "2026-11-09", score, d1 };
+  return { code, name: `銘柄${code}`, sector, score, d1 };
 }
 
 describe("ランキング系", () => {
@@ -137,11 +153,30 @@ describe("ランキング系", () => {
   });
 
   it("上昇・下落は d1 の符号で分け、0 と null は除く", () => {
-    const r = buildRankings(list, 2);
+    const r = buildRankings(list, 2, 2);
     expect(r.hottest.map((x) => x.code)).toEqual(["1002", "1001"]);
     expect(r.coldest.map((x) => x.code)).toEqual(["1004", "1003"]);
     expect(r.risers.map((x) => x.code)).toEqual(["1001"]);
     expect(r.fallers.map((x) => x.code)).toEqual(["1002"]);
+  });
+
+  it("ranksWithTies: 同じ値は同順位、次は件数ぶん飛ぶ", () => {
+    const sorted = [s("1", 100, 3), s("2", 100, 3), s("3", 90, 1), s("4", 90, null), s("5", 10, null)];
+    expect(ranksWithTies(sorted, (x) => x.score)).toEqual([1, 1, 3, 3, 5]);
+    expect(ranksWithTies(sorted, (x) => x.d1)).toEqual([1, 1, 3, 4, 4]);
+    // 銘柄ページの順位（rankOf）と一致する
+    expect(sorted.map((x) => rankOf(sorted, x.code))).toEqual([1, 1, 3, 3, 5]);
+  });
+
+  it("summarize: 最新の温度と前営業日比", () => {
+    expect(summarize("7203", { name: "トヨタ自動車", sector: "輸送用機器", history: H })).toEqual({
+      code: "7203",
+      name: "トヨタ自動車",
+      sector: "輸送用機器",
+      score: 75,
+      d1: -5,
+    });
+    expect(summarize("7203", { name: "x", sector: "y", history: [] })).toBeNull();
   });
 
   it("業種ごとにまとめる", () => {

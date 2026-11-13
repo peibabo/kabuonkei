@@ -2,35 +2,29 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
+import JsonLd from "@/components/JsonLd";
 import StockScoreList from "@/components/stock/StockScoreList";
 import StockDisclaimer from "@/components/stock/StockDisclaimer";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 import { buildDatasetJsonLd } from "@/lib/dataset-jsonld";
 import {
+  formatJaDate,
   getAllStockSummaries,
   getStockTemperatureFile,
+  getUniverseLabel,
   groupBySector,
 } from "@/lib/stock-temperature";
-import { formatJaDate } from "@/lib/stock-temperature/format";
+import { buildStockPageMetadata } from "@/lib/stock-temperature/metadata";
 
 const PAGE_PATH = "/stock";
-const PAGE_TITLE = "銘柄別の株価の温度（日経225採用銘柄）";
-const PAGE_DESCRIPTION =
-  "日経225採用銘柄の「株価の温度」（0〜100）を東証33業種別に一覧。125日移動平均からの乖離を銘柄ごとの値動きの大きさで換算した株温計の独自指標で、毎営業日更新しています。";
+const PAGE_TITLE = `銘柄別の株価の温度（${getUniverseLabel()}銘柄）`;
+const PAGE_DESCRIPTION = `${getUniverseLabel()}銘柄の「株価の温度」（0〜100）を東証33業種別に一覧。125日移動平均からの乖離を銘柄ごとの値動きの大きさで換算した株温計の独自指標で、毎営業日更新しています。`;
 
-export const metadata: Metadata = {
-  title: PAGE_TITLE,
+export const metadata: Metadata = buildStockPageMetadata({
+  path: PAGE_PATH,
+  title: `${PAGE_TITLE} | 株温計`,
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: PAGE_PATH },
-  openGraph: {
-    title: `${PAGE_TITLE} | 株温計`,
-    description: PAGE_DESCRIPTION,
-    type: "website",
-    url: PAGE_PATH,
-    locale: "ja_JP",
-    images: ["/opengraph-image"],
-  },
-};
+});
 
 export default function StockIndexPage() {
   const file = getStockTemperatureFile();
@@ -38,24 +32,22 @@ export default function StockIndexPage() {
   const sectors = groupBySector(all);
 
   const breadcrumbItems = [{ name: "ホーム", path: "/" }, { name: "銘柄別の温度" }];
-  const datasetJsonLd = buildDatasetJsonLd({
-    url: PAGE_PATH,
-    name: `${PAGE_TITLE}（株温計）`,
-    description: PAGE_DESCRIPTION,
-    dateModified: file.generatedAt.slice(0, 10),
-  });
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: datasetJsonLd }} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: buildBreadcrumbJsonLd(breadcrumbItems) }}
+      <JsonLd
+        json={buildDatasetJsonLd({
+          url: PAGE_PATH,
+          name: `${PAGE_TITLE}（株温計）`,
+          description: PAGE_DESCRIPTION,
+          dateModified: file.generatedAt.slice(0, 10),
+        })}
       />
+      <JsonLd json={buildBreadcrumbJsonLd(breadcrumbItems)} />
       <StaticPageLayout title={PAGE_TITLE}>
         <Breadcrumb items={breadcrumbItems} />
         <p className="text-base">
-          {formatJaDate(file.asOf)}終値時点の、日経225採用 {all.length} 銘柄の株価の温度です。
+          {formatJaDate(file.asOf)}終値時点の、{getUniverseLabel()} {all.length} 銘柄の株価の温度です。
           銘柄名から過去1年の推移・分布・業種内の順位を確認できます。温度の高い順・低い順は
           <Link href="/ranking" className="underline">温度ランキング</Link>へ。
         </p>
@@ -71,7 +63,7 @@ export default function StockIndexPage() {
         {sectors.map(([sector, items]) => (
           <section key={sector} id={encodeURIComponent(sector)} className="not-prose">
             <h2 className="text-lg font-bold text-gray-900 mb-2">{sector}</h2>
-            <StockScoreList items={items} showDiff={false} />
+            <StockScoreList items={items} />
           </section>
         ))}
 

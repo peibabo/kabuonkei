@@ -2,10 +2,13 @@
  * 銘柄別温度ページ用の集計（純関数）。データの読み込みは index.ts。
  */
 
+import { SENTIMENT_LEVELS, getSentimentLevel } from "../sentiment";
+import type { SentimentLevel } from "../types";
 import type { TemperaturePoint } from "./score";
 import type { StockTemperatureEntry } from "./types";
 
-function isoDaysAgo(base: string, days: number): string {
+/** base（YYYY-MM-DD）の days 日前の日付 */
+export function isoDaysAgo(base: string, days: number): string {
   const d = new Date(`${base}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() - days);
   return d.toISOString().slice(0, 10);
@@ -39,6 +42,13 @@ export function computeChanges(history: TemperaturePoint[]): TemperatureChanges 
   };
 }
 
+/** 履歴が何日間にわたるか（最初の日〜最新日の暦日数） */
+export function historySpanDays(history: TemperaturePoint[]): number {
+  if (history.length === 0) return 0;
+  const ms = (iso: string) => new Date(`${iso}T00:00:00Z`).getTime();
+  return Math.round((ms(history[history.length - 1][0]) - ms(history[0][0])) / 86_400_000);
+}
+
 /** 最新日から days 日以内（最新日を含む）の履歴 */
 export function recentHistory(
   history: TemperaturePoint[],
@@ -69,23 +79,23 @@ export function computeRangeStats(history: TemperaturePoint[]): RangeStats | nul
 }
 
 /**
- * 過去1年の中で、最新の温度以上だった日の割合（%）。
+ * 履歴の中で、最新の温度以上だった日の割合（%）。
  * 「過去1年で上位 X% の熱さ」の X。小さいほど珍しく熱い。
  */
-export function topPercentInYear(history: TemperaturePoint[]): number | null {
+export function topPercent(history: TemperaturePoint[]): number | null {
   if (history.length === 0) return null;
   const latest = history[history.length - 1][1];
   const atLeast = history.filter(([, s]) => s >= latest).length;
   return Math.max(1, Math.round((atLeast / history.length) * 100));
 }
 
-/** 温度帯ごとの日数（極寒・冷え込み・平温・過熱・沸騰の順） */
-export function countByBand(history: TemperaturePoint[]): number[] {
-  const counts = [0, 0, 0, 0, 0];
-  for (const [, s] of history) {
-    const idx = s <= 20 ? 0 : s <= 40 ? 1 : s <= 60 ? 2 : s <= 80 ? 3 : 4;
-    counts[idx]++;
-  }
+/** 温度帯ごとの日数 */
+export function countByLevel(history: TemperaturePoint[]): Record<SentimentLevel, number> {
+  const counts = Object.fromEntries(SENTIMENT_LEVELS.map((l) => [l, 0])) as Record<
+    SentimentLevel,
+    number
+  >;
+  for (const [, s] of history) counts[getSentimentLevel(s)]++;
   return counts;
 }
 
@@ -93,27 +103,29 @@ export interface StockSummary {
   code: string;
   name: string;
   sector: string;
-  date: string;
   score: number;
+  /** 前営業日比 */
   d1: number | null;
 }
 
 export function summarize(code: string, entry: StockTemperatureEntry): StockSummary | null {
-  const last = entry.history[entry.history.length - 1];
-  if (!last) return null;
+  const h = entry.history;
+  if (h.length === 0) return null;
+  const score = h[h.length - 1][1];
   return {
     code,
     name: entry.name,
     sector: entry.sector,
-    date: last[0],
-    score: last[1],
-    d1: computeChanges(entry.history).d1,
+    score,
+    d1: h.length >= 2 ? score - h[h.length - 2][1] : null,
   };
 }
 
+const byCode = (a: StockSummary, b: StockSummary) => a.code.localeCompare(b.code);
+
 /** 温度の高い順（同点はコード順）に並べる */
 export function sortByScoreDesc(list: StockSummary[]): StockSummary[] {
-  return [...list].sort((a, b) => b.score - a.score || a.code.localeCompare(b.code));
+  return [...list].sort((a, b) => b.score - a.score || byCode(a, b));
 }
 
 /** 温度の高い順で 1 始まりの順位（同点は同順位） */
@@ -121,6 +133,18 @@ export function rankOf(list: StockSummary[], code: string): number | null {
   const target = list.find((s) => s.code === code);
   if (!target) return null;
   return list.filter((s) => s.score > target.score).length + 1;
+}
+
+/**
+ * 並び済みの一覧に 1 始まりの順位を振る（値が同じなら同順位）。
+ * 銘柄ページの順位（rankOf）とランキングページの順位を一致させるために使う。
+ */
+export function ranksWithTies<T>(sorted: T[], value: (item: T) => number | null): number[] {
+  const ranks: number[] = [];
+  sorted.forEach((item, i) => {
+    ranks.push(i > 0 && value(item) === value(sorted[i - 1]) ? ranks[i - 1] : i + 1);
+  });
+  return ranks;
 }
 
 export interface Rankings {
@@ -133,35 +157,30 @@ export interface Rankings {
 export function buildRankings(
   list: StockSummary[],
   limit: number,
-  moverLimit: number = limit
+  moverLimit: number
 ): Rankings {
-  const sorted = sortByScoreDesc(list);
-  const withD1 = list.filter((s) => s.d1 != null);
-  const byD1 = (dir: 1 | -1) =>
-    [...withD1]
-      .filter((s) => dir * s.d1! > 0)
-      .sort((a, b) => dir * (b.d1! - a.d1!) || a.code.localeCompare(b.code))
-      .slice(0, moverLimit);
+  const byScore = sortByScoreDesc(list);
+  const moved = (s: StockSummary): s is StockSummary & { d1: number } =>
+    s.d1 != null && s.d1 !== 0;
+  const movers = list.filter(moved);
   return {
-    hottest: sorted.slice(0, limit),
-    coldest: [...sorted].reverse().slice(0, limit),
-    risers: byD1(1),
-    fallers: byD1(-1),
+    hottest: byScore.slice(0, limit),
+    coldest: byScore.toReversed().slice(0, limit),
+    risers: movers
+      .filter((s) => s.d1 > 0)
+      .sort((a, b) => b.d1 - a.d1 || byCode(a, b))
+      .slice(0, moverLimit),
+    fallers: movers
+      .filter((s) => s.d1 < 0)
+      .sort((a, b) => a.d1 - b.d1 || byCode(a, b))
+      .slice(0, moverLimit),
   };
 }
 
 /** 業種ごとにまとめる（業種名順、各業種内はコード順） */
 export function groupBySector(list: StockSummary[]): [string, StockSummary[]][] {
-  const map = new Map<string, StockSummary[]>();
-  for (const s of list) {
-    const arr = map.get(s.sector) ?? [];
-    arr.push(s);
-    map.set(s.sector, arr);
-  }
-  return [...map.entries()]
-    .map(([sector, arr]): [string, StockSummary[]] => [
-      sector,
-      arr.sort((a, b) => a.code.localeCompare(b.code)),
-    ])
+  const groups = Object.groupBy(list, (s) => s.sector) as Record<string, StockSummary[]>;
+  return Object.entries(groups)
+    .map(([sector, items]): [string, StockSummary[]] => [sector, items.sort(byCode)])
     .sort(([a], [b]) => a.localeCompare(b, "ja"));
 }

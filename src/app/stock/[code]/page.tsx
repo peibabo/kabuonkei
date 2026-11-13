@@ -3,24 +3,30 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
+import JsonLd from "@/components/JsonLd";
 import TemperatureChartSvg from "@/components/stock/TemperatureChartSvg";
 import StockDisclaimer from "@/components/stock/StockDisclaimer";
+import StockScoreList, { STOCK_TABLE_CLASS } from "@/components/stock/StockScoreList";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 import { buildDatasetJsonLd } from "@/lib/dataset-jsonld";
-import { getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
+import { SENTIMENT_LEVELS, getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
 import {
-  countByBand,
   computeChanges,
   computeRangeStats,
+  countByLevel,
+  formatJaDate,
+  formatScoreDiff,
   getAllStockSummaries,
   getStockCodes,
   getStockEntry,
   getStockTemperatureFile,
+  getUniverseLabel,
+  historySpanDays,
   rankOf,
   recentHistory,
-  topPercentInYear,
+  topPercent,
 } from "@/lib/stock-temperature";
-import { formatScoreDiff, formatJaDate } from "@/lib/stock-temperature/format";
+import { buildStockPageMetadata } from "@/lib/stock-temperature/metadata";
 
 export const dynamic = "error";
 export const dynamicParams = false;
@@ -28,60 +34,56 @@ export const dynamicParams = false;
 const CHART_DAYS = 90;
 const TABLE_ROWS = 30;
 const PEER_COUNT = 5;
-const BAND_LABELS = ["極寒", "冷え込み", "平温", "過熱", "沸騰"] as const;
+/** 履歴がこの日数以上あれば「過去1年」と表記する（上場から日が浅い銘柄は満たない） */
+const FULL_YEAR_SPAN_DAYS = 350;
+
+type Params = { params: Promise<{ code: string }> };
 
 export async function generateStaticParams() {
   return getStockCodes().map((code) => ({ code }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ code: string }>;
-}): Promise<Metadata> {
-  const { code } = await params;
-  const entry = getStockEntry(code);
-  if (!entry || entry.history.length === 0) return {};
-  const [, score] = entry.history[entry.history.length - 1];
-  const { d1 } = computeChanges(entry.history);
-  const title = `${entry.name}（${code}）の株価の温度｜株温計`;
-  const description = `${entry.name}（${code}）の株価の温度は${score}（${getSentimentLevel(score)}）、前日比${formatScoreDiff(d1)}。125日移動平均からの乖離を銘柄ごとの値動きの大きさで0〜100に換算した独自指標で、過去1年の分布・日経225内の順位・直近90日の推移を毎営業日更新しています。`;
-  const path = `/stock/${code}`;
-  return {
-    title: { absolute: title },
-    description,
-    alternates: { canonical: path },
-    // 銘柄ごとの OG 画像は作らず、サイト共通の画像を使う
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      url: path,
-      locale: "ja_JP",
-      images: ["/opengraph-image"],
-    },
-    twitter: { card: "summary_large_image", title, description, images: ["/opengraph-image"] },
-  };
-}
-
-export default async function StockPage({
-  params,
-}: {
-  params: Promise<{ code: string }>;
-}) {
+/** メタ情報とページ本体で共通に使う値 */
+async function loadStock({ params }: Params) {
   const { code } = await params;
   const entry = getStockEntry(code);
   if (!entry || entry.history.length === 0) notFound();
-
-  const file = getStockTemperatureFile();
   const history = entry.history;
   const [latestDate, score] = history[history.length - 1];
-  const level = getSentimentLevel(score);
-  const changes = computeChanges(history);
+  return {
+    code,
+    entry,
+    history,
+    latestDate,
+    score,
+    level: getSentimentLevel(score),
+    changes: computeChanges(history),
+    path: `/stock/${code}`,
+  };
+}
+
+export async function generateMetadata(props: Params): Promise<Metadata> {
+  const { code, entry, score, level, changes, path } = await loadStock(props);
+  return buildStockPageMetadata({
+    path,
+    title: `${entry.name}（${code}）の株価の温度｜株温計`,
+    description: `${entry.name}（${code}）の株価の温度は${score}（${level}）、前日比${formatScoreDiff(changes.d1)}。125日移動平均からの乖離を銘柄ごとの値動きの大きさで0〜100に換算した独自指標で、温度の分布・${getUniverseLabel()}銘柄内の順位・直近${CHART_DAYS}日の推移を毎営業日更新しています。`,
+  });
+}
+
+export default async function StockPage(props: Params) {
+  const { code, entry, history, latestDate, score, level, changes, path } = await loadStock(props);
+
+  const file = getStockTemperatureFile();
   const chart = recentHistory(history, CHART_DAYS);
   const stats90 = computeRangeStats(chart);
-  const topPct = topPercentInYear(history);
-  const bands = countByBand(history);
+  const topPct = topPercent(history);
+  const levelCounts = countByLevel(history);
+  // 上場から日が浅い銘柄は1年分の履歴がないので、算出開始日からの期間として表記する
+  const periodLabel =
+    historySpanDays(history) >= FULL_YEAR_SPAN_DAYS
+      ? "過去1年"
+      : `算出開始（${formatJaDate(history[0][0])}）以降`;
 
   const all = getAllStockSummaries();
   const rank = rankOf(all, code);
@@ -94,7 +96,6 @@ export default async function StockPage({
     .slice(-TABLE_ROWS)
     .reverse();
 
-  const path = `/stock/${code}`;
   const breadcrumbItems = [
     { name: "ホーム", path: "/" },
     { name: "銘柄別の温度", path: "/stock" },
@@ -110,14 +111,8 @@ export default async function StockPage({
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: datasetJsonLd }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: buildBreadcrumbJsonLd(breadcrumbItems) }}
-      />
+      <JsonLd json={datasetJsonLd} />
+      <JsonLd json={buildBreadcrumbJsonLd(breadcrumbItems)} />
       <StaticPageLayout title={`${entry.name}（${code}）の株価の温度`}>
         <Breadcrumb items={breadcrumbItems} />
 
@@ -147,7 +142,7 @@ export default async function StockPage({
           </dl>
           {rank != null && (
             <p className="text-sm text-gray-700 mt-4">
-              日経225採用 {all.length} 銘柄中 <strong>{rank} 位</strong>の熱さ
+              {getUniverseLabel()} {all.length} 銘柄中 <strong>{rank} 位</strong>の熱さ
               {sectorRank != null && sectorList.length > 1 && (
                 <>
                   （{entry.sector} {sectorList.length} 銘柄中 {sectorRank} 位）
@@ -166,18 +161,17 @@ export default async function StockPage({
           />
           {stats90 && (
             <dl className="grid grid-cols-3 gap-3 mt-3 text-center text-sm">
-              <div>
-                <dt className="text-gray-500">最高</dt>
-                <dd className="font-semibold text-gray-900">
-                  {stats90.max[1]}（{formatJaDate(stats90.max[0], { year: false })}）
-                </dd>
-              </div>
-              <div>
-                <dt className="text-gray-500">最低</dt>
-                <dd className="font-semibold text-gray-900">
-                  {stats90.min[1]}（{formatJaDate(stats90.min[0], { year: false })}）
-                </dd>
-              </div>
+              {[
+                { label: "最高", point: stats90.max },
+                { label: "最低", point: stats90.min },
+              ].map(({ label, point }) => (
+                <div key={label}>
+                  <dt className="text-gray-500">{label}</dt>
+                  <dd className="font-semibold text-gray-900">
+                    {point[1]}（{formatJaDate(point[0], { year: false })}）
+                  </dd>
+                </div>
+              ))}
               <div>
                 <dt className="text-gray-500">平均</dt>
                 <dd className="font-semibold text-gray-900">{stats90.avg}</dd>
@@ -187,28 +181,28 @@ export default async function StockPage({
         </section>
 
         <section className="not-prose">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">過去1年の温度の分布</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-2">{periodLabel}の温度の分布</h2>
           {topPct != null && (
             <p className="text-base text-gray-700 mb-3">
-              今日の温度 {score} は、過去1年（{history.length} 営業日）の中で
+              今日の温度 {score} は、{periodLabel}（{history.length} 営業日）の中で
               <strong>上位 {topPct}% の熱さ</strong>です。
             </p>
           )}
-          <table className="w-full text-sm border-collapse">
+          <table className={STOCK_TABLE_CLASS}>
             <thead>
-              <tr className="border-b border-gray-200 text-gray-500">
-                <th className="text-left py-1 font-normal">温度帯</th>
-                <th className="text-right py-1 font-normal">日数</th>
-                <th className="text-right py-1 font-normal">割合</th>
+              <tr>
+                <th className="text-left">温度帯</th>
+                <th className="text-right">日数</th>
+                <th className="text-right">割合</th>
               </tr>
             </thead>
             <tbody>
-              {BAND_LABELS.map((label, i) => (
-                <tr key={label} className="border-b border-gray-100">
-                  <td className="py-1">{label}</td>
-                  <td className="py-1 text-right">{bands[i]}</td>
-                  <td className="py-1 text-right">
-                    {Math.round((bands[i] / history.length) * 100)}%
+              {SENTIMENT_LEVELS.map((l) => (
+                <tr key={l}>
+                  <td>{l}</td>
+                  <td className="text-right">{levelCounts[l]}</td>
+                  <td className="text-right">
+                    {Math.round((levelCounts[l] / history.length) * 100)}%
                   </td>
                 </tr>
               ))}
@@ -218,22 +212,22 @@ export default async function StockPage({
 
         <section className="not-prose">
           <h2 className="text-lg font-bold text-gray-900 mb-2">直近{TABLE_ROWS}営業日の温度</h2>
-          <table className="w-full text-sm border-collapse">
+          <table className={STOCK_TABLE_CLASS}>
             <thead>
-              <tr className="border-b border-gray-200 text-gray-500">
-                <th className="text-left py-1 font-normal">日付</th>
-                <th className="text-right py-1 font-normal">温度</th>
-                <th className="text-right py-1 font-normal">温度帯</th>
-                <th className="text-right py-1 font-normal">前日比</th>
+              <tr>
+                <th className="text-left">日付</th>
+                <th className="text-right">温度</th>
+                <th className="text-right">温度帯</th>
+                <th className="text-right">前日比</th>
               </tr>
             </thead>
             <tbody>
               {tableRows.map((r) => (
-                <tr key={r.date} className="border-b border-gray-100">
-                  <td className="py-1">{formatJaDate(r.date)}</td>
-                  <td className="py-1 text-right font-semibold">{r.score}</td>
-                  <td className="py-1 text-right">{getSentimentLevel(r.score)}</td>
-                  <td className="py-1 text-right">{formatScoreDiff(r.diff)}</td>
+                <tr key={r.date}>
+                  <td>{formatJaDate(r.date)}</td>
+                  <td className="text-right font-semibold">{r.score}</td>
+                  <td className="text-right">{getSentimentLevel(r.score)}</td>
+                  <td className="text-right">{formatScoreDiff(r.diff)}</td>
                 </tr>
               ))}
             </tbody>
@@ -245,18 +239,7 @@ export default async function StockPage({
             <h2 className="text-lg font-bold text-gray-900 mb-2">
               同じ業種（{entry.sector}）の温度が高い銘柄
             </h2>
-            <ul className="divide-y divide-gray-100 text-base">
-              {peers.map((p) => (
-                <li key={p.code} className="flex justify-between py-1.5">
-                  <Link href={`/stock/${p.code}`} className="underline hover:text-gray-900">
-                    {p.name}（{p.code}）
-                  </Link>
-                  <span className="font-semibold" style={{ color: getSentimentColor(p.score) }}>
-                    {p.score}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <StockScoreList items={peers} />
           </section>
         )}
 

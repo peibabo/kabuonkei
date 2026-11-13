@@ -21,7 +21,7 @@ import {
   topPercent,
   type StockSummary,
 } from "../stock-temperature/stats";
-import { formatJaDate, formatScoreDiff } from "../stock-temperature/format";
+import { formatJaDate, formatScoreDiff, scoreDiffColorClass } from "../stock-temperature/format";
 
 function dates(n: number, start = "2024-01-01"): string[] {
   const d = new Date(`${start}T00:00:00Z`);
@@ -194,6 +194,13 @@ describe("format", () => {
     expect(formatScoreDiff(-2)).toBe("-2");
     expect(formatScoreDiff(0)).toBe("±0");
     expect(formatScoreDiff(null)).toBe("—");
+  });
+
+  it("scoreDiffColorClass: 上昇=赤 / 低下=緑 / 変化なし・null=グレー", () => {
+    expect(scoreDiffColorClass(3)).toBe("text-red-500");
+    expect(scoreDiffColorClass(-2)).toBe("text-green-500");
+    expect(scoreDiffColorClass(0)).toBe("text-gray-500");
+    expect(scoreDiffColorClass(null)).toBe("text-gray-500");
   });
 
   it("formatJaDate", () => {

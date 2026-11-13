@@ -9,7 +9,13 @@ import StockDisclaimer from "@/components/stock/StockDisclaimer";
 import StockScoreList, { STOCK_TABLE_CLASS } from "@/components/stock/StockScoreList";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 import { buildDatasetJsonLd } from "@/lib/dataset-jsonld";
-import { SENTIMENT_LEVELS, getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
+import {
+  SENTIMENT_LEVELS,
+  SENTIMENT_TEXT_CLASS,
+  getSentimentColor,
+  getSentimentLevel,
+  getSentimentTextClass,
+} from "@/lib/sentiment";
 import {
   computeChanges,
   computeRangeStats,
@@ -24,6 +30,7 @@ import {
   historySpanDays,
   rankOf,
   recentHistory,
+  scoreDiffColorClass,
   topPercent,
 } from "@/lib/stock-temperature";
 import { buildStockPageMetadata } from "@/lib/stock-temperature/metadata";
@@ -136,7 +143,9 @@ export default async function StockPage(props: Params) {
             ].map((c) => (
               <div key={c.label} className="bg-gray-50 rounded-lg py-2">
                 <dt className="text-xs text-gray-500">{c.label}</dt>
-                <dd className="text-lg font-semibold text-gray-900">{formatScoreDiff(c.value)}</dd>
+                <dd className={`text-lg font-semibold ${scoreDiffColorClass(c.value)}`}>
+                  {formatScoreDiff(c.value)}
+                </dd>
               </div>
             ))}
           </dl>
@@ -199,7 +208,7 @@ export default async function StockPage(props: Params) {
             <tbody>
               {SENTIMENT_LEVELS.map((l) => (
                 <tr key={l}>
-                  <td>{l}</td>
+                  <td className={`font-semibold ${SENTIMENT_TEXT_CLASS[l]}`}>{l}</td>
                   <td className="text-right">{levelCounts[l]}</td>
                   <td className="text-right">
                     {Math.round((levelCounts[l] / history.length) * 100)}%
@@ -225,9 +234,15 @@ export default async function StockPage(props: Params) {
               {tableRows.map((r) => (
                 <tr key={r.date}>
                   <td>{formatJaDate(r.date)}</td>
-                  <td className="text-right font-semibold">{r.score}</td>
-                  <td className="text-right">{getSentimentLevel(r.score)}</td>
-                  <td className="text-right">{formatScoreDiff(r.diff)}</td>
+                  <td className={`text-right font-semibold ${getSentimentTextClass(r.score)}`}>
+                    {r.score}
+                  </td>
+                  <td className={`text-right ${getSentimentTextClass(r.score)}`}>
+                    {getSentimentLevel(r.score)}
+                  </td>
+                  <td className={`text-right ${scoreDiffColorClass(r.diff)}`}>
+                    {formatScoreDiff(r.diff)}
+                  </td>
                 </tr>
               ))}
             </tbody>

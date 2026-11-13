@@ -37,6 +37,7 @@
 - [イベント詳細ページ `/events/[slug]`](docs/features/events.md)
 - [分析記事 `/analysis/[slug]`（信用倍率・VIX・日米乖離・温度帯×業種）](docs/features/analysis.md)
 - [温度連動バーチャルポートフォリオ `/portfolio`](docs/features/portfolio.md)
+- [銘柄別の株価の温度 `/stock` / `/ranking`（日経225、z値方式）](docs/features/stock-temperature.md)
 - [温度アラート（メール通知）](docs/features/alerts.md)
 - [日本市場データ（JPX 需給）](docs/features/japan-market-data.md)
 - [コード構成（src/lib / scripts/_lib の責務マップ）](docs/architecture.md)

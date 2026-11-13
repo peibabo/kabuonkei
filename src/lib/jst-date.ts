@@ -62,3 +62,14 @@ export function formatJstDateTimeLabel(ms: number | null | undefined): string {
   const mm = String(jst.getUTCMinutes()).padStart(2, "0");
   return `${month}/${day} ${hh}:${mm} JST`;
 }
+
+/**
+ * ISO 日時を JST の "YYYY年M月D日 HH:MM" 形式で返す。
+ * 例: "2026-11-12T09:41:28Z" → "2026年11月12日 18:41"
+ */
+export function formatJstFullDateTimeLabel(iso: string): string {
+  const jst = new Date(new Date(iso).getTime() + 9 * 60 * 60 * 1000);
+  const hh = String(jst.getUTCHours()).padStart(2, "0");
+  const mm = String(jst.getUTCMinutes()).padStart(2, "0");
+  return `${jst.getUTCFullYear()}年${jst.getUTCMonth() + 1}月${jst.getUTCDate()}日 ${hh}:${mm}`;
+}

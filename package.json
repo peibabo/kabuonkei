@@ -23,6 +23,7 @@
     "generate:vix-sp500": "npx tsx scripts/generate-vix-sp500-analysis.ts",
     "generate:divergence": "npx tsx scripts/generate-divergence-analysis.ts",
     "generate:portfolio-history": "npx tsx scripts/generate-portfolio-history.ts",
+    "generate:stock-temperatures": "npx tsx scripts/generate-stock-temperatures.ts",
     "snapshot:japan-fg": "npx tsx scripts/snapshot-japan-fear-greed.ts",
     "snapshot:portfolio": "npx tsx scripts/snapshot-portfolio.ts",
     "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts",

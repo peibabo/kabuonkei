@@ -3,6 +3,7 @@ import * as XLSX from "xlsx";
 import { extractInvestorLinks, parseInvestorXlsx } from "../_lib/jpx-investor";
 import { extractWeeklyMarginLinks, parseWeeklyMarginXls } from "../_lib/jpx-margin";
 import { extractArbitrageLinks, parseArbitrageXls } from "../_lib/jpx-arbitrage";
+import { extractListedFileUrl, parseListedXlsx } from "../_lib/jpx-listed";
 
 function toXlsxBuffer(rows: unknown[][]): Buffer {
   const wb = XLSX.utils.book_new();
@@ -182,5 +183,32 @@ describe("parseArbitrageXls", () => {
 
   it("見出しがなければ null", () => {
     expect(parseArbitrageXls(toXlsxBuffer([[null, "株　　数"]]), "2026-11-09")).toBeNull();
+  });
+});
+
+describe("jpx-listed", () => {
+  it("01.html から data_j.xlsx の URL を抽出する", () => {
+    expect(
+      extractListedFileUrl('<a href="/markets/statistics-equities/misc/x-att/data_j.xlsx">x</a>')
+    ).toBe("https://www.jpx.co.jp/markets/statistics-equities/misc/x-att/data_j.xlsx");
+    expect(extractListedFileUrl("<a href='/foo.xlsx'>")).toBeNull();
+  });
+
+  it("コード・銘柄名（NFKC）・33業種を返し、ETF 等の業種 '-' は除く", () => {
+    const rows: unknown[][] = [
+      ["日付", "コード", "銘柄名", "市場・商品区分", "33業種コード", "33業種区分"],
+      [20261031, 4689, "ＬＩＮＥヤフー", "プライム（内国株式）", 5250, "情報・通信業"],
+      [20261031, "285A", "キオクシアホールディングス", "プライム（内国株式）", 3650, "電気機器"],
+      [20261031, 1305, "ｉＦｒｅｅＥＴＦ", "ETF・ETN", "-", "-"],
+    ];
+    const m = parseListedXlsx(toXlsxBuffer(rows));
+    expect([...m]).toEqual([
+      ["4689", { name: "LINEヤフー", sector33: "情報・通信業" }],
+      ["285A", { name: "キオクシアホールディングス", sector33: "電気機器" }],
+    ]);
+  });
+
+  it("見出しが想定と違えば空", () => {
+    expect(parseListedXlsx(toXlsxBuffer([["a", "b", "c"]])).size).toBe(0);
   });
 });

@@ -5,19 +5,14 @@
  */
 
 import type { SentimentLevel } from "./types";
+import { SENTIMENT_LEVELS } from "./sentiment";
 import {
   getJapanSectorHeatmap,
   type SectorPeriodKey,
   type SectorRanking,
 } from "./japan-sector-heatmap";
 
-export const SENTIMENT_LEVELS: readonly SentimentLevel[] = [
-  "極寒",
-  "冷え込み",
-  "平温",
-  "過熱",
-  "沸騰",
-];
+export { SENTIMENT_LEVELS };
 
 /**
  * 記事内の「守りの業種 vs 攻めの業種」比較グループ。

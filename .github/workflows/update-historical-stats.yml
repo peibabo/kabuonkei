@@ -1,6 +1,8 @@
 name: Update Historical Stats
 
 on:
+  # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
+  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
   schedule:
     # 毎月1日 午前9時 JST（UTC 0:00）
     - cron: '0 0 1 * *'

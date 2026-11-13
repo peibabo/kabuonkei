@@ -19,7 +19,7 @@
 - 出力: `src/data/stock-temperatures.json`（`{ generatedAt, asOf, universe, stocks: { [code]: { name, sector, history: [[date, score], ...] } } }`、1行 JSON）
 - **終値などの生の価格は保存・公開しない**（独自指標特化方針）
 - 生成: `npm run generate:stock-temperatures`（`-- --codes=7203,9984` で対象を絞れる）。取得成功率 90% 未満なら書き出さずに異常終了。個別に失敗した銘柄は前回の値を引き継ぐ（ページが 404 にならないようにするため。その銘柄は「終値時点」の日付が古いまま表示される）
-- 自動更新: `.github/workflows/update-stock-temperatures.yml`（平日 16:30 JST）→ コミット → Vercel 自動デプロイ。17:00 JST の日本版スナップショット等と push が競合しうるため、近い時間帯のワークフローは push 前に `git pull --rebase` する
+- 自動更新: `.github/workflows/update-stock-temperatures.yml`（平日 16 時台 JST、Vercel Cron の `stock-temperatures` ジョブが起動。ワークフローの schedule は予備）→ コミット → Vercel 自動デプロイ。同じ時間帯の日本市場データ更新や 17 時台の日本版スナップショット等と push が競合しうるため、近い時間帯のワークフローは push 前に `git pull --rebase` する
 - 毎回全履歴を再計算するため、履歴の蓄積は不要
 
 ## ページ

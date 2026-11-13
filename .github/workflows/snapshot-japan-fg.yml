@@ -1,6 +1,8 @@
 name: Snapshot Japan Fear Greed
 
 on:
+  # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
+  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
   schedule:
     # 平日 17:00 JST（東証クローズ後） = UTC 08:00, Mon-Fri
     - cron: '0 8 * * 1-5'

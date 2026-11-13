@@ -7,6 +7,6 @@
 - 生成スクリプト: `npm run generate:japan-market`（`scripts/generate-japan-market-data.ts`）
 - データソース: JPXの統計ページからExcel/CSVをダウンロードしてパース
   - 2026-10 下旬に JPX が投資部門別（`stock_val_1_*.xls` → `stock_1_w_*.xlsx`）と信用取引現在高（`mtseisan*.xls` → `*_mtcurrent.xlsx`）のファイル名・レイアウトを変更。パーサは `scripts/_lib/jpx-investor.ts` / `jpx-margin.ts` / `jpx-arbitrage.ts`。いずれかの取得が 0 件だと `generate-japan-market-data.ts` は JSON を書き出さずに異常終了する（空データで上書きして C2/C3 が黙って欠損するのを防ぐため）。CI が失敗したらまずファイル名・レイアウト変更を疑う
-- **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週 水・木 JST 17:00 に自動実行。JPX の公表タイミングに合わせており、水 17:00 は同日 15:00 公表の「信用取引現在高」（信用倍率）、木 17:00 は同日 15:30 公表の「投資部門別売買状況」を当日中に取り込む。裁定残は毎営業日 16:00 に T+2 営業日分が公表されるのでどちらの回でも最新が取れる
+- **自動更新**: GitHub Actions（`.github/workflows/update-japan-market-data.yml`）で毎週 水・木 JST 16 時台に自動実行（Vercel Cron の `japan-market` ジョブが起動。17 時台の日本版スナップショットより前に取り込む。ワークフローの schedule `0 8 * * 3,4` は予備）。JPX の公表タイミングに合わせており、水曜は同日 15:00 公表の「信用取引現在高」（信用倍率）、木曜は同日 15:30 公表の「投資部門別売買状況」を当日中に取り込む。裁定残は毎営業日 16:00 に T+2 営業日分が公表されるのでどちらの回でも最新が取れる
 - これらの週次・日次データは日本版温度スコア（C2/C3/C4）の入力にもなる
 - 日本版温度の日次スナップショット（`snapshot:japan-fg`）もこのJSONを入力に使う

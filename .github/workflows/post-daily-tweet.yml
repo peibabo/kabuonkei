@@ -1,16 +1,48 @@
 name: Post Daily Temperature Tweet
 
 on:
+  # 通常は Vercel Cron（vercel.json → /api/cron/morning）が平日 JST 7 時台に workflow_dispatch で起動する。
+  # GitHub の schedule は数時間遅れることがあるため予備扱い。外部起動が動かなかった日だけ投稿する
   schedule:
-    # 平日 JST 07:30（寄り前ブリーフィング）= UTC 22:30, Sun-Thu
-    - cron: '30 22 * * 0-4'
-  workflow_dispatch: # 手動実行も可能
+    # 平日 JST 08:45（東証の寄り付き前）= UTC 23:45, Sun-Thu
+    - cron: '45 23 * * 0-4'
+  workflow_dispatch: # Vercel Cron からの起動、手動実行
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
+  # 二重投稿の防止。schedule 起動のとき、直近 20 時間以内に workflow_dispatch の実行が
+  # 成功している（または実行中）ならその日の投稿は済んでいるので何もしない
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          SINCE=$(date -u -d '20 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          COUNT=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow post-daily-tweet.yml \
+            --event workflow_dispatch --created ">=$SINCE" --json status,conclusion \
+            --jq '[.[] | select(.status != "completed" or .conclusion == "success")] | length')
+          if [ "$COUNT" -gt 0 ]; then
+            echo "直近 20 時間に workflow_dispatch の実行が $COUNT 件あるため、予備の実行はスキップします"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::外部からの起動（Vercel Cron）が確認できないため、予備の schedule で投稿します"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
   post-daily-tweet:
+    needs: guard
+    if: needs.guard.outputs.skip != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

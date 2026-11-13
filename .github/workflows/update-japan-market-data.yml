@@ -1,6 +1,8 @@
 name: Update Japan Market Data
 
 on:
+  # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
+  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
   schedule:
     # 水 17:00 JST = 当日 15:00 JPX 公表の信用倍率を同日中に取り込み
     # 木 17:00 JST = 当日 15:30 JPX 公表の投資主体別売買動向を同日中に取り込み

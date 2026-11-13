@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    { "path": "/api/cron/stock-temperatures", "schedule": "0 7 * * 1-5" },
+    { "path": "/api/cron/japan-market", "schedule": "0 7 * * 3,4" },
+    { "path": "/api/cron/japan-snapshot", "schedule": "0 8 * * 1-5" },
+    { "path": "/api/cron/alerts-jp", "schedule": "0 9 * * 1-5" },
+    { "path": "/api/cron/morning", "schedule": "0 22 * * 0-4" },
+    { "path": "/api/cron/monthly-stats", "schedule": "0 0 1 * *" }
+  ]
+}

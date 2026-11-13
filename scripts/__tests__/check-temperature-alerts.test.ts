@@ -30,9 +30,10 @@ describe("jstIsoDate", () => {
 });
 
 describe("pickFreshJpScore", () => {
+  // 直近営業日（日経225 の最終取引日）
   const today = "2026-07-09";
 
-  it("最新エントリが今日ならスコアを採用", () => {
+  it("最新エントリが直近営業日ならスコアを採用", () => {
     const snapshots = [
       { date: "2026-07-08", score: 68 },
       { date: "2026-07-09", score: 67 },
@@ -40,7 +41,7 @@ describe("pickFreshJpScore", () => {
     expect(pickFreshJpScore(snapshots, today)).toEqual({ ok: true, score: 67 });
   });
 
-  it("最新エントリが前日なら不採用（snapshot job 遅延/失敗の想定）", () => {
+  it("最新エントリが直近営業日より古ければ不採用（snapshot job 遅延/失敗の想定）", () => {
     const snapshots = [{ date: "2026-07-08", score: 68 }];
     const result = pickFreshJpScore(snapshots, today);
     expect(result.ok).toBe(false);
@@ -48,6 +49,12 @@ describe("pickFreshJpScore", () => {
       expect(result.reason).toContain("2026-07-08");
       expect(result.reason).toContain("2026-07-09");
     }
+  });
+
+  it("翌日未明の実行でも、直近営業日（前日）のエントリなら採用", () => {
+    // 呼び出し側は実行日ではなく日経225 の最終取引日を渡す
+    const snapshots = [{ date: "2026-07-08", score: 68 }];
+    expect(pickFreshJpScore(snapshots, "2026-07-08")).toEqual({ ok: true, score: 68 });
   });
 
   it("スコア 0 は有効値として採用（falsy 判定に巻き込まない）", () => {

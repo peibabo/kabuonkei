@@ -5,6 +5,10 @@
  * 現時点の5要素スコアを計算して `src/data/japan-fg-snapshots.json` に追記する。
  * 同一日付のエントリが既に存在する場合は上書き（手動再実行時に対応）。
  *
+ * エントリの日付は実行日ではなく日経225 の最終取引日（JST）。Actions の遅延で
+ * 翌日未明に走っても、引け値はその営業日の日付で記録される。
+ * 休場日（祝日など）の実行で、前営業日のエントリが既にある場合は何も書かない。
+ *
  * 実行: npx tsx scripts/snapshot-japan-fear-greed.ts
  */
 
@@ -19,6 +23,7 @@ import {
   type SnapshotEntry,
   type SnapshotFile,
 } from "./_lib/snapshot-merge";
+import { resolveTradingDate } from "./_lib/trading-date";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -47,20 +52,23 @@ async function fetchChart(
     }));
 }
 
-async function fetchQuotePrice(symbol: string): Promise<number | null> {
-  try {
-    const result = await yahooFinance.quote(symbol);
-    if (!result || result.regularMarketPrice == null) return null;
-    return result.regularMarketPrice;
-  } catch {
-    return null;
-  }
+interface QuoteSnapshot {
+  price: number | null;
+  /** 最終取引時刻（取得できなければ null） */
+  marketTime: Date | null;
 }
 
-/** 今日のJST日付（YYYY-MM-DD）を取得 */
-function todayJst(): string {
-  // "sv-SE" ロケールは ISO 準拠の YYYY-MM-DD を返す
-  return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
+async function fetchQuote(symbol: string): Promise<QuoteSnapshot> {
+  try {
+    const result = await yahooFinance.quote(symbol);
+    const time = result?.regularMarketTime;
+    return {
+      price: result?.regularMarketPrice ?? null,
+      marketTime: time instanceof Date ? time : null,
+    };
+  } catch {
+    return { price: null, marketTime: null };
+  }
 }
 
 async function main() {
@@ -71,13 +79,42 @@ async function main() {
     readFileSync(MARKET_DATA_PATH, "utf-8")
   ) as JapanMarketData;
 
-  const [nikkei225Chart, usdJpyChart, nikkei225Price, usdJpyRate] =
+  const [nikkei225Chart, usdJpyChart, nikkeiQuote, usdJpyQuote] =
     await Promise.all([
       fetchChart("^N225", 200),
       fetchChart("USDJPY=X", 80),
-      fetchQuotePrice("^N225"),
-      fetchQuotePrice("USDJPY=X"),
+      fetchQuote("^N225"),
+      fetchQuote("USDJPY=X"),
     ]);
+  const nikkei225Price = nikkeiQuote.price;
+  const usdJpyRate = usdJpyQuote.price;
+
+  // 日付は実行日ではなく日経225 の最終取引日から決める（Actions 遅延で日付をまたいでもずれない）
+  const trading = resolveTradingDate(nikkeiQuote.marketTime);
+  const date = trading.date;
+  if (trading.fallback) {
+    console.warn(
+      `  最終取引時刻を取得できないため、実行時刻から営業日を推定: ${date}`
+    );
+  }
+
+  let existing: SnapshotFile = emptySnapshotFile();
+  if (existsSync(SNAPSHOT_PATH)) {
+    try {
+      existing = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf-8")) as SnapshotFile;
+    } catch {
+      console.warn("既存スナップショットJSONが壊れているため空で初期化");
+    }
+  }
+  const wasReplaced = existing.snapshots.some((s) => s.date === date);
+
+  // 休場日の実行: 前営業日の分が既にあれば、その引け時点の値を為替だけ動いた値で上書きしない
+  if (trading.marketClosed && wasReplaced) {
+    console.log(
+      `  休場日のためスキップ（直近営業日 ${date} のエントリは記録済み）`
+    );
+    return;
+  }
 
   const fg = computeJapanFearGreed({
     nikkei225Chart,
@@ -100,7 +137,6 @@ async function main() {
     componentMap[c.id] = c.score;
   }
 
-  const date = todayJst();
   const entry: SnapshotEntry = {
     date,
     score: fg.score,
@@ -115,18 +151,7 @@ async function main() {
     },
   };
 
-  // --- 既存JSONを読み込み、同日があれば置換、なければ追加 ---
-  let existing: SnapshotFile = emptySnapshotFile();
-
-  if (existsSync(SNAPSHOT_PATH)) {
-    try {
-      existing = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf-8")) as SnapshotFile;
-    } catch {
-      console.warn("既存スナップショットJSONが壊れているため空で初期化");
-    }
-  }
-
-  const wasReplaced = existing.snapshots.some((s) => s.date === date);
+  // --- 同日があれば置換、なければ追加 ---
   const file = mergeSnapshotEntry(existing, entry);
 
   if (wasReplaced) {

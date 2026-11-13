@@ -11,16 +11,17 @@ export function jstIsoDate(now: Date = new Date()): string {
 }
 
 /**
- * JP スナップショットの最新エントリから「今日の分」のスコアだけを採用する。
+ * JP スナップショットの最新エントリが「直近営業日の分」のときだけスコアを採用する。
  *
- * snapshot-japan-fg job（平日 JST 17:00）は祝日含む平日に必ず当日日付で
- * エントリを書くため、日本版アラート実行時（平日 JST 17:15）に最新エントリが
- * 今日以外なら「生成 job の遅延/失敗で前日値を見ている」とみなして採用しない。
- * 前日値のまま発火判定すると誤発火・失報がエラーにならず沈黙するのを防ぐ。
+ * スナップショットの日付は日経225 の最終取引日（`resolveTradingDate`）で記録される。
+ * 呼び出し側は同じ基準で求めた直近営業日を `expectedDate` に渡す。最新エントリが
+ * それより古ければ「生成 job の遅延/失敗で前営業日の値を見ている」とみなして採用しない。
+ * 古い値のまま発火判定すると誤発火・失報がエラーにならず沈黙するのを防ぐ。
+ * 休場日は直近営業日のエントリがそのまま最新なので採用され、状態は変化しない。
  */
 export function pickFreshJpScore(
   snapshots: Array<{ date: string; score: number }> | undefined,
-  todayJst: string
+  expectedDate: string
 ): { ok: true; score: number } | { ok: false; reason: string } {
   if (!snapshots || snapshots.length === 0) {
     return { ok: false, reason: "snapshots が空" };
@@ -29,10 +30,10 @@ export function pickFreshJpScore(
   if (typeof latest?.score !== "number" || !Number.isFinite(latest.score)) {
     return { ok: false, reason: `最新エントリの score が不正: ${JSON.stringify(latest)}` };
   }
-  if (latest.date !== todayJst) {
+  if (latest.date !== expectedDate) {
     return {
       ok: false,
-      reason: `最新スナップショットが古い（latest=${latest.date}, today=${todayJst}）。snapshot-japan-fg job の遅延/失敗の可能性`,
+      reason: `最新スナップショットが直近営業日のものではない（latest=${latest.date}, expected=${expectedDate}）。snapshot-japan-fg job の遅延/失敗の可能性`,
     };
   }
   return { ok: true, score: latest.score };

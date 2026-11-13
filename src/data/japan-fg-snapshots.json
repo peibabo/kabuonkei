@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T16:27:56.506Z",
+  "generatedAt": "2026-11-13T01:25:25.000Z",
   "method": "full5",
   "snapshots": [
     {
@@ -1212,7 +1212,7 @@
       }
     },
     {
-      "date": "2026-08-28",
+      "date": "2026-08-27",
       "score": 47,
       "level": "平温",
       "availableCount": 5,
@@ -1225,7 +1225,7 @@
       }
     },
     {
-      "date": "2026-08-29",
+      "date": "2026-08-28",
       "score": 48,
       "level": "平温",
       "availableCount": 5,
@@ -1235,6 +1235,19 @@
         "marginRatio": 65,
         "arbitrage": 40,
         "usdJpyMomentum": 42
+      }
+    },
+    {
+      "date": "2026-08-31",
+      "score": 47,
+      "level": "平温",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 70,
+        "foreignFlow": 23,
+        "marginRatio": 65,
+        "arbitrage": 40,
+        "usdJpyMomentum": 39
       }
     },
     {
@@ -1485,6 +1498,19 @@
       }
     },
     {
+      "date": "2026-09-28",
+      "score": 59,
+      "level": "平温",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 61,
+        "foreignFlow": 47,
+        "marginRatio": 79,
+        "arbitrage": 89,
+        "usdJpyMomentum": 18
+      }
+    },
+    {
       "date": "2026-09-29",
       "score": 57,
       "level": "平温",
@@ -1537,6 +1563,19 @@
       }
     },
     {
+      "date": "2026-10-05",
+      "score": 62,
+      "level": "過熱",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 79,
+        "foreignFlow": 57,
+        "marginRatio": 66,
+        "arbitrage": 93,
+        "usdJpyMomentum": 15
+      }
+    },
+    {
       "date": "2026-10-06",
       "score": 62,
       "level": "過熱",
@@ -1563,6 +1602,19 @@
       }
     },
     {
+      "date": "2026-10-08",
+      "score": 64,
+      "level": "過熱",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 72,
+        "foreignFlow": 61,
+        "marginRatio": 66,
+        "arbitrage": 84,
+        "usdJpyMomentum": 38
+      }
+    },
+    {
       "date": "2026-10-09",
       "score": 67,
       "level": "過熱",
@@ -1577,15 +1629,15 @@
     },
     {
       "date": "2026-10-13",
-      "score": 68,
+      "score": 66,
       "level": "過熱",
       "availableCount": 5,
       "components": {
-        "nikkeiMa": 70,
+        "nikkeiMa": 64,
         "foreignFlow": 61,
         "marginRatio": 66,
         "arbitrage": 84,
-        "usdJpyMomentum": 57
+        "usdJpyMomentum": 56
       }
     },
     {
@@ -1625,6 +1677,19 @@
         "marginRatio": 66,
         "arbitrage": 91,
         "usdJpyMomentum": 51
+      }
+    },
+    {
+      "date": "2026-10-19",
+      "score": 62,
+      "level": "過熱",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 47,
+        "foreignFlow": 61,
+        "marginRatio": 66,
+        "arbitrage": 91,
+        "usdJpyMomentum": 45
       }
     },
     {
@@ -1745,7 +1810,7 @@
       }
     },
     {
-      "date": "2026-11-03",
+      "date": "2026-11-02",
       "score": 57,
       "level": "平温",
       "availableCount": 3,
@@ -1759,19 +1824,6 @@
     },
     {
       "date": "2026-11-04",
-      "score": 59,
-      "level": "平温",
-      "availableCount": 3,
-      "components": {
-        "nikkeiMa": 36,
-        "foreignFlow": 50,
-        "marginRatio": 50,
-        "arbitrage": 94,
-        "usdJpyMomentum": 46
-      }
-    },
-    {
-      "date": "2026-11-05",
       "score": 51,
       "level": "平温",
       "availableCount": 3,
@@ -1784,7 +1836,7 @@
       }
     },
     {
-      "date": "2026-11-06",
+      "date": "2026-11-05",
       "score": 49,
       "level": "平温",
       "availableCount": 3,
@@ -1797,7 +1849,7 @@
       }
     },
     {
-      "date": "2026-11-07",
+      "date": "2026-11-06",
       "score": 41,
       "level": "平温",
       "availableCount": 3,
@@ -1810,7 +1862,7 @@
       }
     },
     {
-      "date": "2026-11-10",
+      "date": "2026-11-09",
       "score": 44,
       "level": "平温",
       "availableCount": 3,
@@ -1823,7 +1875,7 @@
       }
     },
     {
-      "date": "2026-11-11",
+      "date": "2026-11-10",
       "score": 48,
       "level": "平温",
       "availableCount": 3,
@@ -1836,7 +1888,7 @@
       }
     },
     {
-      "date": "2026-11-12",
+      "date": "2026-11-11",
       "score": 71,
       "level": "過熱",
       "availableCount": 5,
@@ -1849,7 +1901,7 @@
       }
     },
     {
-      "date": "2026-11-13",
+      "date": "2026-11-12",
       "score": 67,
       "level": "過熱",
       "availableCount": 5,

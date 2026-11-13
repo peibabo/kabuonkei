@@ -34,7 +34,7 @@ export function getSentimentColor(score: number): string {
 }
 
 /** getSentimentColor と同じ色の Tailwind 文字色クラス（行数の多い表で inline style を避ける用） */
-const SENTIMENT_TEXT_CLASS: Record<SentimentLevel, string> = {
+export const SENTIMENT_TEXT_CLASS: Record<SentimentLevel, string> = {
   極寒: "text-blue-600",
   冷え込み: "text-sky-500",
   平温: "text-yellow-600",

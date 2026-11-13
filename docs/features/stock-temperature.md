@@ -29,6 +29,7 @@
 - `/ranking`: 温度の高い/低い TOP50、前日比の上昇/下落 TOP20。順位は同じ値なら同順位（`ranksWithTies`）で、銘柄ページの順位（`rankOf`）と一致する
 - HTML サイズ: 一覧系は行数が多いため `StockScoreList` で素の `<a>`・table 側の一括クラス・温度色のクラス化で軽量化（2026-11 時点で /stock 約183KB、/ranking 約153KB、各銘柄ページ約70KB、いずれも非圧縮）
 - 集計ロジック: `src/lib/stock-temperature/stats.ts`（純関数・テストあり）、読み込み: `src/lib/stock-temperature/index.ts`、3ページ共通のメタ情報: `metadata.ts` の `buildStockPageMetadata`
+- 配色: 表の温度・温度帯は温度帯カラー（`SENTIMENT_TEXT_CLASS` / `getSentimentTextClass`）、前日比などの温度差は日本式（上昇=赤 / 低下=緑 / 変化なし=グレー、`scoreDiffColorClass`）
 - 温度帯の一覧・文字色クラスは `src/lib/sentiment.ts`（`SENTIMENT_LEVELS` / `getSentimentTextClass`）を使う。JSON-LD は `src/components/JsonLd.tsx` でサーバー HTML に直接埋め込む（他ページの `next/script` 方式と違い、JS を実行しないクローラーにも見える）
 - 対象を広げるときの注意: `/stock` は全銘柄を1ページに並べているため、500銘柄を超えるあたりで業種別ページへの分割が必要になる
 - SEO: タイトル `{銘柄名}（{コード}）の株価の温度｜株温計`、動的 description、canonical、OGP（サイト共通画像）、Dataset + BreadcrumbList JSON-LD。sitemap に全件収録

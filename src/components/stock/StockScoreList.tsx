@@ -1,6 +1,6 @@
 import { getSentimentTextClass } from "@/lib/sentiment";
 import { ranksWithTies, type StockSummary } from "@/lib/stock-temperature/stats";
-import { formatScoreDiff } from "@/lib/stock-temperature/format";
+import { formatScoreDiff, scoreDiffColorClass } from "@/lib/stock-temperature/format";
 
 interface Props {
   items: StockSummary[];
@@ -45,7 +45,9 @@ export default function StockScoreList({ items, rankBy }: Props) {
             <td className={`text-right font-semibold ${getSentimentTextClass(s.score)}`}>
               {s.score}
             </td>
-            {ranks && <td className="text-right">{formatScoreDiff(s.d1)}</td>}
+            {ranks && (
+              <td className={`text-right ${scoreDiffColorClass(s.d1)}`}>{formatScoreDiff(s.d1)}</td>
+            )}
           </tr>
         ))}
       </tbody>

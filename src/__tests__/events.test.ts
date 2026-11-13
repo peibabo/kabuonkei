@@ -9,9 +9,9 @@ import { findSimilarDays, getMarketEvents } from "@/lib/similar-days";
 import type { SimilarDayEntry } from "@/lib/types";
 
 describe("getEventsMeta", () => {
-  it("returns all 14 events", () => {
+  it("returns all 15 events", () => {
     const events = getEventsMeta();
-    expect(events).toHaveLength(14);
+    expect(events).toHaveLength(15);
   });
 
   it("each event has required fields", () => {
@@ -60,7 +60,7 @@ describe("getEventBySlug", () => {
 describe("getEventsAsDateMap", () => {
   it("returns date -> label map with 14 entries", () => {
     const map = getEventsAsDateMap();
-    expect(Object.keys(map)).toHaveLength(14);
+    expect(Object.keys(map)).toHaveLength(15);
     expect(map["2024-08-05"]).toBe("令和のブラックマンデー");
     expect(map["2020-03-19"]).toBe("コロナショック日経底");
   });
@@ -98,9 +98,11 @@ describe("REGRESSION: findSimilarDays output parity after market-events.json rem
     "2024-11-06": "トランプ再選",
   };
 
-  it("getMarketEvents() returns the same 14 entries as the legacy JSON", () => {
+  it("getMarketEvents() still contains the 14 legacy entries unchanged", () => {
+    // 移行後に追加したイベント（2026-11-06 AI規制ショック等）は増えてよいが、
+    // 旧 JSON 由来の 14 件は日付・ラベルとも変わっていないこと
     const current = getMarketEvents();
-    expect(current).toEqual(LEGACY_MARKET_EVENTS);
+    expect(current).toMatchObject(LEGACY_MARKET_EVENTS);
   });
 
   it("findSimilarDays output matches legacy behavior on representative scores", () => {

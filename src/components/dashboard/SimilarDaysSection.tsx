@@ -75,7 +75,7 @@ export default function SimilarDaysSection({
           href="/events?ref=similar_days_footer"
           className="underline hover:text-gray-900"
         >
-          過去の主要イベント一覧（14件）→
+          過去の主要イベント一覧（15件）→
         </Link>
       </p>
     </div>

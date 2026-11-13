@@ -19,9 +19,9 @@
 
 ---
 
-[GitHub Actions cron]
- - 平日 07:00 JST (US)  → scripts/check-temperature-alerts.ts --variant us
- - 平日 17:15 JST (JP)  → 同 --variant jp
+[Vercel Cron → GitHub Actions (workflow_dispatch)]
+ - 平日 7 時台 JST (US)   → scripts/check-temperature-alerts.ts --variant us
+ - 平日 18 時台 JST (JP)  → 同 --variant jp
     │
     ├─ スコア取得（US: VIX + F&G / JP: snapshots.json 最新）
     ├─ Redis の last-state と比較 → 状態遷移判定
@@ -121,7 +121,8 @@
   - 対象購読者の列挙 → Resend 送信（120ms スロットル）→ 失敗は `alerts:failures:*` に記録
   - `--dry-run` で Redis 書き込みと Resend 呼び出しをスキップ
 - `.github/workflows/check-temperature-alerts.yml`
-  - cron `0 22 * * 0-4`（US 07:00 JST）/ `15 8 * * 1-5`（JP 17:15 JST）
+  - 通常は Vercel Cron が workflow_dispatch で起動する（US: 平日 7 時台 JST / JP: 平日 18 時台 JST。[operations.md の「定期実行」](../operations.md#定期実行vercel-cron--github-actions) 参照）
+  - 予備の schedule: `0 22 * * 0-4`（US）/ `15 8 * * 1-5`（JP）。GitHub 側の遅延で数時間後に走るが、last-state が更新済みなので再送はされない
   - workflow_dispatch で variant と dry_run を手動指定可能
   - JP variant は cron 遅延レース対策として、待ち受ける日付（UTC 日付 = 翌朝 9:00 JST の寄り付きまでは前日分）のスナップショットが main に現れるまで最大 12 分ポーリング（`git fetch` + 該当ファイルのみ checkout）。タイムアウト時はスクリプト側の鮮度ガードが中断する
 

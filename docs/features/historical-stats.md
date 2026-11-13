@@ -52,4 +52,4 @@
 
 ## 自動更新
 - 月1回程度の更新で十分。ランタイムのAPIコスト増加なし
-- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9:00に自動実行。米国版・温度推移・日本版・類似日データ・クロス分析・セクターヒートマップ・スコア分布の7種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能
+- GitHub Actions（`.github/workflows/update-historical-stats.yml`）で毎月1日 JST 9 時台に自動実行（Vercel Cron の `monthly-stats` ジョブが起動、ワークフローの schedule は予備）。米国版・温度推移・日本版・類似日データ・クロス分析・セクターヒートマップ・スコア分布の7種を同時生成。変更があればcommit→push→Vercel自動デプロイ。手動実行（workflow_dispatch）も可能

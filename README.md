@@ -34,7 +34,7 @@
 - **日本市場の需給** - 投資主体別売買動向（海外投資家等の買越/売越）+ 裁定残推移 + 信用倍率
 - **埋め込みウィジェット** - `/widget/today` で配信する 400×400 PNG 画像。他サイト（ブログ/note/X）に貼り付けると今日の日米温度を自動更新で表示（15 分 ISR）。説明ページは `/widget`
 - **ワンクリック共有シート** - 温度カード右上の 📤 ボタンから、X 共有 / 画像保存 / URL コピー / ブログ埋め込みを 1 画面にまとめたシェアシート（PC: モーダル / モバイル: ボトムドロワー）を開ける
-- **温度アラート（メール通知）** - 極端温度（米国/日本 F&G が `≤20` or `≥80`）に遷移したタイミングで、事前登録したメールアドレスに通知。状態遷移＋ヒステリシスで連続発火を防止、ワンクリック配信解除対応（平日 JST 07:00 / 17:15 に GitHub Actions から送信）。登録はダッシュボードのバナーまたはランディングページ `/alerts` から
+- **温度アラート（メール通知）** - 極端温度（米国/日本 F&G が `≤20` or `≥80`）に遷移したタイミングで、事前登録したメールアドレスに通知。状態遷移＋ヒステリシスで連続発火を防止、ワンクリック配信解除対応（平日 JST 7 時台 / 18 時台に GitHub Actions から送信）。登録はダッシュボードのバナーまたはランディングページ `/alerts` から
 - **VIX（恐怖指数）** - 現在値 + 30日チャート
 - **主要指数** - S&P500, ダウ, ナスダック, 日経平均, TOPIX
 - **米国10年債利回り** - チャート付き
@@ -79,11 +79,11 @@ npm run generate:divergence                 # 日米温度の乖離 × {N225, S&
 npm run generate:portfolio-history          # 温度連動ポートフォリオ バックフィル（/portfolio 用、月次フル再生成）
 npm run snapshot:portfolio                  # 温度連動ポートフォリオ 日次 append（平日 JST 07:00 に自動実行）
 
-# X Bot（平日 JST 7:30 に GitHub Actions から実行される）
+# X Bot（平日 JST 7 時台に GitHub Actions から実行される）
 npm run post:daily-tweet                    # 実投稿（X_API_* が必要）
 npm run post:daily-tweet -- --dry-run       # 投稿せず内容確認のみ
 
-# 温度アラート（平日 JST 07:00 米国 / 17:15 日本に GitHub Actions から実行される）
+# 温度アラート（平日 JST 7 時台 米国 / 18 時台 日本に GitHub Actions から実行される）
 npm run alerts:check -- --variant us        # 米国版 発火チェック + メール送信
 npm run alerts:check -- --variant jp        # 日本版
 npm run alerts:check -- --variant us --dry-run  # 判定ログのみ、書き込み/送信なし
@@ -110,6 +110,7 @@ vercel
 | `RESEND_API_KEY` / `RESEND_FROM_EMAIL` | 温度アラートの送信（Resend） | `npm run alerts:check` 実行時にエラー |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | 温度アラートの購読者永続化（Upstash Redis、Vercel Marketplace で自動注入） | 同上 |
 | `ALERTS_TOKEN_SECRET` | 確認/配信解除トークンの HMAC 秘密鍵（32 バイト以上） | 同上 |
+| `CRON_SECRET` / `GITHUB_DISPATCH_TOKEN` | Vercel Cron から GitHub Actions を定刻に起動する（`/api/cron/[job]`） | 起動 API が 401 / 500 を返し、GitHub Actions 側の予備 schedule（数時間遅延）だけで動く |
 
 ### リリース前チェックリスト
 

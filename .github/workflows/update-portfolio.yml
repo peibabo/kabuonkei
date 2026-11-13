@@ -1,6 +1,8 @@
 name: Update Portfolio (Daily)
 
 on:
+  # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
+  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
   schedule:
     # 平日 JST 07:00 = UTC 22:00, Sun-Thu（US 引け確定 + JP 寄り前の時間帯）
     - cron: '0 22 * * 0-4'

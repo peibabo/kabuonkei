@@ -41,7 +41,7 @@
 - `InvestingBooksCTA` は `placement: "portfolio"` と `article?: string`（既定 `"vix-threshold-sp500"`、`/portfolio` では `"portfolio"`）を受けるよう拡張済み
 
 ## 自動更新
-- `.github/workflows/update-portfolio.yml`: 平日 JST 07:00（cron `0 22 * * 0-4`）に `snapshot:portfolio` を実行。差分があれば commit & push（コミットタイトル `chore(portfolio): daily NAV update YYYY-MM-DD`）
+- `.github/workflows/update-portfolio.yml`: 平日 JST 7 時台（Vercel Cron の `morning` ジョブが起動。ワークフローの schedule `0 22 * * 0-4` は予備）に `snapshot:portfolio` を実行。差分があれば commit & push（コミットタイトル `chore(portfolio): daily NAV update YYYY-MM-DD`）
 - `.github/workflows/update-historical-stats.yml`: 月次ジョブ末尾に `generate:portfolio-history` を追加（`generate:japan-temperature-history` の後）。差分 append で累積したズレを月 1 回リセット
 
 ## 既知の制約

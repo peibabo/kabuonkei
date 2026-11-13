@@ -73,17 +73,41 @@
 - `KV_REST_API_URL` / `KV_REST_API_TOKEN` — Upstash Redis REST（Vercel Marketplace の Upstash for Redis 統合で自動注入。GitHub Actions 側は Secrets に同名で手動コピー）
 - `ALERTS_TOKEN_SECRET` — 確認/配信解除トークンの HMAC 秘密鍵（32 バイト以上、`openssl rand -hex 32`）
 - `ALERTS_ALLOWED_ORIGINS` — `/api/alerts/subscribe` の Origin ホワイトリスト（カンマ区切り、任意）
+- `CRON_SECRET` — Vercel Cron が `/api/cron/[job]` を呼ぶときの認証用（`openssl rand -hex 32`）。Vercel の本番環境変数に設定
+- `GITHUB_DISPATCH_TOKEN` — `/api/cron/[job]` が GitHub Actions を起動するための Fine-grained PAT（Actions: Read and write のみ）。Vercel の本番環境変数に設定
+
+## 定期実行（Vercel Cron → GitHub Actions）
+
+データ更新・アラート・X Bot は GitHub Actions のワークフローで動くが、**起動は Vercel Cron が行う**。GitHub Actions の `schedule` は 2026-08-27 以降 4〜10 時間遅れて実行される状態が続いており（GitHub 側の広域的な事象）、`workflow_dispatch` はその影響を受けないため。
+
+- **流れ**: `vercel.json` の `crons` → `/api/cron/[job]`（`src/app/api/cron/[job]/route.ts`）→ GitHub REST API で `workflow_dispatch`（`src/lib/cron-dispatch.ts` の `CRON_JOBS` がジョブ名とワークフローの対応表）
+- **時刻の精度**: Vercel Hobby プランは 1 日 1 回まで、指定した「時」の 00〜59 分のどこかで実行される。順序が必要なジョブは時間帯を分けている
+
+| ジョブ | Vercel Cron（UTC） | 実行時間帯（JST） | 起動するワークフロー |
+|---|---|---|---|
+| `stock-temperatures` | `0 7 * * 1-5` | 平日 16 時台 | `update-stock-temperatures.yml` |
+| `japan-market` | `0 7 * * 3,4` | 水・木 16 時台 | `update-japan-market-data.yml` |
+| `japan-snapshot` | `0 8 * * 1-5` | 平日 17 時台 | `snapshot-japan-fg.yml` |
+| `alerts-jp` | `0 9 * * 1-5` | 平日 18 時台 | `check-temperature-alerts.yml`（variant=jp） |
+| `morning` | `0 22 * * 0-4` | 平日 7 時台 | `update-portfolio.yml` / `check-temperature-alerts.yml`（variant=us）/ `post-daily-tweet.yml` |
+| `monthly-stats` | `0 0 1 * *` | 毎月 1 日 9 時台 | `update-historical-stats.yml` |
+
+- **認証**: Vercel は環境変数 `CRON_SECRET` を `Authorization: Bearer ...` で送る。API 側は一致しなければ 401、`CRON_SECRET` が未設定なら常に 401
+- **GitHub トークン**: `GITHUB_DISPATCH_TOKEN` は Fine-grained personal access token（対象リポジトリ `peibabo/kabuonkei` のみ、権限は **Actions: Read and write** だけ）。有効期限が切れると起動できなくなるので、期限前に再発行して Vercel の環境変数を差し替える
+- **予備の `schedule`**: 各ワークフローの `schedule` は残してあり、遅れて同じ処理をもう一度実行する。データ更新は同じ結果になるだけ、アラートは Redis の last-state で再送されない。X Bot だけは二重投稿になるため、`post-daily-tweet.yml` の `guard` ジョブが「直近 20 時間に `workflow_dispatch` の実行が成功済み（または実行中）」なら schedule 起動をスキップする
+- **動作確認**: Vercel ダッシュボードの Cron Jobs（実行履歴・手動実行）と、GitHub Actions の実行一覧でイベントが `workflow_dispatch` になっていること。手元からは `curl -H "Authorization: Bearer $CRON_SECRET" https://www.kabuonkei.com/api/cron/japan-snapshot`
+- **ジョブを増やすとき**: `CRON_JOBS` と `vercel.json` の両方に追加する（`src/__tests__/cron-dispatch.test.ts` が対応のずれを検出する）
 
 ## X（Twitter）Bot — 朝の寄り前ブリーフィング
-- **目的**: 定常流入源として、平日毎朝 JST 7:30 に前営業日引け時点の日米温度＋類似日ナラティブを投稿
-- **投稿時刻**: 平日 JST 07:30（UTC 22:30, Sun-Thu）
+- **目的**: 定常流入源として、平日毎朝 JST 7 時台に前営業日引け時点の日米温度＋類似日ナラティブを投稿
+- **投稿時刻**: 平日 JST 7 時台（Vercel Cron の `morning` ジョブ、UTC 22 時台 Sun-Thu）
   - 9:00 以降だと日本市場が開いて「今日の温度」と言えない非対称が生じるため、寄り前時間帯に限定
-  - 日本版は `snapshot-japan-fg.yml`（平日17:00 JST）で取得済みのデータを反映 = **前営業日引け時点**
+  - 日本版は `snapshot-japan-fg.yml`（平日 17 時台 JST）で取得済みのデータを反映 = **前営業日引け時点**
   - 米国版は直前の米国引け（JST 5:00〜6:00）時点の VIX/F&G = 完全確定データ
 - **投稿内容**: テキスト＋画像。日米いずれかのスコアが取得できていれば毎日、動的生成画像（`/api/og/daily`）を添付する（`shouldAttachImage`）。画像を添付しないと X が投稿本文の URL からトップページの静的 `og:image`（デフォルトの「株温計」画像）をスクレイプしてしまうため、通常日も温度入りキャプチャを必ず添付する。極端温度（score ≤ 20 or ≥ 80）時はテキスト側のヘッダーが「⚠️ 極寒アラート」「🔥 沸騰アラート」に変化する
 - **投稿スクリプト**: `scripts/post-daily-temperature-tweet.ts`（`npm run post:daily-tweet`、`-- --dry-run` で投稿せず出力確認）
 - **動的OG画像**: `src/app/api/og/daily/route.tsx`（`ImageResponse` で日米温度を可視化した1200×630 PNG）
-- **自動実行**: `.github/workflows/post-daily-tweet.yml`（cron `30 22 * * 0-4`、手動 workflow_dispatch も可）
+- **自動実行**: `.github/workflows/post-daily-tweet.yml`（Vercel Cron の `morning` ジョブから起動。予備の schedule は `45 23 * * 0-4` = JST 08:45 で、外部起動が成功していればスキップ。手動 workflow_dispatch も可）
 - **必要な GitHub Secrets**: `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET`（Repository variable として `NEXT_PUBLIC_SITE_URL` も設定）
 - **Bot用 X アカウント作成と開発者申請は別作業**（X Developer Portal で Project+App を作り、OAuth 1.0a User Context の Read and Write 権限で 4 つのキーを発行）
 - **文字数安全弁**: `estimateWeightedLength()` で加重280字超過時は類似日行を自動省略
@@ -102,11 +126,11 @@
 
 - **目的**: 極端温度（米国/日本 F&G `≤20` or `≥80`）発生時にメールで通知 → 再訪動機 + メール資産
 - **発火ロジック**: 状態遷移ベース + ±5pt ヒステリシス。連続発火なし。`neutral→cold/hot` および `cold↔hot` 直接反転のみ発火
-- **発火時刻**: 平日 JST 07:00（米国版、X Bot の直前）/ 17:15（日本版、snapshot-japan-fg の直後）
+- **発火時刻**: 平日 JST 7 時台（米国版）/ 18 時台（日本版、snapshot-japan-fg の後）
 - **登録フロー**: Double opt-in（確認メール 24h、HMAC トークン）/ ワンクリック解除（恒久トークン、`List-Unsubscribe` ヘッダ対応）
 - **永続化**: Upstash Redis（Vercel Marketplace の Upstash for Redis 統合、Free プラン 500k commands/月）。キー命名は `alerts:*` プレフィックス
 - **送信**: Resend REST API（初期は無料プラン 3,000 通/月、`onboarding@resend.dev` サンドボックス）
 - **発火スクリプト**: `scripts/check-temperature-alerts.ts`（`npm run alerts:check -- --variant us|jp [--dry-run]`）
-- **自動実行**: `.github/workflows/check-temperature-alerts.yml`（cron `0 22 * * 0-4` + `15 8 * * 1-5`、workflow_dispatch で手動変種実行も可）
+- **自動実行**: `.github/workflows/check-temperature-alerts.yml`（Vercel Cron の `morning` / `alerts-jp` ジョブから起動。予備の schedule は `0 22 * * 0-4` + `15 8 * * 1-5`、workflow_dispatch で手動変種実行も可）
 - **必要な GitHub Secrets**: `RESEND_API_KEY` / `KV_REST_API_URL` / `KV_REST_API_TOKEN` / `ALERTS_TOKEN_SECRET`（Repository Variable に `RESEND_FROM_EMAIL` も）
 - 詳細: [features/alerts.md](features/alerts.md)

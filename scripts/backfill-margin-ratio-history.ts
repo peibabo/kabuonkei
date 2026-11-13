@@ -1,10 +1,10 @@
 /**
  * 信用倍率履歴バックフィルスクリプト。
  *
- * JPX の 06.html (信用取引現在高 過去推移表) から連結 Excel を取得して、
+ * JPX の 05.html (信用取引現在高 過去推移表) から連結 Excel を取得して、
  * 2002 年以降の全週次データを margin-ratio-history.json に書き出す。
  *
- * また、直近数週は 06.html の連結ファイルに未反映の場合があるので、
+ * また、直近数週は 05.html の連結ファイルに未反映の場合があるので、
  * 04.html (最新週次 *_mtcurrent.xlsx) からも取得し、最新情報でギャップ埋めする。
  *
  * 実行: npm run generate:margin-history
@@ -16,7 +16,7 @@ import { resolve } from "path";
 import {
   JPX_MARGIN_HISTORY_URL,
   JPX_MARGIN_WEEKLY_URL,
-  extractHistoryExcelUrl,
+  extractHistoryExcelUrls,
   extractWeeklyMarginLinks,
   parseHistoryMarginXls,
   parseWeeklyMarginXls,
@@ -38,26 +38,37 @@ interface HistoryOutput {
 async function main() {
   console.log("=== 信用倍率履歴バックフィル ===\n");
 
-  // --- 1. 連結履歴ファイルを取得 ---
+  // --- 1. 連結履歴ファイルを取得（旧形式 + 新形式） ---
   console.log("■ 連結履歴 Excel URL を解決中...");
   const historyHtml = await fetchText(JPX_MARGIN_HISTORY_URL);
-  const historyXlsUrl = extractHistoryExcelUrl(historyHtml);
-  if (!historyXlsUrl) {
+  const historyUrls = extractHistoryExcelUrls(historyHtml);
+  if (!historyUrls.legacy) {
     throw new Error(
-      `06.html から連結履歴 Excel URL を抽出できませんでした: ${JPX_MARGIN_HISTORY_URL}`
+      `連結履歴 Excel（旧形式 *_mtsk.xls）の URL を抽出できませんでした: ${JPX_MARGIN_HISTORY_URL}`
     );
   }
-  console.log(`  URL: ${historyXlsUrl}`);
-
-  console.log("■ 連結履歴 Excel をダウンロード中...");
-  const historyBuf = await fetchBuffer(historyXlsUrl);
-  console.log(`  ${historyBuf.length} bytes`);
-
-  const historyWeeks = parseHistoryMarginXls(historyBuf);
-  console.log(`  パース成功: ${historyWeeks.length} 週分`);
-  if (historyWeeks.length === 0) {
-    throw new Error("連結履歴 Excel のパース結果が空です");
+  if (!historyUrls.current) {
+    throw new Error(
+      `連結履歴 Excel（新形式 .xlsx）の URL を抽出できませんでした: ${JPX_MARGIN_HISTORY_URL}`
+    );
   }
+
+  const historyWeeks: MarginTradingWeek[] = [];
+  for (const [label, url] of [
+    ["旧形式", historyUrls.legacy],
+    ["新形式", historyUrls.current],
+  ] as const) {
+    console.log(`■ 連結履歴 Excel（${label}）をダウンロード中: ${url}`);
+    const buf = await fetchBuffer(url);
+    const weeks = parseHistoryMarginXls(buf);
+    console.log(`  ${buf.length} bytes / パース成功: ${weeks.length} 週分`);
+    if (weeks.length === 0) {
+      throw new Error(`連結履歴 Excel（${label}）のパース結果が空です: ${url}`);
+    }
+    historyWeeks.push(...weeks);
+    await sleep(500);
+  }
+  const historyXlsUrl = `${historyUrls.legacy} + ${historyUrls.current}`;
 
   // --- 2. 04.html から最新週次ファイルを取得してギャップ埋め ---
   console.log("\n■ 最新週次ファイルでギャップ埋め...");

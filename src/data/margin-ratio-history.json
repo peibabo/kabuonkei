@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-01",
+  "generatedAt": "2026-11-13",
   "dataRange": {
     "from": "2002-08-02",
-    "to": "2026-08-21"
+    "to": "2026-11-06"
   },
   "sources": {
-    "consolidated": "https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rq1-att/tvdivq0000015969.xls",
-    "weeklyCount": 3
+    "consolidated": "https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rq1-att/20260925_mtsk.xls + https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rq1-att/tvdivq0000015969.xlsx",
+    "weeklyCount": 1
   },
   "weekly": [
     {
@@ -7346,6 +7346,72 @@
       "buyBalance": 64825.4,
       "sellBalance": 8961.8,
       "ratio": 7.23
+    },
+    {
+      "date": "2026-08-28",
+      "buyBalance": 65293.6,
+      "sellBalance": 8250.5,
+      "ratio": 7.91
+    },
+    {
+      "date": "2026-09-04",
+      "buyBalance": 64802.8,
+      "sellBalance": 8461.2,
+      "ratio": 7.66
+    },
+    {
+      "date": "2026-09-11",
+      "buyBalance": 66456.1,
+      "sellBalance": 7959.1,
+      "ratio": 8.35
+    },
+    {
+      "date": "2026-09-18",
+      "buyBalance": 64559.9,
+      "sellBalance": 8844.6,
+      "ratio": 7.3
+    },
+    {
+      "date": "2026-09-25",
+      "buyBalance": 64638.4,
+      "sellBalance": 10472.4,
+      "ratio": 6.17
+    },
+    {
+      "date": "2026-10-02",
+      "buyBalance": 65235.5,
+      "sellBalance": 7507.3,
+      "ratio": 8.69
+    },
+    {
+      "date": "2026-10-09",
+      "buyBalance": 67080.6,
+      "sellBalance": 7620.5,
+      "ratio": 8.8
+    },
+    {
+      "date": "2026-10-16",
+      "buyBalance": 66640.1,
+      "sellBalance": 6670.5,
+      "ratio": 9.99
+    },
+    {
+      "date": "2026-10-23",
+      "buyBalance": 65340.7,
+      "sellBalance": 6885.7,
+      "ratio": 9.49
+    },
+    {
+      "date": "2026-10-30",
+      "buyBalance": 65058.9,
+      "sellBalance": 6438.6,
+      "ratio": 10.1
+    },
+    {
+      "date": "2026-11-06",
+      "buyBalance": 58809.9,
+      "sellBalance": 6134.9,
+      "ratio": 9.59
     }
   ]
 }

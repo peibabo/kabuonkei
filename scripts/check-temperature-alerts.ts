@@ -49,6 +49,7 @@ import {
   pickFreshJpScore,
   variantOf,
 } from "./_lib/alert-state";
+import { resolveTradingDate } from "./_lib/trading-date";
 
 const DEFAULT_SITE_URL = "https://kabuonkei.com";
 const US_SIMILAR_PATH = resolve(__dirname, "../src/data/us-similar-days.json");
@@ -95,12 +96,27 @@ async function fetchUsScore(): Promise<number | null> {
   }
 }
 
-function fetchJpScore(): number | null {
+/** 日経225 の最終取引時刻から直近営業日（JST）を求める。取得失敗時は実行時刻から推定 */
+async function latestJpTradingDate(): Promise<string> {
+  let marketTime: Date | null = null;
+  try {
+    const q = await yahooFinance.quote("^N225");
+    marketTime = q?.regularMarketTime instanceof Date ? q.regularMarketTime : null;
+  } catch (err) {
+    console.warn("日経225 の最終取引時刻の取得失敗:", err);
+  }
+  return resolveTradingDate(marketTime).date;
+}
+
+async function fetchJpScore(): Promise<number | null> {
   try {
     const raw = JSON.parse(readFileSync(JP_SNAPSHOTS_PATH, "utf-8")) as {
       snapshots: Array<{ date: string; score: number }>;
     };
-    const picked = pickFreshJpScore(raw.snapshots, jstIsoDate());
+    const picked = pickFreshJpScore(
+      raw.snapshots,
+      await latestJpTradingDate()
+    );
     if (!picked.ok) {
       console.error(`JP スコア不採用: ${picked.reason}`);
       return null;
@@ -165,7 +181,7 @@ async function main() {
   }
 
   const score =
-    args.variant === "us" ? await fetchUsScore() : fetchJpScore();
+    args.variant === "us" ? await fetchUsScore() : await fetchJpScore();
 
   if (score == null) {
     console.error(

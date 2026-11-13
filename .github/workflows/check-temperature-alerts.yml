@@ -52,25 +52,28 @@ jobs:
             echo "dry=" >> "$GITHUB_OUTPUT"
           fi
       # snapshot-japan-fg (17:00 JST) の commit が cron 遅延でまだ push されていない場合に備え、
-      # 今日(JST)の日付のスナップショットが main に現れるまで最大 12 分ポーリングする。
-      # タイムアウトしてもここでは失敗させず、スクリプト側の鮮度ガード（前日値なら exit 1）に委ねる。
-      - name: Wait for today's JP snapshot (jp variant only)
+      # 直近営業日のスナップショットが main に現れるまで最大 12 分ポーリングする。
+      # スナップショットの日付は日経225 の最終取引日。このジョブ自体も遅延して翌日未明に走ることが
+      # あるため、「翌朝 9:00 JST の寄り付きまでは前日分」= UTC 日付を待ち受ける日付とする。
+      # 休場日は一致しないまま抜けるが、スクリプト側が最終取引日と照合するので失敗にはならない。
+      # タイムアウトしてもここでは失敗させず、スクリプト側の鮮度ガード（古い値なら exit 1）に委ねる。
+      - name: Wait for the latest JP snapshot (jp variant only)
         if: steps.resolve.outputs.variant == 'jp'
         run: |
           FILE=src/data/japan-fg-snapshots.json
-          TODAY=$(TZ=Asia/Tokyo date +%F)
+          TODAY=$(TZ=UTC date +%F)
           for i in $(seq 1 6); do
             LATEST=$(node -e "const s=require('./$FILE').snapshots; console.log(s[s.length-1]?.date ?? '')")
             if [ "$LATEST" = "$TODAY" ]; then
-              echo "今日のスナップショットを確認: $LATEST"
+              echo "直近営業日のスナップショットを確認: $LATEST"
               exit 0
             fi
-            echo "スナップショットが古い (latest=$LATEST, today=$TODAY)。120秒待って再取得 ($i/6)"
+            echo "スナップショット待ち (latest=$LATEST, expected=$TODAY)。120秒待って再取得 ($i/6)"
             sleep 120
             git fetch origin main --depth 1
             git checkout origin/main -- "$FILE"
           done
-          echo "::warning::今日のスナップショットを取得できませんでした。スクリプト側の鮮度ガードで中断されます"
+          echo "::warning::待ち受けた日付のスナップショットを確認できませんでした（休場日なら正常）。スクリプト側の鮮度ガードが判定します"
       - run: npm run alerts:check -- --variant ${{ steps.resolve.outputs.variant }} ${{ steps.resolve.outputs.dry }}
         env:
           KV_REST_API_URL: ${{ secrets.KV_REST_API_URL }}

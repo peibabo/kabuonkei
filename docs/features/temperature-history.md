@@ -20,6 +20,8 @@
 - 生成スクリプト: `npm run snapshot:japan-fg`（`scripts/snapshot-japan-fear-greed.ts`）
 - 平日 JST 17:00（東証クローズ後）に `snapshot-japan-fg.yml` で自動実行（同ワークフロー内で簡易版 B も同時に再生成し、両ファイルを1コミットで push）
 - 配列は日付昇順、同日エントリが既にあれば上書き
+- **エントリの日付は実行日ではなく日経225 の最終取引日（JST）**（`resolveTradingDate()`、`scripts/_lib/trading-date.ts`）。GitHub Actions の schedule は数時間遅延して翌日未明に走ることがあり、実行日の日付で記録すると 1 営業日後ろにずれるため（2026-08-27〜11-12 の分は git 履歴から復元して補正済み）
+- 休場日（祝日など、最終取引から 20 時間超）の実行は、直近営業日のエントリが既にあれば何も書かない（2026-09 以前の祝日日付のエントリは従来仕様の名残り）
 
 **UI**: `src/components/JapanTemperatureTrendCard.tsx`（1M/3M/6M/1Y/5Y/10Y 切替）。
 Recharts の ComposedChart で 簡易版=実線+薄塗り/グレー（背景の文脈データ）、本体版=実線/温度色（直近の生データ・主役）で重ねがけ。Tooltipで各要素スコアを表示。

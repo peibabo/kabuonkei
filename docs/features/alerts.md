@@ -114,7 +114,7 @@
 - `scripts/check-temperature-alerts.ts`（`npm run alerts:check -- --variant us|jp [--dry-run]`）
   - US: VIX → `fetchFearGreedIndex(vix)` で取得
   - JP: `src/data/japan-fg-snapshots.json` の `snapshots` 配列末尾を参照（snapshot-japan-fg ワークフローが 17:00 JST に更新）
-  - **JP スコアの鮮度ガード**（`pickFreshJpScore()`、`scripts/_lib/alert-state.ts`）: 最新エントリの日付が今日（JST）でなければ採用せず exit 1（状態も更新しない）。snapshot job の遅延/失敗時に前日値で誤発火/失報するのを防ぐ
+  - **JP スコアの鮮度ガード**（`pickFreshJpScore()`、`scripts/_lib/alert-state.ts`）: 最新エントリの日付が直近営業日（日経225 の最終取引日、`resolveTradingDate()`）でなければ採用せず exit 1（状態も更新しない）。snapshot job の遅延/失敗時に古い値で誤発火/失報するのを防ぐ。スナップショットと同じ基準なので、両ジョブが遅延して翌日未明に走っても、休場日でも成立する（休場日は同じ値を再評価するだけで状態は変わらない）
   - **閾値 20/80 の単一ソース**: `src/lib/alerts/state-transition.ts` の `COLD_THRESHOLD` / `HOT_THRESHOLD`。UI 文言（/alerts・AlertBanner・AlertSignupForm・AlertVariantCheckboxes）、メールテンプレート、X bot・シェア文言はすべてここを参照
   - **温度帯ラベルは実スコアから導出**: hot アラートの「過熱/沸騰」表記は `getSentimentLevel(score)` で決める。スコアちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）で、メール/ツイート/シェア文言とサイト表示のラベル食い違いを防ぐ
   - **送信環境変数のプリフライト**（`missingSendEnv()`）: dry-run 以外では `RESEND_API_KEY` / `RESEND_FROM_EMAIL` 未設定なら送信ループ・状態更新に進む前に exit 1。ワークフロー側も `onboarding@resend.dev` への暗黙フォールバックを置かない（サンドボックス送信元だと実購読者に届かず沈黙失敗するため。初期運用でサンドボックスを使う場合は Repository Variable に明示的に設定する）
@@ -123,7 +123,7 @@
 - `.github/workflows/check-temperature-alerts.yml`
   - cron `0 22 * * 0-4`（US 07:00 JST）/ `15 8 * * 1-5`（JP 17:15 JST）
   - workflow_dispatch で variant と dry_run を手動指定可能
-  - JP variant は cron 遅延レース対策として、今日の日付のスナップショットが main に現れるまで最大 12 分ポーリング（`git fetch` + 該当ファイルのみ checkout）。タイムアウト時はスクリプト側の鮮度ガードが中断する
+  - JP variant は cron 遅延レース対策として、待ち受ける日付（UTC 日付 = 翌朝 9:00 JST の寄り付きまでは前日分）のスナップショットが main に現れるまで最大 12 分ポーリング（`git fetch` + 該当ファイルのみ checkout）。タイムアウト時はスクリプト側の鮮度ガードが中断する
 
 ## 環境変数
 

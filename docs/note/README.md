@@ -33,7 +33,7 @@
 | # | タイトル（仮） | 型 | 主データ | 状態 |
 |---|---|---|---|---|
 | 001 | 日本版「Fear & Greed Index」が無かったので、自分で作った | 開発ストーリー | japan-historical-stats / japan-temperature-history | 原稿あり（[001-japan-fear-greed-story.md](001-japan-fear-greed-story.md)） |
-| 002 | 「極寒で買えば勝率100%」を疑え——111日ぶんの中身を全部バラしてみた | データ検証 | japan-temperature-history / japan-historical-stats | 原稿あり（[002-gokkan-win-rate-anatomy.md](002-gokkan-win-rate-anatomy.md)）。図版5点は未作成 |
+| 002 | 「極寒で買えば勝率100%」を疑え——111日ぶんの中身を全部バラしてみた | データ検証 | japan-temperature-history / japan-historical-stats | 原稿あり（[002-gokkan-win-rate-anatomy.md](002-gokkan-win-rate-anatomy.md)）。図版5点作成済み、2026-11-16 に 11/13 時点のデータで全数字を再検証。投稿待ち |
 | 003 | VIXが30を超えた日、S&P500はどう動いたか | /analysis 転用 | vix-sp500-analysis | 予定 |
 | 004 | 信用倍率と市場温度のクロス分析 | データ検証 | margin-ratio-analysis | 予定 |
 | 005 | 「極寒」のとき強い業種はどこか — 温度帯×17セクター | データ検証 | japan-sector-heatmap | 予定（サイト未実装の先出しネタ） |
@@ -45,7 +45,7 @@
 - **温度カード（アイキャッチ向け）**: `https://kabuonkei.com/api/og/daily?jp=<score>&us=<score>&date=YYYY-MM-DD` で任意スコア・任意日付の 1200×630 PNG を生成できる（X bot と同じエンドポイント）
 - **サイト UI（ゲージ・チャート）**: 本番サイトのスクリーンショット
 - **統計表**: note は markdown 表非対応。スタイル付き HTML を組んで headless browser で 2x スケール撮影し画像化する（例: `images/backtest-table.png`。免責文と `kabuonkei.com` クレジットを画像内に入れる）
-- 生成した図版は `docs/note/images/` に保存し、原稿から相対パスで参照する
+- 生成した図版は `docs/note/images/` に保存し、原稿から相対パスで参照する。撮影元の HTML は `docs/note/images/src/` に残す（データ更新で数字や期間表記が変わったときに撮り直せるようにするため）。撮影例: `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --force-device-scale-factor=2 --window-size=1280,670 --screenshot=<出力.png> file://<ソース.html>`
 
 ## 投稿フロー
 

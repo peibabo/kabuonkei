@@ -30,3 +30,18 @@ export function formatDrawdownGap(diffPp: number): string {
 export function drawdownGapColorClass(diffPp: number): string {
   return diffPp >= 0 ? "text-emerald-700" : "text-amber-700";
 }
+
+/**
+ * 温度スコアなどの差分を符号付きで整形する: "+3" / "-2" / "±0" / "—"（null）。
+ * digits で小数桁を指定（1 なら "+3.2" / "±0.0"）。四捨五入した結果が 0 なら "±" を付ける。
+ */
+export function formatSignedDelta(
+  delta: number | null | undefined,
+  digits = 0
+): string {
+  if (delta == null) return "—";
+  const factor = 10 ** digits;
+  const rounded = Math.round(delta * factor) / factor;
+  if (rounded === 0) return `±${(0).toFixed(digits)}`;
+  return `${rounded > 0 ? "+" : ""}${rounded.toFixed(digits)}`;
+}

@@ -14,6 +14,7 @@
  * - 極端値 (≤20 or ≥80) で primary CTA を「アラート」に切り替え。
  */
 
+import { formatSignedDelta } from "./format";
 import { getSentimentLevel } from "./sentiment";
 import type { SentimentLevel } from "./types";
 
@@ -397,14 +398,6 @@ function collectCandidates(
   return candidates;
 }
 
-/** 昨日比を "+6" / "-3" / "±0" に整形 */
-function formatDelta(delta: number): string {
-  const rounded = Math.round(delta);
-  if (rounded > 0) return `+${rounded}`;
-  if (rounded < 0) return `${rounded}`;
-  return "±0";
-}
-
 /** サブテキスト（スコア + 数値昨日比 + 過去類似ヒント） */
 function buildSubline(
   jp: number | null,
@@ -419,10 +412,10 @@ function buildSubline(
   const parts: string[] = [];
 
   if (jp != null && jpLevel) {
-    const delta = jpDelta != null ? `・前日比${formatDelta(jpDelta)}` : "";
+    const delta = jpDelta != null ? `・前日比${formatSignedDelta(jpDelta)}` : "";
     parts.push(`日本 ${jp}°(${jpLevel}${delta})`);
   }
-  parts.push(`米国 ${us}°(${usLevel}・前日比${formatDelta(usDelta)})`);
+  parts.push(`米国 ${us}°(${usLevel}・前日比${formatSignedDelta(usDelta)})`);
 
   let summary = parts.join("、") + "。";
 

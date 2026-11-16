@@ -1,3 +1,4 @@
+import { formatSignedDelta } from "@/lib/format";
 import { getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
 import Sparkline from "./Sparkline";
 
@@ -33,13 +34,6 @@ function Tile({ label, value, sub, color, sparkline, sparklineLabel }: TileSpec)
       )}
     </div>
   );
-}
-
-function formatDelta(delta: number | null): string {
-  if (delta == null) return "—";
-  if (delta === 0) return "±0.0";
-  const sign = delta > 0 ? "+" : "";
-  return `${sign}${delta.toFixed(1)}`;
 }
 
 function deltaSub(delta: number | null): string {
@@ -103,7 +97,7 @@ export default function TemperatureTiles({
       />
       <Tile
         label="昨日比（日米平均）"
-        value={formatDelta(avgDelta)}
+        value={formatSignedDelta(avgDelta, 1)}
         sub={deltaSub(avgDelta)}
       />
     </div>

@@ -4,6 +4,7 @@ import {
   returnColorClass,
   formatDrawdownGap,
   drawdownGapColorClass,
+  formatSignedDelta,
 } from "@/lib/format";
 
 describe("formatReturn", () => {
@@ -77,5 +78,29 @@ describe("drawdownGapColorClass", () => {
   it("浅い（正）は emerald / 深い（負）は amber", () => {
     expect(drawdownGapColorClass(4.28)).toBe("text-emerald-700");
     expect(drawdownGapColorClass(-3.57)).toBe("text-amber-700");
+  });
+});
+
+describe("formatSignedDelta", () => {
+  it("formats integers with a sign and uses ± for zero", () => {
+    expect(formatSignedDelta(3)).toBe("+3");
+    expect(formatSignedDelta(-2)).toBe("-2");
+    expect(formatSignedDelta(0)).toBe("±0");
+  });
+
+  it("rounds to the requested digits and treats a rounded zero as ±", () => {
+    expect(formatSignedDelta(5.6)).toBe("+6");
+    expect(formatSignedDelta(-2.6)).toBe("-3");
+    expect(formatSignedDelta(0.4)).toBe("±0");
+    expect(formatSignedDelta(-0.4)).toBe("±0");
+    expect(formatSignedDelta(3.24, 1)).toBe("+3.2");
+    expect(formatSignedDelta(-1.26, 1)).toBe("-1.3");
+    expect(formatSignedDelta(0, 1)).toBe("±0.0");
+    expect(formatSignedDelta(0.04, 1)).toBe("±0.0");
+  });
+
+  it("returns an em dash for null or undefined", () => {
+    expect(formatSignedDelta(null)).toBe("—");
+    expect(formatSignedDelta(undefined, 1)).toBe("—");
   });
 });

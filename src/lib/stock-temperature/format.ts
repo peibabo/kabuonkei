@@ -1,8 +1,8 @@
+import { formatSignedDelta } from "../format";
+
 /** 温度差の表示: +3 / -2 / ±0 / —（null） */
 export function formatScoreDiff(diff: number | null): string {
-  if (diff == null) return "—";
-  if (diff === 0) return "±0";
-  return diff > 0 ? `+${diff}` : `${diff}`;
+  return formatSignedDelta(diff);
 }
 
 /**

@@ -1,0 +1,49 @@
+name: Fallback Guard
+
+# 予備の schedule 起動を止めるための共通ジョブ。
+# 各ワークフローは通常 Vercel Cron から workflow_dispatch で起動され、GitHub の schedule は
+# 数時間遅れて予備として走る。外部起動が成功していれば、遅れてきた schedule 起動は何もしない
+# （引け後に取った値を深夜の値で上書きしたり、二重投稿したりしないため）。
+on:
+  workflow_call:
+    inputs:
+      workflow:
+        description: '呼び出し元のワークフローのファイル名（例: snapshot-japan-fg.yml）'
+        required: true
+        type: string
+    outputs:
+      skip:
+        description: 'true なら本体のジョブを実行しない'
+        value: ${{ jobs.check.outputs.skip }}
+
+permissions:
+  actions: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WORKFLOW: ${{ inputs.workflow }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # 直近 20 時間に workflow_dispatch の実行が成功している（または実行中）なら済んでいる。
+          # 問い合わせに失敗したときは 0 件扱いにして、予備の実行を止めない
+          SINCE=$(date -u -d '20 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          COUNT=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$WORKFLOW" \
+            --event workflow_dispatch --created ">=$SINCE" --json status,conclusion \
+            --jq '[.[] | select(.status != "completed" or .conclusion == "success")] | length' || echo 0)
+          if [ "${COUNT:-0}" -gt 0 ]; then
+            echo "直近 20 時間に workflow_dispatch の実行が $COUNT 件あるため、予備の実行はスキップします"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::外部からの起動（Vercel Cron）が確認できないため、予備の schedule で実行します"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi

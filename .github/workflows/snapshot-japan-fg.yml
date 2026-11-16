@@ -2,7 +2,7 @@ name: Snapshot Japan Fear Greed
 
 on:
   # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
-  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
+  # 数時間遅れることがあるため予備扱い（外部起動が成功していれば guard ジョブがスキップする）
   schedule:
     # 平日 17:00 JST（東証クローズ後） = UTC 08:00, Mon-Fri
     - cron: '0 8 * * 1-5'
@@ -12,7 +12,18 @@ permissions:
   contents: write
 
 jobs:
+  # 予備の schedule 起動は、外部起動（workflow_dispatch）が成功済みならスキップする
+  guard:
+    permissions:
+      actions: read
+    uses: ./.github/workflows/_fallback-guard.yml
+    with:
+      workflow: snapshot-japan-fg.yml
+
   snapshot-japan-fg:
+    needs: guard
+    # guard 自体が失敗したときは止めずに実行する
+    if: ${{ !cancelled() && needs.guard.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -94,7 +94,7 @@
 
 - **認証**: Vercel は環境変数 `CRON_SECRET` を `Authorization: Bearer ...` で送る。API 側は一致しなければ 401、`CRON_SECRET` が未設定なら常に 401
 - **GitHub トークン**: `GITHUB_DISPATCH_TOKEN` は Fine-grained personal access token（対象リポジトリ `peibabo/kabuonkei` のみ、権限は **Actions: Read and write** だけ）。有効期限が切れると起動できなくなるので、期限前に再発行して Vercel の環境変数を差し替える
-- **予備の `schedule`**: 各ワークフローの `schedule` は残してあり、遅れて同じ処理をもう一度実行する。データ更新は同じ結果になるだけ、アラートは Redis の last-state で再送されない。X Bot だけは二重投稿になるため、`post-daily-tweet.yml` の `guard` ジョブが「直近 20 時間に `workflow_dispatch` の実行が成功済み（または実行中）」なら schedule 起動をスキップする
+- **予備の `schedule`**: 各ワークフローの `schedule` は残してあり、Vercel からの起動が動かなかった日だけ遅れて実行される。共通の `guard` ジョブ（`.github/workflows/_fallback-guard.yml`）が「直近 20 時間に `workflow_dispatch` の実行が成功済み（または実行中）」なら schedule 起動をスキップする。スキップしないと、引け後に記録したスナップショットを深夜の為替で上書きしたり、X Bot が二重投稿したりするため。`check-temperature-alerts.yml` だけは guard を入れていない（米国版と日本版が同じワークフローで区別しにくく、Redis の last-state で再送されないため）
 - **動作確認**: Vercel ダッシュボードの Cron Jobs（実行履歴・手動実行）と、GitHub Actions の実行一覧でイベントが `workflow_dispatch` になっていること。手元からは `curl -H "Authorization: Bearer $CRON_SECRET" https://www.kabuonkei.com/api/cron/japan-snapshot`
 - **ジョブを増やすとき**: `CRON_JOBS` と `vercel.json` の両方に追加する（`src/__tests__/cron-dispatch.test.ts` が対応のずれを検出する）
 

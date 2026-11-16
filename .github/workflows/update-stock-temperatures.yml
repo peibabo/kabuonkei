@@ -2,7 +2,7 @@ name: Update Stock Temperatures
 
 on:
   # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
-  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
+  # 数時間遅れることがあるため予備扱い（外部起動が成功していれば guard ジョブがスキップする）
   schedule:
     # 平日 16:30 JST（東証クローズ後） = UTC 07:30, Mon-Fri
     - cron: '30 7 * * 1-5'
@@ -12,7 +12,18 @@ permissions:
   contents: write
 
 jobs:
+  # 予備の schedule 起動は、外部起動（workflow_dispatch）が成功済みならスキップする
+  guard:
+    permissions:
+      actions: read
+    uses: ./.github/workflows/_fallback-guard.yml
+    with:
+      workflow: update-stock-temperatures.yml
+
   update-stock-temperatures:
+    needs: guard
+    # guard 自体が失敗したときは止めずに実行する
+    if: ${{ !cancelled() && needs.guard.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

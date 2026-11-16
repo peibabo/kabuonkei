@@ -2,7 +2,7 @@ name: Update Japan Market Data
 
 on:
   # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
-  # 数時間遅れることがあるため予備扱い（二重に実行されても結果は変わらない）
+  # 数時間遅れることがあるため予備扱い（外部起動が成功していれば guard ジョブがスキップする）
   schedule:
     # 水 17:00 JST = 当日 15:00 JPX 公表の信用倍率を同日中に取り込み
     # 木 17:00 JST = 当日 15:30 JPX 公表の投資主体別売買動向を同日中に取り込み
@@ -14,7 +14,18 @@ permissions:
   contents: write
 
 jobs:
+  # 予備の schedule 起動は、外部起動（workflow_dispatch）が成功済みならスキップする
+  guard:
+    permissions:
+      actions: read
+    uses: ./.github/workflows/_fallback-guard.yml
+    with:
+      workflow: update-japan-market-data.yml
+
   update-japan-market:
+    needs: guard
+    # guard 自体が失敗したときは止めずに実行する
+    if: ${{ !cancelled() && needs.guard.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

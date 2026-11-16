@@ -9,8 +9,13 @@ import {
   calcForeignFlow4w,
   computeJapanFearGreed,
   JAPAN_FG_THRESHOLDS,
+  GROUP_SPLIT_THRESHOLD,
+  computeGroupSplit,
+  isGroupSplitNotable,
 } from "@/lib/japan-fear-greed";
 import type {
+  JapanFearGreedComponent,
+  JapanFearGreedComponentId,
   ChartPoint,
   InvestorTradingData,
   MarginTradingData,
@@ -293,5 +298,58 @@ describe("computeJapanFearGreed", () => {
     );
     // (100*3 + 50*1) / 4 = 87.5 → 88
     expect(result!.score).toBe(88);
+  });
+});
+
+describe("computeGroupSplit", () => {
+  const IDS: JapanFearGreedComponentId[] = [
+    "nikkeiMa",
+    "foreignFlow",
+    "marginRatio",
+    "arbitrage",
+    "usdJpyMomentum",
+  ];
+  /** C1〜C5 の順にスコアを渡す。null は欠損 */
+  function build(scores: Array<number | null>): JapanFearGreedComponent[] {
+    return IDS.map((id, i) => ({
+      id,
+      label: id,
+      score: scores[i] ?? 50,
+      rawValue: scores[i] == null ? null : 0,
+      available: scores[i] != null,
+    }));
+  }
+
+  it("2026-11-06 の実値で 株価 23 / 需給 93 になる", () => {
+    const split = computeGroupSplit(build([7, 100, 100, 79, 38]));
+    expect(split).toEqual({ price: 23, supply: 93, gap: 70 });
+    expect(isGroupSplitNotable(split)).toBe(true);
+  });
+
+  it("差が閾値ちょうどなら補足対象、1 小さければ対象外", () => {
+    const at = computeGroupSplit(build([40, 70, 70, 70, 40]));
+    expect(at?.gap).toBe(GROUP_SPLIT_THRESHOLD);
+    expect(isGroupSplitNotable(at)).toBe(true);
+
+    const below = computeGroupSplit(build([41, 70, 70, 70, 41]));
+    expect(below?.gap).toBe(GROUP_SPLIT_THRESHOLD - 1);
+    expect(isGroupSplitNotable(below)).toBe(false);
+  });
+
+  it("需給のほうが低い場合も差の絶対値で判定する", () => {
+    const split = computeGroupSplit(build([80, 30, 30, 30, 80]));
+    expect(split?.gap).toBe(-50);
+    expect(isGroupSplitNotable(split)).toBe(true);
+  });
+
+  it("欠損要素は除いて平均する", () => {
+    const split = computeGroupSplit(build([20, null, 90, 70, null]));
+    expect(split).toEqual({ price: 20, supply: 80, gap: 60 });
+  });
+
+  it("どちらかの系が全て欠損なら null", () => {
+    expect(computeGroupSplit(build([null, 90, 90, 90, null]))).toBeNull();
+    expect(computeGroupSplit(build([20, null, null, null, 30]))).toBeNull();
+    expect(isGroupSplitNotable(null)).toBe(false);
   });
 });

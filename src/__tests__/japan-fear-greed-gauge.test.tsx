@@ -108,4 +108,23 @@ describe("JapanFearGreedGauge", () => {
     render(<FearGreedGauge market="jp" data={data} />);
     expect(screen.getByText("—")).toBeInTheDocument();
   });
+
+  it("株価系と需給系が大きく離れた日は内訳の補足を表示する", () => {
+    // 2026-11-06 の実値: C1=7 / C2=100 / C3=100 / C4=79 / C5=38
+    const data = buildData({ score: 65, level: "過熱" });
+    const scores = [7, 100, 100, 79, 38];
+    data.components.forEach((c, i) => {
+      c.score = scores[i];
+    });
+    render(<FearGreedGauge market="jp" data={data} />);
+    expect(screen.getByText("株価 23° / 需給 93°")).toBeInTheDocument();
+    // 総合スコアはそのまま
+    expect(screen.getByText("65")).toBeInTheDocument();
+  });
+
+  it("株価系と需給系の差が小さい日は補足を表示しない", () => {
+    // 既定のテストデータ: 株価 53 / 需給 70（差 17）
+    render(<FearGreedGauge market="jp" data={buildData()} />);
+    expect(screen.queryByTestId("group-split-note")).not.toBeInTheDocument();
+  });
 });

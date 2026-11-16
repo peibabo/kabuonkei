@@ -6,6 +6,10 @@ import {
   getSentimentColor,
 } from "@/lib/sentiment";
 import type { FearGreedData, JapanFearGreedData } from "@/lib/types";
+import {
+  computeGroupSplit,
+  isGroupSplitNotable,
+} from "@/lib/japan-fear-greed";
 import ShareButton from "./share/ShareButton";
 import HistoricalPercentileBadge from "./HistoricalPercentileBadge";
 
@@ -118,6 +122,7 @@ export default function FearGreedGauge(props: Props) {
         </div>
         <div className="text-base text-gray-500 mt-0.5">（{description}）</div>
         <HistoricalPercentileBadge score={data.score} market={market} />
+        {props.market === "jp" && <GroupSplitNote data={props.data} />}
       </div>
 
       {/* 下部詳細（市場別） */}
@@ -162,6 +167,28 @@ function UsFooter({
           : "出典: CNN Business"}
       </p>
     </>
+  );
+}
+
+/**
+ * 株価系（C1・C5）と需給系（C2〜C4）が大きく離れた日だけ出す補足。
+ * 総合スコアは変えず、内訳の読み方を添える。
+ */
+function GroupSplitNote({ data }: { data: JapanFearGreedData }) {
+  const split = computeGroupSplit(data.components);
+  if (split == null || !isGroupSplitNotable(split)) return null;
+  return (
+    <div
+      className="mt-3 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs leading-relaxed text-center"
+      data-testid="group-split-note"
+    >
+      <p className="font-semibold text-gray-700">
+        株価 {split.price}° / 需給 {split.supply}°
+      </p>
+      <p className="text-gray-500 mt-0.5">
+        需給データは週次公表のため、急な値動きには遅れて反映されます
+      </p>
+    </div>
   );
 }
 

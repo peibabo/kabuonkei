@@ -28,6 +28,7 @@
 - `snapshot-merge.ts`: 日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）。`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化
 - `cron-health.ts`: 定期実行の見張りの純粋関数（`expectedRuns` で `vercel.json` の cron から起動予定を列挙 / `judgeRun` で workflow_dispatch の実行と突き合わせ / `buildReport` で通知メールを組み立て）。`scripts/check-cron-health.ts`（`npm run check:cron-health`）が使う。`scripts/__tests__/cron-health.test.ts` でユニットテスト化
 - `snapshot-backfill.ts`: 日本版FGスナップショットの C2 / C3 を「その日に公表済みだった JPX データ」で再計算する純粋関数（`recomputeEntry` / `weeksAvailableOn` / `availableFrom`）。`scripts/backfill-japan-fg-snapshots.ts`（`npm run backfill:japan-fg`）が使う。`scripts/__tests__/snapshot-backfill.test.ts` でユニットテスト化
+- `margin-score-candidates.ts`: 信用倍率スコア（C3）の定義候補（倍率の水準 / 倍率の52週レンジ位置 / 倍率の前週比 / 買残の52週レンジ位置 / 買残の4週変化率）を並べる試算用の純粋関数。`scripts/analyze-margin-score-candidates.ts`（`npm run analyze:margin-score`、永続化なし）が使う。本体のスコア計算からは参照しない。`scripts/__tests__/margin-score-candidates.test.ts` でユニットテスト化
 - `trading-date.ts`: 「どの営業日のデータか」を実行時刻ではなく日経225 の最終取引時刻から決める純粋関数（`resolveTradingDate` / `toJstIsoDate`）。スナップショットの日付とアラートの鮮度ガードが共用。`scripts/__tests__/trading-date.test.ts` でユニットテスト化
 - `stats-aggregator.ts`: 日米の過去統計生成スクリプトで共通する温度帯別リターン集計関数 `aggregateLevelReturns<K>` に加え、分析記事用の 2D 集計関数 `aggregateJointReturns<K>` を提供。`scripts/__tests__/{stats-aggregator,joint-aggregator}.test.ts` でユニットテスト化
 - `jpx-common.ts`: JPX 取得系の共通ヘルパ（`JPX_BASE` / `fetchBuffer` / `fetchText` / `firstSheetRows` / `parseNumberCell` / `digitsToIso`）。下記 `jpx-*.ts` が利用

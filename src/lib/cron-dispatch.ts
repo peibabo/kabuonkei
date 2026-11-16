@@ -48,6 +48,8 @@ export const CRON_JOBS: Record<string, readonly WorkflowDispatch[]> = {
   ],
   // 毎月 1 日 9 時台 JST
   "monthly-stats": [{ workflow: "update-historical-stats.yml" }],
+  // 毎日 20 時台 JST: 上の各ジョブが起動・成功したかを調べ、異常があれば運営者にメールする
+  "cron-health": [{ workflow: "check-cron-health.yml" }],
 };
 
 /** `Authorization: Bearer <CRON_SECRET>` を検証する。秘密値が未設定なら常に拒否する */

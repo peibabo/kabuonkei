@@ -75,6 +75,7 @@
 - `ALERTS_ALLOWED_ORIGINS` — `/api/alerts/subscribe` の Origin ホワイトリスト（カンマ区切り、任意）
 - `CRON_SECRET` — Vercel Cron が `/api/cron/[job]` を呼ぶときの認証用（`openssl rand -hex 32`）。Vercel の本番環境変数に設定
 - `GITHUB_DISPATCH_TOKEN` — `/api/cron/[job]` が GitHub Actions を起動するための Fine-grained PAT（Actions: Read and write のみ）。Vercel の本番環境変数に設定
+- `OPS_ALERT_EMAIL` — 定期実行の異常を知らせるメールの宛先（任意、GitHub の Repository Variable。未設定なら `info@kabuonkei.com`）
 
 ## 定期実行（Vercel Cron → GitHub Actions）
 
@@ -91,10 +92,12 @@
 | `alerts-jp` | `0 9 * * 1-5` | 平日 18 時台 | `check-temperature-alerts.yml`（variant=jp） |
 | `morning` | `0 22 * * 0-4` | 平日 7 時台 | `update-portfolio.yml` / `check-temperature-alerts.yml`（variant=us）/ `post-daily-tweet.yml` |
 | `monthly-stats` | `0 0 1 * *` | 毎月 1 日 9 時台 | `update-historical-stats.yml` |
+| `cron-health` | `0 11 * * *` | 毎日 20 時台 | `check-cron-health.yml`（下の「見張り」） |
 
 - **認証**: Vercel は環境変数 `CRON_SECRET` を `Authorization: Bearer ...` で送る。API 側は一致しなければ 401、`CRON_SECRET` が未設定なら常に 401
 - **GitHub トークン**: `GITHUB_DISPATCH_TOKEN` は Fine-grained personal access token（対象リポジトリ `peibabo/kabuonkei` のみ、権限は **Actions: Read and write** だけ）。有効期限が切れると起動できなくなるので、期限前に再発行して Vercel の環境変数を差し替える
 - **予備の `schedule`**: 各ワークフローの `schedule` は残してあり、Vercel からの起動が動かなかった日だけ遅れて実行される。共通の `guard` ジョブ（`.github/workflows/_fallback-guard.yml`）が「直近 20 時間に `workflow_dispatch` の実行が成功済み（または実行中）」なら schedule 起動をスキップする。スキップしないと、引け後に記録したスナップショットを深夜の為替で上書きしたり、X Bot が二重投稿したりするため。`check-temperature-alerts.yml` だけは guard を入れていない（米国版と日本版が同じワークフローで区別しにくく、Redis の last-state で再送されないため）
+- **見張り（失敗の通知）**: `check-cron-health.yml`（`npm run check:cron-health`、`scripts/check-cron-health.ts`）が毎日 JST 20 時台に、直近 26 時間の起動予定（`vercel.json` の cron × `CRON_JOBS`）それぞれについて「予定時刻から 6 時間以内に始まった `workflow_dispatch` の実行が成功したか」を調べる。失敗、または起動されていない（Vercel Cron の停止・`GITHUB_DISPATCH_TOKEN` の期限切れなど）ものがあれば、Resend で運営者にメールする（宛先は Repository Variable `OPS_ALERT_EMAIL`、未設定なら `info@kabuonkei.com`）。予備の schedule が遅れて成功していても、外部起動の経路が壊れていれば通知する。異常が続く間は毎日届く。既知の失敗で通知が不要なものは `scripts/check-cron-health.ts` の `MUTED_WORKFLOWS` に入れる（2026-11-16 時点: X API の 402 が未解決の `post-daily-tweet.yml`。解決したら外す）。`-- --dry-run` で送信せず内容を確認できる。メールの到達確認は、ワークフローを手動実行して `send_test` にチェックを入れる（架空の異常 1 件で送信する）
 - **動作確認**: Vercel ダッシュボードの Cron Jobs（実行履歴・手動実行）と、GitHub Actions の実行一覧でイベントが `workflow_dispatch` になっていること。手元からは `curl -H "Authorization: Bearer $CRON_SECRET" https://www.kabuonkei.com/api/cron/japan-snapshot`
 - **ジョブを増やすとき**: `CRON_JOBS` と `vercel.json` の両方に追加する（`src/__tests__/cron-dispatch.test.ts` が対応のずれを検出する）
 

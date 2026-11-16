@@ -61,6 +61,7 @@ async function main() {
   console.log(`  ${investorLinks.length} 件のリンクを検出`);
 
   const weeks: InvestorTradingWeek[] = [];
+  const failedInvestorFiles: string[] = [];
   const linksToFetch = investorLinks.slice(0, WEEKS_TO_FETCH);
 
   for (const link of linksToFetch) {
@@ -71,11 +72,23 @@ async function main() {
       if (week) {
         weeks.push(week);
         console.log(`    → ${week.weekLabel} (${week.startDate}〜${week.endDate})`);
+      } else {
+        failedInvestorFiles.push(link.url);
       }
     } catch (err) {
-      console.warn(`  スキップ: ${err}`);
+      console.warn(`  取得失敗: ${err}`);
+      failedInvestorFiles.push(link.url);
     }
     await sleep(1000);
+  }
+
+  // 一部の週だけ欠けたまま書き出すと、海外投資家フロー（直近 4 週の合計）が古い週で
+  // 計算されてしまう。欠けに気付けるよう、書き出し前に失敗させる
+  if (failedInvestorFiles.length > 0) {
+    throw new Error(
+      `投資部門別売買状況の ${failedInvestorFiles.length} 週分を読めません（レイアウト変更または取得失敗）: ` +
+        failedInvestorFiles.map((u) => u.split("/").pop()).join(", ")
+    );
   }
 
   // 日付昇順にソート

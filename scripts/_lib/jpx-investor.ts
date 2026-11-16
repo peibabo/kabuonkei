@@ -45,19 +45,38 @@ function senYenToOkuYen(senYen: number): number {
 
 /**
  * 横持ちレイアウトの列定義。各区分は「売 / 買 / 差引 / 合計」の 4 列で、
- * headerCol は区分見出しが入っている列（= 売の列）。差引は headerCol + 2。
+ * col は区分見出しが入っている列（= 売の列）。差引は col + 2。
  * 海外投資家は「法人」「個人」、個人は「現金」「信用」に分かれているので合算する。
- * 先頭列の見出しに name が含まれることを検証してから読む。
+ * labels は、その列の見出し行のどこかに含まれているはずの語。読む前にすべて検証する。
  */
-const ENTITY_COLUMNS: { name: string; headerCols: number[] }[] = [
-  { name: "海外投資家", headerCols: [19, 23] },
-  { name: "個人", headerCols: [11, 15] },
-  { name: "信託銀行", headerCols: [51] },
-  { name: "投資信託", headerCols: [31] },
-  { name: "事業法人", headerCols: [35] },
+interface EntityColumn {
+  col: number;
+  labels: string[];
+}
+
+const ENTITY_COLUMNS: { name: string; columns: EntityColumn[] }[] = [
+  {
+    name: "海外投資家",
+    columns: [
+      { col: 19, labels: ["海外投資家", "法人"] },
+      { col: 23, labels: ["個人"] },
+    ],
+  },
+  {
+    name: "個人",
+    columns: [
+      { col: 11, labels: ["個人", "現金"] },
+      { col: 15, labels: ["信用"] },
+    ],
+  },
+  { name: "信託銀行", columns: [{ col: 51, labels: ["信託銀行"] }] },
+  { name: "投資信託", columns: [{ col: 31, labels: ["投資信託"] }] },
+  { name: "事業法人", columns: [{ col: 35, labels: ["事業法人"] }] },
 ];
 
 const HEADER_ROWS = 7;
+/** 差引 = 買 − 売 の照合で許容する誤差（千円）。丸めの差だけを吸収する */
+const BALANCE_TOLERANCE = 1;
 
 function headerContains(rows: unknown[][], col: number, keyword: string): boolean {
   for (let i = 0; i < Math.min(HEADER_ROWS, rows.length); i++) {
@@ -80,11 +99,20 @@ export function parseInvestorXlsx(
 ): InvestorTradingWeek | null {
   const rows = firstSheetRows(buffer);
 
-  // 列配置が想定どおりか見出しで検証（レイアウト再変更の検知用）
-  for (const { name, headerCols } of ENTITY_COLUMNS) {
-    if (!headerContains(rows, headerCols[0], name)) {
-      console.warn(`  見出し「${name}」が列 ${headerCols[0]} にありません`);
-      return null;
+  // 列配置が想定どおりか見出しで検証（レイアウト再変更の検知用）。
+  // 合算する 2 列目以降と、差引の列（col + 2）の見出しも確かめる
+  for (const { name, columns } of ENTITY_COLUMNS) {
+    for (const { col, labels } of columns) {
+      for (const label of labels) {
+        if (!headerContains(rows, col, label)) {
+          console.warn(`  ${name}: 見出し「${label}」が列 ${col} にありません`);
+          return null;
+        }
+      }
+      if (!headerContains(rows, col + 2, "差引")) {
+        console.warn(`  ${name}: 列 ${col + 2} が「差引」ではありません`);
+        return null;
+      }
     }
   }
 
@@ -106,10 +134,25 @@ export function parseInvestorXlsx(
     return null;
   }
 
+  // 見出しが合っていても値の列だけずれることがあるため、差引 = 買 − 売 を数値でも照合する
+  for (const { name, columns } of ENTITY_COLUMNS) {
+    for (const { col } of columns) {
+      const sell = parseNumberCell(valueRow[col]);
+      const buy = parseNumberCell(valueRow[col + 1]);
+      const balance = parseNumberCell(valueRow[col + 2]);
+      if (Math.abs(buy - sell - balance) > BALANCE_TOLERANCE) {
+        console.warn(
+          `  ${name}: 列 ${col + 2} の差引（${balance}）が 買 − 売（${buy - sell}）と一致しません`
+        );
+        return null;
+      }
+    }
+  }
+
   const entities: InvestorTradingEntity[] = ENTITY_COLUMNS.map(
-    ({ name, headerCols }) => {
-      const net = headerCols.reduce(
-        (sum, col) => sum + parseNumberCell(valueRow[col + 2]),
+    ({ name, columns }) => {
+      const net = columns.reduce(
+        (sum, { col }) => sum + parseNumberCell(valueRow[col + 2]),
         0
       );
       return { name, netAmount: senYenToOkuYen(net) };

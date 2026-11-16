@@ -24,6 +24,7 @@
 
 - **米国版 Fear & Greed**: VIX ベース推定を主系列に採用（`src/lib/fear-greed.ts`）。S&P500 のセンチメントを示す
 - **日本版 市場温度**: C1〜C5 の 5 要素等ウェイト平均（`src/lib/japan-fear-greed/`、エントリ `computeJapanFearGreed()`）。過去統計・推移は C1+C5 の 2 要素簡易版で算出
+- **日本版アラートの判定は 5 要素の総合ではなく株価ベース（C1・C5 の平均）**（`src/lib/alerts/jp-score.ts`）。需給 3 要素が週次で遅く高止まりし、総合は極寒に届かないため。ゲージの表示は総合のまま
 - UI: `src/components/FearGreedGauge.tsx`（日米共通、PC は 2 列）
 - 詳細 → [docs/features/temperature-score.md](docs/features/temperature-score.md)
 

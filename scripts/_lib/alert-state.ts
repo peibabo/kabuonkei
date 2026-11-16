@@ -1,4 +1,5 @@
 import type { AlertKind, AlertMarket, AlertVariant } from "../../src/lib/types";
+import { computeJpAlertScore } from "../../src/lib/alerts/jp-score";
 
 export function variantOf(market: AlertMarket, kind: AlertKind): AlertVariant {
   return `${market}_${kind}` as AlertVariant;
@@ -10,8 +11,21 @@ export function jstIsoDate(now: Date = new Date()): string {
   return jst.toISOString().slice(0, 10);
 }
 
+/** 判定に必要なスナップショットの形（components は C1・C5 だけ見る） */
+export interface JpSnapshotForAlert {
+  date: string;
+  score: number;
+  components?: { nikkeiMa?: number; usdJpyMomentum?: number };
+}
+
+const isFiniteNumber = (v: unknown): v is number =>
+  typeof v === "number" && Number.isFinite(v);
+
 /**
  * JP スナップショットの最新エントリが「直近営業日の分」のときだけスコアを採用する。
+ *
+ * 返す `score` は判定用の株価ベーススコア（C1・C5 の平均、`computeJpAlertScore`）。
+ * 5要素の総合スコアは `overallScore` で返す（メールに参考値として併記する）。
  *
  * スナップショットの日付は日経225 の最終取引日（`resolveTradingDate`）で記録される。
  * 呼び出し側は同じ基準で求めた直近営業日を `expectedDate` に渡す。最新エントリが
@@ -20,15 +34,25 @@ export function jstIsoDate(now: Date = new Date()): string {
  * 休場日は直近営業日のエントリがそのまま最新なので採用され、状態は変化しない。
  */
 export function pickFreshJpScore(
-  snapshots: Array<{ date: string; score: number }> | undefined,
+  snapshots: JpSnapshotForAlert[] | undefined,
   expectedDate: string
-): { ok: true; score: number } | { ok: false; reason: string } {
+):
+  | { ok: true; score: number; overallScore: number }
+  | { ok: false; reason: string } {
   if (!snapshots || snapshots.length === 0) {
     return { ok: false, reason: "snapshots が空" };
   }
   const latest = snapshots[snapshots.length - 1];
-  if (typeof latest?.score !== "number" || !Number.isFinite(latest.score)) {
+  if (!isFiniteNumber(latest?.score)) {
     return { ok: false, reason: `最新エントリの score が不正: ${JSON.stringify(latest)}` };
+  }
+  const nikkeiMa = latest.components?.nikkeiMa;
+  const usdJpyMomentum = latest.components?.usdJpyMomentum;
+  if (!isFiniteNumber(nikkeiMa) || !isFiniteNumber(usdJpyMomentum)) {
+    return {
+      ok: false,
+      reason: `最新エントリに株価系の要素（nikkeiMa / usdJpyMomentum）がない: ${JSON.stringify(latest)}`,
+    };
   }
   if (latest.date !== expectedDate) {
     return {
@@ -36,7 +60,11 @@ export function pickFreshJpScore(
       reason: `最新スナップショットが直近営業日のものではない（latest=${latest.date}, expected=${expectedDate}）。snapshot-japan-fg job の遅延/失敗の可能性`,
     };
   }
-  return { ok: true, score: latest.score };
+  return {
+    ok: true,
+    score: computeJpAlertScore({ nikkeiMa, usdJpyMomentum }),
+    overallScore: latest.score,
+  };
 }
 
 /**

@@ -2,7 +2,7 @@
  * 温度アラート発火チェック & メール送信スクリプト
  *
  * 平日 JST 07:00（米国版）および 17:15（日本版）に GitHub Actions から起動される。
- * - 最新の F&G スコアを取得
+ * - 最新の F&G スコアを取得（日本版は株価ベース = C1・C5 の平均で判定）
  * - 前回状態（Redis）と比較し、neutral→cold/hot の遷移があれば該当 variant の購読者へ送信
  * - 送信は Resend、永続化は Upstash Redis（Vercel Marketplace の "Upstash for Redis"）
  *
@@ -48,6 +48,7 @@ import {
   missingSendEnv,
   pickFreshJpScore,
   variantOf,
+  type JpSnapshotForAlert,
 } from "./_lib/alert-state";
 import { resolveTradingDate } from "./_lib/trading-date";
 
@@ -108,10 +109,17 @@ async function latestJpTradingDate(): Promise<string> {
   return resolveTradingDate(marketTime).date;
 }
 
-async function fetchJpScore(): Promise<number | null> {
+interface JpScore {
+  /** 判定用の株価ベーススコア（C1・C5 の平均） */
+  score: number;
+  /** 5要素の総合スコア（メールに参考値として併記） */
+  overallScore: number;
+}
+
+async function fetchJpScore(): Promise<JpScore | null> {
   try {
     const raw = JSON.parse(readFileSync(JP_SNAPSHOTS_PATH, "utf-8")) as {
-      snapshots: Array<{ date: string; score: number }>;
+      snapshots: JpSnapshotForAlert[];
     };
     const picked = pickFreshJpScore(
       raw.snapshots,
@@ -121,7 +129,7 @@ async function fetchJpScore(): Promise<number | null> {
       console.error(`JP スコア不採用: ${picked.reason}`);
       return null;
     }
-    return picked.score;
+    return { score: picked.score, overallScore: picked.overallScore };
   } catch (err) {
     console.error("JP snapshot 読み込み失敗:", err);
     return null;
@@ -180,8 +188,10 @@ async function main() {
     }
   }
 
-  const score =
-    args.variant === "us" ? await fetchUsScore() : await fetchJpScore();
+  // JP は株価ベース（C1・C5）で判定する。総合スコア（5要素）はメールの参考値にだけ使う
+  const jp = args.variant === "jp" ? await fetchJpScore() : null;
+  const score = args.variant === "us" ? await fetchUsScore() : (jp?.score ?? null);
+  const overallScore = jp?.overallScore ?? null;
 
   if (score == null) {
     console.error(
@@ -191,7 +201,8 @@ async function main() {
     return;
   }
   console.log(
-    `現在スコア: ${score}（cold≤${COLD_THRESHOLD} / hot≥${HOT_THRESHOLD}）`
+    `現在スコア: ${score}（cold≤${COLD_THRESHOLD} / hot≥${HOT_THRESHOLD}）` +
+      (overallScore != null ? ` ※株価ベース。5要素の総合は ${overallScore}` : "")
   );
 
   const redis = getRedis();
@@ -233,6 +244,7 @@ async function main() {
       market: args.variant,
       kind,
       score,
+      overallScore,
       dateLabelJst: dateLabel,
       dashboardUrl: `${site}/?utm_source=email&utm_campaign=alert_${args.variant}_${kind}`,
       unsubscribeUrl,

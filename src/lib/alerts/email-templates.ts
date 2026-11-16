@@ -19,6 +19,11 @@ export interface AlertEmailInput {
   market: AlertMarket;
   kind: AlertKind;
   score: number;
+  /**
+   * 日本版のみ: 5要素の総合スコア（サイトのゲージに出る値）。
+   * 判定は株価ベース（C1・C5）なので、数字が違う理由を本文に添える。
+   */
+  overallScore?: number | null;
   dateLabelJst: string;
   dashboardUrl: string;
   unsubscribeUrl: string;
@@ -137,11 +142,17 @@ export function buildAlertEmail(input: AlertEmailInput): EmailContent {
       ].join("")
     : "";
 
+  // 日本版は株価ベースで判定するため、ゲージ（5要素の総合）と数字が違う理由を添える
+  const basisNote =
+    input.market === "jp" && input.overallScore != null
+      ? `このスコアは株価ベース（日経225 と 125 日移動平均の乖離・ドル円モメンタム）です。週次公表の需給データを含む総合スコア（サイトのゲージ）は ${input.overallScore} です。`
+      : "";
+
   const text = `${input.dateLabelJst} 時点で、${market}市場の温度が ${kind.sentiment} 圏に突入しました。
 
 スコア: ${input.score} / 100
 判定: ${kind.sentiment}（${kind.description}）
-
+${basisNote ? `\n※ ${basisNote}\n` : ""}
 ▶ ダッシュボードで詳細を見る
 ${input.dashboardUrl}
 ${similarLine ? `\n${similarLine}\n` : ""}
@@ -187,6 +198,7 @@ ${input.unsubscribeUrl}
     </tr>
   </table>
   <p><strong>判定:</strong> ${escapeHtml(kind.sentiment)}（${escapeHtml(kind.description)}）</p>
+  ${basisNote ? `<p style="color:#555;font-size:13px;">※ ${escapeHtml(basisNote)}</p>` : ""}
   <p style="margin:24px 0;">
     <a href="${escapeHtml(input.dashboardUrl)}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;">ダッシュボードで詳細を見る</a>
   </p>

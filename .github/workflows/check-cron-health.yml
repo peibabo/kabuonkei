@@ -1,0 +1,47 @@
+name: Check Cron Health
+
+on:
+  # 通常は Vercel Cron（vercel.json → /api/cron/cron-health）が毎日 JST 20 時台に workflow_dispatch で起動する。
+  # Vercel からの起動そのものが止まった場合に備えて schedule も残す（外部起動が成功していれば guard ジョブがスキップする）
+  schedule:
+    # 毎日 JST 20:30 = UTC 11:30
+    - cron: '30 11 * * *'
+  workflow_dispatch: # Vercel Cron からの起動、手動実行
+    inputs:
+      send_test:
+        description: '架空の異常 1 件で通知メールの到達を確認する'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  guard:
+    permissions:
+      actions: read
+    uses: ./.github/workflows/_fallback-guard.yml
+    with:
+      workflow: check-cron-health.yml
+
+  check-cron-health:
+    needs: guard
+    # guard 自体が失敗したときは止めずに実行する
+    if: ${{ !cancelled() && needs.guard.outputs.skip != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      # 直近 1 日の起動予定が workflow_dispatch で成功しているかを調べ、異常があれば運営者にメールする
+      - run: npm run check:cron-health -- ${{ inputs.send_test && '--send-test' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ vars.RESEND_FROM_EMAIL }}
+          # 未設定なら info@kabuonkei.com に送る
+          OPS_ALERT_EMAIL: ${{ vars.OPS_ALERT_EMAIL }}

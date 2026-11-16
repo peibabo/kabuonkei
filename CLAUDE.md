@@ -18,7 +18,7 @@
 - **Vitest + Testing Library** でテスト
 - APIキャッシュ: `/api/market` Route Handler の ISR（`revalidate = 900` 秒 = 15 分）
 - デプロイ先: Vercel
-- 定期実行: GitHub Actions のワークフローを **Vercel Cron（`vercel.json`）→ `/api/cron/[job]` → `workflow_dispatch`** で起動する（GitHub の `schedule` は数時間遅れるため予備扱い）。ジョブを足すときは `src/lib/cron-dispatch.ts` の `CRON_JOBS` と `vercel.json` の両方を更新。詳細は docs/operations.md の「定期実行」
+- 定期実行: GitHub Actions のワークフローを **Vercel Cron（`vercel.json`）→ `/api/cron/[job]` → `workflow_dispatch`** で起動する（GitHub の `schedule` は数時間遅れるため予備扱い）。ジョブを足すときは `src/lib/cron-dispatch.ts` の `CRON_JOBS` と `vercel.json` の両方を更新。失敗や未起動は毎日 JST 20 時台の見張り（`check-cron-health.yml`）が運営者にメールで通知する。詳細は docs/operations.md の「定期実行」
 
 ## 温度スコア（要点）
 

@@ -14,3 +14,9 @@ export {
 } from "./aggregate";
 export { computeJapanFearGreed } from "./compute";
 export type { JapanFearGreedInputs } from "./compute";
+export {
+  GROUP_SPLIT_THRESHOLD,
+  computeGroupSplit,
+  isGroupSplitNotable,
+} from "./group-split";
+export type { GroupSplit } from "./group-split";

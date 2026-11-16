@@ -23,6 +23,10 @@ function investorRows(): unknown[][] {
   header3[11] = "個人 Individuals";
   header3[19] = "海外投資家 Foreigners ";
   const header4: unknown[] = Array(width).fill(null);
+  header4[11] = "現金取引 Cash";
+  header4[15] = "信用取引 Margin";
+  header4[19] = "法人 Institutions";
+  header4[23] = "個人 Individuals";
   header4[31] = "投資信託 Investment Trusts";
   header4[35] = "事業法人 Business Cos. ";
   const header5: unknown[] = Array(width).fill(null);
@@ -41,6 +45,16 @@ function investorRows(): unknown[][] {
   value[33] = -240496828; // 投資信託
   value[37] = -99340029; // 事業法人
   value[53] = -293051283; // 信託銀行
+  // 各区分は「売 / 買 / 差引 / 合計」。差引 = 買 − 売 になるよう売買を埋める
+  const header6: unknown[] = Array(width).fill(null);
+  header6[0] = "年月週 Year, Month, Week";
+  for (const balanceCol of [13, 17, 21, 25, 33, 37, 53]) {
+    header6[balanceCol - 2] = "売 Sales";
+    header6[balanceCol - 1] = "買 Purchases";
+    header6[balanceCol] = "差引 Balance";
+    value[balanceCol - 2] = 1_000_000_000;
+    value[balanceCol - 1] = 1_000_000_000 + (value[balanceCol] as number);
+  }
 
   return [
     ["投資部門別 株式売買状況 Stocks by Investor Type"],
@@ -49,7 +63,7 @@ function investorRows(): unknown[][] {
     header3,
     header4,
     header5,
-    ["年月週 Year, Month, Week"],
+    header6,
     shares,
     value,
   ];
@@ -116,6 +130,30 @@ describe("parseInvestorXlsx", () => {
       endDate: "2026-10-30",
     });
     expect(week).toBeNull();
+  });
+
+  it("合算する 2 列目の見出しが変わったら null を返す", () => {
+    const rows = investorRows();
+    rows[4][23] = "証券会社 Securities Cos."; // 海外投資家の「個人」列が別の区分に
+    expect(
+      parseInvestorXlsx(toXlsxBuffer(rows), { startDate: "2026-10-26", endDate: "2026-10-30" })
+    ).toBeNull();
+  });
+
+  it("差引の列がずれていたら null を返す", () => {
+    const rows = investorRows();
+    rows[6][21] = "合計 Total";
+    expect(
+      parseInvestorXlsx(toXlsxBuffer(rows), { startDate: "2026-10-26", endDate: "2026-10-30" })
+    ).toBeNull();
+  });
+
+  it("差引が 買 − 売 と一致しなければ null を返す", () => {
+    const rows = investorRows();
+    rows[8][53] = (rows[8][53] as number) + 5000; // 信託銀行の差引だけ食い違う
+    expect(
+      parseInvestorXlsx(toXlsxBuffer(rows), { startDate: "2026-10-26", endDate: "2026-10-30" })
+    ).toBeNull();
   });
 });
 

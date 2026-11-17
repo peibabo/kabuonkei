@@ -32,7 +32,7 @@
 
 | # | タイトル（仮） | 型 | 主データ | 状態 |
 |---|---|---|---|---|
-| 001 | 日本版「Fear & Greed Index」が無かったので、自分で作った | 開発ストーリー | japan-historical-stats / japan-temperature-history | 原稿あり（[001-japan-fear-greed-story.md](001-japan-fear-greed-story.md)） |
+| 001 | 日本版「Fear & Greed Index」が無かったので、自分で作った | 開発ストーリー | japan-historical-stats / japan-temperature-history | 原稿あり（[001-japan-fear-greed-story.md](001-japan-fear-greed-story.md)）。公開済み（ https://note.com/ao_bubbles/n/n17cae700d518 ） |
 | 002 | 「極寒で買えば勝率100%」を疑え——111日ぶんの中身を全部バラしてみた | データ検証 | japan-temperature-history / japan-historical-stats | 原稿あり（[002-gokkan-win-rate-anatomy.md](002-gokkan-win-rate-anatomy.md)）。2026-07-09 公開（ https://note.com/ao_bubbles/n/n96afcc218c65 ）。2026-11-16 に 11/13 時点のデータで全数字を再検証し、公開中の記事に反映済み（本文・アイキャッチ・期間別テーブル） |
 | 003 | VIXが30を超えた日、S&P500はどう動いたか | /analysis 転用 | vix-sp500-analysis | 予定 |
 | 004 | 信用倍率と市場温度のクロス分析 | データ検証 | margin-ratio-analysis | 予定 |
@@ -49,7 +49,7 @@
 
 ## 定義変更時の追記（2026-11-17）
 
-2026-11-17 に日本版の温度を C1（日経225 × 125日移動平均乖離）単独に変更した。公開済みの 001・002 は本文を書き換えず、各原稿の末尾にある「【追記 2026/11/17】」を note 記事の冒頭に貼り付ける（貼り付けは手動）。以後の記事は新しい定義の数字で書く。
+2026-11-17 に日本版の温度を C1（日経225 × 125日移動平均乖離）単独に変更した。公開済みの 001・002 は本文を書き換えず、各原稿の末尾にある「【追記 2026/11/17】」を note 記事の冒頭に貼り付ける。2026-11-17 に 001（ https://note.com/ao_bubbles/n/n17cae700d518 ）・002 とも記事冒頭に追記して更新済み（数字はその日のデータで再検証済み）。以後の記事は新しい定義の数字で書く。
 
 ## 投稿フロー
 

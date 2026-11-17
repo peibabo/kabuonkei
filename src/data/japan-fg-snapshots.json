@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T08:16:26.833Z",
+  "generatedAt": "2026-11-17T08:16:24.949Z",
   "method": "full5",
   "snapshots": [
     {
@@ -1937,6 +1937,19 @@
         "marginRatio": 95,
         "arbitrage": 92,
         "usdJpyMomentum": 87
+      }
+    },
+    {
+      "date": "2026-11-17",
+      "score": 67,
+      "level": "過熱",
+      "availableCount": 5,
+      "components": {
+        "nikkeiMa": 15,
+        "foreignFlow": 45,
+        "marginRatio": 95,
+        "arbitrage": 92,
+        "usdJpyMomentum": 88
       }
     }
   ]

@@ -25,7 +25,7 @@
 ## `scripts/_lib/` 配下
 
 - `shared.ts`: 生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export
-- `snapshot-merge.ts`: 日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）。`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化
+- `snapshot-merge.ts`: 旧 5 要素版スナップショット（2026-11 に記録停止）の型 `SnapshotEntry` / `SnapshotFile` と追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）。型は backfill・試算スクリプトが使う。追記関数は記録停止後は本番で使っていない（`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化）
 - `cron-health.ts`: 定期実行の見張りの純粋関数（`expectedRuns` で `vercel.json` の cron から起動予定を列挙 / `judgeRun` で workflow_dispatch の実行と突き合わせ / `buildReport` で通知メールを組み立て）。`scripts/check-cron-health.ts`（`npm run check:cron-health`）が使う。`scripts/__tests__/cron-health.test.ts` でユニットテスト化
 - `japan-temperature.ts`: 日本版 市場温度（日経225 × 125日移動平均乖離）の日次系列を計算する純粋関数 `computeJapanTemperatureSeries`。過去推移・過去統計・類似日・業種ヒートマップの生成スクリプトが共通で使う。`scripts/__tests__/japan-temperature.test.ts` でユニットテスト化
 - `snapshot-backfill.ts`: 旧 5 要素版スナップショット（2026-11 に記録停止）の C2 / C3 を「その日に公表済みだった JPX データ」で再計算する純粋関数（`recomputeEntry` / `weeksAvailableOn` / `availableFrom`）。`scripts/backfill-japan-fg-snapshots.ts`（`npm run backfill:japan-fg`）が使う。`scripts/__tests__/snapshot-backfill.test.ts` でユニットテスト化

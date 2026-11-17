@@ -14,7 +14,7 @@ export function normalizeNikkeiMaDeviation(
   return mapToScore(deviationPct, fear, greed);
 }
 
-/** C2: 海外投資家の直近4週累積売買差引（億円）から0-100を算出 */
+/** 需給: 海外投資家の直近4週累積売買差引（億円）から0-100を算出 */
 export function normalizeForeignFlow(sum4wOkuYen: number): number {
   if (!Number.isFinite(sum4wOkuYen)) return 50;
   const { fear, greed } = JAPAN_FG_THRESHOLDS.foreignFlow4wOkuYen;

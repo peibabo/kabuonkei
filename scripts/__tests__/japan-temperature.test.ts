@@ -4,6 +4,7 @@ import {
   MA_WINDOW,
   computeJapanTemperatureSeries,
 } from "../_lib/japan-temperature";
+import { computeJapanFearGreed } from "../../src/lib/japan-fear-greed";
 
 /** 2024-01-01 から n 日分の終値 Map */
 function closes(values: number[]): Map<string, number> {
@@ -37,5 +38,27 @@ describe("computeJapanTemperatureSeries", () => {
     const series = computeJapanTemperatureSeries(closes(values));
     expect(series[0].score).toBeGreaterThan(50);
     expect(series[1].score).toBe(50);
+  });
+
+  it("ライブ計算（computeJapanFearGreed）と同じ終値列なら毎日同じスコアになる", () => {
+    // 上下にゆらぐ 300 日分の終値
+    const values = Array.from({ length: 300 }, (_, i) =>
+      Math.round(30000 * (1 + 0.12 * Math.sin(i / 17) + 0.03 * Math.cos(i / 3))),
+    );
+    const map = closes(values);
+    const dates = [...map.keys()];
+    const series = computeJapanTemperatureSeries(map);
+    for (const p of series) {
+      const i = dates.indexOf(p.date);
+      // ライブはその日までのチャート（末尾 = 当日）と当日の現在値を受け取る
+      const chart = dates.slice(0, i + 1).map((d) => ({ date: d, value: map.get(d)! }));
+      const live = computeJapanFearGreed({
+        nikkei225Chart: chart,
+        nikkei225Price: map.get(p.date)!,
+        investorTrading: null,
+        marginTrading: null,
+      });
+      expect(live?.score).toBe(p.score);
+    }
   });
 });

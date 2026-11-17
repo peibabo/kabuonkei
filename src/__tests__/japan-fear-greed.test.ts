@@ -296,6 +296,16 @@ describe("computeJapanFearGreed", () => {
     ]);
   });
 
+  it("現在値が取れなければチャート末尾の終値で計算する", () => {
+    const result = computeJapanFearGreed({
+      nikkei225Chart: chartWithLast(30000 * 0.85),
+      nikkei225Price: null,
+      investorTrading: null,
+      marginTrading: null,
+    });
+    expect(result?.score).toBe(0);
+  });
+
   it("需給データが無ければ supply は null（市場温度は出す）", () => {
     const result = computeJapanFearGreed({
       nikkei225Chart: chartWithLast(30000),

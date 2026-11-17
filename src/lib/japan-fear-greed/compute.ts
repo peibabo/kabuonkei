@@ -78,19 +78,19 @@ export function computeJapanFearGreed(
  * ゲージ・推移チャート・アラートの値を一致させるため。
  */
 function buildNikkeiMa(inputs: JapanFearGreedInputs): JapanFearGreedComponent {
-  const ma125 = inputs.nikkei225Chart
-    ? calcMa125(inputs.nikkei225Chart.slice(0, -1))
-    : null;
-  if (inputs.nikkei225Price == null || ma125 == null) {
+  const chart = inputs.nikkei225Chart;
+  const ma125 = chart ? calcMa125(chart.slice(0, -1)) : null;
+  // 現在値（quote）が取れないときは、チャート末尾の終値で代わりに計算する
+  const price = inputs.nikkei225Price ?? chart?.at(-1)?.value ?? null;
+  if (price == null || ma125 == null) {
     return buildUnavailableComponent("nikkeiMa", COMPONENT_LABELS.nikkeiMa, "price");
   }
-  const rawValue =
-    Math.round(((inputs.nikkei225Price - ma125) / ma125) * 10000) / 100;
+  const rawValue = Math.round(((price - ma125) / ma125) * 10000) / 100;
   return buildAvailableComponent({
     id: "nikkeiMa",
     label: COMPONENT_LABELS.nikkeiMa,
     group: "price",
-    score: normalizeNikkeiMaDeviation(inputs.nikkei225Price, ma125),
+    score: normalizeNikkeiMaDeviation(price, ma125),
     rawValue,
     note: "125日移動平均乖離率（%）",
   });

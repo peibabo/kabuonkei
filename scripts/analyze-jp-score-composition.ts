@@ -6,8 +6,8 @@
  *   (2) 急落日（前日比 -5% 以下など）を極寒として拾えたか
  *
  * 要素:
- *   c1    日経225 の 125 日移動平均乖離（±15%）— 現行 C1
- *   c5    ドル円 50 日モメンタム（±5%）— 現行 C5
+ *   c1    日経225 の 125 日移動平均乖離（±15%）— 市場温度（C1）
+ *   c5    ドル円 50 日モメンタム（±5%）— 旧 C5
  *   ad    騰落レシオ（25 日、70〜130）— 現在の日経225 構成銘柄から計算
  *   ma25  日経225 の 25 日移動平均乖離（±8%）
  *
@@ -221,20 +221,25 @@ async function main() {
 
   const rows = buildElementRows({ nikkei, usdJpy, stocks });
 
-  // --- 検算: 公開中の 2 要素版の過去推移と突き合わせる ---
+  // --- 検算: 公開中の過去推移と突き合わせる ---
+  // 2026-11-17 以降の推移ファイルは score = C1 で c1 / c5 を持たない。それ以前の形式（score = C1+C5、
+  // c1 / c5 あり）でも検算できるよう、c1 がなければ score を C1 として比べる
   const history = (
     JSON.parse(readFileSync(resolve(DATA_DIR, "japan-temperature-history.json"), "utf-8")) as {
-      daily: Array<{ date: string; score: number; c1: number; c5?: number }>;
+      daily: Array<{ date: string; score: number; c1?: number; c5?: number }>;
     }
   ).daily;
   const byDate = new Map(rows.map((r) => [r.date, r]));
   const overlap = history.filter((h) => byDate.has(h.date));
   const near = (a: number | null | undefined, b: number | null | undefined, tol: number) =>
     a == null || b == null ? a == null && b == null : Math.abs(a - b) <= tol;
+  const withC5 = overlap.filter((h) => h.c5 != null);
   console.log(
     `検算: 公開中の過去推移（${history.length} 日）のうち ${overlap.length} 日が重複。` +
-      `C1 一致（±1）${overlap.filter((h) => near(h.c1, byDate.get(h.date)!.elements.c1, 1)).length} 日 / ` +
-      `C5 一致（±1）${overlap.filter((h) => near(h.c5, byDate.get(h.date)!.elements.c5, 1)).length} 日`,
+      `C1 一致（±1）${overlap.filter((h) => near(h.c1 ?? h.score, byDate.get(h.date)!.elements.c1, 1)).length} 日` +
+      (withC5.length > 0
+        ? ` / C5 一致（±1）${withC5.filter((h) => near(h.c5, byDate.get(h.date)!.elements.c5, 1)).length}/${withC5.length} 日`
+        : ""),
   );
 
   // --- 要素の分布 ---

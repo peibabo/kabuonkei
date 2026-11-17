@@ -6,10 +6,10 @@ import {
 import type { JapanFearGreedComponent } from "@/lib/types";
 
 describe("computeJpAlertScore", () => {
-  it("C1・C5 の平均（四捨五入）", () => {
-    expect(computeJpAlertScore({ nikkeiMa: 7, usdJpyMomentum: 38 })).toBe(23);
-    expect(computeJpAlertScore({ nikkeiMa: 0, usdJpyMomentum: 0 })).toBe(0);
-    expect(computeJpAlertScore({ nikkeiMa: 100, usdJpyMomentum: 60 })).toBe(80);
+  it("C1（日経225 モメンタム）をそのまま返す", () => {
+    expect(computeJpAlertScore({ nikkeiMa: 7 })).toBe(7);
+    expect(computeJpAlertScore({ nikkeiMa: 0 })).toBe(0);
+    expect(computeJpAlertScore({ nikkeiMa: 100 })).toBe(100);
   });
 });
 
@@ -26,22 +26,22 @@ describe("jpAlertScoreFromComponents", () => {
     available,
   });
 
-  it("需給 3 要素は無視して C1・C5 だけで決まる", () => {
+  it("C1 だけで決まる（需給 3 要素とドル円は無視）", () => {
     const components = [
       comp("nikkeiMa", 10),
       comp("foreignFlow", 100),
       comp("marginRatio", 100),
       comp("arbitrage", 100),
-      comp("usdJpyMomentum", 20),
+      comp("usdJpyMomentum", 90),
     ];
-    expect(jpAlertScoreFromComponents(components)).toBe(15);
+    expect(jpAlertScoreFromComponents(components)).toBe(10);
   });
 
-  it("C1・C5 のどちらかが欠損なら null（欠損値 50 を混ぜない）", () => {
+  it("C1 が欠損なら null（欠損値 50 を使わない）", () => {
     expect(
       jpAlertScoreFromComponents([
-        comp("nikkeiMa", 10),
-        comp("usdJpyMomentum", 50, false),
+        comp("nikkeiMa", 50, false),
+        comp("usdJpyMomentum", 20),
       ]),
     ).toBeNull();
     expect(jpAlertScoreFromComponents([comp("usdJpyMomentum", 20)])).toBeNull();

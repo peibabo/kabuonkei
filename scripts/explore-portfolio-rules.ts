@@ -3,7 +3,9 @@
  *
  * 目的:
  *   - 配分ルール群（対称シフト / 非対称 / 極端帯トリガー）を simulatePortfolio に流す
- *   - 温度連動 DCA（月次購入額を温度で変動、総拠出額は同じ）を独自シミュレータで計算
+ *   - 温度連動 DCA（月次購入額を温度で変動、予算の総額は同じ）を独自シミュレータで計算。
+ *     基本月額は「総額 ÷ 月数」で固定し、未来の温度は使わない。予算が尽きたら購入を止め、
+ *     使い残した現金は現金のまま残す。「同じ月に予算を使い切る普通の積立」と比べて温度の効果だけを取り出す
  *   - JP / US 両市場で α vs DCA / maxDD / Sharpe を比較する表をコンソール出力
  *
  * 実行:
@@ -133,6 +135,10 @@ const DCA_CANDIDATES: DcaCandidate[] = [
     multipliers: { 極寒: 3.0, 冷え込み: 1.8, 平温: 1.0, 過熱: 0.5, 沸騰: 0.2 },
   },
   {
+    name: "dca cold-3x only",
+    multipliers: { 極寒: 3.0, 冷え込み: 1.0, 平温: 1.0, 過熱: 1.0, 沸騰: 1.0 },
+  },
+  {
     name: "dca cold-double",
     multipliers: { 極寒: 2.0, 冷え込み: 2.0, 平温: 1.0, 過熱: 1.0, 沸騰: 1.0 },
   },
@@ -149,6 +155,12 @@ const DCA_CANDIDATES: DcaCandidate[] = [
 // ---------------------------------------------------------------------------
 
 interface ModulatedDcaResult {
+  /** 予算を使い切った月（1 始まり）。使い切らなければ null */
+  exhaustedMonth: number | null;
+  /** 月初の回数 */
+  totalMonths: number;
+  /** 最終日に残った現金（initialNav に対する %） */
+  cashLeftPct: number;
   totalReturn: number;
   cagr: number;
   maxDrawdown: number;
@@ -159,16 +171,19 @@ interface ModulatedDcaResult {
 
 /**
  * 温度連動 DCA のシミュレータ。
- * - 毎月第一営業日に「基本月額 × 当月温度帯の倍率」を株に投入
- * - 総拠出額は initialNav に等しくなるよう正規化（= 基本月額 = initialNav / Σ倍率）
- * - 現金保持（未投入分）は金利 0 前提
+ * - 毎月第一営業日に「基本月額 × 当月温度帯の倍率」を株に投入（予算の残りが上限）
+ * - 基本月額 = initialNav / planMonths（既定は期間内の月数）。
+ *   以前は initialNav / Σ倍率（全期間の温度を先に知っている前提）で正規化しており、
+ *   未来の情報を使っていた（2026-11 修正）
+ * - 使い残した現金は現金のまま（金利 0 前提）
  */
 function simulateModulatedDca(
   priceMap: Map<string, number>,
   priceDates: string[],
   scoreOf: (date: string) => number | null,
   multipliers: Multipliers,
-  initialNav: number
+  initialNav: number,
+  planMonths?: number
 ): ModulatedDcaResult {
   const filtered = priceDates.filter((d) => d >= START_DATE);
   const firstBusinessDays = new Set<string>();
@@ -185,24 +200,31 @@ function simulateModulatedDca(
     }
   }
 
-  const multSum = [...monthMultipliers.values()].reduce((a, b) => a + b, 0);
-  const baseContribution = multSum > 0 ? initialNav / multSum : 0;
+  const totalMonths = monthMultipliers.size;
+  const months = planMonths ?? totalMonths;
+  const baseContribution = months > 0 ? initialNav / months : 0;
 
   let units = 0;
   let cash = initialNav;
   let trades = 0;
+  let monthIndex = 0;
+  let exhaustedMonth: number | null = null;
   const navs: number[] = [];
 
   for (const d of filtered) {
     const price = priceMap.get(d);
     if (price == null) continue;
     if (firstBusinessDays.has(d)) {
+      monthIndex += 1;
       const mult = monthMultipliers.get(d) ?? 1.0;
       const buyAmount = Math.min(baseContribution * mult, cash);
       if (buyAmount > 0 && price > 0) {
         units += buyAmount / price;
         cash -= buyAmount;
         trades += 1;
+      }
+      if (exhaustedMonth == null && cash <= initialNav * 1e-9) {
+        exhaustedMonth = monthIndex;
       }
     }
     const nav = units * price + cash;
@@ -229,6 +251,9 @@ function simulateModulatedDca(
   const sharpe = computeSharpe(dailyReturns);
 
   return {
+    exhaustedMonth,
+    totalMonths,
+    cashLeftPct: r2((cash / initialNav) * 100),
     totalReturn: r2(totalReturn),
     cagr: r2(cagr),
     maxDrawdown: r2(maxDd),
@@ -401,6 +426,8 @@ async function main() {
   const usDcaReturn = usBaselineSim.stats.dcaReturn;
   const usDcaMaxDd = usBaselineSim.stats.dcaMaxDrawdown;
 
+  const FLAT: Multipliers = { 極寒: 1, 冷え込み: 1, 平温: 1, 過熱: 1, 沸騰: 1 };
+  const timingLines: string[] = [];
   for (const cand of DCA_CANDIDATES) {
     for (const market of ["JP", "US"] as const) {
       const priceMap = market === "JP" ? n225 : gspc;
@@ -417,6 +444,20 @@ async function main() {
       const dcaMaxDdRef = market === "JP" ? jpDcaMaxDd : usDcaMaxDd;
       const alpha = r2(result.totalReturn - dcaRef);
       const maxDdVsDca = r2(result.maxDrawdown - dcaMaxDdRef);
+      // 温度の効果だけ: 同じ月に予算を使い切る（= 同じ速さで投じる）普通の積立と比べる
+      const sameSpeed = simulateModulatedDca(
+        priceMap,
+        priceDates,
+        scoreOf,
+        FLAT,
+        DEFAULT_PORTFOLIO_RULE.initialNav,
+        result.exhaustedMonth ?? result.totalMonths
+      );
+      timingLines.push(
+        `${market} | ${cand.name.padEnd(26)} | 予算を使い切った月 ${result.exhaustedMonth ?? "—"}/${result.totalMonths}` +
+          ` | 残った現金 ${result.cashLeftPct.toFixed(0)}%` +
+          ` | 同じ速さの積立 ${pct(sameSpeed.totalReturn, 7)} | 温度の効果 ${pct(r2(result.totalReturn - sameSpeed.totalReturn), 7)}`
+      );
       const winsOnReturn = alpha > 0;
       const winsBoth = winsOnReturn && maxDdVsDca >= -5 && maxDdVsDca <= 5;
       dcaRows.push({
@@ -460,7 +501,7 @@ async function main() {
 
   console.log("");
   console.log("=".repeat(120));
-  console.log("【A-4】温度連動 DCA 候補（月次購入額を温度で変動、総拠出額は固定）");
+  console.log("【A-4】温度連動 DCA 候補（月次購入額を温度で変動、予算の総額は同じ。未来の温度は使わない）");
   console.log("=".repeat(120));
   console.log(tableHeader());
   console.log("-".repeat(120));
@@ -470,6 +511,8 @@ async function main() {
     }
     console.log("-".repeat(120));
   }
+  console.log("温度の効果だけを取り出す（多く買う分だけ予算が早く尽きる＝早めに投じる効果を除く）");
+  for (const line of timingLines) console.log(line);
 
   // ---- Winners summary ----
   const winners = [...allocRows, ...dcaRows].filter((r) => r.winsOnReturn);

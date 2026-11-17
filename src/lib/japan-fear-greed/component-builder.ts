@@ -1,12 +1,14 @@
 import type {
   JapanFearGreedComponent,
   JapanFearGreedComponentId,
+  JapanFearGreedGroup,
 } from "../types";
 
 /** 算出可能な component を生成する薄いヘルパー。rawValue と note は呼び出し側が用意する */
 export function buildAvailableComponent(args: {
   id: JapanFearGreedComponentId;
   label: string;
+  group: JapanFearGreedGroup;
   score: number;
   rawValue: number | null;
   note?: string;
@@ -14,6 +16,7 @@ export function buildAvailableComponent(args: {
   return {
     id: args.id,
     label: args.label,
+    group: args.group,
     score: args.score,
     rawValue: args.rawValue,
     available: true,
@@ -25,31 +28,29 @@ export function buildAvailableComponent(args: {
 export function buildUnavailableComponent(
   id: JapanFearGreedComponentId,
   label: string,
+  group: JapanFearGreedGroup,
 ): JapanFearGreedComponent {
   return {
     id,
     label,
+    group,
     score: 50,
     rawValue: null,
     available: false,
   };
 }
 
-/**
- * 利用可能な component 配列から重み付き平均スコアを算出する。
- * weights 未指定の component は重み 1。全要素の合計重みが 0 の場合は 50 を返す。
- */
-export function computeWeightedScore(
-  components: JapanFearGreedComponent[],
-  weights?: Partial<Record<JapanFearGreedComponentId, number>>,
-): number {
-  const available = components.filter((c) => c.available);
-  let weightedSum = 0;
-  let totalWeight = 0;
-  for (const c of available) {
-    const w = weights?.[c.id] ?? 1;
-    weightedSum += c.score * w;
-    totalWeight += w;
-  }
-  return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 50;
+/** 指定グループの利用可能な component の単純平均（四捨五入）。1 つもなければ null */
+export function averageGroupScore(
+  components: readonly JapanFearGreedComponent[],
+  group: JapanFearGreedGroup,
+): { score: number; count: number } | null {
+  const scores = components
+    .filter((c) => c.available && c.group === group)
+    .map((c) => c.score);
+  if (scores.length === 0) return null;
+  return {
+    score: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
+    count: scores.length,
+  };
 }

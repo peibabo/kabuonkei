@@ -12,7 +12,7 @@ import type {
 export interface BuildMarketDataInputs {
   fearGreed: FearGreedData;
   japanFearGreed: JapanFearGreedData | null;
-  /** 直近スナップショットの日本版温度スコア。null なら直近観測なし。 */
+  /** 前営業日の日本版温度スコア。null なら直近観測なし。 */
   previousJapanScore?: number | null;
   /** 現在の日本版温度レベルの連続営業日数（当日含む）。null なら不明。 */
   japanLevelStreak?: number | null;

@@ -5,15 +5,13 @@ import {
   ResponsiveContainer,
   ComposedChart,
   Area,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
 } from "recharts";
 import { getSentimentLevel, getSentimentColor } from "@/lib/sentiment";
 import {
-  getSimpleHistory,
-  getFullSnapshots,
+  getJapanHistory,
   sliceByDays,
   type JapanTempPoint,
 } from "@/lib/japan-temperature-history";
@@ -27,54 +25,28 @@ import {
   TREND_Y_AXIS_PROPS,
 } from "./_trend/axisProps";
 
-interface MergedRow {
-  date: string;
-  simpleScore: number | null;
-  fullScore: number | null;
-  simple?: JapanTempPoint;
-  full?: JapanTempPoint;
-}
-
 function CustomTooltip({
   active,
   payload,
   label,
 }: {
   active?: boolean;
-  payload?: Array<{ payload: MergedRow }>;
+  payload?: Array<{ payload: JapanTempPoint }>;
   label?: string;
 }) {
   if (!active || !payload || payload.length === 0) return null;
   const row = payload[0].payload;
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 text-sm min-w-[180px]">
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 text-sm min-w-[160px]">
       <p className="text-gray-500 text-xs mb-1">{label ?? row.date}</p>
-      {row.full != null && (
-        <div className="mb-1">
-          <p className="font-bold text-xs" style={{ color: getSentimentColor(row.full.score) }}>
-            本体5要素: {row.full.score}（{row.full.level}）
-          </p>
-          <p className="text-[10px] text-gray-500">
-            N225:{row.full.components?.nikkeiMa} / 海外:{row.full.components?.foreignFlow}
-            / 信用:{row.full.components?.marginRatio} / 裁定:{row.full.components?.arbitrage}
-            / 為替:{row.full.components?.usdJpyMomentum}
-          </p>
-        </div>
-      )}
-      {row.simple != null && (
-        <div>
-          <p
-            className="font-medium text-xs"
-            style={{ color: getSentimentColor(row.simple.score) }}
-          >
-            簡易版: {row.simple.score}（{getSentimentLevel(row.simple.score)}）
-          </p>
-          <p className="text-[10px] text-gray-500">
-            C1:{row.simple.c1}
-            {row.simple.c5 != null ? ` / C5:${row.simple.c5}` : ""}
-          </p>
-        </div>
+      <p className="font-bold text-xs" style={{ color: getSentimentColor(row.score) }}>
+        市場温度: {row.score}（{getSentimentLevel(row.score)}）
+      </p>
+      {row.nikkei != null && (
+        <p className="text-[10px] text-gray-500">
+          日経225: {row.nikkei.toLocaleString("ja-JP")}
+        </p>
       )}
     </div>
   );
@@ -84,46 +56,15 @@ interface Props {
   currentScore: number;
 }
 
-// 簡易版は背景の文脈データなのでグレーに固定し、本体5要素版（温度色）と視覚的に区別する
-const SIMPLE_SERIES_COLOR = "#9ca3af";
-
 export default function JapanTemperatureTrendCard({ currentScore }: Props) {
   const [period, setPeriod] = useState<JpTrendPeriod>("3M");
-  const fullLineColor = getSentimentColor(currentScore);
+  const lineColor = getSentimentColor(currentScore);
 
-  const allSimple = useMemo(() => getSimpleHistory(), []);
-  const allFull = useMemo(() => getFullSnapshots(), []);
-
-  const displayData = useMemo<MergedRow[]>(() => {
-    const days = JP_TREND_PERIODS.days[period];
-    const simpleSlice = sliceByDays(allSimple, days);
-    const fullSlice = sliceByDays(allFull, days);
-
-    const byDate = new Map<string, MergedRow>();
-    for (const s of simpleSlice) {
-      byDate.set(s.date, {
-        date: s.date,
-        simpleScore: s.score,
-        fullScore: null,
-        simple: s,
-      });
-    }
-    for (const f of fullSlice) {
-      const existing = byDate.get(f.date);
-      if (existing) {
-        existing.fullScore = f.score;
-        existing.full = f;
-      } else {
-        byDate.set(f.date, {
-          date: f.date,
-          simpleScore: null,
-          fullScore: f.score,
-          full: f,
-        });
-      }
-    }
-    return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
-  }, [allSimple, allFull, period]);
+  const allHistory = useMemo(() => getJapanHistory(), []);
+  const displayData = useMemo(
+    () => sliceByDays(allHistory, JP_TREND_PERIODS.days[period]),
+    [allHistory, period],
+  );
 
   if (displayData.length === 0) {
     return (
@@ -140,7 +81,6 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
 
   const longPeriod = period === "5Y" || period === "10Y";
   const tickInterval = JP_TREND_PERIODS.tickIntervals[period];
-  const hasFullSnapshots = displayData.some((d) => d.fullScore != null);
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
@@ -159,8 +99,8 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
         >
           <defs>
             <linearGradient id="japanTemperatureGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={SIMPLE_SERIES_COLOR} stopOpacity={0.15} />
-              <stop offset="95%" stopColor={SIMPLE_SERIES_COLOR} stopOpacity={0} />
+              <stop offset="5%" stopColor={lineColor} stopOpacity={0.15} />
+              <stop offset="95%" stopColor={lineColor} stopOpacity={0} />
             </linearGradient>
           </defs>
 
@@ -176,41 +116,21 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
 
           <Area
             type="monotone"
-            dataKey="simpleScore"
-            stroke={SIMPLE_SERIES_COLOR}
-            strokeWidth={1.5}
+            dataKey="score"
+            stroke={lineColor}
+            strokeWidth={2}
             fill="url(#japanTemperatureGradient)"
-            connectNulls
             isAnimationActive={false}
-            name="simple"
-          />
-          <Line
-            type="monotone"
-            dataKey="fullScore"
-            stroke={fullLineColor}
-            strokeWidth={2.5}
-            dot={{ r: 2, fill: fullLineColor }}
-            connectNulls
-            isAnimationActive={false}
-            name="full"
+            name="score"
           />
         </ComposedChart>
       </ResponsiveContainer>
 
       <TemperatureLegend />
 
-      {/* 系列の説明 */}
-      <div className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500 leading-relaxed">
-        <p>
-          <strong>簡易版（2要素）</strong>：日経225×125日MA乖離 + USDJPY
-          50日モメンタムの平均で過去10年分を描画。
-        </p>
-        <p>
-          <strong className="ml-1">本体（5要素）</strong>
-          ：上記2要素＋海外投資家フロー・信用倍率・裁定残の5要素平均を平日JST17:00に日次記録し、蓄積次第やや太い線で上書き表示
-          {hasFullSnapshots ? "中" : "（まだ記録なし）"}。
-        </p>
-      </div>
+      <p className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500 leading-relaxed">
+        市場温度 = 日経225 の終値と、直前 125 営業日の移動平均との乖離（±15% を 0〜100）。過去 10 年分を同じ式で計算しています。
+      </p>
     </div>
   );
 }

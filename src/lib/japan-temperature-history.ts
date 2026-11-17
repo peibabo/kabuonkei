@@ -1,117 +1,48 @@
-import simpleData from "@/data/japan-temperature-history.json";
-import snapshotData from "@/data/japan-fg-snapshots.json";
+import historyData from "@/data/japan-temperature-history.json";
 
-export type JapanTempMethod = "simple2" | "full5";
-
-/** 日本版温度スコアの1日分。method で由来を区別する。 */
+/**
+ * 日本版 市場温度の過去推移（日次）。
+ *
+ * score は C1（日経225 の 125 日移動平均乖離を 0〜100 にしたもの）で、ゲージ・アラート・
+ * 過去統計・類似日と同じ定義。平日 17 時台に `scripts/generate-japan-temperature-history.ts` で
+ * 全期間を再生成する（価格だけから計算できるので過去分も同じ式で揃う）。
+ *
+ * 2026-11 まで記録していた 5 要素版のスナップショット（`japan-fg-snapshots.json`）は
+ * 記録として残しているが、画面では使わない。
+ */
 export interface JapanTempPoint {
   date: string; // "YYYY-MM-DD"
   score: number; // 0-100
-  method: JapanTempMethod;
-  // method === "simple2" のみ
-  c1?: number;
-  c5?: number;
+  /** 日経225 終値 */
   nikkei?: number;
-  usdjpy?: number;
-  // method === "full5" のみ
-  level?: string;
-  availableCount?: number;
-  components?: {
-    nikkeiMa: number;
-    foreignFlow: number;
-    marginRatio: number;
-    arbitrage: number;
-    usdJpyMomentum: number;
-  };
 }
 
-interface SimpleHistoryFile {
+interface HistoryFile {
   generatedAt: string;
   dataRange: { from: string; to: string };
-  method: "simple2";
+  method: string;
   note: string;
-  daily: Array<{
-    date: string;
-    score: number;
-    c1?: number;
-    c5?: number;
-    nikkei?: number;
-    usdjpy?: number;
-  }>;
+  daily: Array<{ date: string; score: number; nikkei?: number }>;
 }
 
-interface SnapshotFile {
-  generatedAt: string;
-  method: "full5";
-  snapshots: Array<{
-    date: string;
-    score: number;
-    level: string;
-    availableCount: number;
-    components: {
-      nikkeiMa: number;
-      foreignFlow: number;
-      marginRatio: number;
-      arbitrage: number;
-      usdJpyMomentum: number;
-    };
-  }>;
-}
-
-/** 静的JSONから10年簡易版の時系列を取得 */
-export function getSimpleHistory(): JapanTempPoint[] {
-  const file = simpleData as SimpleHistoryFile;
+/** 静的 JSON から市場温度の日次推移を取得（日付昇順） */
+export function getJapanHistory(): JapanTempPoint[] {
+  const file = historyData as HistoryFile;
   return file.daily.map((d) => ({
     date: d.date,
     score: d.score,
-    method: "simple2",
-    c1: d.c1,
-    c5: d.c5,
     nikkei: d.nikkei,
-    usdjpy: d.usdjpy,
   }));
-}
-
-/** 静的JSONから5要素フル版のスナップショット時系列を取得 */
-export function getFullSnapshots(): JapanTempPoint[] {
-  const file = snapshotData as SnapshotFile;
-  return file.snapshots.map((s) => ({
-    date: s.date,
-    score: s.score,
-    method: "full5",
-    level: s.level,
-    availableCount: s.availableCount,
-    components: s.components,
-  }));
-}
-
-/**
- * 簡易版とフル版スナップショットを統合。
- * 2つは別系列として描画されるため、同日付が両方にあっても両方残す。
- * 結果は日付昇順、method内でも昇順。
- */
-export function mergeJapanTemperatureData(
-  simple: JapanTempPoint[],
-  snapshots: JapanTempPoint[]
-): JapanTempPoint[] {
-  const all = [...simple, ...snapshots];
-  all.sort((a, b) => {
-    const c = a.date.localeCompare(b.date);
-    if (c !== 0) return c;
-    // 同日ならフル版を後ろに（描画で上に重なる）
-    return a.method === "full5" ? 1 : -1;
-  });
-  return all;
 }
 
 /**
  * 指定日数分だけ末尾を切り出す。
  * 日付ベース（カレンダー日数）で絞り込む。
  */
-export function sliceByDays(
-  points: JapanTempPoint[],
+export function sliceByDays<T extends { date: string }>(
+  points: readonly T[],
   days: number
-): JapanTempPoint[] {
+): T[] {
   if (points.length === 0) return [];
   const lastDate = points[points.length - 1].date;
   const cutoff = new Date(lastDate);
@@ -140,4 +71,18 @@ export function sliceByDaysAround<T extends { date: string }>(
   const startStr = start.toISOString().split("T")[0];
   const endStr = end.toISOString().split("T")[0];
   return points.filter((p) => p.date >= startStr && p.date <= endStr);
+}
+
+/**
+ * sessionDate（現在値の立会日）より前で、最後に記録された温度。
+ * 「昨日比」に使う。17 時以降は当日分も記録済みなので、当日を除いて前営業日と比べる。
+ */
+export function previousScoreBefore(
+  history: readonly JapanTempPoint[],
+  sessionDate: string
+): number | null {
+  for (let i = history.length - 1; i >= 0; i--) {
+    if (history[i].date < sessionDate) return history[i].score;
+  }
+  return null;
 }

@@ -3,7 +3,7 @@
  *
  * 入力:
  *   - src/data/margin-ratio-history.json (2002〜週次)
- *   - src/data/japan-temperature-history.json (2016-04-22〜日次、C1+C5 簡易スコア)
+ *   - src/data/japan-temperature-history.json (2016-04-22〜日次、市場温度 = 日経225 × 125日移動平均乖離)
  *   - ^N225 日次終値（Yahoo Finance、上記と重なる期間）
  *
  * 出力: src/data/margin-ratio-analysis.json
@@ -369,7 +369,7 @@ async function main() {
     ratioQuartiles,
     latestContext,
     note:
-      "各週次の信用倍率 (JPX 公表の 二市場計 合計) を申込日 (金曜) の温度スコア (C1+C5 簡易版) と " +
+      "各週次の信用倍率 (JPX 公表の 二市場計 合計) を申込日 (金曜) の市場温度 (日経225 × 125日移動平均乖離) と " +
       "対応する日経225 終値に結合。将来リターンは申込日終値から 30/90/180 カレンダー日先の ^N225 終値で計算。" +
       "読者が実際に行動するまでには JPX 公表までの T+3〜5 営業日ほどのラグがあるが、1 ヶ月以上の horizon では影響は小さい。",
   };

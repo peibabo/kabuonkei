@@ -23,8 +23,9 @@
 ## 温度スコア（要点）
 
 - **米国版 Fear & Greed**: VIX ベース推定を主系列に採用（`src/lib/fear-greed.ts`）。S&P500 のセンチメントを示す
-- **日本版 市場温度**: C1〜C5 の 5 要素等ウェイト平均（`src/lib/japan-fear-greed/`、エントリ `computeJapanFearGreed()`）。過去統計・推移は C1+C5 の 2 要素簡易版で算出
-- **日本版アラートの判定は 5 要素の総合ではなく C1（日経225 モメンタム）単独**（`src/lib/alerts/jp-score.ts`）。需給 3 要素が週次で遅く高止まりし総合は極寒に届かないこと、C5 を足すと過去データで通知後の成績が悪化することが理由。ゲージの表示は総合のままなので、総合が過熱でも極寒通知が出る日がある
+- **日本版 市場温度**: C1（日経225 の終値と直前 125 営業日の移動平均との乖離、±15% を 0〜100）単独（`src/lib/japan-fear-greed/`、エントリ `computeJapanFearGreed()`。過去系列は `scripts/_lib/japan-temperature.ts`）。ゲージ・推移・過去統計・類似日・アラート・ポートフォリオはすべてこの 1 つの定義で、時系列は `japan-temperature-history.json`
+- **需給の温度**: 海外投資家フロー（4 週累計）と信用買い残の 4 週変化の平均。ゲージ下の別枠に参考表示し、市場温度・アラートには混ぜない（将来リターンとの関係は未検証）
+- 2026-11-17 に 5 要素の等ウェイト平均から切り替えた（需給の高止まりで急落を映さない・裁定残が常に張り付く・ドル円を足すと過去データで悪化）。旧 5 要素版の記録 `japan-fg-snapshots.json` は書き換えずに残し、画面では使わない
 - UI: `src/components/FearGreedGauge.tsx`（日米共通、PC は 2 列）
 - 詳細 → [docs/features/temperature-score.md](docs/features/temperature-score.md)
 
@@ -56,4 +57,3 @@
 - **CNN Fear & Greed API**: サーバーサイドからのリクエストを bot 検知 (418) でブロック。現在は VIX ベース推定値でフォールバック中
 - **日経VI (`^JNV`)**: Yahoo Finance にシンボルが存在しない。別データソース（JPX or J-Quants）が必要
 - **yahoo-finance2 v3**: `new YahooFinance()` でインスタンス化が必要（v2 の `import yahooFinance from ...` の直接利用は不可）
-- **日本版過去統計の非対称性**: 本体の 5 要素スコアは C2/C3/C4 の過去データが未整備のため、過去統計は 2 要素簡易版で計算している

@@ -1,7 +1,7 @@
 /**
  * 温度連動バーチャルポートフォリオの過去10年バックテストを生成するスクリプト。
  *
- * - 日本: ^N225 + 現金（日本版温度スコア = C1+C5 で駆動）
+ * - 日本: ^N225 + 現金（日本版 市場温度 = 日経225 × 125日移動平均乖離 で駆動）
  * - 米国: ^GSPC + 現金（VIX → estimateFearGreedFromVix で駆動）
  * - 月次リバランス（各月の第一営業日）
  * - 現金金利 / 手数料 / 税金は 0（記事で明記）
@@ -231,7 +231,7 @@ async function main() {
   const vix = await fetchDailyCloses(yahooFinance, "^VIX", period1, period2);
   console.log(`  → ${vix.size} 日分`);
 
-  // 日本温度履歴 JSON（既存、10 年分 C1+C5 スコア）
+  // 日本温度履歴 JSON（既存、10 年分の市場温度）
   const jpHistoryPath = resolve(
     __dirname,
     "../src/data/japan-temperature-history.json"

@@ -21,14 +21,21 @@ export function normalizeForeignFlow(sum4wOkuYen: number): number {
   return mapToScore(sum4wOkuYen, fear, greed);
 }
 
-/** C3: 信用倍率から0-100を算出（高いほど個人過熱=greed側） */
+/** 需給: 信用買い残の4週変化率（%）から0-100を算出（買残が減る=投げ売り=fear側） */
+export function normalizeMarginBuyChange(changePct: number): number {
+  if (!Number.isFinite(changePct)) return 50;
+  const { fear, greed } = JAPAN_FG_THRESHOLDS.marginBuyChange4wPct;
+  return mapToScore(changePct, fear, greed);
+}
+
+/** 旧C3: 信用倍率から0-100を算出（旧 5 要素版。現行のスコアには使わない） */
 export function normalizeMarginRatio(ratio: number): number {
   if (!Number.isFinite(ratio) || ratio < 0) return 50;
   const { fear, greed } = JAPAN_FG_THRESHOLDS.marginRatio;
   return mapToScore(ratio, fear, greed);
 }
 
-/** C4: 裁定残の買い残・売り残比率から0-100を算出 */
+/** 旧C4: 裁定残の買い残・売り残比率から0-100を算出（旧 5 要素版。現行のスコアには使わない） */
 export function normalizeArbitrageBalance(
   buyBalance: number,
   sellBalance: number
@@ -40,7 +47,7 @@ export function normalizeArbitrageBalance(
   return mapToScore(ratio, fear, greed);
 }
 
-/** C5: USDJPY 50日モメンタム（%）から0-100を算出（円安=greed） */
+/** 旧C5: USDJPY 50日モメンタム（%）から0-100を算出（旧 5 要素版。現行のスコアには使わない） */
 export function normalizeUsdJpyMomentum(
   currentRate: number,
   rate50dAgo: number

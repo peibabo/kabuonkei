@@ -5,7 +5,7 @@
  * 温度と対象市場を入れ替えた組み合わせで温度帯別リターンを集計する。
  *
  * - usTempJpIdx: 米国温度（VIX 推定スコア）× 日経225（^N225）
- * - jpTempUsIdx: 日本温度（C1+C5 簡易スコア / 10年 JSON を再利用）× S&P500（^GSPC）
+ * - jpTempUsIdx: 日本温度（市場温度 = 日経225 × 125日移動平均乖離 / 10年 JSON を再利用）× S&P500（^GSPC）
  *
  * 温度と対象市場が異なるため同市場統計より相関が弱い可能性あり（UI 側で明示する）。
  *
@@ -119,7 +119,7 @@ async function main() {
     priceMap: nikkeiMap,
   });
 
-  // --- jpTempUsIdx: 日本温度（C1+C5 簡易 10年） × S&P500 ---
+  // --- jpTempUsIdx: 日本温度（市場温度 10年） × S&P500 ---
   console.log("\n=== jpTempUsIdx（日本温度 × S&P500）===");
   const jpHistPath = resolve(
     __dirname,

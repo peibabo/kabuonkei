@@ -17,7 +17,6 @@ import SimilarDaysSection from "./dashboard/SimilarDaysSection";
 import JapanMarketSection from "./dashboard/JapanMarketSection";
 import MarketDataSection from "./dashboard/MarketDataSection";
 import AlertBanner from "./alerts/AlertBanner";
-import { jpAlertScoreFromComponents } from "@/lib/alerts/jp-score";
 import HeadlineHero from "./hero/HeadlineHero";
 import TemperatureTiles from "./hero/TemperatureTiles";
 
@@ -42,11 +41,7 @@ export default function Dashboard() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <DashboardHeader lastUpdated={data.lastUpdated} />
 
-      {/* 日本版アラートは C1（日経225 モメンタム）で判定するので、バナーも同じ値で極端判定する */}
-      <AlertBanner
-        japanScore={jpAlertScoreFromComponents(data.japanFearGreed?.components)}
-        usScore={usScore}
-      />
+      <AlertBanner japanScore={japanScore} usScore={usScore} />
 
       {/* 朝刊風ヒーロー（B 案）: 見出し */}
       <HeadlineHero

@@ -15,7 +15,7 @@ import {
 } from "@/lib/events";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 import {
-  getSimpleHistory,
+  getJapanHistory,
   sliceByDaysAround,
 } from "@/lib/japan-temperature-history";
 import { getStaticTemperatureHistory } from "@/lib/temperature-history";
@@ -139,7 +139,7 @@ export default async function EventPage({
 
   const enriched = getEnrichedEntry(slug);
 
-  const jpHistory = getSimpleHistory();
+  const jpHistory = getJapanHistory();
   const jpWindow = sliceByDaysAround(
     jpHistory,
     event.date,
@@ -226,7 +226,7 @@ export default async function EventPage({
           <ScoreBadge score={usScoreOnDay} marketLabel="🇺🇸 米国（S&P500）" />
         </div>
         <p className="text-xs text-gray-500 mt-2">
-          ※ 日本版は C1+C5 簡易スコア、米国版は VIX ベース推定値。履歴範囲外の日付は「履歴範囲外」と表示されます。
+          ※ 日本版は日経225 と 125 日移動平均の乖離から計算する市場温度、米国版は VIX ベース推定値。履歴範囲外の日付は「履歴範囲外」と表示されます。
         </p>
       </section>
 
@@ -249,7 +249,7 @@ export default async function EventPage({
         </h2>
         <div className="grid grid-cols-1 gap-4">
           <EventTrendChart
-            title="🇯🇵 日本版（C1+C5 簡易スコア）"
+            title="🇯🇵 日本版（日経225 × 125日移動平均乖離）"
             data={jpWindow.map((p) => ({ date: p.date, score: p.score }))}
             eventDate={event.date}
             lineColor="#ea580c"

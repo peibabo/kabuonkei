@@ -1,7 +1,7 @@
 /**
  * 「今日の類似日」機能用のデータ生成スクリプト + イベント詳細ページ用リターン事前計算
  *
- * 日本版（日経225 + USDJPY）と米国版（VIX + S&P500）について、
+ * 日本版（日経225 の 125 日移動平均乖離 = 市場温度）と米国版（VIX + S&P500）について、
  * 過去11年の各営業日ごとに
  *  - その日の温度スコア
  *  - その日からの 1ヶ月後 / 3ヶ月後 / 6ヶ月後の指数リターン
@@ -17,10 +17,7 @@
 import YahooFinance from "yahoo-finance2";
 import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
-import {
-  normalizeNikkeiMaDeviation,
-  normalizeUsdJpyMomentum,
-} from "../src/lib/japan-fear-greed";
+import { computeJapanTemperatureSeries } from "./_lib/japan-temperature";
 import type {
   SimilarDayEntry,
   SimilarDaysFile,
@@ -41,8 +38,6 @@ const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
 // 最古イベント (2015-08-24) をカバーするため 11 年遡る
 const YEARS_BACK = 11;
-const MA_WINDOW = 125;
-const MOMENTUM_WINDOW = 50;
 
 function computeReturn(from: number, to: number | null): number | null {
   if (to == null) return null;
@@ -71,50 +66,13 @@ async function generateJapan(period1: string, period2: string): Promise<JapanRes
     period2,
   );
   console.log(`  → ${nikkeiMap.size} 日分取得`);
-  await sleep(2000);
-
-  console.log("取得中: USDJPY=X...");
-  const usdJpyMap = await fetchDailyCloses(
-    yahooFinance,
-    "USDJPY=X",
-    period1,
-    period2,
-  );
-  console.log(`  → ${usdJpyMap.size} 日分取得`);
 
   const nikkeiDates = [...nikkeiMap.keys()].sort();
-  const usdJpyDates = [...usdJpyMap.keys()].sort();
 
   const daily: SimilarDayEntry[] = [];
 
-  for (let i = MA_WINDOW; i < nikkeiDates.length; i++) {
-    const date = nikkeiDates[i];
-    const nikkeiPrice = nikkeiMap.get(date);
-    if (nikkeiPrice == null) continue;
-
-    const maWindow = nikkeiDates
-      .slice(i - MA_WINDOW, i)
-      .map((d) => nikkeiMap.get(d))
-      .filter((v): v is number => v != null);
-    if (maWindow.length < MA_WINDOW) continue;
-    const ma125 = maWindow.reduce((a, b) => a + b, 0) / maWindow.length;
-    const c1 = normalizeNikkeiMaDeviation(nikkeiPrice, ma125);
-
-    const usdJpyIdx = usdJpyDates.indexOf(date);
-    let c5: number | null = null;
-    if (usdJpyIdx >= MOMENTUM_WINDOW) {
-      const currentUsdJpy = usdJpyMap.get(date);
-      const pastDate = usdJpyDates[usdJpyIdx - MOMENTUM_WINDOW];
-      const pastUsdJpy = usdJpyMap.get(pastDate);
-      if (currentUsdJpy != null && pastUsdJpy != null) {
-        c5 = normalizeUsdJpyMomentum(currentUsdJpy, pastUsdJpy);
-      }
-    }
-
-    const scores = [c1];
-    if (c5 != null) scores.push(c5);
-    const score = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
-
+  for (const { date, score } of computeJapanTemperatureSeries(nikkeiMap)) {
+    const nikkeiPrice = nikkeiMap.get(date)!;
     const price1m = findForwardPrice(nikkeiMap, nikkeiDates, date, 30);
     const price3m = findForwardPrice(nikkeiMap, nikkeiDates, date, 90);
     const price6m = findForwardPrice(nikkeiMap, nikkeiDates, date, 180);
@@ -135,7 +93,7 @@ async function generateJapan(period1: string, period2: string): Promise<JapanRes
       dataRange: { from: period1, to: period2 },
       market: "japan",
       note:
-        "C1(日経225 vs 125日MA)とC5(USDJPY 50日モメンタム)の2要素簡易版スコア。" +
+        "市場温度（日経225 vs 125日移動平均乖離）。サイトのゲージ・アラートと同じ定義。" +
         "日経225終値をベースに将来リターンを算出。",
       daily,
     },

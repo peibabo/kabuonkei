@@ -10,7 +10,7 @@ import crossStatsData from "@/data/cross-historical-stats.json";
 /**
  * クロス分析の方向
  * - `usTempJpIdx`: 米国温度（VIX 推定）× 日経225
- * - `jpTempUsIdx`: 日本温度（C1+C5 簡易）× S&P500
+ * - `jpTempUsIdx`: 日本温度（市場温度 = 日経225 × 125日移動平均乖離）× S&P500
  */
 export type CrossDirection = "usTempJpIdx" | "jpTempUsIdx";
 

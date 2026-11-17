@@ -2,24 +2,21 @@ import { describe, it, expect } from "vitest";
 import {
   normalizeNikkeiMaDeviation,
   normalizeForeignFlow,
+  normalizeMarginBuyChange,
   normalizeMarginRatio,
   normalizeArbitrageBalance,
   normalizeUsdJpyMomentum,
   calcMa125,
   calcForeignFlow4w,
+  calcMarginBuyChange4w,
+  mergeMarginWeeks,
   computeJapanFearGreed,
   JAPAN_FG_THRESHOLDS,
-  GROUP_SPLIT_THRESHOLD,
-  computeGroupSplit,
-  isGroupSplitNotable,
 } from "@/lib/japan-fear-greed";
 import type {
-  JapanFearGreedComponent,
-  JapanFearGreedComponentId,
   ChartPoint,
   InvestorTradingData,
   MarginTradingData,
-  ArbitrageBalanceData,
 } from "@/lib/types";
 
 describe("normalizeNikkeiMaDeviation", () => {
@@ -170,15 +167,79 @@ describe("calcForeignFlow4w", () => {
   });
 });
 
+describe("normalizeMarginBuyChange", () => {
+  it("買残が 4 週で -15% なら 0、+15% なら 100、横ばいなら 50", () => {
+    expect(normalizeMarginBuyChange(-15)).toBe(0);
+    expect(normalizeMarginBuyChange(15)).toBe(100);
+    expect(normalizeMarginBuyChange(0)).toBe(50);
+  });
+
+  it("範囲外は clamp、非数値は 50", () => {
+    expect(normalizeMarginBuyChange(-40)).toBe(0);
+    expect(normalizeMarginBuyChange(NaN)).toBe(50);
+  });
+});
+
+/** 申込日（金曜）ごとの信用残。buyBalances は古い順 */
+function marginWeeks(buyBalances: number[]): MarginTradingData {
+  return {
+    generatedAt: "2026-11-12",
+    weekly: buyBalances.map((buyBalance, i) => ({
+      date: `2026-10-${String(2 + i * 7).padStart(2, "0")}`,
+      buyBalance,
+      sellBalance: 6000,
+      ratio: Math.round((buyBalance / 6000) * 100) / 100,
+    })),
+  };
+}
+
+describe("calcMarginBuyChange4w", () => {
+  it("最新週と 4 週前の買残を比べる（2026-11-06 週の実値 -12.3%）", () => {
+    // 2026-10-09 → 11-06 の買残（億円）
+    const data = marginWeeks([67080.6, 66640.1, 65340.7, 65058.9, 58809.9]);
+    expect(calcMarginBuyChange4w(data)).toBeCloseTo(-12.33, 2);
+  });
+
+  it("5 週そろわなければ null", () => {
+    expect(calcMarginBuyChange4w(marginWeeks([1, 2, 3, 4]))).toBeNull();
+    expect(calcMarginBuyChange4w(null)).toBeNull();
+  });
+});
+
+describe("mergeMarginWeeks", () => {
+  const w = (date: string, buyBalance: number) => ({
+    date,
+    buyBalance,
+    sellBalance: 1000,
+    ratio: buyBalance / 1000,
+  });
+
+  it("長期履歴に直近データを足し、同じ週は直近側を優先して日付順に並べる", () => {
+    const merged = mergeMarginWeeks(
+      [w("2026-10-02", 100), w("2026-10-09", 110)],
+      { generatedAt: "2026-11-12", weekly: [w("2026-10-16", 120), w("2026-10-09", 111)] },
+    );
+    expect(merged?.weekly.map((x) => [x.date, x.buyBalance])).toEqual([
+      ["2026-10-02", 100],
+      ["2026-10-09", 111],
+      ["2026-10-16", 120],
+    ]);
+    expect(merged?.generatedAt).toBe("2026-11-12");
+  });
+
+  it("どちらも空なら null、履歴だけでも返す", () => {
+    expect(mergeMarginWeeks([], null)).toBeNull();
+    expect(mergeMarginWeeks([w("2026-10-02", 100)], null)?.weekly).toHaveLength(1);
+  });
+});
+
 describe("computeJapanFearGreed", () => {
-  const nikkei225Chart: ChartPoint[] = Array.from({ length: 130 }, (_, i) => ({
-    date: `2026-01-${i + 1}`,
-    value: 30000,
-  }));
-  const usdJpyChart: ChartPoint[] = Array.from({ length: 60 }, (_, i) => ({
-    date: `2026-01-${i + 1}`,
-    value: 150,
-  }));
+  /** 126 本のうち最後の 1 本だけ price に置き換えたチャート（MA は直前 125 本 = 30000） */
+  const chartWithLast = (price: number): ChartPoint[] =>
+    Array.from({ length: 126 }, (_, i) => ({
+      date: `d${String(i).padStart(3, "0")}`,
+      value: i === 125 ? price : 30000,
+    }));
   const investorTrading: InvestorTradingData = {
     generatedAt: "2026-04-17",
     weeks: [
@@ -189,167 +250,79 @@ describe("computeJapanFearGreed", () => {
         entities: [
           { name: "海外投資家", netAmount: 10000 },
           { name: "個人", netAmount: 0 },
-          { name: "信託銀行", netAmount: 0 },
-          { name: "投資信託", netAmount: 0 },
-          { name: "事業法人", netAmount: 0 },
         ],
       },
     ],
   };
-  const marginTrading: MarginTradingData = {
-    generatedAt: "2026-04-17",
-    weekly: [
-      {
-        date: "2026-04-10",
-        buyBalance: 50000,
-        sellBalance: 10000,
-        ratio: 3.5,
-      },
-    ],
-  };
-  const arbitrageBalance: ArbitrageBalanceData = {
-    generatedAt: "2026-04-17",
-    daily: [{ date: "2026-04-14", buyBalance: 1000, sellBalance: 100 }],
-  };
 
-  it("5要素すべて揃うケースで合成される", () => {
+  it("市場温度は C1（日経225 の 125 日移動平均乖離）だけで決まる", () => {
     const result = computeJapanFearGreed({
-      nikkei225Chart,
-      nikkei225Price: 30000,
-      usdJpyRate: 150,
-      usdJpyChart,
+      nikkei225Chart: chartWithLast(30000 * 0.85),
+      nikkei225Price: 30000 * 0.85, // -15% → 0
       investorTrading,
-      marginTrading,
-      arbitrageBalance,
+      marginTrading: marginWeeks([100, 100, 100, 100, 115]), // +15% → 100
     });
-    expect(result).not.toBeNull();
-    expect(result!.availableCount).toBe(5);
-    expect(result!.score).toBeGreaterThanOrEqual(0);
-    expect(result!.score).toBeLessThanOrEqual(100);
-    expect(result!.components).toHaveLength(5);
+    expect(result?.score).toBe(0);
+    expect(result?.level).toBe("極寒");
+    // 需給は高くても市場温度には混ざらない
+    expect(result?.supply).toEqual({ score: 88, level: "沸騰", availableCount: 2 });
   });
 
-  it("欠損があっても2要素以上ならスコアを返す", () => {
+  it("移動平均はチャート末尾（= 現在値と同じ立会日）を除いて取る", () => {
+    // 末尾が現在値と同じ 33000。末尾を含めると MA が上がって乖離が小さくなる
     const result = computeJapanFearGreed({
-      nikkei225Chart,
+      nikkei225Chart: chartWithLast(33000),
+      nikkei225Price: 33000, // MA 30000 に対して +10% → 83
+      investorTrading: null,
+      marginTrading: null,
+    });
+    expect(result?.score).toBe(83);
+    expect(result?.components.find((c) => c.id === "nikkeiMa")?.rawValue).toBe(10);
+  });
+
+  it("需給の温度は海外投資家フローと信用買残 4 週変化の平均。片方だけでも出す", () => {
+    const result = computeJapanFearGreed({
+      nikkei225Chart: chartWithLast(30000),
       nikkei225Price: 30000,
-      usdJpyRate: 150,
-      usdJpyChart,
-      investorTrading: null,
+      investorTrading, // 1 週 +1 兆円 → 75
       marginTrading: null,
-      arbitrageBalance: null,
     });
-    expect(result).not.toBeNull();
-    expect(result!.availableCount).toBe(2);
+    expect(result?.score).toBe(50);
+    expect(result?.supply).toEqual({ score: 75, level: "過熱", availableCount: 1 });
+    expect(result?.components.map((c) => [c.id, c.group, c.available])).toEqual([
+      ["nikkeiMa", "price", true],
+      ["foreignFlow", "supply", true],
+      ["marginBuyChange", "supply", false],
+    ]);
   });
 
-  it("利用可能な要素が2未満ならnullを返す", () => {
+  it("需給データが無ければ supply は null（市場温度は出す）", () => {
     const result = computeJapanFearGreed({
-      nikkei225Chart: null,
-      nikkei225Price: null,
-      usdJpyRate: null,
-      usdJpyChart: null,
-      investorTrading: null,
-      marginTrading: null,
-      arbitrageBalance: null,
-    });
-    expect(result).toBeNull();
-  });
-
-  it("1要素のみで availableCount=1 ならnullを返す", () => {
-    const result = computeJapanFearGreed({
-      nikkei225Chart,
+      nikkei225Chart: chartWithLast(30000),
       nikkei225Price: 30000,
-      usdJpyRate: null,
-      usdJpyChart: null,
       investorTrading: null,
       marginTrading: null,
-      arbitrageBalance: null,
     });
-    expect(result).toBeNull();
+    expect(result?.score).toBe(50);
+    expect(result?.supply).toBeNull();
   });
 
-  it("スコアはavailable=trueの要素のみで合成される", () => {
-    const result = computeJapanFearGreed({
-      nikkei225Chart,
-      nikkei225Price: 30000, // score=50
-      usdJpyRate: 150, // score=50
-      usdJpyChart,
-      investorTrading: null,
-      marginTrading: null,
-      arbitrageBalance: null,
-    });
-    expect(result!.score).toBe(50);
-    expect(result!.availableCount).toBe(2);
-  });
-
-  it("weightsを指定すると加重平均になる", () => {
-    const result = computeJapanFearGreed(
-      {
-        nikkei225Chart,
-        nikkei225Price: 30000 * 1.15, // score=100
-        usdJpyRate: 150, // score=50
-        usdJpyChart,
-        investorTrading: null,
+  it("C1 が計算できなければ null（需給だけでは出さない）", () => {
+    expect(
+      computeJapanFearGreed({
+        nikkei225Chart: chartWithLast(30000).slice(0, 100),
+        nikkei225Price: 30000,
+        investorTrading,
+        marginTrading: marginWeeks([100, 100, 100, 100, 115]),
+      }),
+    ).toBeNull();
+    expect(
+      computeJapanFearGreed({
+        nikkei225Chart: null,
+        nikkei225Price: null,
+        investorTrading,
         marginTrading: null,
-        arbitrageBalance: null,
-      },
-      { nikkeiMa: 3, usdJpyMomentum: 1 }
-    );
-    // (100*3 + 50*1) / 4 = 87.5 → 88
-    expect(result!.score).toBe(88);
-  });
-});
-
-describe("computeGroupSplit", () => {
-  const IDS: JapanFearGreedComponentId[] = [
-    "nikkeiMa",
-    "foreignFlow",
-    "marginRatio",
-    "arbitrage",
-    "usdJpyMomentum",
-  ];
-  /** C1〜C5 の順にスコアを渡す。null は欠損 */
-  function build(scores: Array<number | null>): JapanFearGreedComponent[] {
-    return IDS.map((id, i) => ({
-      id,
-      label: id,
-      score: scores[i] ?? 50,
-      rawValue: scores[i] == null ? null : 0,
-      available: scores[i] != null,
-    }));
-  }
-
-  it("2026-11-06 の実値で 株価 23 / 需給 93 になる", () => {
-    const split = computeGroupSplit(build([7, 100, 100, 79, 38]));
-    expect(split).toEqual({ price: 23, supply: 93, gap: 70 });
-    expect(isGroupSplitNotable(split)).toBe(true);
-  });
-
-  it("差が閾値ちょうどなら補足対象、1 小さければ対象外", () => {
-    const at = computeGroupSplit(build([40, 70, 70, 70, 40]));
-    expect(at?.gap).toBe(GROUP_SPLIT_THRESHOLD);
-    expect(isGroupSplitNotable(at)).toBe(true);
-
-    const below = computeGroupSplit(build([41, 70, 70, 70, 41]));
-    expect(below?.gap).toBe(GROUP_SPLIT_THRESHOLD - 1);
-    expect(isGroupSplitNotable(below)).toBe(false);
-  });
-
-  it("需給のほうが低い場合も差の絶対値で判定する", () => {
-    const split = computeGroupSplit(build([80, 30, 30, 30, 80]));
-    expect(split?.gap).toBe(-50);
-    expect(isGroupSplitNotable(split)).toBe(true);
-  });
-
-  it("欠損要素は除いて平均する", () => {
-    const split = computeGroupSplit(build([20, null, 90, 70, null]));
-    expect(split).toEqual({ price: 20, supply: 80, gap: 60 });
-  });
-
-  it("どちらかの系が全て欠損なら null", () => {
-    expect(computeGroupSplit(build([null, 90, 90, 90, null]))).toBeNull();
-    expect(computeGroupSplit(build([20, null, null, null, 30]))).toBeNull();
-    expect(isGroupSplitNotable(null)).toBe(false);
+      }),
+    ).toBeNull();
   });
 });

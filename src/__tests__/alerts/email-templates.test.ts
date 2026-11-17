@@ -140,40 +140,4 @@ describe("variantLabel", () => {
     expect(variantLabel("jp_cold")).toContain("日本");
     expect(variantLabel("jp_hot")).toContain("日本");
   });
-
-  it("日本版は日経225 モメンタムの判定であることと、総合スコアを併記する", () => {
-    const r = buildAlertEmail({
-      market: "jp",
-      kind: "cold",
-      score: 18,
-      overallScore: 55,
-      dateLabelJst: "2026/11/06(金)",
-      dashboardUrl: "https://kabuonkei.com/",
-      unsubscribeUrl: "https://kabuonkei.com/api/alerts/unsubscribe?token=x",
-    });
-    expect(r.subject).toContain("スコア18");
-    // ゲージ（総合）と温度帯が食い違う日があるので、何が極寒なのかを件名・見出しに明記する
-    expect(r.subject).toContain("日本市場（日経225モメンタム）が極寒圏に突入");
-    expect(r.html).toContain("日本市場（日経225モメンタム）が極寒圏に突入");
-    for (const body of [r.text, r.html]) {
-      expect(body).toContain("日経225 モメンタム");
-      expect(body).toContain("総合スコア（サイトのゲージ）は 55 です");
-    }
-  });
-
-  it("米国版と、総合スコアを渡さない場合は判定基準の注記を出さない", () => {
-    const base = {
-      kind: "cold" as const,
-      score: 18,
-      dateLabelJst: "2026/11/06(金)",
-      dashboardUrl: "https://kabuonkei.com/",
-      unsubscribeUrl: "https://kabuonkei.com/api/alerts/unsubscribe?token=x",
-    };
-    const us = buildAlertEmail({ ...base, market: "us", overallScore: 55 });
-    const jpNoOverall = buildAlertEmail({ ...base, market: "jp" });
-    for (const r of [us, jpNoOverall]) {
-      expect(r.text).not.toContain("日経225 モメンタム");
-      expect(r.html).not.toContain("日経225 モメンタム");
-    }
-  });
 });

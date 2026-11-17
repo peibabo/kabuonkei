@@ -2,7 +2,7 @@
  * 温度アラート発火チェック & メール送信スクリプト
  *
  * 平日 JST 07:00（米国版）および 17:15（日本版）に GitHub Actions から起動される。
- * - 最新の F&G スコアを取得（日本版は C1 = 日経225 モメンタム単独で判定）
+ * - 最新の F&G スコアを取得（日本版は japan-temperature-history.json の最新 = 市場温度）
  * - 前回状態（Redis）と比較し、neutral→cold/hot の遷移があれば該当 variant の購読者へ送信
  * - 送信は Resend、永続化は Upstash Redis（Vercel Marketplace の "Upstash for Redis"）
  *
@@ -47,9 +47,7 @@ import {
   jstIsoDate,
   missingSendEnv,
   pickFreshJpScore,
-  replaceScores,
   variantOf,
-  type JpSnapshotForAlert,
 } from "./_lib/alert-state";
 import { resolveTradingDate } from "./_lib/trading-date";
 
@@ -62,10 +60,6 @@ const JP_SIMILAR_PATH = resolve(
 const JP_HISTORY_PATH = resolve(
   __dirname,
   "../src/data/japan-temperature-history.json"
-);
-const JP_SNAPSHOTS_PATH = resolve(
-  __dirname,
-  "../src/data/japan-fg-snapshots.json"
 );
 const EVENTS_META_PATH = resolve(__dirname, "../src/data/events-meta.json");
 
@@ -114,29 +108,19 @@ async function latestJpTradingDate(): Promise<string> {
   return resolveTradingDate(marketTime).date;
 }
 
-interface JpScore {
-  /** 判定用スコア（C1 = 日経225 モメンタム） */
-  score: number;
-  /** 5要素の総合スコア（メールに参考値として併記） */
-  overallScore: number;
-}
-
-async function fetchJpScore(): Promise<JpScore | null> {
+async function fetchJpScore(): Promise<number | null> {
   try {
-    const raw = JSON.parse(readFileSync(JP_SNAPSHOTS_PATH, "utf-8")) as {
-      snapshots: JpSnapshotForAlert[];
+    const raw = JSON.parse(readFileSync(JP_HISTORY_PATH, "utf-8")) as {
+      daily: Array<{ date: string; score: number }>;
     };
-    const picked = pickFreshJpScore(
-      raw.snapshots,
-      await latestJpTradingDate()
-    );
+    const picked = pickFreshJpScore(raw.daily, await latestJpTradingDate());
     if (!picked.ok) {
       console.error(`JP スコア不採用: ${picked.reason}`);
       return null;
     }
-    return { score: picked.score, overallScore: picked.overallScore };
+    return picked.score;
   } catch (err) {
-    console.error("JP snapshot 読み込み失敗:", err);
+    console.error("JP 温度推移の読み込み失敗:", err);
     return null;
   }
 }
@@ -155,24 +139,8 @@ function loadSimilarDays(path: string): SimilarDayEntry[] {
   return (JSON.parse(readFileSync(path, "utf-8")) as SimilarDaysFile).daily;
 }
 
-/**
- * 日本版の類似日は、判定と同じ C1（日経225 モメンタム）で探す。
- * japan-similar-days.json のスコアは C1+C5 の 2 要素版なので、過去推移の c1 に差し替える
- * （リターンはそのまま使う）。c1 のない日は対象外。
- */
-function loadJpSimilarDaysByC1(): SimilarDayEntry[] {
-  const history = JSON.parse(readFileSync(JP_HISTORY_PATH, "utf-8")) as {
-    daily: Array<{ date: string; c1: number }>;
-  };
-  return replaceScores(
-    loadSimilarDays(JP_SIMILAR_PATH),
-    new Map(history.daily.map((d) => [d.date, d.c1]))
-  );
-}
-
 function similarDayForMarket(market: AlertMarket, score: number) {
-  const entries =
-    market === "us" ? loadSimilarDays(US_SIMILAR_PATH) : loadJpSimilarDaysByC1();
+  const entries = loadSimilarDays(market === "us" ? US_SIMILAR_PATH : JP_SIMILAR_PATH);
   const events = loadEvents();
   const match = findSimilarDays(score, entries, events, 1)[0];
   if (!match) return null;
@@ -208,10 +176,8 @@ async function main() {
     }
   }
 
-  // JP は C1（日経225 モメンタム）単独で判定する。総合スコア（5要素）はメールの参考値にだけ使う
-  const jp = args.variant === "jp" ? await fetchJpScore() : null;
-  const score = args.variant === "us" ? await fetchUsScore() : (jp?.score ?? null);
-  const overallScore = jp?.overallScore ?? null;
+  const score =
+    args.variant === "us" ? await fetchUsScore() : await fetchJpScore();
 
   if (score == null) {
     console.error(
@@ -221,8 +187,7 @@ async function main() {
     return;
   }
   console.log(
-    `現在スコア: ${score}（cold≤${COLD_THRESHOLD} / hot≥${HOT_THRESHOLD}）` +
-      (overallScore != null ? ` ※日経225 モメンタム。5要素の総合は ${overallScore}` : "")
+    `現在スコア: ${score}（cold≤${COLD_THRESHOLD} / hot≥${HOT_THRESHOLD}）`
   );
 
   const redis = getRedis();
@@ -264,7 +229,6 @@ async function main() {
       market: args.variant,
       kind,
       score,
-      overallScore,
       dateLabelJst: dateLabel,
       dashboardUrl: `${site}/?utm_source=email&utm_campaign=alert_${args.variant}_${kind}`,
       unsubscribeUrl,

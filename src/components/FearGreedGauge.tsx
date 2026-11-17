@@ -5,11 +5,11 @@ import {
   getSentimentDescription,
   getSentimentColor,
 } from "@/lib/sentiment";
-import type { FearGreedData, JapanFearGreedData } from "@/lib/types";
-import {
-  computeGroupSplit,
-  isGroupSplitNotable,
-} from "@/lib/japan-fear-greed";
+import type {
+  FearGreedData,
+  JapanFearGreedComponent,
+  JapanFearGreedData,
+} from "@/lib/types";
 import ShareButton from "./share/ShareButton";
 import HistoricalPercentileBadge from "./HistoricalPercentileBadge";
 
@@ -43,7 +43,7 @@ export default function FearGreedGauge(props: Props) {
 
   const subtitleText =
     market === "jp"
-      ? "5要素総合スコア"
+      ? "日経225 × 125日移動平均乖離"
       : isEstimated
         ? "VIXベース推定値"
         : "CNN Fear & Greed";
@@ -122,7 +122,6 @@ export default function FearGreedGauge(props: Props) {
         </div>
         <div className="text-base text-gray-500 mt-0.5">（{description}）</div>
         <HistoricalPercentileBadge score={data.score} market={market} />
-        {props.market === "jp" && <GroupSplitNote data={props.data} />}
       </div>
 
       {/* 下部詳細（市場別） */}
@@ -170,55 +169,73 @@ function UsFooter({
   );
 }
 
-/**
- * 株価系（C1・C5）と需給系（C2〜C4）が大きく離れた日だけ出す補足。
- * 総合スコアは変えず、内訳の読み方を添える。
- */
-function GroupSplitNote({ data }: { data: JapanFearGreedData }) {
-  const split = computeGroupSplit(data.components);
-  if (split == null || !isGroupSplitNotable(split)) return null;
-  return (
-    <div
-      className="mt-3 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs leading-relaxed text-center"
-      data-testid="group-split-note"
-    >
-      <p className="font-semibold text-gray-700">
-        株価 {split.price}° / 需給 {split.supply}°
-      </p>
-      <p className="text-gray-500 mt-0.5">
-        需給データは週次公表のため、急な値動きには遅れて反映されます
-      </p>
-    </div>
-  );
+/** 億円の売買差引を「+1.2兆円」「-3,450億円」の形にする */
+export function formatOkuYen(okuYen: number): string {
+  const sign = okuYen > 0 ? "+" : okuYen < 0 ? "-" : "";
+  const abs = Math.abs(okuYen);
+  if (abs >= 10000) return `${sign}${(abs / 10000).toFixed(1)}兆円`;
+  return `${sign}${Math.round(abs).toLocaleString("ja-JP")}億円`;
+}
+
+function formatSignedPct(pct: number): string {
+  return `${pct > 0 ? "+" : ""}${pct.toFixed(1)}%`;
+}
+
+function formatRaw(c: JapanFearGreedComponent): string | null {
+  if (!c.available || c.rawValue == null) return null;
+  if (c.id === "foreignFlow") return `4週 ${formatOkuYen(c.rawValue)}`;
+  if (c.id === "marginBuyChange") return `4週 ${formatSignedPct(c.rawValue)}`;
+  return formatSignedPct(c.rawValue);
 }
 
 function JpFooter({ data }: { data: JapanFearGreedData }) {
+  const nikkeiMa = data.components.find((c) => c.id === "nikkeiMa");
+  const supplyComponents = data.components.filter((c) => c.group === "supply");
+  const supplyColor = data.supply ? getSentimentColor(data.supply.score) : undefined;
+
   return (
     <>
-      <div className="border-t border-gray-100 pt-4">
-        <p className="text-xs text-gray-500 mb-2 text-center">
-          構成要素（{data.availableCount}/5 利用可能）
+      {nikkeiMa?.rawValue != null && (
+        <p className="border-t border-gray-100 pt-4 text-sm text-gray-600 text-center">
+          日経225 は 125 日移動平均から{" "}
+          <span className="font-mono font-semibold text-gray-800">
+            {formatSignedPct(nikkeiMa.rawValue)}
+          </span>
         </p>
-        <div className="space-y-1.5">
-          {data.components.map((c) => {
-            const compColor = c.available
-              ? getSentimentColor(c.score)
-              : "#d1d5db";
+      )}
+
+      <div
+        className="mt-4 rounded-lg bg-gray-50 border border-gray-200 px-3 py-3"
+        data-testid="supply-temperature"
+      >
+        <div className="flex items-baseline justify-between">
+          <span className="text-xs font-semibold text-gray-700">
+            需給の温度（週次）
+          </span>
+          {data.supply ? (
+            <span className="font-mono font-semibold" style={{ color: supplyColor }}>
+              {data.supply.score}°{" "}
+              <span className="text-xs">{data.supply.level}</span>
+            </span>
+          ) : (
+            <span className="font-mono text-gray-400">—</span>
+          )}
+        </div>
+        <div className="mt-2 space-y-1">
+          {supplyComponents.map((c) => {
+            const compColor = c.available ? getSentimentColor(c.score) : "#d1d5db";
+            const raw = formatRaw(c);
             return (
-              <div
-                key={c.id}
-                className="flex items-center justify-between text-xs"
-              >
+              <div key={c.id} className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2 min-w-0">
                   <span
                     className="inline-block w-2 h-2 rounded-full flex-shrink-0"
                     style={{ backgroundColor: compColor }}
                   />
-                  <span
-                    className={`truncate ${c.available ? "text-gray-700" : "text-gray-400"}`}
-                  >
+                  <span className={`truncate ${c.available ? "text-gray-700" : "text-gray-400"}`}>
                     {c.label}
                   </span>
+                  {raw && <span className="text-gray-400 font-mono">{raw}</span>}
                 </div>
                 <span
                   className={`font-mono font-semibold ml-2 ${c.available ? "" : "text-gray-400"}`}
@@ -230,10 +247,13 @@ function JpFooter({ data }: { data: JapanFearGreedData }) {
             );
           })}
         </div>
+        <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+          JPX の週次公表データで、1〜2 週遅れて動きます。上の市場温度には含めていません
+        </p>
       </div>
 
       <p className="text-xs text-gray-400 mt-4 text-center">
-        5要素の等ウェイト平均 ｜ JPX・Yahoo Financeベース
+        市場温度 = 日経225 と 125 日移動平均の乖離（±15% を 0〜100） ｜ JPX・Yahoo Financeベース
       </p>
     </>
   );

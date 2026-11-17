@@ -12,33 +12,24 @@ import {
 } from "./indices";
 import { buildMarketData } from "./market-data/compose";
 import {
-  getFullSnapshots,
-  getSimpleHistory,
+  getJapanHistory,
+  previousScoreBefore,
 } from "./japan-temperature-history";
+import { mergeMarginWeeks } from "./japan-fear-greed";
+import marginHistory from "@/data/margin-ratio-history.json";
 import { computeJapanLevelStreak } from "./level-streak";
 import { getJstDateKey } from "./jst-date";
 
 const japanMarketData = rawJapanMarketData as unknown as JapanMarketData;
 
 /**
- * 直近観測の日本版温度スコアを返す。
- * 優先順位: full5 スナップショットの末尾 → simple2 履歴の末尾 → null。
- */
-function pickPreviousJapanScore(): number | null {
-  const snaps = getFullSnapshots();
-  if (snaps.length > 0) return snaps[snaps.length - 1].score;
-  const simple = getSimpleHistory();
-  if (simple.length > 0) return simple[simple.length - 1].score;
-  return null;
-}
-
-/**
- * 直近 7 営業日（カレンダーで N 日相当）の日本版温度スコアを返す。
- * simple2 履歴の末尾 7 件を採用。古い → 新しい順。
+ * 直近 7 営業日の日本版温度スコアを返す（古い → 新しい順）。
+ * 過去推移の末尾 7 件を採用。
  */
 function pickJapanSparkline(): number[] {
-  const simple = getSimpleHistory();
-  return simple.slice(-7).map((p) => p.score);
+  return getJapanHistory()
+    .slice(-7)
+    .map((p) => p.score);
 }
 
 /**
@@ -60,7 +51,7 @@ function buildUsSparkline(
  */
 export async function fetchAllMarketData(): Promise<MarketData> {
   // VIXを先に取得し、Fear & GreedのフォールバックにVIX値を渡す
-  // ^N225と USDJPY=Xの長期chartも並行取得（日本版温度スコア用）
+  // ^N225 の長期 chart も並行取得（日本版温度スコア用）
   const [
     volatility,
     indices,
@@ -68,15 +59,13 @@ export async function fetchAllMarketData(): Promise<MarketData> {
     forex,
     commodities,
     nikkei225Chart,
-    usdJpyChart,
   ] = await Promise.all([
     fetchVolatilityData(),
     fetchIndices(),
     fetchBondYield(),
     fetchForex(),
     fetchCommodities(),
-    fetchChart("^N225", 200),
-    fetchChart("USDJPY=X", 80),
+    fetchChart("^N225", 220),
   ]);
 
   const vixPrice = volatility.find((v) => v.symbol === "^VIX")?.price;
@@ -87,21 +76,26 @@ export async function fetchAllMarketData(): Promise<MarketData> {
   const japanFearGreed = computeJapanFearGreed({
     nikkei225Chart,
     nikkei225Price,
-    usdJpyRate: forex.rate || null,
-    usdJpyChart,
     investorTrading: japanMarketData.investorTrading ?? null,
-    marginTrading: japanMarketData.marginTrading ?? null,
-    arbitrageBalance: japanMarketData.arbitrageBalance ?? null,
+    // JPX のページは直近約 5 週分だけなので、4 週変化が欠けないよう長期履歴を足す
+    marginTrading: mergeMarginWeeks(
+      marginHistory.weekly,
+      japanMarketData.marginTrading ?? null,
+    ),
   });
+
+  // 現在値の立会日（チャート末尾）。休場日や 17 時以降でも「前営業日」と正しく比べるために使う
+  const sessionDate = nikkei225Chart.at(-1)?.date ?? getJstDateKey();
+  const japanHistory = getJapanHistory();
 
   return buildMarketData({
     fearGreed,
     japanFearGreed,
-    previousJapanScore: pickPreviousJapanScore(),
+    previousJapanScore: previousScoreBefore(japanHistory, sessionDate),
     japanLevelStreak: computeJapanLevelStreak({
       currentScore: japanFearGreed?.score ?? null,
-      snapshots: getFullSnapshots(),
-      todayJstKey: getJstDateKey(),
+      snapshots: japanHistory,
+      todayJstKey: sessionDate,
     }),
     japanSparkline: pickJapanSparkline(),
     usSparkline: buildUsSparkline(

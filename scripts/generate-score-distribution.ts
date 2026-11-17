@@ -60,7 +60,7 @@ async function main() {
   };
 
   // --- JP: 既存 japan-temperature-history.json の score を再利用 ---
-  console.log("\n=== JP（簡易2要素 C1+C5 スコア）===");
+  console.log("\n=== JP（市場温度 = 日経225 × 125日移動平均乖離）===");
   const jpHistPath = resolve(
     __dirname,
     "../src/data/japan-temperature-history.json"

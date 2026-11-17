@@ -25,6 +25,21 @@ describe("resolveBand", () => {
   });
 });
 
+describe("computeFirstBusinessDays — previousDate", () => {
+  it("previousDate と同じ月の先頭日は月初に含めない", () => {
+    const firsts = computeFirstBusinessDays(
+      ["2026-11-17", "2026-11-18", "2026-12-01"],
+      "2026-11-16"
+    );
+    expect([...firsts]).toEqual(["2026-12-01"]);
+  });
+
+  it("previousDate が前月なら先頭日を月初に含める", () => {
+    const firsts = computeFirstBusinessDays(["2026-12-01", "2026-12-02"], "2026-11-30");
+    expect([...firsts]).toEqual(["2026-12-01"]);
+  });
+});
+
 describe("computeFirstBusinessDays", () => {
   it("月ごとに最初の営業日を抽出", () => {
     const dates = [
@@ -231,6 +246,72 @@ describe("simulatePortfolio — 差分モード", () => {
     // part1 が 3 ヶ月分で初期化すると part2 と合算しても full と一致しない。
     // 本番運用では generate:portfolio-history（full）→ snapshot:portfolio（diff）
     // の順で回すため、DCA は実質「full で初期化された state を diff で継続」する構造になる
+  });
+
+  it("日次追記で月の途中の日を月初扱いせず、温度帯が変わってもリバランスしない", () => {
+    const priceDates = ["2026-11-02", "2026-11-04", "2026-11-05", "2026-12-01"];
+    const priceMap = new Map<string, number>(priceDates.map((d) => [d, 100]));
+    const scoreByDate = new Map<string, number>([
+      ["2026-11-02", 50], // 平温 0.8
+      ["2026-11-04", 90], // 月の途中で沸騰（リバランスしないはず）
+      ["2026-11-05", 10],
+      ["2026-12-01", 10], // 月初で極寒 1.0
+    ]);
+    const scoreOf = (d: string) => scoreByDate.get(d) ?? null;
+    const full = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+
+    // 本番の snapshot-portfolio と同じく、新しい日付だけを渡して 1 日ずつ追記する
+    let state = simulatePortfolio({
+      priceMap,
+      priceDates: priceDates.slice(0, 1),
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    }).endState;
+    const appendedTrades: string[] = [];
+    for (let i = 1; i < priceDates.length; i++) {
+      const step = simulatePortfolio({
+        priceMap,
+        priceDates: [priceDates[i]],
+        scoreOf,
+        rule: DEFAULT_PORTFOLIO_RULE,
+        startState: state,
+        previousDate: priceDates[i - 1],
+      });
+      appendedTrades.push(...step.trades.map((t) => t.date));
+      state = step.endState;
+    }
+
+    expect(appendedTrades).toEqual(["2026-12-01"]);
+    expect(full.trades.map((t) => t.date)).toEqual(["2026-11-02", "2026-12-01"]);
+    expect(state.lastEquityRatio).toBe(1.0);
+  });
+
+  it("previousDate を省略しても startState があれば priceDates の直前の日付で月を判定する", () => {
+    const priceDates = ["2026-11-02", "2026-11-04"];
+    const priceMap = new Map<string, number>(priceDates.map((d) => [d, 100]));
+    const scoreOf = (d: string) => (d === "2026-11-02" ? 50 : 90);
+    const first = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      endDate: "2026-11-02",
+    });
+    const next = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      startDate: "2026-11-04",
+      startState: first.endState,
+    });
+    expect(next.trades).toHaveLength(0);
+    expect(next.endState.lastEquityRatio).toBe(0.8);
   });
 
   it("dcaMonthlyContribution を持つ startState から diff 継続できる", () => {

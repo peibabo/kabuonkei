@@ -171,6 +171,11 @@ export interface SimulateOptions {
   rule: PortfolioRule;
   /** 差分モードで使う開始状態。未指定なら初日全額現金スタート */
   startState?: SimulatorStartState;
+  /**
+   * 差分モードで、startState を作った最後の日付。初日がこの日と同じ月なら月初扱いしない。
+   * 省略時は startState があれば priceDates の開始位置の直前の日付を使う
+   */
+  previousDate?: string;
   /** 対象日付の範囲（指定されなければ priceDates 全域） */
   startDate?: string;
   endDate?: string;
@@ -212,10 +217,16 @@ export function resolveBand(
   return bands[bands.length - 1];
 }
 
-/** 月次第一営業日フラグ — 指定日のリストに対して、各月で最初に出てくる日付セット */
-export function computeFirstBusinessDays(dates: string[]): Set<string> {
+/**
+ * 月次第一営業日フラグ — 指定日のリストに対して、各月で最初に出てくる日付セット。
+ * previousDate を渡すと、その日と同じ月の日は「月の途中」とみなす（差分モードの続きで使う）
+ */
+export function computeFirstBusinessDays(
+  dates: string[],
+  previousDate?: string
+): Set<string> {
   const set = new Set<string>();
-  let prevMonth = "";
+  let prevMonth = previousDate?.slice(0, 7) ?? "";
   for (const d of dates) {
     const ym = d.slice(0, 7);
     if (ym !== prevMonth) {
@@ -246,7 +257,11 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
   }
 
   const targetDates = priceDates.slice(startIdx, effectiveEnd + 1);
-  const firstBusinessDays = computeFirstBusinessDays(targetDates);
+  // 差分モードでは直前の日付と同じ月の日を月初とみなさない（日次追記のたびに月初扱いでリバランスしないように）
+  const previousDate = startState
+    ? opts.previousDate ?? (startIdx > 0 ? priceDates[startIdx - 1] : undefined)
+    : undefined;
+  const firstBusinessDays = computeFirstBusinessDays(targetDates, previousDate);
 
   let equityUnits = startState?.equityUnits ?? 0;
   let cash = startState?.cash ?? rule.initialNav;

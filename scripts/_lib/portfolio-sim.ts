@@ -54,6 +54,13 @@ export interface DailyPoint {
    * これにより「同じ 100 の元手をどう展開するか」で 3 戦略を直接比較できる。
    */
   benchmarkDca: number;
+  /**
+   * 参考シナリオ: 積立＋極寒で上乗せ。毎月の積立額は benchmarkDca と同じで、
+   * 月初の温度が極寒の月だけ COLD_BOOST_MULTIPLIER 倍買う。予算（initialNav）が尽きたら止める。
+   */
+  benchmarkDcaBoost?: number;
+  /** 対照: 上の上乗せシナリオと同じ月に予算を使い切る普通の積立（温度の効果だけを取り出すため） */
+  benchmarkDcaSameSpeed?: number;
   equityRatio: number;
   score: number | null;
 }
@@ -104,6 +111,56 @@ export interface SimulatorStartState {
   dcaMonthlyContribution?: number;
   /** DCA ベンチマーク: 残り投入回数 */
   dcaRemainingContributions?: number;
+  /** 積立＋極寒上乗せ: ユニット数と未投入の現金 */
+  boostUnits?: number;
+  boostCash?: number;
+  /** 対照（同じ速さの積立）: ユニット数・未投入の現金・1 回あたりの額・残り回数 */
+  sameSpeedUnits?: number;
+  sameSpeedCash?: number;
+  sameSpeedContribution?: number;
+  sameSpeedRemaining?: number;
+}
+
+/** 積立＋極寒上乗せ: 極寒の月に買う倍率 */
+export const COLD_BOOST_MULTIPLIER = 3;
+
+/** 積立＋極寒上乗せの計画（フル実行時に決まる） */
+export interface ColdBoostPlan {
+  multiplier: number;
+  /** 期間内の月初の回数 */
+  totalMonths: number;
+  /** 月初の温度が極寒だった回数（予算を使い切るまでに上乗せした回数） */
+  coldMonths: number;
+  /** 予算を使い切った月（1 始まり）。使い切らなければ totalMonths */
+  exhaustedMonth: number;
+}
+
+/** 月初の温度が極寒なら上乗せ倍率、それ以外は 1 */
+export function coldBoostMultiplier(score: number | null): number {
+  return score != null && resolveBand(score, DEFAULT_PORTFOLIO_RULE.bands).level === "極寒"
+    ? COLD_BOOST_MULTIPLIER
+    : 1;
+}
+
+/**
+ * 上乗せシナリオが予算を使い切る月と、その間の極寒の回数を求める。
+ * 各月初のスコアだけで決まる（価格は不要）。対照の「同じ速さの積立」の回数に使う。
+ */
+export function planColdBoost(
+  monthStartScores: ReadonlyArray<number | null>
+): ColdBoostPlan {
+  const totalMonths = monthStartScores.length;
+  let budget = totalMonths; // 1 回分 = 1 として数える
+  let coldMonths = 0;
+  for (let k = 0; k < totalMonths; k++) {
+    const mult = coldBoostMultiplier(monthStartScores[k]);
+    if (mult > 1) coldMonths += 1;
+    budget -= Math.min(mult, budget);
+    if (budget <= 1e-9) {
+      return { multiplier: COLD_BOOST_MULTIPLIER, totalMonths, coldMonths, exhaustedMonth: k + 1 };
+    }
+  }
+  return { multiplier: COLD_BOOST_MULTIPLIER, totalMonths, coldMonths, exhaustedMonth: totalMonths };
 }
 
 export interface SimulateOptions {
@@ -123,6 +180,8 @@ export interface SimulateResult {
   daily: DailyPoint[];
   trades: TradeLog[];
   stats: PortfolioStats;
+  /** フル実行時のみ: 積立＋極寒上乗せの計画 */
+  coldBoostPlan?: ColdBoostPlan;
   /** 継続シミュレーション用の終端状態 */
   endState: SimulatorStartState;
 }
@@ -200,11 +259,24 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
     startState?.dcaCash ?? (startState ? 0 : rule.initialNav);
   let dcaMonthlyContribution = startState?.dcaMonthlyContribution ?? 0;
   let dcaRemainingContributions = startState?.dcaRemainingContributions ?? 0;
+  // 積立＋極寒上乗せと、その対照（同じ速さの積立）
+  let boostUnits = startState?.boostUnits ?? 0;
+  let boostCash = startState?.boostCash ?? (startState ? 0 : rule.initialNav);
+  let sameSpeedUnits = startState?.sameSpeedUnits ?? 0;
+  let sameSpeedCash = startState?.sameSpeedCash ?? (startState ? 0 : rule.initialNav);
+  let sameSpeedContribution = startState?.sameSpeedContribution ?? 0;
+  let sameSpeedRemaining = startState?.sameSpeedRemaining ?? 0;
+  let coldBoostPlan: ColdBoostPlan | undefined;
   if (!startState) {
     const totalMonths = firstBusinessDays.size;
     if (totalMonths > 0) {
       dcaMonthlyContribution = rule.initialNav / totalMonths;
       dcaRemainingContributions = totalMonths;
+      coldBoostPlan = planColdBoost(
+        targetDates.filter((d) => firstBusinessDays.has(d)).map((d) => scoreOf(d))
+      );
+      sameSpeedContribution = rule.initialNav / coldBoostPlan.exhaustedMonth;
+      sameSpeedRemaining = coldBoostPlan.exhaustedMonth;
     }
   }
 
@@ -227,6 +299,8 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
       const dailyFactor = 1 + rule.cashYield / 252;
       cash *= dailyFactor;
       dcaCash *= dailyFactor;
+      boostCash *= dailyFactor;
+      sameSpeedCash *= dailyFactor;
     }
 
     // NAV 計算（リバランス前）
@@ -266,6 +340,26 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
         }
         dcaRemainingContributions -= 1;
       }
+
+      // 積立＋極寒上乗せ: 通常は積立と同額、極寒の月だけ倍率をかける。予算が尽きたら止める
+      if (boostCash > 1e-9 && dcaMonthlyContribution > 0) {
+        const buyAmount = Math.min(
+          dcaMonthlyContribution * coldBoostMultiplier(scoreOf(date)),
+          boostCash
+        );
+        boostUnits += buyAmount / price;
+        boostCash -= buyAmount;
+      }
+
+      // 対照: 上乗せシナリオと同じ月に使い切る普通の積立
+      if (sameSpeedRemaining > 0 && sameSpeedContribution > 0) {
+        const buyAmount = Math.min(sameSpeedContribution, sameSpeedCash);
+        if (buyAmount > 0) {
+          sameSpeedUnits += buyAmount / price;
+          sameSpeedCash -= buyAmount;
+        }
+        sameSpeedRemaining -= 1;
+      }
     }
 
     const nav = equityUnits * price + cash;
@@ -277,6 +371,8 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
       nav: round2(nav),
       benchmark: round2(benchmarkUnits * price),
       benchmarkDca: round2(dcaNav),
+      benchmarkDcaBoost: round2(boostUnits * price + boostCash),
+      benchmarkDcaSameSpeed: round2(sameSpeedUnits * price + sameSpeedCash),
       equityRatio: round4(actualRatio),
       score: scoreOf(date),
     });
@@ -293,9 +389,15 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
     dcaCash,
     dcaMonthlyContribution,
     dcaRemainingContributions,
+    boostUnits,
+    boostCash,
+    sameSpeedUnits,
+    sameSpeedCash,
+    sameSpeedContribution,
+    sameSpeedRemaining,
   };
 
-  return { daily, trades, stats, endState };
+  return { daily, trades, stats, endState, ...(coldBoostPlan ? { coldBoostPlan } : {}) };
 }
 
 function round2(n: number): number {
@@ -390,6 +492,42 @@ export function computeStats(
     dcaMaxDrawdown: round2(dcaMaxDrawdown),
     dcaSharpe: round2(dcaSharpe),
     alphaVsDca: round2(totalReturn - dcaReturn),
+  };
+}
+
+/** 積立＋極寒上乗せの成績（積立・同じ速さの積立との比較つき） */
+export interface ColdBoostStats {
+  boostReturn: number;
+  boostMaxDrawdown: number;
+  sameSpeedReturn: number;
+  sameSpeedMaxDrawdown: number;
+  /** 上乗せ − 積立（pp） */
+  boostVsDca: number;
+  /** 上乗せ − 同じ速さの積立（pp）。早めに投じた効果を除いた、温度の効果 */
+  timingEffect: number;
+}
+
+/** daily の上乗せ系列から成績を計算する。系列が欠けていれば null */
+export function computeColdBoostStats(
+  daily: DailyPoint[],
+  initialNav: number
+): ColdBoostStats | null {
+  if (daily.length < 2) return null;
+  if (daily.some((d) => d.benchmarkDcaBoost == null || d.benchmarkDcaSameSpeed == null)) {
+    return null;
+  }
+  const last = daily[daily.length - 1];
+  const ret = (v: number) => ((v - initialNav) / initialNav) * 100;
+  const boostReturn = ret(last.benchmarkDcaBoost!);
+  const sameSpeedReturn = ret(last.benchmarkDcaSameSpeed!);
+  const dcaReturn = ret(last.benchmarkDca);
+  return {
+    boostReturn: round2(boostReturn),
+    boostMaxDrawdown: round2(computeMaxDrawdown(daily.map((d) => d.benchmarkDcaBoost!))),
+    sameSpeedReturn: round2(sameSpeedReturn),
+    sameSpeedMaxDrawdown: round2(computeMaxDrawdown(daily.map((d) => d.benchmarkDcaSameSpeed!))),
+    boostVsDca: round2(boostReturn - dcaReturn),
+    timingEffect: round2(boostReturn - sameSpeedReturn),
   };
 }
 

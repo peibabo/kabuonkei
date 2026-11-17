@@ -21,6 +21,9 @@ import {
   type PortfolioRule,
   type PortfolioStats,
   type TradeLog,
+  computeColdBoostStats,
+  type ColdBoostPlan,
+  type ColdBoostStats,
 } from "./_lib/portfolio-sim";
 import type { SentimentLevel } from "../src/lib/types";
 import { estimateFearGreedFromVix, fetchDailyCloses, sleep } from "./_lib/shared";
@@ -84,6 +87,11 @@ interface PortfolioSectionJson {
    * α vs DCA のうち「温度 timing に依る部分」と「単に高配分な部分」を分離する。
    */
   temperatureContribution: TemperatureContributionJson;
+  /**
+   * 参考シナリオ「積立＋極寒で上乗せ」: 計画（倍率・極寒の回数・予算を使い切った月）と成績。
+   * 日次 append では計画を保持し、成績だけ再計算する
+   */
+  coldBoostDca?: ColdBoostPlan & ColdBoostStats;
 }
 
 interface PortfolioHistoryJson {
@@ -185,6 +193,12 @@ function buildSection(
       Math.round((result.stats.sharpe - constantResult.stats.sharpe) * 100) / 100,
   };
 
+  const coldBoostStats = computeColdBoostStats(result.daily, DEFAULT_PORTFOLIO_RULE.initialNav);
+  const coldBoostDca =
+    result.coldBoostPlan && coldBoostStats
+      ? { ...result.coldBoostPlan, ...coldBoostStats }
+      : undefined;
+
   const last = result.daily[result.daily.length - 1];
   const latestScore = last.score;
   const band = latestScore != null ? getSentimentLevel(latestScore) : "—";
@@ -207,6 +221,7 @@ function buildSection(
     endState: result.endState,
     cashYieldSensitivity,
     temperatureContribution,
+    ...(coldBoostDca ? { coldBoostDca } : {}),
   };
 }
 

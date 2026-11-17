@@ -17,6 +17,10 @@ export interface PortfolioDailyPoint {
   benchmark: number;
   /** 月次積立（DCA）ベンチマーク */
   benchmarkDca: number;
+  /** 参考シナリオ: 積立＋極寒で上乗せ（古い JSON には無い） */
+  benchmarkDcaBoost?: number;
+  /** 対照: 上乗せと同じ月に予算を使い切る普通の積立（古い JSON には無い） */
+  benchmarkDcaSameSpeed?: number;
   equityRatio: number;
   score: number | null;
 }
@@ -87,6 +91,26 @@ export interface PortfolioTemperatureContribution {
   sharpeVsConstant: number;
 }
 
+/**
+ * 参考シナリオ「積立＋極寒で上乗せ」。毎月の積立額は月次積立と同じで、月初の温度が極寒の月だけ
+ * multiplier 倍買う。予算（初期 NAV）が尽きたら止める。
+ * 「同じ速さの積立」は同じ月に予算を使い切る普通の積立で、これとの差が温度の効果。
+ */
+export interface PortfolioColdBoostDca {
+  multiplier: number;
+  totalMonths: number;
+  coldMonths: number;
+  exhaustedMonth: number;
+  boostReturn: number;
+  boostMaxDrawdown: number;
+  sameSpeedReturn: number;
+  sameSpeedMaxDrawdown: number;
+  /** 上乗せ − 月次積立（pp） */
+  boostVsDca: number;
+  /** 上乗せ − 同じ速さの積立（pp） */
+  timingEffect: number;
+}
+
 export interface PortfolioSection {
   equitySymbol: string;
   displayName: string;
@@ -98,6 +122,8 @@ export interface PortfolioSection {
   cashYieldSensitivity?: PortfolioCashYieldScenario[];
   /** 温度信号の純寄与度（古い JSON には存在しない可能性があるので optional） */
   temperatureContribution?: PortfolioTemperatureContribution;
+  /** 参考シナリオ: 積立＋極寒で上乗せ（古い JSON には存在しない可能性があるので optional） */
+  coldBoostDca?: PortfolioColdBoostDca;
 }
 
 export interface PortfolioBand {

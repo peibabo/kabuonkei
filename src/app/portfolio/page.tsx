@@ -70,6 +70,8 @@ export default function PortfolioPage() {
   const bothBeatDca = jpStats.alphaVsDca > 0 && usStats.alphaVsDca > 0;
   const bothContribNegative =
     (jpContrib?.alphaVsConstant ?? 0) < 0 && (usContrib?.alphaVsConstant ?? 0) < 0;
+  const jpBoost = history.portfolios.jp.coldBoostDca;
+  const usBoost = history.portfolios.us.coldBoostDca;
   const avgEquityPct = (c: typeof jpContrib) =>
     c ? `${(c.avgEquityRatio * 100).toFixed(0)}%` : "—";
 
@@ -257,6 +259,15 @@ export default function PortfolioPage() {
               （その分、下落の谷では DD がむしろ深くなる点は覚悟が必要）
             </li>
           </ul>
+          {jpBoost && usBoost && (
+            <p className="text-base text-gray-800 leading-relaxed mb-3">
+              一方、<strong>いつもの積立を続けながら、極寒の月だけ多く買う</strong>形（参考シナリオ「積立＋極寒で上乗せ」）では、
+              月次積立との差が JP {pp(jpBoost.boostVsDca)} / US {pp(usBoost.boostVsDca)} でした。
+              このうち早めに投じた効果を除いた温度の効果は JP {pp(jpBoost.timingEffect)} / US {pp(usBoost.timingEffect)} と小さく、
+              月初が極寒だったのも全 {jpBoost.totalMonths} か月で {jpBoost.coldMonths} 回だけです。
+              「過熱で減らす」より「極寒で買い増す」ほうが、少なくとも過去10年では温度の使い方として筋が良かった、という程度の材料として見てください。
+            </p>
+          )}
           <p className="text-base text-gray-800 leading-relaxed">
             逆に、<strong>「温度を読めばリターンが上がる」という期待で来た方はぜひ下の「ルール選定プロセスと温度信号の寄与度」セクションまでお読みください</strong>。
             過去10年ではそう都合よくは効いていない、というのがこのサイトが正直に公開している検証結果です。

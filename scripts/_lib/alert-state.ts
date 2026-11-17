@@ -11,11 +11,11 @@ export function jstIsoDate(now: Date = new Date()): string {
   return jst.toISOString().slice(0, 10);
 }
 
-/** 判定に必要なスナップショットの形（components は C1・C5 だけ見る） */
+/** 判定に必要なスナップショットの形（components は C1 だけ見る） */
 export interface JpSnapshotForAlert {
   date: string;
   score: number;
-  components?: { nikkeiMa?: number; usdJpyMomentum?: number };
+  components?: { nikkeiMa?: number };
 }
 
 const isFiniteNumber = (v: unknown): v is number =>
@@ -24,7 +24,7 @@ const isFiniteNumber = (v: unknown): v is number =>
 /**
  * JP スナップショットの最新エントリが「直近営業日の分」のときだけスコアを採用する。
  *
- * 返す `score` は判定用の株価ベーススコア（C1・C5 の平均、`computeJpAlertScore`）。
+ * 返す `score` は判定用スコア（C1 = 日経225 モメンタム単独、`computeJpAlertScore`）。
  * 5要素の総合スコアは `overallScore` で返す（メールに参考値として併記する）。
  *
  * スナップショットの日付は日経225 の最終取引日（`resolveTradingDate`）で記録される。
@@ -47,11 +47,10 @@ export function pickFreshJpScore(
     return { ok: false, reason: `最新エントリの score が不正: ${JSON.stringify(latest)}` };
   }
   const nikkeiMa = latest.components?.nikkeiMa;
-  const usdJpyMomentum = latest.components?.usdJpyMomentum;
-  if (!isFiniteNumber(nikkeiMa) || !isFiniteNumber(usdJpyMomentum)) {
+  if (!isFiniteNumber(nikkeiMa)) {
     return {
       ok: false,
-      reason: `最新エントリに株価系の要素（nikkeiMa / usdJpyMomentum）がない: ${JSON.stringify(latest)}`,
+      reason: `最新エントリに日経225 モメンタム（nikkeiMa）がない: ${JSON.stringify(latest)}`,
     };
   }
   if (latest.date !== expectedDate) {
@@ -62,7 +61,7 @@ export function pickFreshJpScore(
   }
   return {
     ok: true,
-    score: computeJpAlertScore({ nikkeiMa, usdJpyMomentum }),
+    score: computeJpAlertScore({ nikkeiMa }),
     overallScore: latest.score,
   };
 }
@@ -87,4 +86,18 @@ export function formatJstFullDateLabel(date: Date = new Date()): string {
   const d = String(jst.getUTCDate()).padStart(2, "0");
   const w = WEEKDAYS[jst.getUTCDay()];
   return `${y}/${m}/${d}(${w})`;
+}
+
+/**
+ * 類似日エントリのスコアを、日付ごとの別のスコアに差し替える（リターンはそのまま）。
+ * 差し替え先のスコアがない日は除く。
+ */
+export function replaceScores<T extends { date: string; score: number }>(
+  entries: readonly T[],
+  scoreByDate: ReadonlyMap<string, number>
+): T[] {
+  return entries.flatMap((e) => {
+    const score = scoreByDate.get(e.date);
+    return score == null ? [] : [{ ...e, score }];
+  });
 }

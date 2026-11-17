@@ -4,6 +4,7 @@ import {
   jstIsoDate,
   missingSendEnv,
   pickFreshJpScore,
+  replaceScores,
   variantOf,
 } from "../_lib/alert-state";
 
@@ -32,34 +33,32 @@ describe("jstIsoDate", () => {
 describe("pickFreshJpScore", () => {
   // 直近営業日（日経225 の最終取引日）
   const today = "2026-07-09";
-  /** C1・C5 を指定してスナップショットを作る（総合スコアは別の値にしておく） */
-  const snap = (date: string, nikkeiMa: number, usdJpyMomentum: number, score = 67) => ({
+  /** C1 を指定してスナップショットを作る（総合スコア・他の要素は別の値にしておく） */
+  const snap = (date: string, nikkeiMa: number, score = 67) => ({
     date,
     score,
-    components: { nikkeiMa, foreignFlow: 100, marginRatio: 100, arbitrage: 79, usdJpyMomentum },
+    components: { nikkeiMa, foreignFlow: 100, marginRatio: 100, arbitrage: 79, usdJpyMomentum: 90 },
   });
 
-  it("最新エントリが直近営業日なら、株価ベース（C1・C5 の平均）を判定スコアとして採用", () => {
-    const snapshots = [snap("2026-07-08", 60, 60, 68), snap(today, 30, 50, 67)];
+  it("最新エントリが直近営業日なら、C1（日経225 モメンタム）を判定スコアとして採用", () => {
+    const snapshots = [snap("2026-07-08", 60, 68), snap(today, 30, 67)];
     expect(pickFreshJpScore(snapshots, today)).toEqual({
       ok: true,
-      score: 40,
+      score: 30,
       overallScore: 67,
     });
   });
 
-  it("2026-11-06 の実値: 総合 65 でも判定スコアは 23", () => {
-    const snapshots = [snap("2026-11-06", 7, 38, 65)];
-    expect(pickFreshJpScore(snapshots, "2026-11-06")).toEqual({
+  it("2026-11-06 の実値: 総合 65 でも判定スコアは 7（極寒）", () => {
+    expect(pickFreshJpScore([snap("2026-11-06", 7, 65)], "2026-11-06")).toEqual({
       ok: true,
-      score: 23,
+      score: 7,
       overallScore: 65,
     });
   });
 
   it("最新エントリが直近営業日より古ければ不採用（snapshot job 遅延/失敗の想定）", () => {
-    const snapshots = [snap("2026-07-08", 60, 60)];
-    const result = pickFreshJpScore(snapshots, today);
+    const result = pickFreshJpScore([snap("2026-07-08", 60)], today);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.reason).toContain("2026-07-08");
@@ -69,17 +68,15 @@ describe("pickFreshJpScore", () => {
 
   it("翌日未明の実行でも、直近営業日（前日）のエントリなら採用", () => {
     // 呼び出し側は実行日ではなく日経225 の最終取引日を渡す
-    const snapshots = [snap("2026-07-08", 70, 66, 68)];
-    expect(pickFreshJpScore(snapshots, "2026-07-08")).toEqual({
+    expect(pickFreshJpScore([snap("2026-07-08", 70, 68)], "2026-07-08")).toEqual({
       ok: true,
-      score: 68,
+      score: 70,
       overallScore: 68,
     });
   });
 
   it("スコア 0 は有効値として採用（falsy 判定に巻き込まない）", () => {
-    const snapshots = [snap(today, 0, 0, 0)];
-    expect(pickFreshJpScore(snapshots, today)).toEqual({
+    expect(pickFreshJpScore([snap(today, 0, 0)], today)).toEqual({
       ok: true,
       score: 0,
       overallScore: 0,
@@ -92,18 +89,32 @@ describe("pickFreshJpScore", () => {
   });
 
   it("score が数値でない最新エントリは不採用", () => {
-    const snapshots = [{ ...snap(today, 30, 50), score: "67" as unknown as number }];
+    const snapshots = [{ ...snap(today, 30), score: "67" as unknown as number }];
     expect(pickFreshJpScore(snapshots, today).ok).toBe(false);
   });
 
-  it("株価系の要素（C1・C5）が欠けた最新エントリは不採用（総合スコアで代用しない）", () => {
+  it("C1 が欠けた最新エントリは不採用（総合スコアで代用しない）", () => {
     expect(pickFreshJpScore([{ date: today, score: 15 }], today).ok).toBe(false);
-    const result = pickFreshJpScore(
-      [{ date: today, score: 15, components: { nikkeiMa: 10 } }],
-      today
-    );
+    const result = pickFreshJpScore([{ date: today, score: 15, components: {} }], today);
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.reason).toContain("usdJpyMomentum");
+    if (!result.ok) expect(result.reason).toContain("nikkeiMa");
+  });
+});
+
+describe("replaceScores", () => {
+  const entries = [
+    { date: "2024-08-05", score: 0, return3m: 20.1 },
+    { date: "2024-08-06", score: 30, return3m: 12.3 },
+  ];
+
+  it("日付ごとのスコアに差し替え、リターンはそのまま残す", () => {
+    expect(replaceScores(entries, new Map([["2024-08-06", 12]]))).toEqual([
+      { date: "2024-08-06", score: 12, return3m: 12.3 },
+    ]);
+  });
+
+  it("スコア 0 も差し替え先として有効", () => {
+    expect(replaceScores(entries, new Map([["2024-08-05", 0]]))).toHaveLength(1);
   });
 });
 

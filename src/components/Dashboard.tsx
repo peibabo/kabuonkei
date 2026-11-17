@@ -42,7 +42,7 @@ export default function Dashboard() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <DashboardHeader lastUpdated={data.lastUpdated} />
 
-      {/* 日本版アラートは株価ベース（C1・C5）で判定するので、バナーも同じ値で極端判定する */}
+      {/* 日本版アラートは C1（日経225 モメンタム）で判定するので、バナーも同じ値で極端判定する */}
       <AlertBanner
         japanScore={jpAlertScoreFromComponents(data.japanFearGreed?.components)}
         usScore={usScore}

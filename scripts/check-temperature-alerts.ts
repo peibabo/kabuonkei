@@ -2,7 +2,7 @@
  * 温度アラート発火チェック & メール送信スクリプト
  *
  * 平日 JST 07:00（米国版）および 17:15（日本版）に GitHub Actions から起動される。
- * - 最新の F&G スコアを取得（日本版は株価ベース = C1・C5 の平均で判定）
+ * - 最新の F&G スコアを取得（日本版は C1 = 日経225 モメンタム単独で判定）
  * - 前回状態（Redis）と比較し、neutral→cold/hot の遷移があれば該当 variant の購読者へ送信
  * - 送信は Resend、永続化は Upstash Redis（Vercel Marketplace の "Upstash for Redis"）
  *
@@ -47,6 +47,7 @@ import {
   jstIsoDate,
   missingSendEnv,
   pickFreshJpScore,
+  replaceScores,
   variantOf,
   type JpSnapshotForAlert,
 } from "./_lib/alert-state";
@@ -57,6 +58,10 @@ const US_SIMILAR_PATH = resolve(__dirname, "../src/data/us-similar-days.json");
 const JP_SIMILAR_PATH = resolve(
   __dirname,
   "../src/data/japan-similar-days.json"
+);
+const JP_HISTORY_PATH = resolve(
+  __dirname,
+  "../src/data/japan-temperature-history.json"
 );
 const JP_SNAPSHOTS_PATH = resolve(
   __dirname,
@@ -110,7 +115,7 @@ async function latestJpTradingDate(): Promise<string> {
 }
 
 interface JpScore {
-  /** 判定用の株価ベーススコア（C1・C5 の平均） */
+  /** 判定用スコア（C1 = 日経225 モメンタム） */
   score: number;
   /** 5要素の総合スコア（メールに参考値として併記） */
   overallScore: number;
@@ -150,9 +155,24 @@ function loadSimilarDays(path: string): SimilarDayEntry[] {
   return (JSON.parse(readFileSync(path, "utf-8")) as SimilarDaysFile).daily;
 }
 
+/**
+ * 日本版の類似日は、判定と同じ C1（日経225 モメンタム）で探す。
+ * japan-similar-days.json のスコアは C1+C5 の 2 要素版なので、過去推移の c1 に差し替える
+ * （リターンはそのまま使う）。c1 のない日は対象外。
+ */
+function loadJpSimilarDaysByC1(): SimilarDayEntry[] {
+  const history = JSON.parse(readFileSync(JP_HISTORY_PATH, "utf-8")) as {
+    daily: Array<{ date: string; c1: number }>;
+  };
+  return replaceScores(
+    loadSimilarDays(JP_SIMILAR_PATH),
+    new Map(history.daily.map((d) => [d.date, d.c1]))
+  );
+}
+
 function similarDayForMarket(market: AlertMarket, score: number) {
-  const path = market === "us" ? US_SIMILAR_PATH : JP_SIMILAR_PATH;
-  const entries = loadSimilarDays(path);
+  const entries =
+    market === "us" ? loadSimilarDays(US_SIMILAR_PATH) : loadJpSimilarDaysByC1();
   const events = loadEvents();
   const match = findSimilarDays(score, entries, events, 1)[0];
   if (!match) return null;
@@ -188,7 +208,7 @@ async function main() {
     }
   }
 
-  // JP は株価ベース（C1・C5）で判定する。総合スコア（5要素）はメールの参考値にだけ使う
+  // JP は C1（日経225 モメンタム）単独で判定する。総合スコア（5要素）はメールの参考値にだけ使う
   const jp = args.variant === "jp" ? await fetchJpScore() : null;
   const score = args.variant === "us" ? await fetchUsScore() : (jp?.score ?? null);
   const overallScore = jp?.overallScore ?? null;
@@ -202,7 +222,7 @@ async function main() {
   }
   console.log(
     `現在スコア: ${score}（cold≤${COLD_THRESHOLD} / hot≥${HOT_THRESHOLD}）` +
-      (overallScore != null ? ` ※株価ベース。5要素の総合は ${overallScore}` : "")
+      (overallScore != null ? ` ※日経225 モメンタム。5要素の総合は ${overallScore}` : "")
   );
 
   const redis = getRedis();

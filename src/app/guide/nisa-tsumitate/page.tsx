@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
+import { getStatsForLevel } from "@/lib/historical-stats";
 
 export const metadata: Metadata = {
   title: "NISA積立の人が株温計をどう使うか",
@@ -17,6 +18,11 @@ export const metadata: Metadata = {
 };
 
 export default function NisaTsumitateGuidePage() {
+  // 極寒帯の 3 か月後の日経225 リターン（japan-historical-stats.json。データ更新に追従させるため直書きしない）
+  const cold3m = getStatsForLevel("極寒", "jp")?.stats["3m"];
+  const cold3mAvg = cold3m
+    ? `${cold3m.avgReturn >= 0 ? "+" : ""}${cold3m.avgReturn.toFixed(1)}%`
+    : "—";
   return (
     <StaticPageLayout title="📈 NISA積立の人が株温計をどう使うか">
       <p className="text-base leading-relaxed">
@@ -115,8 +121,11 @@ export default function NisaTsumitateGuidePage() {
           <Link href="/" className="underline hover:text-gray-900">
             「過去の統計」カード
           </Link>
-          が示す通り、<strong>極寒帯から 3 ヶ月後の日経225 平均リターンは +11.5%、勝率 100%</strong>
-          （2016年以降の集計）。積立を止めずに続けた人が、結果的に最もリカバリーの恩恵を受けた局面でした。
+          が示す通り、<strong>
+            極寒帯から 3 ヶ月後の日経225 平均リターンは {cold3mAvg}、勝率{" "}
+            {cold3m ? `${Math.round(cold3m.winRate)}%` : "—"}
+          </strong>
+          （過去約10年の集計）。積立を止めずに続けた人が、結果的に最もリカバリーの恩恵を受けた局面でした。
         </p>
         <p className="leading-relaxed mt-3">
           温度計は「今ここで止めるな」を客観的に伝えるための道具です。

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
+import { getStatsForLevel } from "@/lib/historical-stats";
 
 export const metadata: Metadata = {
   title: "FIRE目指し（長期複利）の人が株温計をどう使うか",
@@ -17,6 +18,11 @@ export const metadata: Metadata = {
 };
 
 export default function FireLongTermGuidePage() {
+  // 極寒帯の 3 か月後の日経225 リターン（japan-historical-stats.json。データ更新に追従させるため直書きしない）
+  const cold3m = getStatsForLevel("極寒", "jp")?.stats["3m"];
+  const cold3mAvg = cold3m
+    ? `${cold3m.avgReturn >= 0 ? "+" : ""}${cold3m.avgReturn.toFixed(1)}%`
+    : "—";
   return (
     <StaticPageLayout title="🎯 FIRE目指し（長期複利）の人が株温計をどう使うか">
       <p className="text-base leading-relaxed">
@@ -69,7 +75,7 @@ export default function FireLongTermGuidePage() {
                 <td className="px-3 py-2 whitespace-nowrap font-semibold">極寒 (0-20)</td>
                 <td className="px-3 py-2">
                   <strong>待機資金の大きな一部を投入する最大のチャンス。</strong>
-                  年間の追加投資枠を前倒しで使う検討。歴史的に「極寒 → 3ヶ月後 +11.5%」の頻度が高い。
+                  年間の追加投資枠を前倒しで使う検討。歴史的に「極寒 → 3ヶ月後 {cold3mAvg}」の頻度が高い。
                 </td>
               </tr>
               <tr className="border-t">

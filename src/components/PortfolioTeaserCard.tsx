@@ -4,15 +4,19 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { getPortfolioHistory } from "@/lib/portfolio";
 import { trackEvent } from "@/lib/analytics";
-import { formatDrawdownGap, drawdownGapColorClass } from "@/lib/format";
+import {
+  formatDrawdownGap,
+  drawdownGapColorClass,
+  returnColorClass,
+} from "@/lib/format";
 
 /**
  * Dashboard 第 5 章（詳しく見る）に配置するポートフォリオ導線カード。
  * 最新 NAV と 積立（DCA）対比、現在配分を要約表示し、/portfolio へ誘導する。
  *
  * 表示順は「α vs 積立（DCA） → 配分 → 最大DD 改善（vs 買い持ち）」の順。
- * 過去10年のバックテストで温度ルールが DCA を上回ることが判明したため、
- * NISA 積立勢に響く「α vs DCA」を主役に置く。maxDD は補助情報。
+ * NISA 積立勢に響く「α vs DCA」を主役に置く（日本版は 2026-11 の温度定義変更後わずかにマイナス）。
+ * maxDD は補助情報。
  */
 export default function PortfolioTeaserCard() {
   const history = useMemo(() => getPortfolioHistory(), []);
@@ -57,15 +61,15 @@ export default function PortfolioTeaserCard() {
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
         温度スコアに応じて株/現金比率を月次に切り替えるシミュレーション。
         <span className="text-gray-500">
-        過去約10年で<strong className="text-gray-700">積立(DCA)を JP +{jp.stats.alphaVsDca.toFixed(0)}pp / US +{us.stats.alphaVsDca.toFixed(0)}pp 上回る</strong>が、
-        記事内で<strong>α の大半は「配分の高さ」由来で温度信号の純寄与は限定的</strong>という正直な分解も公開中。
+        過去約10年の<strong className="text-gray-700">積立(DCA)との差は JP {jp.stats.alphaVsDca >= 0 ? "+" : ""}{jp.stats.alphaVsDca.toFixed(0)}pp / US {us.stats.alphaVsDca >= 0 ? "+" : ""}{us.stats.alphaVsDca.toFixed(0)}pp</strong>。
+        記事内で<strong>差の大半は「配分の高さ」由来で、温度信号の純寄与はマイナス</strong>という正直な分解も公開中。
         </span>
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
           <div className="text-xs text-gray-500 mb-1">🇯🇵 日本版</div>
-          <div className="text-sm font-semibold text-red-600">
+          <div className={`text-sm font-semibold ${returnColorClass(jp.stats.alphaVsDca)}`}>
             積立 (DCA) 比{" "}
             <span className="font-bold">
               {jp.stats.alphaVsDca >= 0 ? "+" : ""}
@@ -94,7 +98,7 @@ export default function PortfolioTeaserCard() {
         </div>
         <div className="border border-gray-100 rounded-lg p-3 bg-white">
           <div className="text-xs text-gray-500 mb-1">🇺🇸 米国版</div>
-          <div className="text-sm font-semibold text-red-600">
+          <div className={`text-sm font-semibold ${returnColorClass(us.stats.alphaVsDca)}`}>
             積立 (DCA) 比{" "}
             <span className="font-bold">
               {us.stats.alphaVsDca >= 0 ? "+" : ""}

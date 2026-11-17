@@ -11,7 +11,7 @@ import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 const ARTICLE_PATH = "/portfolio";
 const ARTICLE_TITLE = "温度連動バーチャルポートフォリオ（シミュレーション）";
 const ARTICLE_DESCRIPTION =
-  "温度連動ポートフォリオは積立(DCA)を日米ともに上回る。ただし α の大半は「配分の高さ」由来で、温度信号の純寄与はリターンでも最大DDでも限定的〜マイナス。温度計は timing ツールではなく「極寒で狼狽売りしないための規律」として使う、という正直な検証を公開。";
+  "温度連動ポートフォリオを月次積立(DCA)・一括買い持ちと日米で比較。積立との差の大半は「配分の高さ」由来で、温度信号の純寄与はリターンでも最大DDでもマイナス。温度計は timing ツールではなく「極寒で狼狽売りしないための規律」として使う、という正直な検証を公開。";
 const PUBLISHED_AT = "2026-04-23";
 
 export const metadata: Metadata = {
@@ -64,6 +64,14 @@ export default function PortfolioPage() {
   const usStats = history.portfolios.us.stats;
   const jpContrib = history.portfolios.jp.temperatureContribution;
   const usContrib = history.portfolios.us.temperatureContribution;
+  /** "+1.2pp" / "-1.7pp"。値がなければ "—" */
+  const pp = (n: number | null | undefined) =>
+    n == null ? "—" : `${n >= 0 ? "+" : ""}${n.toFixed(1)}pp`;
+  const bothBeatDca = jpStats.alphaVsDca > 0 && usStats.alphaVsDca > 0;
+  const bothContribNegative =
+    (jpContrib?.alphaVsConstant ?? 0) < 0 && (usContrib?.alphaVsConstant ?? 0) < 0;
+  const avgEquityPct = (c: typeof jpContrib) =>
+    c ? `${(c.avgEquityRatio * 100).toFixed(0)}%` : "—";
 
   const breadcrumbItems = [
     { name: "ホーム", path: "/" },
@@ -180,9 +188,15 @@ export default function PortfolioPage() {
             📖 結論を先に（先に読んでください）
           </h2>
           <p className="text-base text-gray-800 leading-relaxed mb-3">
-            過去約10年のバックテストで、温度ルール sym 80/20 は <strong>NISA 積立型（月次 DCA）を日米ともに上回りました（JP +{jpStats.alphaVsDca.toFixed(1)}pp / US +{usStats.alphaVsDca.toFixed(1)}pp）</strong>。
+            過去約10年のバックテストで、温度ルール sym 80/20 と NISA 積立型（月次 DCA）の差は{" "}
+            <strong>JP {pp(jpStats.alphaVsDca)} / US {pp(usStats.alphaVsDca)}</strong>
+            {bothBeatDca ? "で、日米ともに積立を上回りました" : "でした"}。
             ただし、結論を急いで一言で片付けるのは危険です。
-            <strong>なぜ勝ったのか</strong>を分解すると、温度計の本当の役割が見えてきます。
+            <strong>なぜこの差が出たのか</strong>を分解すると、温度計の本当の役割が見えてきます。
+          </p>
+          <p className="text-sm text-gray-700 leading-relaxed mb-3">
+            ※ 2026 年 11 月に日本版の温度を「日経225 と 125 日移動平均の乖離」に一本化したのに合わせ、日本版は全期間を計算し直しました。
+            それまでの定義（ドル円の勢いとの平均）では、日本版は積立を +22.5pp 上回っていました。
           </p>
 
           <div className="bg-white rounded-lg p-4 border border-amber-200 mb-4">
@@ -196,14 +210,25 @@ export default function PortfolioPage() {
               これと<strong>温度信号による timing 効果</strong>を分離するため、同じ平均株比率を定数で持ち続けた場合の成績と比較すると:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-sm text-gray-800">
-              <li>
-                <strong>JP</strong>: 温度信号の純寄与は <strong>+{jpContrib ? jpContrib.alphaVsConstant.toFixed(1) : "—"}pp</strong> のみ。α vs DCA {jpStats.alphaVsDca.toFixed(1)}pp の大半（約{" "}
-                {jpContrib ? (jpStats.alphaVsDca - jpContrib.alphaVsConstant).toFixed(1) : "—"}pp）は「配分を高めに保った」効果
-              </li>
-              <li>
-                <strong>US</strong>: 温度信号の純寄与は<strong className="text-red-600"> {usContrib ? usContrib.alphaVsConstant.toFixed(1) : "—"}pp（マイナス）</strong>。
-                α vs DCA の全体はプラスでも、<strong>温度で現金化した判断は裏目に出ていた</strong>のが実態
-              </li>
+              {(
+                [
+                  ["JP", jpStats, jpContrib],
+                  ["US", usStats, usContrib],
+                ] as const
+              ).map(([label, stats, contrib]) => (
+                <li key={label}>
+                  <strong>{label}</strong>: 温度信号の純寄与は{" "}
+                  <strong className={contrib && contrib.alphaVsConstant < 0 ? "text-red-600" : undefined}>
+                    {pp(contrib?.alphaVsConstant)}
+                    {contrib && contrib.alphaVsConstant < 0 ? "（マイナス）" : ""}
+                  </strong>
+                  。α vs DCA {pp(stats.alphaVsDca)} のうち、「配分を高めに保った」効果は約{" "}
+                  {pp(contrib ? stats.alphaVsDca - contrib.alphaVsConstant : null)}
+                  {contrib && contrib.alphaVsConstant < 0
+                    ? "で、温度で現金化した判断はむしろ裏目に出ていました"
+                    : ""}
+                </li>
+              ))}
               <li>
                 <strong>最大DD でも温度信号はプラスに働いていない</strong>: 定数配分と比べて JP で{" "}
                 {jpContrib ? Math.abs(jpContrib.ddVsConstant).toFixed(1) : "—"}pp / US で{" "}
@@ -296,9 +321,8 @@ export default function PortfolioPage() {
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3 text-gray-600">
-            絶対リターンの順序は<strong>「一括買い持ち &gt; 温度ルール &gt; 月次積立」</strong>。
-            温度ルールは月次積立（DCA）を JP +{jpStats.alphaVsDca.toFixed(1)}pp / US +{usStats.alphaVsDca.toFixed(1)}pp 上回りますが、
-            その内訳を見ると、<strong>α の大半は「配分を高めに保った」効果由来で、温度信号の純寄与は限定的</strong>です（詳細は「ルール選定プロセスと温度信号の寄与度」セクションで）。
+            絶対リターンはどちらの市場でも一括買い持ちが最も高く、温度ルールと月次積立（DCA）の差は JP {pp(jpStats.alphaVsDca)} / US {pp(usStats.alphaVsDca)} です。
+            その内訳を見ると、<strong>積立との差は主に「配分を高めに保った」効果で決まり、温度信号の純寄与は{bothContribNegative ? "日米ともマイナス" : "限定的"}</strong>です（詳細は「ルール選定プロセスと温度信号の寄与度」セクションで）。
             最大DD は一括買い持ちより浅い（JP {Math.abs(jpStats.maxDrawdown - jpStats.benchmarkMaxDrawdown).toFixed(1)}pp / US {Math.abs(usStats.maxDrawdown - usStats.benchmarkMaxDrawdown).toFixed(1)}pp 改善）一方、積立よりはやや深いという「中間」の位置付け。
             <strong className="text-red-700">特に米国は積立より {Math.abs(usStats.maxDrawdown - usStats.dcaMaxDrawdown).toFixed(1)}pp 深いので、暴落耐性は積立のほうが上</strong>です。
           </p>
@@ -373,6 +397,11 @@ export default function PortfolioPage() {
             <strong> JP -8.9pp / US -4.0pp 負けていました</strong>。そこで候補ルール 17 本（対称シフト / 非対称 / 極端帯トリガー / 温度連動 DCA の 4 系統）を{" "}
             <code className="text-sm bg-gray-100 px-1 rounded">scripts/explore-portfolio-rules.ts</code>
             {" "}で網羅テストし、最もバランスの良かった<strong> sym 80/20</strong>（ニュートラル 80/20、極寒100% / 沸騰50% の非対称）を採用しました。
+          </p>
+          <p className="text-base leading-relaxed mb-3">
+            この選定は 2026 年 7 月に、当時の日本版の温度（日経225 の移動平均乖離とドル円の勢いの平均）で行ったものです。
+            2026 年 11 月に温度の定義を変えた後も、<strong>ルールは選び直していません</strong>。
+            新しい温度に合わせてルールを選び直すと、過去データへの当てはめ（過剰最適化）がさらに強まるためです。
           </p>
           <p className="text-base leading-relaxed mb-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
             ⚠️ <strong>過剰最適化（オーバーフィット）リスク</strong>: 17 ルールから「過去10年で最もよく勝った 1 本」を選ぶこの行為は、
@@ -464,20 +493,23 @@ export default function PortfolioPage() {
           <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed mb-3">
             <li>
               <strong>リターンで見ると温度信号は弱い</strong>:
-              JP ではごく軽微にプラス（+{jpContrib ? jpContrib.alphaVsConstant.toFixed(1) : "—"}pp）、
-              <strong className="text-red-600">US ではむしろマイナス（{usContrib ? usContrib.alphaVsConstant.toFixed(1) : "—"}pp）</strong>。
+              定数配分との差は JP {pp(jpContrib?.alphaVsConstant)}、US {pp(usContrib?.alphaVsConstant)}
+              {bothContribNegative ? "で、日米ともマイナス" : ""}。
               つまり「温度が沸騰したから売る / 極寒だから買う」という判断は、過去10年の両市場では期待ほど timing として効いていません
             </li>
             <li>
               <strong>最大DD 抑制にも効いていない</strong>:
-              日米とも定数配分より <strong>4pp 前後 深く</strong>なっています。
+              定数配分より JP で <strong>{jpContrib ? Math.abs(jpContrib.ddVsConstant).toFixed(1) : "—"}pp</strong>、US で{" "}
+              <strong>{usContrib ? Math.abs(usContrib.ddVsConstant).toFixed(1) : "—"}pp</strong>{" "}
+              {(jpContrib?.ddVsConstant ?? 0) < 0 && (usContrib?.ddVsConstant ?? 0) < 0 ? "深く" : "差が出て"}
+              なっています。
               沸騰で株比率を落とすクッション効果より、
               <strong>極寒で株比率を 100% に上げたまま下落の最終局面を受け止める影響のほうが大きい</strong>ためで、
               「急落前にクッションを入れる道具」としては機能していません
             </li>
             <li>
-              <strong>α vs DCA のほとんどは「配分の高さ」由来</strong>:
-              平均 65〜69% の株比率は、積立の平均 50% より明確に高い。強い右肩上がりの過去10年では、
+              <strong>積立との差のほとんどは「配分の高さ」由来</strong>:
+              平均 {avgEquityPct(jpContrib)}（JP）/ {avgEquityPct(usContrib)}（US）の株比率は、積立の平均 50% より明確に高い。強い右肩上がりの過去10年では、
               この差だけで大きなリターン差が生まれました。
               <strong>「温度の timing が勝利の源泉」ではなく「長めに株を持ち続けたほうが勝つ相場だった」</strong>のが本当の姿です
             </li>
@@ -485,8 +517,8 @@ export default function PortfolioPage() {
           <p className="text-base leading-relaxed bg-blue-50 border border-blue-200 rounded-lg p-3">
             💡 <strong>まとめ</strong>: 過去10年のバックテストでは、温度信号の純寄与は
             <strong>リターンでも最大DDでもプラスになっていません</strong>。
-            積立(DCA)を上回る α の大半は、単に「株比率を高めに保った」から。
-            <strong>もし温度を一切見ず定数 70% で持ち続けていても、リターン・最大DDとも同等以上だった</strong>可能性が高いという事実は、
+            積立(DCA)との差の大半は、単に「株比率を高めに保った」かどうかで決まっています。
+            <strong>もし温度を一切見ず定数 {avgEquityPct(jpContrib)} 前後で持ち続けていても、リターン・最大DDとも同等以上だった</strong>という事実は、
             このサイトの価値提案を再考する材料でもあります。
             それでも温度計に意味があるとすれば、<strong>「極寒で狼狽売りしない・沸騰で調子に乗らない」ための客観的な物差し</strong>という、
             バックテストの数字には出にくい役割です。
@@ -542,7 +574,7 @@ export default function PortfolioPage() {
             <li>
               <strong className="text-red-700">ルール選定の多重検定バイアス（最大の懸念）</strong>: sym 80/20 は候補 17 本から「過去10年で最もよく勝った 1 本」を選んで採用しました。
               温度に本当の timing 価値がなくても、候補が多ければ偶然よく見える 1 本が選ばれる可能性があります。
-              上の「温度信号の純寄与度」テーブル（JP +{jpContrib ? jpContrib.alphaVsConstant.toFixed(1) : "—"}pp / US {usContrib ? usContrib.alphaVsConstant.toFixed(1) : "—"}pp）が小さい or マイナスなのは、
+              上の「温度信号の純寄与度」テーブル（JP {pp(jpContrib?.alphaVsConstant)} / US {pp(usContrib?.alphaVsConstant)}）が小さい or マイナスなのは、
               <strong>この懸念が単なる懸念で終わっていない可能性</strong>を示唆しています
             </li>
             <li>
@@ -558,11 +590,11 @@ export default function PortfolioPage() {
               <strong>サンプル期間の制約</strong>: 日本温度履歴の起点が {history.dataRange.from} のため、10 年程度のバックテストです。リーマンショックなどより古い暴落局面は含まれません
             </li>
             <li>
-              <strong className="text-amber-800">相場レジーム依存（温度信号の寄与が US でマイナスだった理由）</strong>:
+              <strong className="text-amber-800">相場レジーム依存（温度信号の寄与がマイナスだった理由）</strong>:
               過去10年は日米とも強い右肩上がり相場で、特に米国は調整らしい調整が限定的でした。
               <strong>「過熱 / 沸騰で株比率を下げる」系のルールは、このような一本調子の上昇相場では構造的に不利</strong>です
               （下げる直前に現金化できなければ、上がり続ける間に買い戻しの機会を失う）。
-              したがって温度信号の純寄与度が米国で -8pp となったのは、温度計そのものの本質的な弱点というより、
+              したがって温度信号の純寄与度がマイナス（JP {pp(jpContrib?.alphaVsConstant)} / US {pp(usContrib?.alphaVsConstant)}）となったのは、温度計そのものの本質的な弱点というより、
               <strong>「10 年強気相場」というレジームに対するこのルール設計の相性</strong>の話でもあります。
               リーマン級の長期下落や、1990 年代日本のような横ばい相場を含む期間では、
               同じ温度信号の寄与が逆転する可能性があります（が、それを検証するデータは本サイトにはまだありません）

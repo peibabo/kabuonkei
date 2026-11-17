@@ -96,4 +96,22 @@ describe("computeJapanLevelStreak", () => {
     });
     expect(result).toBe(1);
   });
+
+  it("立会日を渡すと、17 時以降や休場日に当日分を二重に数えない", () => {
+    // 金曜 11/13 の引け後に記録済み。土曜に見ても現在値は金曜の引け値
+    const snapshots = [
+      { date: "2026-11-11", score: 15 },
+      { date: "2026-11-12", score: 18 },
+      { date: "2026-11-13", score: 19 },
+    ];
+    // 立会日（金曜）を渡す: 11/11・11/12 の 2 日 + 当日 = 3
+    expect(
+      computeJapanLevelStreak({ currentScore: 19, snapshots, todayJstKey: "2026-11-13" }),
+    ).toBe(3);
+    // 暦日（土曜）を渡すと金曜分も過去として数えてしまい 4 になる
+    expect(
+      computeJapanLevelStreak({ currentScore: 19, snapshots, todayJstKey: "2026-11-14" }),
+    ).toBe(4);
+  });
 });
+

@@ -12,14 +12,13 @@ export interface MarketData {
   fearGreed: FearGreedData;
   japanFearGreed: JapanFearGreedData | null;
   /**
-   * 前回観測の日本版温度スコア。
-   * `japan-fg-snapshots.json` の最新スナップショット（無ければ `japan-temperature-history.json` の末尾簡易版）。
+   * 前営業日の日本版温度スコア（`japan-temperature-history.json` の、現在値の立会日より前の最後の記録）。
    * トップ画面ヒーローの「昨日比」表示に使う。null なら直近観測なし。
    */
   previousJapanScore: number | null;
   /**
    * 現在の日本版温度レベル（極寒〜沸騰）の連続営業日数（当日含む）。
-   * `japan-fg-snapshots.json`（full5 法）由来。null なら不明（日本スコア欠損時）。
+   * `japan-temperature-history.json` 由来。null なら不明（日本スコア欠損時）。
    * トップ画面ヒーローの「N日目」見出しに使う。
    */
   japanLevelStreak: number | null;

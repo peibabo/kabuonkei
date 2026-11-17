@@ -1,26 +1,12 @@
 {
-  "generatedAt": "2026-11-13",
+  "generatedAt": "2026-11-17",
   "dataRange": {
-    "from": "2015-11-13",
-    "to": "2026-11-13"
+    "from": "2015-11-17",
+    "to": "2026-11-17"
   },
   "market": "us",
   "note": "VIXから推定した温度スコア（estimateFearGreedFromVix）。S&P500終値をベースに将来リターンを算出。",
   "daily": [
-    {
-      "date": "2015-11-13",
-      "score": 66,
-      "return1m": -0.1,
-      "return3m": -9.6,
-      "return6m": 2
-    },
-    {
-      "date": "2015-11-16",
-      "score": 73,
-      "return1m": 1,
-      "return3m": -7.7,
-      "return6m": 0.7
-    },
     {
       "date": "2015-11-17",
       "score": 71,
@@ -18492,21 +18478,21 @@
       "score": 74,
       "return1m": 0.2,
       "return3m": 4.6,
-      "return6m": null
+      "return6m": 0.2
     },
     {
       "date": "2026-05-19",
       "score": 73,
       "return1m": 2,
       "return3m": 5.3,
-      "return6m": null
+      "return6m": 0.9
     },
     {
       "date": "2026-05-20",
       "score": 75,
       "return1m": 0.5,
       "return3m": 3.5,
-      "return6m": null
+      "return6m": -0.2
     },
     {
       "date": "2026-05-21",
@@ -18925,14 +18911,14 @@
       "date": "2026-08-17",
       "score": 83,
       "return1m": -2.5,
-      "return3m": null,
+      "return3m": -4.2,
       "return6m": null
     },
     {
       "date": "2026-08-18",
       "score": 81,
       "return1m": -0.7,
-      "return3m": null,
+      "return3m": -3.6,
       "return6m": null
     },
     {
@@ -19211,21 +19197,21 @@
     {
       "date": "2026-10-14",
       "score": 77,
-      "return1m": null,
+      "return1m": -2,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-10-15",
       "score": 78,
-      "return1m": null,
+      "return1m": -4.2,
       "return3m": null,
       "return6m": null
     },
     {
       "date": "2026-10-16",
       "score": 67,
-      "return1m": null,
+      "return1m": -3.2,
       "return3m": null,
       "return6m": null
     },
@@ -19358,6 +19344,20 @@
     {
       "date": "2026-11-12",
       "score": 71,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-11-13",
+      "score": 69,
+      "return1m": null,
+      "return3m": null,
+      "return6m": null
+    },
+    {
+      "date": "2026-11-16",
+      "score": 57,
       "return1m": null,
       "return3m": null,
       "return6m": null

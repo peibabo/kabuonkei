@@ -8,7 +8,7 @@
 
 ## 日本版
 - `src/data/japan-historical-stats.json`: 日本版温度帯ごとの日経225・TOPIX 将来リターン
-- **簡易版**: C2/C3/C4の過去データが未整備のため、C1（日経225 vs 125日MA）+ C5（USDJPY 50日モメンタム）の2要素版で算出
+- **スコア**: ゲージと同じ市場温度（日経225 vs 125日移動平均乖離、`scripts/_lib/japan-temperature.ts`）。2026-11-17 に C1+C5 の 2 要素版から切り替え
 - 各温度帯に `nikkei225` と `topix` の両方の統計を並列保存。`topix` は optional（未生成の古いビルドに備える）
 - TOPIX は Yahoo Finance で指数シンボル（`^TPX` / `^TOPX`）が取得できないため、連動 ETF「NEXT FUNDS TOPIX連動型上場投信 (`1306.T`)」の日次終値を proxy として使用
 - 生成スクリプト: `npm run generate:japan-stats`（`scripts/generate-japan-historical-stats.ts`）
@@ -18,7 +18,7 @@
 ## クロス分析（参考値）
 - `src/data/cross-historical-stats.json`: 温度計と対象市場を入れ替えた「参考値」の過去統計
   - `directions.usTempJpIdx`: 米国温度（VIX 推定）× 日経225（^N225）
-  - `directions.jpTempUsIdx`: 日本温度（C1+C5 簡易 10年）× S&P500（^GSPC）
+  - `directions.jpTempUsIdx`: 日本温度（市場温度 10年）× S&P500（^GSPC）
 - 生成スクリプト: `npm run generate:cross-stats`（`scripts/generate-cross-historical-stats.ts`）
 - アクセサ: `src/lib/cross-historical-stats.ts`（`getCrossHistoricalStats(direction)` / `getCrossStatsForScore(score, direction)` / `CROSS_DIRECTION_META`）。`direction` は `"usTempJpIdx" | "jpTempUsIdx"`
 - UI: `src/components/CrossStatsCard.tsx`（1カードに方向タブ 🇺🇸×🇯🇵 / 🇯🇵×🇺🇸 を置いた単独配置。Dashboard では `StatsSection` の直後）
@@ -27,7 +27,7 @@
 ## 温度×セクター ヒートマップ（日本版）
 - `src/data/japan-sector-heatmap.json`: 日本版温度スコア × TOPIX-17 連動 ETF 17本（NEXT FUNDS `1617.T`〜`1633.T`）の将来リターン（1M/3M/6M）を事前計算した静的 JSON
 - **業種粒度**: 東証 33 業種ではなく **TOPIX-17 ベース**（食品 / エネルギー資源 / 建設・資材 / 素材・化学 / 医薬品 / 自動車・輸送機 / 鉄鋼・非鉄 / 機械 / 電機・精密 / 情報通信・サービスその他 / 電力・ガス / 運輸・物流 / 商社・卸売 / 小売 / 銀行 / 金融(除く銀行) / 不動産）。33 業種は ETF カバレッジ不足 + UI 過密で採用せず
-- **スコア**: `japan-historical-stats.json` と同じ C1(日経225 vs 125日MA)+C5(USDJPY 50日モメンタム)の 2要素簡易版（整合性のため同ロジックを `scripts/generate-japan-sector-heatmap.ts` にコピー）
+- **スコア**: `japan-historical-stats.json` と同じ市場温度（共通関数 `computeJapanTemperatureSeries()` を使う）
 - 生成スクリプト: `npm run generate:sector-heatmap`（`scripts/generate-japan-sector-heatmap.ts`）。`aggregateLevelReturns` を各セクターで 1 回ずつ呼び出す実装（17 回）
 - データ構造: sector-major（`sectors[].levels[]`）— 温度帯 TOP N セクター抽出が容易
 - アクセサ: `src/lib/japan-sector-heatmap.ts`（`getJapanSectorHeatmap()` / `getSectorStatsForScore(score, sectorCode, period)` / `getTopSectorsForScore(score, period, limit=5)` — avgReturn 降順ランキング）

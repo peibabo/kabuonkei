@@ -114,7 +114,7 @@ function collectEntries(): FeedEntry[] {
     summary:
       "「株の買い時」を 1 指標で当てる方法はない。センチメント・需給・リスク・マクロの 4 カテゴリで過熱感と底値圏を見極める考え方を、各指標の解説記事と市場温度スコアへの導線つきで整理したまとめ記事。",
     publishedAt: "2026-06-18",
-    updatedAt: "2026-06-18",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -123,9 +123,9 @@ function collectEntries(): FeedEntry[] {
     title:
       "円安・円高と株価の関係とは？リスクオフで円高になる仕組みを初心者向けに解説",
     summary:
-      "なぜ円安は日本株に追い風で円高は逆風なのか、リスクオフで「円高＋株安」が同時に起きる仕組み（円キャリー巻き戻し）、単純な逆相関では読めない注意点、株温計が使うドル円モメンタム（C5 要素）を解説。",
+      "なぜ円安は日本株に追い風で円高は逆風なのか、リスクオフで「円高＋株安」が同時に起きる仕組み（円キャリー巻き戻し）、単純な逆相関では読めない注意点、ドル円モメンタムと、株温計が温度スコアから外した理由を解説。",
     publishedAt: "2026-06-18",
-    updatedAt: "2026-06-18",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -136,7 +136,7 @@ function collectEntries(): FeedEntry[] {
     summary:
       "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX との違い、平時20前後／30超で警戒／40超でパニックという水準の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を解説。",
     publishedAt: "2026-06-18",
-    updatedAt: "2026-06-18",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -147,7 +147,7 @@ function collectEntries(): FeedEntry[] {
     summary:
       "騰落レシオ（値上がり銘柄数÷値下がり銘柄数）の意味、25 日移動平均の計算方法、「120 超え＝過熱／70 割れ＝底値圏」という水準別の目安、だましシグナルへの注意、株温計の市場温度スコアとの関係を解説。",
     publishedAt: "2026-06-18",
-    updatedAt: "2026-06-18",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -167,9 +167,9 @@ function collectEntries(): FeedEntry[] {
     title:
       "Fear & Greed Index とは？CNN 米国版の中身と、日本版を株温計でどう作っているか",
     summary:
-      "CNN Fear & Greed Index の構成 7 要素・スコアの読み方を解説。日本版を作るとしたら何が違うのか、株温計の独自スコア (5 要素) と対比して整理。",
+      "CNN Fear & Greed Index の構成 7 要素・スコアの読み方を解説。日本版を作るとしたら何が違うのか、株温計の市場温度と対比して整理。",
     publishedAt: "2026-04-28",
-    updatedAt: "2026-04-28",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -180,7 +180,7 @@ function collectEntries(): FeedEntry[] {
     summary:
       "信用倍率（信用買い残÷信用売り残）の見方、JPX 公表データの読み方、「4 倍超え=過熱」通説の真偽、株温計の温度スコアと組み合わせた使いどころを解説。",
     publishedAt: "2026-04-28",
-    updatedAt: "2026-04-28",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -189,9 +189,9 @@ function collectEntries(): FeedEntry[] {
     title:
       "投資部門別売買動向とは？外国人投資家のフローを毎週どう読むか",
     summary:
-      "投資部門別売買状況（JPX 毎週木曜公表）の主要 6 区分・外国人シェア（現物 59.1%/先物 75.7%、2024）・読み方のコツ・株温計 C2 要素としての扱いを解説。",
+      "投資部門別売買状況（JPX 毎週木曜公表）の主要 6 区分・外国人シェア（現物 59.1%/先物 75.7%、2024）・読み方のコツ・株温計の「需給の温度」での扱いを解説。",
     publishedAt: "2026-05-08",
-    updatedAt: "2026-05-08",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -200,9 +200,9 @@ function collectEntries(): FeedEntry[] {
     title:
       "裁定残とは？裁定買い残・売り残の意味と SQ 前後で気にすべき理由",
     summary:
-      "裁定残の見方を初心者向けに解説。裁定買い残と売り残の違い、JPX 毎営業日 16:00 公表の日次データ、メジャー SQ 前後の解消売り、株温計 C4 要素としての扱いを整理。",
+      "裁定残の見方を初心者向けに解説。裁定買い残と売り残の違い、JPX 毎営業日 16:00 公表の日次データ、メジャー SQ 前後の解消売り、株温計が温度スコアから外した理由を整理。",
     publishedAt: "2026-05-08",
-    updatedAt: "2026-05-08",
+    updatedAt: "2026-11-17",
   });
 
   entries.push({
@@ -213,7 +213,7 @@ function collectEntries(): FeedEntry[] {
     summary:
       "ドローダウン (DD) と最大ドローダウンの意味・計算式・過去の S&P500/日経225 のDD実績・リターンより最大DDが大事な理由を解説。株温計の温度連動 PF の DD 検証結果との接続も整理。",
     publishedAt: "2026-05-08",
-    updatedAt: "2026-07-03",
+    updatedAt: "2026-11-17",
   });
 
   for (const event of getEventsMeta()) {

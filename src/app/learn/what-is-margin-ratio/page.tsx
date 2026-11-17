@@ -12,6 +12,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "信用倍率（信用買い残÷信用売り残）の意味、JPX 公表データの読み方、「4 倍超え=過熱」という通説の真偽、株温計の温度スコアと組み合わせた使いどころを初心者向けに解説。週次データなのに毎週見るべきかという素朴な疑問にも答えます。";
 const PUBLISHED_AT = "2026-04-28";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -45,7 +46,7 @@ const TOC_ITEMS = [
   { href: "#bands", label: "水準別の意味（経験則の目安）" },
   { href: "#myth", label: "「4 倍超え＝危険」は本当か" },
   { href: "#pitfalls", label: "見方の注意点 4 つ" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計 C3 要素）" },
+  { href: "#temperature", label: "温度スコアとの関係（倍率より買い残の増減を見る）" },
   { href: "#where", label: "毎週どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -89,7 +90,7 @@ export default function WhatIsMarginRatioPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -118,6 +119,8 @@ export default function WhatIsMarginRatioPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -165,8 +168,8 @@ export default function WhatIsMarginRatioPage() {
               単独指標としては<strong>意外と頼りない</strong>シグナルでした
             </li>
             <li>
-              本領発揮するのは<strong>「市場温度との組合せ」</strong>。株温計は信用倍率を C3 要素として、
-              他 4 要素（モメンタム・需給・外国人フロー・為替）と等ウェイトで統合した日本版温度スコアを毎日公開しています
+              本領発揮するのは<strong>「市場温度との組合せ」</strong>。株温計は信用買い残の増減を「需給の温度」の材料として、
+              日経225 の市場温度と並べて毎日表示しています
             </li>
             <li>
               週次更新であることを忘れないこと、SQ 前後の歪みに注意すること。本記事では見方の注意点 4 つも整理します
@@ -312,65 +315,39 @@ export default function WhatIsMarginRatioPage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計 C3 要素）
+            温度スコアとの関係（倍率より買い残の増減を見る）
           </h2>
           <p className="text-base leading-relaxed">
-            株温計の<strong>日本版「市場温度スコア」</strong>は、5 つの要素を等ウェイトで統合した独自指標です。
-            信用倍率はそのうちの<strong>C3 要素</strong>として組み込まれています。
+            株温計の<strong>日本版「市場温度スコア」</strong>は、2026 年 11 月まで信用倍率の水準をそのまま構成要素の 1 つにしていました。
+            過去データで見直した結果、<strong>倍率の水準は温度の材料として 2 つの弱点</strong>があるとわかり、使い方を変えています。
           </p>
-
-          <div className="overflow-x-auto not-prose mt-4">
-            <table className="w-full text-base border border-gray-200 rounded-lg">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-3 py-2 text-left font-semibold">要素</th>
-                  <th className="px-3 py-2 text-left font-semibold">中身</th>
-                  <th className="px-3 py-2 text-left font-semibold">信用倍率との関係</th>
-                </tr>
-              </thead>
-              <tbody className="[&>tr>td]:px-3 [&>tr>td]:py-2 [&>tr]:border-t [&>tr]:border-gray-100">
-                <tr>
-                  <td className="font-semibold">C1</td>
-                  <td>日経225 の 125 日移動平均との乖離率</td>
-                  <td>長期トレンド面（信用倍率と独立）</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C2</td>
-                  <td>外国人投資家フロー</td>
-                  <td>主体（外国人）視点で補完</td>
-                </tr>
-                <tr className="bg-amber-50">
-                  <td className="font-semibold">C3</td>
-                  <td>信用倍率</td>
-                  <td>本記事の主題（個人投資家のポジション偏り）</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C4</td>
-                  <td>裁定残バランス</td>
-                  <td>同じ「需給系」で補完関係</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C5</td>
-                  <td>USDJPY 50 日モメンタム</td>
-                  <td>マクロ要因（信用倍率と独立）</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
+          <ol className="list-decimal pl-6 mt-3 space-y-2 text-base leading-relaxed">
+            <li>
+              <strong>時代によって「普通」の水準が違う</strong>: 2002〜2012 年の中央値は約 2.3 倍、2016 年以降は約 4.0 倍で、
+              2026 年 10 月末には 10.1 倍に達しました。固定の基準で「何倍なら過熱」と決めると、時期によって常に冷たく出たり常に熱く出たりします
+            </li>
+            <li>
+              <strong>急落の初週にむしろ上がる</strong>: 株価が急落すると、空売りしていた人の買い戻しで売り残が先に減ります。
+              2024 年 8 月 2 日の週は買い残が 2.2% 減った一方で売り残が 18.4% 減り、倍率は 7.28 倍から 8.72 倍へ跳ね上がりました。
+              倍率だけを見ると、暴落の週に「過熱」と読んでしまいます
+            </li>
+          </ol>
           <p className="text-base leading-relaxed mt-3">
-            ねらいは<strong>「信用倍率の弱さを他要素で補強する」</strong>こと。
-            信用倍率は単独では精度が出にくい一方、<strong>需給系（C4=裁定残）と主体（C2=外国人フロー）と組み合わさるとシグナルとしての強さが増す</strong>
-            傾向があります。株温計の温度スコアは「信用倍率も見ているが、それだけに頼っていない」という設計です。
+            一方で<strong>信用買い残の 4 週変化</strong>は、主な急落局面でいずれも大きなマイナスになっていました
+            （例: 2024 年 8 月 9 日の週は 4 週前比 -17%、2026 年 11 月 6 日の週は -12%）。
+            投げ売りで個人の買いポジションが整理される動きを、倍率よりも素直に映します。
           </p>
           <p className="text-base leading-relaxed mt-3">
-            日々の温度スコアは{" "}
+            そこで現在の株温計は、<strong>市場温度を日経225 の 125 日移動平均乖離だけで決め</strong>、
+            信用買い残の 4 週変化は海外投資家フローと合わせた<strong>「需給の温度」</strong>としてゲージの下に別枠で表示しています。
+            JPX の公表は週 1 回で 1〜2 週遅れるため、需給の温度は市場温度に混ぜずに参考として並べる形です。
+          </p>
+          <p className="text-base leading-relaxed mt-3">
+            日々の温度は{" "}
             <Link href="/" className="underline hover:text-gray-900">
               トップページ
             </Link>
             のゲージで一目把握できます。
-            毎週の信用倍率の生データを直接眺める手間をかけずに、
-            「市場が熱いか冷たいか」を 0〜100 のひとつの数字で読めるようにしているのが温度スコアの役割です。
           </p>
         </section>
 
@@ -395,8 +372,8 @@ export default function WhatIsMarginRatioPage() {
               <strong>大手証券各社の市場情報サイト</strong>: 楽天証券・SBI 証券・SMBC 日興証券などが二次情報として時系列をグラフ化
             </li>
             <li>
-              <strong>株温計のトップページ</strong>: 日本市場データセクションで最新の信用倍率と推移、
-              および温度スコアの C3 要素として組み込まれた数値を表示
+              <strong>株温計のトップページ</strong>: 日本市場データセクションで最新の信用倍率と推移を表示。
+              市場温度のゲージの下には、信用買い残の 4 週変化を使った「需給の温度」も出しています
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

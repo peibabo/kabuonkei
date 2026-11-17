@@ -25,7 +25,7 @@
 「日本だけ熱い・米国は冷静」のような日米センチメント乖離局面のその後を、過去約 10 年で検証する記事。Primary は 乖離バンド × {S&P500, 日経225} の前方リターン + N225-S&P500 平均スプレッド、Joint は 乖離バンド × 日本版温度バンドの 2D。**温度差 = JP score - US score** と定義し、5 バンド (`≤ -20 / -20〜-10 / -10〜+10 / +10〜+20 / ≥ +20`) で集計する。
 
 **データ層**:
-- `src/data/divergence-analysis.json`: Yahoo Finance `^VIX` (米国版温度の元データ) / `^GSPC` / `^N225` 日足 (過去20年) と `japan-temperature-history.json` を結合。米国版温度は `estimateFearGreedFromVix()` (VIX 10 → 95、VIX 40 → 5 の線形マッピング) で再構成。日本版温度は C1+C5 簡易版 (2016-10-28〜)。集計対象は両指標が解決できる米国取引日 ≈ 2,300 日。生成スクリプト: `npm run generate:divergence`（`scripts/generate-divergence-analysis.ts`）
+- `src/data/divergence-analysis.json`: Yahoo Finance `^VIX` (米国版温度の元データ) / `^GSPC` / `^N225` 日足 (過去20年) と `japan-temperature-history.json` を結合。米国版温度は `estimateFearGreedFromVix()` (VIX 10 → 95、VIX 40 → 5 の線形マッピング) で再構成。日本版温度は市場温度（日経225 × 125日移動平均乖離、2016-10-28〜）。集計対象は両指標が解決できる米国取引日 ≈ 2,300 日。生成スクリプト: `npm run generate:divergence`（`scripts/generate-divergence-analysis.ts`）
 - 集計時、JP score は同日 or 7 日以内の直近営業日で backward fill。Joint は `aggregateJointReturns` を再利用
 - 温度差バンドは ±Infinity が JSON 化で `null` になる問題を避けるため sentinel 値 `±999` を使用
 

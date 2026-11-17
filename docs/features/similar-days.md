@@ -7,7 +7,7 @@
 - `src/data/us-similar-days.json`: 同上（^GSPCベース）
 - `src/data/events-meta.json`: 主要経済イベントのメタ辞書。各エントリは `{ slug, date, label, oneLiner, longDescription? }`。`/events/[slug]` 詳細ページと類似日カードのイベントラベル表示の両方で使用。`longDescription` は Markdown 文字列（段落区切り `\n\n`、強調 `**...**`、リンク可）で、詳細ページで `react-markdown` により描画される SEO 本文
 - `src/data/events-enriched.json`: 各イベント日から日経225 / S&P500 の 1M/3M/6M/1Y リターンを事前計算したもの。`scripts/generate-similar-days.ts` が同時出力する
-- スコア基準は温度推移と同じ: 日本=C1(125日MA)+C5(50日USDJPYモメンタム)、米国=VIXベース推定
+- スコア基準は温度推移と同じ: 日本=市場温度（日経225 × 125日移動平均乖離）、米国=VIXベース推定
 - 生成スクリプト: `npm run generate:similar-days`（`scripts/generate-similar-days.ts`）
 
 ## ライブラリ・UI

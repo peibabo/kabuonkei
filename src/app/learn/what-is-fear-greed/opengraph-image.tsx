@@ -9,7 +9,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const charSet =
-    "FearGreedIndexとはCNN米国版の中身日本版株温計どう作っているか恐怖と欲望指数解説記事kabuonkei要素統合";
+    "FearGreedIndexとはCNN米国版の中身日本版株温計どう作っているか恐怖と欲望指数解説記事kabuonkei要素統合市場温度＋需給";
   const fonts = await buildNotoSansJpFonts(charSet);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(
@@ -128,7 +128,7 @@ export default async function Image() {
               <span
                 style={{ fontSize: 40, fontWeight: 800, color: "#0f172a" }}
               >
-                5 要素統合
+                市場温度＋需給
               </span>
             </div>
             <div

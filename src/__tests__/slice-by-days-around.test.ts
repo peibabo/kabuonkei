@@ -3,7 +3,7 @@ import { sliceByDaysAround } from "@/lib/japan-temperature-history";
 import type { JapanTempPoint } from "@/lib/japan-temperature-history";
 
 function p(date: string, score = 50): JapanTempPoint {
-  return { date, score, method: "simple2" };
+  return { date, score };
 }
 
 describe("sliceByDaysAround", () => {

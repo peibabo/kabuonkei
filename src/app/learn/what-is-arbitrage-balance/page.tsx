@@ -10,8 +10,9 @@ const ARTICLE_PATH = "/learn/what-is-arbitrage-balance";
 const ARTICLE_TITLE =
   "裁定残とは？裁定買い残・売り残の意味と SQ 前後で気にすべき理由";
 const ARTICLE_DESCRIPTION =
-  "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX が毎営業日 16:00 に公表する日次データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計の温度スコア C4 要素としての扱いまでまとめます。";
+  "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX が毎営業日 16:00 に公表する日次データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計の温度スコアで構成要素から外した理由までまとめます。";
 const PUBLISHED_AT = "2026-05-08";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -45,7 +46,7 @@ const TOC_ITEMS = [
   { href: "#two-balances", label: "裁定買い残と裁定売り残の違い" },
   { href: "#sq", label: "SQ 前後で何が起きるか" },
   { href: "#how-to-read", label: "読み方のコツ 4 つ" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計 C4 要素）" },
+  { href: "#temperature", label: "温度スコアとの関係（株温計で外した理由）" },
   { href: "#where", label: "毎日どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -56,7 +57,7 @@ export default function WhatIsArbitrageBalancePage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -85,6 +86,8 @@ export default function WhatIsArbitrageBalancePage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -138,7 +141,7 @@ export default function WhatIsArbitrageBalancePage() {
             </li>
             <li>
               ただし<strong>絶対水準だけでは判断材料にならない</strong>のが実情。
-              株温計では裁定残バランスを温度スコアの C4 要素として、他 4 要素と合わせて統合しています
+              株温計でも以前は温度スコアの構成要素にしていましたが、値がほとんど動かないため 2026 年 11 月に外しました
             </li>
           </ul>
         </section>
@@ -217,7 +220,7 @@ export default function WhatIsArbitrageBalancePage() {
           <p className="text-base leading-relaxed mt-3">
             実務的には<strong>「買い残 − 売り残」</strong>を「裁定残バランス」として見ることが多く、
             このバランスが大きくプラス（買い残優勢）なら現物売り圧力、大きくマイナスなら現物買い圧力が積み上がっている、
-            と読みます。<strong>株温計の C4 要素はこの「バランス」をスコア化</strong>しています。
+            と読みます。
           </p>
         </section>
 
@@ -294,59 +297,22 @@ export default function WhatIsArbitrageBalancePage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計 C4 要素）
+            温度スコアとの関係（株温計で外した理由）
           </h2>
           <p className="text-base leading-relaxed">
-            株温計の<strong>日本版「市場温度スコア」</strong>では、
-            裁定残のバランス（買い残 − 売り残）を<strong>C4 要素</strong>として組み込んでいます。
-            裁定買い残優勢が長期分布の中で高水準なら<strong>「過熱（熱い）」側に温度を引き上げる</strong>、
-            裁定売り残優勢が高水準なら<strong>「冷え込み（冷たい）」側に引き下げる</strong>方向に働きます。
+            株温計の<strong>日本版「市場温度スコア」</strong>では、2026 年 11 月まで裁定残を構成要素の 1 つにしていました。
+            「買い残 ÷（買い残 + 売り残）」を 0〜100 に換算し、買い残優勢なら温度を上げる設計です。
           </p>
-
-          <div className="overflow-x-auto not-prose mt-4">
-            <table className="w-full text-base border border-gray-200 rounded-lg">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-3 py-2 text-left font-semibold">要素</th>
-                  <th className="px-3 py-2 text-left font-semibold">中身</th>
-                  <th className="px-3 py-2 text-left font-semibold">主に捉える主体</th>
-                </tr>
-              </thead>
-              <tbody className="[&>tr>td]:px-3 [&>tr>td]:py-2 [&>tr]:border-t [&>tr]:border-gray-100">
-                <tr>
-                  <td className="font-semibold">C1</td>
-                  <td>日経225 の 125 日移動平均との乖離率</td>
-                  <td>結果としての株価</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C2</td>
-                  <td>投資主体別売買動向（外国人フロー）</td>
-                  <td>海外投資家</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C3</td>
-                  <td>信用倍率</td>
-                  <td>個人投資家</td>
-                </tr>
-                <tr className="bg-amber-50">
-                  <td className="font-semibold">C4</td>
-                  <td>裁定残バランス</td>
-                  <td>本記事の主題（証券会社・機関投資家の自己ポジション）</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C5</td>
-                  <td>USDJPY 50 日モメンタム</td>
-                  <td>マクロ要因（為替）</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
           <p className="text-base leading-relaxed mt-3">
-            注目したいのは、<strong>C4（裁定残）/ C2（外国人）/ C3（信用倍率）</strong>がそれぞれ
-            <strong>異なる主体（自己 / 外国人 / 個人）の動き</strong>を別個に拾っている設計です。
-            裁定残単独だと SQ 前後のノイズに振り回されがちですが、
-            5 要素の等ウェイト平均で統合することでノイズを相殺し、より安定した「市場の温度」として読めるようにしています。
+            ところが近年の日本市場は<strong>裁定売り残が極端に小さく、この比率は 0.93〜1.00 の狭い範囲</strong>でしか動きません。
+            2026 年 4〜11 月の運用では、スコアは 4〜6 月と 10 月以降に 77〜100 の高い水準が続き、
+            2026 年 11 月 6 日に日経平均が約 6% 下げた日も 79 と高いままでした。
+            また裁定残は長期の履歴が手元になく、温度の材料として効いているのかを過去データで確かめることもできませんでした。
+          </p>
+          <p className="text-base leading-relaxed mt-3">
+            そこで現在は、<strong>市場温度を日経225 の 125 日移動平均乖離だけで決め</strong>、裁定残は温度に含めていません。
+            裁定残そのものは SQ 前後の需給を読む材料として有用なので、トップページの日本市場データでは引き続き直近水準と推移を表示しています。
+            ゲージの下に出している「需給の温度」は、海外投資家フローと信用買い残の増減の 2 つから作っています。
           </p>
         </section>
 
@@ -372,8 +338,7 @@ export default function WhatIsArbitrageBalancePage() {
               SQ までの残営業日と一緒に見ると分かりやすい
             </li>
             <li>
-              <strong>株温計のトップページ</strong>: 日本市場データセクションで裁定残バランスの直近水準と推移を可視化。
-              温度スコアの C4 要素として既に組み込まれた数値も毎日反映
+              <strong>株温計のトップページ</strong>: 日本市場データセクションで裁定残バランスの直近水準と推移を可視化
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

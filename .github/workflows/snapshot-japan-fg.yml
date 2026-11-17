@@ -1,4 +1,4 @@
-name: Snapshot Japan Fear Greed
+name: Update Japan Temperature History
 
 on:
   # 通常は Vercel Cron（vercel.json → /api/cron/*）が workflow_dispatch で起動する。GitHub の schedule は
@@ -32,16 +32,16 @@ jobs:
           node-version: 22
           cache: 'npm'
       - run: npm ci
-      - run: npm run snapshot:japan-fg
-      # 簡易版（10年分のC1+C5スコア）も毎日リフレッシュして Area が今日まで連続するようにする
+      # 市場温度（日経225 × 125日移動平均乖離）の過去推移を全期間再生成する。
+      # 推移・前日比・連続日数・日本版アラートはこのファイルを見る（2026-11 に 5 要素スナップショットの記録を停止）
       - run: npm run generate:japan-temperature-history
       - name: Commit and push if changed
         run: |
-          git diff --quiet src/data/japan-fg-snapshots.json src/data/japan-temperature-history.json && exit 0
+          git diff --quiet src/data/japan-temperature-history.json && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/japan-fg-snapshots.json src/data/japan-temperature-history.json
-          git commit -m "chore: 日本版FGスナップショット + 温度推移を更新（$(node -p "require('./src/data/japan-fg-snapshots.json').snapshots.at(-1).date")）"
+          git add src/data/japan-temperature-history.json
+          git commit -m "chore: 日本版 市場温度の推移を更新（$(node -p "require('./src/data/japan-temperature-history.json').daily.at(-1).date")）"
           # 同じ時間帯に別のデータ更新ジョブが先に push していても失敗しないようにする
           git pull --rebase
           git push

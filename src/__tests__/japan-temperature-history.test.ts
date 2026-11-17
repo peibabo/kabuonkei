@@ -1,95 +1,49 @@
 import { describe, it, expect } from "vitest";
 import {
-  mergeJapanTemperatureData,
+  getJapanHistory,
+  previousScoreBefore,
   sliceByDays,
   type JapanTempPoint,
 } from "@/lib/japan-temperature-history";
 
-const simplePoints: JapanTempPoint[] = [
-  { date: "2026-03-01", score: 40, method: "simple2", c1: 40, c5: 40 },
-  { date: "2026-03-02", score: 45, method: "simple2", c1: 50, c5: 40 },
-  { date: "2026-04-01", score: 55, method: "simple2", c1: 60, c5: 50 },
-];
-
-const fullPoints: JapanTempPoint[] = [
-  {
-    date: "2026-04-01",
-    score: 60,
-    method: "full5",
-    level: "平温",
-    availableCount: 5,
-    components: {
-      nikkeiMa: 65,
-      foreignFlow: 55,
-      marginRatio: 60,
-      arbitrage: 60,
-      usdJpyMomentum: 60,
-    },
-  },
-  {
-    date: "2026-04-02",
-    score: 62,
-    method: "full5",
-    level: "過熱",
-    availableCount: 5,
-    components: {
-      nikkeiMa: 65,
-      foreignFlow: 55,
-      marginRatio: 60,
-      arbitrage: 70,
-      usdJpyMomentum: 60,
-    },
-  },
-];
-
-describe("mergeJapanTemperatureData", () => {
-  it("簡易版とフル版を別系列として結合する", () => {
-    const result = mergeJapanTemperatureData(simplePoints, fullPoints);
-    // 3 simple + 2 full = 5件
-    expect(result).toHaveLength(5);
-    expect(result.filter((p) => p.method === "simple2")).toHaveLength(3);
-    expect(result.filter((p) => p.method === "full5")).toHaveLength(2);
-  });
-
-  it("同日に両方ある場合も両方残る（別系列扱い）", () => {
-    const result = mergeJapanTemperatureData(simplePoints, fullPoints);
-    const apr01Entries = result.filter((p) => p.date === "2026-04-01");
-    expect(apr01Entries).toHaveLength(2);
-    expect(apr01Entries.some((p) => p.method === "simple2" && p.score === 55)).toBe(true);
-    expect(apr01Entries.some((p) => p.method === "full5" && p.score === 60)).toBe(true);
-  });
-
-  it("結果は日付昇順でソートされる", () => {
-    const result = mergeJapanTemperatureData(simplePoints, fullPoints);
-    for (let i = 1; i < result.length; i++) {
-      expect(result[i].date >= result[i - 1].date).toBe(true);
+describe("getJapanHistory", () => {
+  it("日付昇順で、0〜100 のスコアを持つ", () => {
+    const history = getJapanHistory();
+    expect(history.length).toBeGreaterThan(1000);
+    for (let i = 1; i < history.length; i++) {
+      expect(history[i].date > history[i - 1].date).toBe(true);
     }
+    expect(history.every((p) => p.score >= 0 && p.score <= 100)).toBe(true);
+  });
+});
+
+describe("previousScoreBefore", () => {
+  const history: JapanTempPoint[] = [
+    { date: "2026-11-12", score: 25 },
+    { date: "2026-11-13", score: 27 },
+    { date: "2026-11-16", score: 19 },
+  ];
+
+  it("立会日より前の最後の記録を返す（17 時以降で当日分が記録済みでも前営業日と比べる）", () => {
+    expect(previousScoreBefore(history, "2026-11-16")).toBe(27);
   });
 
-  it("同日ではフル版が後ろ（描画で上に重なる）", () => {
-    const result = mergeJapanTemperatureData(simplePoints, fullPoints);
-    const apr01Idx = result.findIndex(
-      (p) => p.date === "2026-04-01" && p.method === "simple2"
-    );
-    const apr01FullIdx = result.findIndex(
-      (p) => p.date === "2026-04-01" && p.method === "full5"
-    );
-    expect(apr01FullIdx).toBeGreaterThan(apr01Idx);
+  it("当日分がまだ記録されていなければ直近の記録", () => {
+    expect(previousScoreBefore(history, "2026-11-17")).toBe(19);
   });
 
-  it("片方が空でも動作する", () => {
-    expect(mergeJapanTemperatureData(simplePoints, [])).toHaveLength(3);
-    expect(mergeJapanTemperatureData([], fullPoints)).toHaveLength(2);
-    expect(mergeJapanTemperatureData([], [])).toEqual([]);
+  it("それより前の記録がなければ null", () => {
+    expect(previousScoreBefore(history, "2026-11-12")).toBeNull();
+    expect(previousScoreBefore([], "2026-11-12")).toBeNull();
   });
 });
 
 describe("sliceByDays", () => {
   const points: JapanTempPoint[] = [
-    { date: "2026-01-01", score: 40, method: "simple2" },
-    { date: "2026-02-01", score: 45, method: "simple2" },
-    { date: "2026-03-01", score: 50, method: "simple2" },
-    { date: "2026-04-01", score: 55, method: "simple2" },
+    { date: "2026-01-01", score: 40 },
+    { date: "2026-02-01", score: 45 },
+    { date: "2026-03-01", score: 50 },
+    { date: "2026-04-01", score: 55 },
   ];
 
   it("末尾から指定日数分を切り出す", () => {

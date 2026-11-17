@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
-import FearGreedGauge from "@/components/FearGreedGauge";
+import { render, screen, cleanup, within } from "@testing-library/react";
+import FearGreedGauge, { formatOkuYen } from "@/components/FearGreedGauge";
 import type { JapanFearGreedData } from "@/lib/types";
 
 afterEach(() => {
@@ -13,12 +13,12 @@ function buildData(
   return {
     score: 50,
     level: "平温",
-    availableCount: 5,
     generatedAt: "2026-04-17T00:00:00.000Z",
     components: [
       {
         id: "nikkeiMa",
         label: "日経225モメンタム",
+        group: "price",
         score: 50,
         rawValue: 0,
         available: true,
@@ -26,32 +26,21 @@ function buildData(
       {
         id: "foreignFlow",
         label: "海外投資家フロー",
+        group: "supply",
         score: 60,
-        rawValue: 8000,
+        rawValue: 4000,
         available: true,
       },
       {
-        id: "marginRatio",
-        label: "信用倍率",
-        score: 70,
-        rawValue: 4.5,
-        available: true,
-      },
-      {
-        id: "arbitrage",
-        label: "裁定残バランス",
-        score: 80,
-        rawValue: 0.95,
-        available: true,
-      },
-      {
-        id: "usdJpyMomentum",
-        label: "ドル円モメンタム",
-        score: 55,
-        rawValue: 0.5,
+        id: "marginBuyChange",
+        label: "信用買い残の増減",
+        group: "supply",
+        score: 30,
+        rawValue: -6,
         available: true,
       },
     ],
+    supply: { score: 45, level: "平温", availableCount: 2 },
     ...overrides,
   };
 }
@@ -62,9 +51,9 @@ describe("JapanFearGreedGauge", () => {
     expect(screen.getByText("🇯🇵 市場温度（日本）")).toBeInTheDocument();
   });
 
-  it("サブタイトルに「5要素総合スコア」を表示する", () => {
+  it("サブタイトルに計算方法を表示する", () => {
     render(<FearGreedGauge market="jp" data={buildData()} />);
-    expect(screen.getByText("5要素総合スコア")).toBeInTheDocument();
+    expect(screen.getByText("日経225 × 125日移動平均乖離")).toBeInTheDocument();
   });
 
   it("カスタムタイトルを渡せる", () => {
@@ -79,52 +68,53 @@ describe("JapanFearGreedGauge", () => {
     expect(screen.getByText("（強気）")).toBeInTheDocument();
   });
 
-  it("5つの構成要素ラベルを表示する", () => {
+  it("日経225 の移動平均乖離率を表示する", () => {
+    const data = buildData({ score: 7, level: "極寒" });
+    data.components[0].rawValue = -13.0;
+    render(<FearGreedGauge market="jp" data={data} />);
+    expect(screen.getByText("-13.0%")).toBeInTheDocument();
+  });
+
+  it("需給の温度と内訳を、市場温度とは別枠で表示する", () => {
     render(<FearGreedGauge market="jp" data={buildData()} />);
-    expect(screen.getByText("日経225モメンタム")).toBeInTheDocument();
-    expect(screen.getByText("海外投資家フロー")).toBeInTheDocument();
-    expect(screen.getByText("信用倍率")).toBeInTheDocument();
-    expect(screen.getByText("裁定残バランス")).toBeInTheDocument();
-    expect(screen.getByText("ドル円モメンタム")).toBeInTheDocument();
+    const box = screen.getByTestId("supply-temperature");
+    expect(within(box).getByText("需給の温度（週次）")).toBeInTheDocument();
+    expect(within(box).getByText("45°", { exact: false })).toBeInTheDocument();
+    expect(within(box).getByText("海外投資家フロー")).toBeInTheDocument();
+    expect(within(box).getByText("4週 +4,000億円")).toBeInTheDocument();
+    expect(within(box).getByText("信用買い残の増減")).toBeInTheDocument();
+    expect(within(box).getByText("4週 -6.0%")).toBeInTheDocument();
   });
 
-  it("利用可能数を表示する", () => {
-    render(
-      <FearGreedGauge market="jp" data={buildData({ availableCount: 3 })} />
-    );
-    expect(screen.getByText("構成要素（3/5 利用可能）")).toBeInTheDocument();
-  });
-
-  it("欠損要素はダッシで表示する", () => {
-    const data = buildData();
-    data.components[1] = {
-      id: "foreignFlow",
-      label: "海外投資家フロー",
+  it("欠損した需給要素はダッシュで表示する", () => {
+    const data = buildData({ supply: { score: 60, level: "平温", availableCount: 1 } });
+    data.components[2] = {
+      id: "marginBuyChange",
+      label: "信用買い残の増減",
+      group: "supply",
       score: 50,
       rawValue: null,
       available: false,
     };
-    data.availableCount = 4;
     render(<FearGreedGauge market="jp" data={data} />);
-    expect(screen.getByText("—")).toBeInTheDocument();
+    expect(within(screen.getByTestId("supply-temperature")).getByText("—")).toBeInTheDocument();
   });
 
-  it("株価系と需給系が大きく離れた日は内訳の補足を表示する", () => {
-    // 2026-11-06 の実値: C1=7 / C2=100 / C3=100 / C4=79 / C5=38
-    const data = buildData({ score: 65, level: "過熱" });
-    const scores = [7, 100, 100, 79, 38];
-    data.components.forEach((c, i) => {
-      c.score = scores[i];
-    });
+  it("需給データがまったく無ければ需給の温度はダッシュ", () => {
+    const data = buildData({ supply: null });
+    data.components = data.components.map((c) =>
+      c.group === "supply" ? { ...c, available: false, rawValue: null } : c,
+    );
     render(<FearGreedGauge market="jp" data={data} />);
-    expect(screen.getByText("株価 23° / 需給 93°")).toBeInTheDocument();
-    // 総合スコアはそのまま
-    expect(screen.getByText("65")).toBeInTheDocument();
+    const box = screen.getByTestId("supply-temperature");
+    expect(within(box).getAllByText("—")).toHaveLength(3);
   });
+});
 
-  it("株価系と需給系の差が小さい日は補足を表示しない", () => {
-    // 既定のテストデータ: 株価 53 / 需給 70（差 17）
-    render(<FearGreedGauge market="jp" data={buildData()} />);
-    expect(screen.queryByTestId("group-split-note")).not.toBeInTheDocument();
+describe("formatOkuYen", () => {
+  it("1 兆円以上は兆円、それ未満は億円で符号付き", () => {
+    expect(formatOkuYen(12345)).toBe("+1.2兆円");
+    expect(formatOkuYen(-3450)).toBe("-3,450億円");
+    expect(formatOkuYen(0)).toBe("0億円");
   });
 });

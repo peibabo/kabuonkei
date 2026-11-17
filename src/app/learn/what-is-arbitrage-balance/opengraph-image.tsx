@@ -9,7 +9,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const charSet =
-    "裁定残とは買い残売り残SQ前後気にすべき理由JPX毎営業日公表現物先物解消売り株温計kabuonkei解説記事要素";
+    "裁定残とは買い残売り残SQ前後気にすべき理由JPX毎営業日公表現物先物解消売り株温計kabuonkei解説記事要素参考データ";
   const fonts = await buildNotoSansJpFonts(charSet);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(
@@ -147,7 +147,7 @@ export default async function Image() {
               <span
                 style={{ fontSize: 36, fontWeight: 800, color: "#0f172a" }}
               >
-                C2 要素
+                参考データ
               </span>
             </div>
           </div>

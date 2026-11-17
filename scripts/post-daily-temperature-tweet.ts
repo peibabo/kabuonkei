@@ -215,14 +215,11 @@ async function loadMarketContext(): Promise<{
     readFileSync(MARKET_DATA_PATH, "utf-8"),
   ) as JapanMarketData;
 
-  const [vixPrice, nikkeiChart, usdJpyChart, nikkeiPrice, usdJpyRate] =
-    await Promise.all([
-      fetchPrice("^VIX"),
-      fetchChart("^N225", 200),
-      fetchChart("USDJPY=X", 80),
-      fetchPrice("^N225"),
-      fetchPrice("USDJPY=X"),
-    ]);
+  const [vixPrice, nikkeiChart, nikkeiPrice] = await Promise.all([
+    fetchPrice("^VIX"),
+    fetchChart("^N225", 220),
+    fetchPrice("^N225"),
+  ]);
 
   let fearGreed: FearGreedData | null = null;
   try {
@@ -234,11 +231,8 @@ async function loadMarketContext(): Promise<{
   const japanFearGreed = computeJapanFearGreed({
     nikkei225Chart: nikkeiChart,
     nikkei225Price: nikkeiPrice,
-    usdJpyRate,
-    usdJpyChart,
     investorTrading: marketData.investorTrading ?? null,
     marginTrading: marketData.marginTrading ?? null,
-    arbitrageBalance: marketData.arbitrageBalance ?? null,
   });
 
   return { fearGreed, japanFearGreed };

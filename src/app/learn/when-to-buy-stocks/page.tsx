@@ -12,6 +12,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "「株の買い時はいつ？」に 1 つの指標で答えは出ません。センチメント（VIX・Fear&Greed・日経VI）・需給（信用倍率・投資主体別・裁定残・騰落レシオ）・リスク（ドローダウン）・マクロ（ドル円）の 4 カテゴリで過熱感と底値圏を見極める考え方を、各指標の解説記事と株温計の市場温度スコアへの導線つきで整理します。";
 const PUBLISHED_AT = "2026-06-18";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -141,7 +142,7 @@ export default function WhenToBuyStocksPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -170,6 +171,8 @@ export default function WhenToBuyStocksPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           各指標の用語定義は{" "}
           <Link href="/glossary" className="underline hover:text-gray-700">
@@ -223,8 +226,8 @@ export default function WhenToBuyStocksPage() {
               <Link href="/" className="underline hover:text-gray-900">
                 市場温度スコア
               </Link>
-              は、これら複数の需給・センチメント・マクロ要素を <strong>1 つの 0〜100 の温度</strong>に束ねた指標。
-              「今は熱い？冷たい？」を一目で掴むための出発点として使える
+              は、日経225 の移動平均乖離を <strong>1 つの 0〜100 の温度</strong>にした指標。
+              需給データは「需給の温度」として横に並べており、「今は熱い？冷たい？」を一目で掴むための出発点として使える
             </li>
           </ul>
         </section>
@@ -298,8 +301,9 @@ export default function WhenToBuyStocksPage() {
           </h2>
           <p className="text-base leading-relaxed">
             4 カテゴリの指標を毎回ひとつずつチェックするのは大変です。そこで株温計は、
-            <strong>日本市場の需給・センチメント・マクロ要素を 1 つの 0〜100 の「市場温度スコア」に束ねて</strong>表示しています。
-            日経225 の移動平均乖離率・裁定残・海外勢フロー・信用倍率・ドル円モメンタムを等ウェイトで合成した指標です。
+            <strong>日経225 が 125 日移動平均からどれだけ離れているかを 0〜100 の「市場温度スコア」</strong>にして表示し、
+            その下に海外投資家フローと信用買い残の増減から作る<strong>「需給の温度」</strong>を並べています。
+            需給データは週 1 回の公表で遅れるため、温度には混ぜずに参考として見る形です。
           </p>
           <p className="text-base leading-relaxed mt-3">
             使い方はシンプルです。<strong>温度が低い（冷たい）＝悲観が強い局面</strong>、

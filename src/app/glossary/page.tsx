@@ -175,9 +175,10 @@ export default function GlossaryPage() {
           </h2>
           <p className="text-base leading-relaxed">
             <strong>市場温度スコア</strong>は、株温計が公開データから独自計算する 0〜100 のセンチメント指標です。
-            日本版は C1（日経225 の 125 日移動平均との乖離率）、C2（投資主体別の海外勢フロー）、C3（信用倍率）、
-            C4（裁定残バランス）、C5（USDJPY 50 日モメンタム）の 5 要素を等ウェイト平均して算出しており、
+            日本版は日経225 の終値と 125 日移動平均との乖離率（±15% を 0〜100 に換算）で算出し、
+            海外投資家フローと信用買い残の増減から作る「需給の温度」を別枠で参考表示しています。
             米国版は VIX を主系列とした推定値で表示しています。
+            日本版は 2026 年 11 月まで 5 要素の平均でしたが、週次の需給データが遅れて急落を映さなかったため、現在の形に改めました。
             <strong> 0 に近いほど「冷たい（悲観）」、100 に近いほど「熱い（楽観）」</strong>という設計です。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
@@ -201,8 +202,8 @@ export default function GlossaryPage() {
             水準感は時代や個別銘柄構成によって変動します。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計では信用倍率を日本版温度スコアの C3 要素として組み込み、
-            {" "}
+            株温計では倍率の水準ではなく<strong>信用買い残の 4 週変化</strong>を「需給の温度」の材料にしています。
+            また{" "}
             <Link href="/analysis/margin-ratio-temperature" className="underline hover:text-gray-900">
               「信用倍率 × 株温計」分析記事
             </Link>
@@ -229,7 +230,7 @@ export default function GlossaryPage() {
             <strong>裁定買い残の急増は将来の現物売り（解消売り）要因</strong>として警戒され、SQ（先物・オプションの清算日）前後の需給を読む材料になります。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計の日本版スコアでは裁定残の推移を C4 要素として参照し、
+            株温計の日本版スコアでは 2026 年 11 月まで裁定残を構成要素にしていましたが、値の動く幅が狭く、急落の日にも高いままで、温度の材料としての効果を確かめられなかったため外しました。
             {" "}
             <Link href="/" className="underline hover:text-gray-900">
               トップの日本市場データセクション
@@ -257,7 +258,7 @@ export default function GlossaryPage() {
             と言われ、市場の方向感を最も大きく左右する主体としてフォーカスされます。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計では外国人フローを日本版スコアの C2 要素に組み込んでおり、過去の暴落局面では
+            株温計では外国人フロー（直近 4 週の売買差引）を「需給の温度」の材料にしており、過去の暴落局面では
             {" "}
             <Link href="/events" className="underline hover:text-gray-900">
               主要イベント一覧
@@ -309,7 +310,8 @@ export default function GlossaryPage() {
             ただしリスクオフ局面では「円高 + 株安」が同時に起きる（円キャリー巻き戻しなど）ため、単純な相関ではありません。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計の日本版スコアでは USDJPY 50 日モメンタムを C5 要素として採用しています。
+            株温計の日本版スコアでは 2026 年 11 月まで USDJPY 50 日モメンタムを構成要素にしていましたが、
+            過去データの検証で加えると判定がむしろ悪くなったため外しました。
             <strong>2024 年 8 月 5 日「令和のブラックマンデー」</strong>のように、円キャリー巻き戻しでドル円モメンタムが急変したケースは
             {" "}
             <Link href="/events/reiwa-black-monday-2024" className="underline hover:text-gray-900">

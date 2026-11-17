@@ -1,5 +1,4 @@
 import type { AlertKind, AlertMarket, AlertVariant } from "../../src/lib/types";
-import { computeJpAlertScore } from "../../src/lib/alerts/jp-score";
 
 export function variantOf(market: AlertMarket, kind: AlertKind): AlertVariant {
   return `${market}_${kind}` as AlertVariant;
@@ -11,59 +10,34 @@ export function jstIsoDate(now: Date = new Date()): string {
   return jst.toISOString().slice(0, 10);
 }
 
-/** 判定に必要なスナップショットの形（components は C1 だけ見る） */
-export interface JpSnapshotForAlert {
-  date: string;
-  score: number;
-  components?: { nikkeiMa?: number };
-}
-
-const isFiniteNumber = (v: unknown): v is number =>
-  typeof v === "number" && Number.isFinite(v);
-
 /**
- * JP スナップショットの最新エントリが「直近営業日の分」のときだけスコアを採用する。
+ * 日本版の温度推移（`japan-temperature-history.json` の daily）の最新エントリが
+ * 「直近営業日の分」のときだけスコアを採用する。
  *
- * 返す `score` は判定用スコア（C1 = 日経225 モメンタム単独、`computeJpAlertScore`）。
- * 5要素の総合スコアは `overallScore` で返す（メールに参考値として併記する）。
- *
- * スナップショットの日付は日経225 の最終取引日（`resolveTradingDate`）で記録される。
- * 呼び出し側は同じ基準で求めた直近営業日を `expectedDate` に渡す。最新エントリが
- * それより古ければ「生成 job の遅延/失敗で前営業日の値を見ている」とみなして採用しない。
+ * 推移の日付は日経225 の取引日。呼び出し側は日経225 の最終取引時刻から求めた直近営業日
+ * （`resolveTradingDate`）を `expectedDate` に渡す。最新エントリがそれより古ければ
+ * 「生成 job の遅延/失敗で前営業日の値を見ている」とみなして採用しない。
  * 古い値のまま発火判定すると誤発火・失報がエラーにならず沈黙するのを防ぐ。
  * 休場日は直近営業日のエントリがそのまま最新なので採用され、状態は変化しない。
  */
 export function pickFreshJpScore(
-  snapshots: JpSnapshotForAlert[] | undefined,
+  daily: Array<{ date: string; score: number }> | undefined,
   expectedDate: string
-):
-  | { ok: true; score: number; overallScore: number }
-  | { ok: false; reason: string } {
-  if (!snapshots || snapshots.length === 0) {
-    return { ok: false, reason: "snapshots が空" };
+): { ok: true; score: number } | { ok: false; reason: string } {
+  if (!daily || daily.length === 0) {
+    return { ok: false, reason: "温度推移が空" };
   }
-  const latest = snapshots[snapshots.length - 1];
-  if (!isFiniteNumber(latest?.score)) {
+  const latest = daily[daily.length - 1];
+  if (typeof latest?.score !== "number" || !Number.isFinite(latest.score)) {
     return { ok: false, reason: `最新エントリの score が不正: ${JSON.stringify(latest)}` };
-  }
-  const nikkeiMa = latest.components?.nikkeiMa;
-  if (!isFiniteNumber(nikkeiMa)) {
-    return {
-      ok: false,
-      reason: `最新エントリに日経225 モメンタム（nikkeiMa）がない: ${JSON.stringify(latest)}`,
-    };
   }
   if (latest.date !== expectedDate) {
     return {
       ok: false,
-      reason: `最新スナップショットが直近営業日のものではない（latest=${latest.date}, expected=${expectedDate}）。snapshot-japan-fg job の遅延/失敗の可能性`,
+      reason: `最新の温度推移が直近営業日のものではない（latest=${latest.date}, expected=${expectedDate}）。snapshot-japan-fg job の遅延/失敗の可能性`,
     };
   }
-  return {
-    ok: true,
-    score: computeJpAlertScore({ nikkeiMa }),
-    overallScore: latest.score,
-  };
+  return { ok: true, score: latest.score };
 }
 
 /**
@@ -88,16 +62,3 @@ export function formatJstFullDateLabel(date: Date = new Date()): string {
   return `${y}/${m}/${d}(${w})`;
 }
 
-/**
- * 類似日エントリのスコアを、日付ごとの別のスコアに差し替える（リターンはそのまま）。
- * 差し替え先のスコアがない日は除く。
- */
-export function replaceScores<T extends { date: string; score: number }>(
-  entries: readonly T[],
-  scoreByDate: ReadonlyMap<string, number>
-): T[] {
-  return entries.flatMap((e) => {
-    const score = scoreByDate.get(e.date);
-    return score == null ? [] : [{ ...e, score }];
-  });
-}

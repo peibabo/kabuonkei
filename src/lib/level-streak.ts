@@ -1,7 +1,7 @@
 /**
  * 日本の温度レベル（極寒〜沸騰）が何営業日続いているかを計算する。
  *
- * データ源は japan-fg-snapshots.json（full5 法、平日 17:00 JST に毎営業日追記。日付は日経225 の最終取引日）。
+ * データ源は japan-temperature-history.json（市場温度 = C1 の日次推移。平日 17 時台に再生成）。
  * ライブスコアと同一手法なのでレベル判定が一致する。
  * 米国側は日次履歴を保存していないため、streak は日本片側のみ。
  */
@@ -9,13 +9,17 @@
 import { getSentimentLevel } from "./sentiment";
 
 export interface JapanLevelStreakParams {
-  /** ライブの日本温度スコア（full5 法）。null = データ欠損 */
+  /** ライブの日本温度スコア。null = データ欠損 */
   currentScore: number | null;
-  /** getFullSnapshots() の時系列（日付昇順） */
+  /** getJapanHistory() の時系列（日付昇順） */
   snapshots: ReadonlyArray<{ date: string; score: number }>;
-  /** getJstDateKey() の "YYYY-MM-DD"。当日スナップショットの二重カウント防止と鮮度判定に使う */
+  /**
+   * 現在値の立会日 "YYYY-MM-DD"（取れなければ getJstDateKey()）。
+   * 当日分の二重カウント防止と鮮度判定に使う。休場日に今日の日付を渡すと、
+   * 直近営業日の記録と現在値（同じ引け値）を二重に数えてしまう
+   */
   todayJstKey: string;
-  /** 直近スナップショットとの許容ギャップ（暦日）。週末 + 祝日連休を許容する既定 4 */
+  /** 直近の記録との許容ギャップ（暦日）。週末 + 祝日連休を許容する既定 4 */
   maxGapDays?: number;
 }
 

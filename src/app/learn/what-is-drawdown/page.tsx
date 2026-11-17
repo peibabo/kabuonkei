@@ -12,6 +12,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "ドローダウン (DD) と最大ドローダウンの意味、計算式、過去の S&P500・日経225 のDD実績、なぜリターンより最大DDが投資判断で重要かを解説。株温計のバーチャルポートフォリオによる「温度信号は最大DDを浅くしたのか」の正直な検証結果との接続もまとめます。";
 const PUBLISHED_AT = "2026-05-08";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -101,7 +102,7 @@ export default function WhatIsDrawdownPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -130,6 +131,8 @@ export default function WhatIsDrawdownPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -356,8 +359,8 @@ export default function WhatIsDrawdownPage() {
             ）。
           </p>
           <p className="text-base leading-relaxed mt-3">
-            検証結果は正直に書くと、<strong>「リターンの timing シグナルとしては限定的（特に米国はマイナス）で、
-            最大DD も同じ平均配分の定数戦略より日米とも 4pp 前後深い」</strong>でした。
+            検証結果は正直に書くと、<strong>「リターンの timing シグナルとしてはマイナス（同じ平均配分の定数戦略を日米とも下回る）で、
+            最大DD も定数戦略より日米とも 4〜5pp 深い」</strong>でした。
             買い持ちより DD が浅いのは温度の効果ではなく、平均株比率が 100% 未満という配分効果です。
             つまりバックテスト上は、温度計は「リターンを上げる道具」でも「最大DDを浅くする道具」でもありませんでした。
           </p>

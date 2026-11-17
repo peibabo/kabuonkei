@@ -10,8 +10,9 @@ const ARTICLE_PATH = "/learn/what-is-usdjpy-momentum";
 const ARTICLE_TITLE =
   "円安・円高と株価の関係とは？リスクオフで円高になる仕組みを初心者向けに解説";
 const ARTICLE_DESCRIPTION =
-  "なぜ円安は日本株に追い風で円高は逆風になりやすいのか、リスクオフ局面で「円高＋株安」が同時に起きる仕組み（円キャリー取引の巻き戻し）、単純な逆相関では読めない注意点、株温計が使う「ドル円モメンタム」という指標を初心者向けに解説します。";
+  "なぜ円安は日本株に追い風で円高は逆風になりやすいのか、リスクオフ局面で「円高＋株安」が同時に起きる仕組み（円キャリー取引の巻き戻し）、単純な逆相関では読めない注意点、「ドル円モメンタム」という指標と、株温計がそれを温度スコアから外した理由を初心者向けに解説します。";
 const PUBLISHED_AT = "2026-06-18";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -54,7 +55,7 @@ export default function WhatIsUsdjpyMomentumPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -83,6 +84,8 @@ export default function WhatIsUsdjpyMomentumPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -134,8 +137,8 @@ export default function WhatIsUsdjpyMomentumPage() {
               2024 年 8 月 5 日「令和のブラックマンデー」はこの典型例だった
             </li>
             <li>
-              株温計は<strong>ドル円の 50 日モメンタム（変化率）</strong>を市場温度スコア（日本版）の
-              C5 要素として採用。為替の勢いを日本株のセンチメント材料として組み込んでいる
+              株温計はかつて<strong>ドル円の 50 日モメンタム（変化率）</strong>を市場温度スコア（日本版）に組み込んでいたが、
+              過去データの検証で判定がむしろ悪くなるとわかり、2026 年 11 月に外した
             </li>
           </ul>
         </section>
@@ -227,24 +230,26 @@ export default function WhatIsUsdjpyMomentumPage() {
           <p className="text-base leading-relaxed">
             為替の「水準（今 150 円か 140 円か）」だけでなく、
             <strong>「どちらにどれだけの勢いで動いているか」</strong>を見るのが
-            <strong>ドル円モメンタム</strong>です。株温計では、ドル円の
-            <strong>直近 50 営業日の変化率</strong>を中心に算出し、日本版の{" "}
+            <strong>ドル円モメンタム</strong>です。代表的には、ドル円の<strong>直近 50 営業日の変化率</strong>で測ります。
+          </p>
+          <p className="text-base leading-relaxed mt-3">
+            勢いよく円安が進んでいる局面は日本株のセンチメントを温める方向に働きやすく、
+            逆に急速な円高はリスクオフのサインになりやすい、というのが基本の考え方です。
+            水準そのものより<strong>変化の方向と速さ</strong>を見ることで、相場の「気分」を捉えようという狙いです。
+          </p>
+          <p className="text-base leading-relaxed mt-3">
+            株温計も 2026 年 11 月まで、この 50 日モメンタムを日本版の{" "}
             <Link
               href="/glossary#kabuonkei-score"
               className="underline hover:text-gray-900"
             >
               市場温度スコア
             </Link>
-            の<strong>C5 要素</strong>として採用しています。
-          </p>
-          <p className="text-base leading-relaxed mt-3">
-            勢いよく円安が進んでいる局面は、日本株のセンチメントを温める方向に働きやすく、
-            逆に急速な円高はリスクオフのサインとして温度を冷やす方向に効きます。
-            水準そのものより<strong>変化の方向と速さ</strong>を見ることで、相場の「気分」をより敏感に捉えようという狙いです。
-          </p>
-          <p className="text-base leading-relaxed mt-3">
-            市場温度スコアは、このドル円モメンタム（C5）に加えて、日経225 の移動平均乖離率（C1）・海外勢フロー（C2）・
-            信用倍率（C3）・裁定残（C4）を等ウェイトで束ねています。為替はその<strong>マクロ要因の一翼</strong>を担う位置づけです。
+            の構成要素の 1 つにしていました。ところが 2007 年以降の約 19 年分で検証すると、
+            日経225 の移動平均乖離だけで判定した場合に比べて、ドル円の勢いを足すと
+            <strong>「極寒」の判定が増え（41 回 → 72 回）、判定後 3 か月の日経225 のリターンは低く（平均 +1.8% → +0.1%）</strong>なりました。
+            次の節で触れるとおり、為替と株の関係は局面で入れ替わるため、平均すると温度の精度を下げていたと考えられます。
+            現在の市場温度は日経225 の 125 日移動平均乖離だけで決めており、ドル円は温度に含めていません。
           </p>
         </section>
 
@@ -269,7 +274,7 @@ export default function WhatIsUsdjpyMomentumPage() {
           <p className="text-base leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
             ⚠️ 「円安だから必ず株高」「円高だから必ず株安」と短絡せず、
             <strong>平常時モードかリスクオフモードかを見極める</strong>のがいちばんのコツです。
-            株温計の温度スコアは、この為替の勢いを他の需給・センチメント要素と一緒に眺めるための道具として使えます。
+            為替の勢いは温度スコアとは別に、トップページの為替データと合わせて読むのがおすすめです。
           </p>
         </section>
 

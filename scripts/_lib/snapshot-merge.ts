@@ -1,6 +1,6 @@
 /**
  * 日本版市場温度スナップショットの追記ロジック（純粋関数）。
- * snapshot-japan-fear-greed.ts から I/O と分離してテスト可能にした。
+ * 旧 5 要素版スナップショット（2026-11 に記録停止）の形式。backfill / 試算スクリプトが読む。
  */
 
 export interface SnapshotEntry {

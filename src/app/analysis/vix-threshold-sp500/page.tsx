@@ -197,7 +197,7 @@ export default function VixThresholdSp500Page() {
           <p className="leading-relaxed">
             株温計の米国版温度（0-100）は VIX を基に算出しているため、VIX と
             <strong>ほぼ 1:1 の反比例関係</strong>（VIX 低 = 温度高 / VIX 高 = 温度低）です。
-            一方、株温計の<strong>日本版温度</strong>は独立した指標（日経225 × USD/JPY の需給ベース）なので、VIX と組み合わせた<strong>クロス市場</strong>ビューが可能になります。
+            一方、株温計の<strong>日本版温度</strong>は独立した指標（日経225 の 125 日移動平均乖離がベース）なので、VIX と組み合わせた<strong>クロス市場</strong>ビューが可能になります。
             後半のヒートマップはその角度からの分析です。まずは{" "}
             <Link href="/" className="underline hover:text-gray-900">
               トップページの温度計
@@ -246,7 +246,7 @@ export default function VixThresholdSp500Page() {
               <strong>日経225</strong>: Yahoo Finance の ^N225 日足終値
             </li>
             <li>
-              <strong>日本版温度</strong>: 株温計の日本版スコア（C1 = 日経225 vs 125日MA、C5 = USDJPY 50日モメンタム の等ウェイト平均）
+              <strong>日本版温度</strong>: 株温計の日本版 市場温度（日経225 の終値と直前 125 営業日の移動平均との乖離率、±15% を 0-100 に換算）
             </li>
             <li>
               <strong>集計対象</strong>: Primary は過去 20 年 ({analysis.dataRange.from} 〜{" "}

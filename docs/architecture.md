@@ -11,23 +11,24 @@
 - `fear-greed.ts`: 米国版 Fear & Greed の取得（`fetchFearGreedIndex`）と VIX ベース推定（`estimateFearGreedFromVix`）
 - `indices.ts`: VIX / 主要指数 / 米国10年債利回り / 為替 / コモディティの取得。取得対象のシンボル一覧は `src/lib/indices/symbols.ts`（`VOLATILITY_SYMBOLS` / `INDEX_SYMBOLS` / `BOND_YIELD_SYMBOL` / `FOREX_SYMBOL` / `COMMODITY_SYMBOLS`）に集約
 - `market-data.ts`: ダッシュボード用エントリポイント `fetchAllMarketData()`。キャッシュは呼び出し元の `/api/market` Route Handler 側で ISR（`revalidate = 900`）により行い、この関数自体は都度 fetch する。実体は `market-data/compose.ts`（`buildMarketData` / `formatJstTimestamp` 純粋関数）に分離。`market-data/cache.ts`（`createMemoCache<T>` 汎用 TTL キャッシュ）は将来の再利用のため残置
-- `japan-fear-greed/`: 日本版市場温度の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `component-builder.ts` / `compute.ts` / `group-split.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import。`component-builder.ts` は `buildAvailableComponent` / `buildUnavailableComponent` / `computeWeightedScore` を提供し、`compute.ts` の C1〜C5 構築定型を圧縮。`group-split.ts` は株価系（C1・C5）/ 需給系（C2〜C4）の平均を返す表示専用ヘルパー
+- `japan-fear-greed/`: 日本版の計算（`thresholds.ts` / `utils.ts` / `normalize.ts` / `aggregate.ts` / `component-builder.ts` / `compute.ts` / `index.ts`）。外部からは `@/lib/japan-fear-greed` から import。`computeJapanFearGreed()` が市場温度（C1 = 日経225 × 125日移動平均乖離）と、別枠の需給の温度（海外投資家フロー・信用買い残の 4 週変化）を返す。`component-builder.ts` は要素の生成と `averageGroupScore`。`aggregate.ts` の `mergeMarginWeeks` は JPX の直近数週と信用残の長期履歴をつなぐ。旧 5 要素版の正規化関数（信用倍率・裁定残・ドル円）は過去スナップショットの再計算と試算のために残している
 - `historical-stats.ts`: 日米共通の過去統計 JSON アクセサ。`market: "us" | "jp"` を受け、`sp500` / `nikkei225` のデータを統一形状 `stats` に正規化して返す（`getHistoricalStats(market)` / `getStatsForScore(score, market)`）
-- `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサと系列マージ
+- `temperature-history.ts` / `japan-temperature-history.ts`: 温度推移 JSON のアクセサ。日本版は `getJapanHistory()`（市場温度の日次推移）と `previousScoreBefore()`（前日比用）
 - `japan-market-data.ts`: 日本市場需給 JSON のアクセサ
 - `similar-days.ts`: 類似日検索（`findSimilarDays` / 日本・米国のアクセサ / イベントラベル取得）
 - `format.ts`: 共通フォーマッタ（`formatReturn` / `returnColorClass` / `formatSignedDelta`: 温度差などの符号付き表示。トップの見出し・温度タイル・銘柄別温度が共用）
 - `jst-date.ts`: JST 日付関連の共通ユーティリティ（`formatJstDateLabel` — "M/D(曜)" 形式 / `formatJstDateTimeLabel` — Unix ms → "M/D HH:MM JST" 形式。null/NaN は "—" / `getJstDateKey` — "YYYY-MM-DD" キー / `getJstDayNumber` — JST 通日番号。見出しの日替わりローテーションシード）
 - `headline.ts`: トップ画面ヒーロー「今日の見出し」生成の純粋関数（決定木 v2）。`getHeadlineStateKey` でレベル組み合わせを 16 状態キーに写像し、`HEADLINE_POOLS`（base + 昨日比 ±5 のトレンド候補 + 日本レベル 3 日以上連続の streak 候補）から `dayNumber` で決定的に日替わり選択（`buildHeroCopy`）。レベルが違ってもスコア差 < 10 なら `resolveNearBoundary` の接近オーバーライドで `NEAR_POOLS`（「日米ほぼ同温」系）に切替し、境界の丸め誤差を対比として報じない
-- `level-streak.ts`: 現在の日本温度レベルの連続営業日数を `japan-fg-snapshots.json` から計算する純粋関数（`computeJapanLevelStreak`）。`fetchAllMarketData` がサーバ側で呼び、`MarketData.japanLevelStreak` として配信
+- `level-streak.ts`: 現在の日本温度レベルの連続営業日数を `japan-temperature-history.json` から計算する純粋関数（`computeJapanLevelStreak`）。`fetchAllMarketData` がサーバ側で呼び、`MarketData.japanLevelStreak` として配信
 - `stock-temperature/`: 銘柄別の株価の温度。`score.ts`（`computeStockTemperatureSeries`: 125日MA乖離 ÷ 直近250日の振れ幅 = z 値を ±2σ で 0〜100 に）/ `stats.ts`（前日・週・月比、90日統計、1年分位、順位、ランキング、業種グループ化の純関数）/ `format.ts` / `metadata.ts`（3ページ共通のメタ情報）/ `types.ts`（対象範囲 `UNIVERSES`）/ `index.ts`（`stock-temperatures.json` のアクセサ）。詳細は [docs/features/stock-temperature.md](features/stock-temperature.md)
 
 ## `scripts/_lib/` 配下
 
 - `shared.ts`: 生成スクリプト共通のヘルパー（`sleep` / `round1` / `median` / `findForwardPrice` / `buildPeriodStats` / `fetchDailyCloses` / `SENTIMENT_RANGES`）と、`src/lib` 側の `getSentimentLevel` / `estimateFearGreedFromVix` を re-export
-- `snapshot-merge.ts`: 日本版FGスナップショット追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）。`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化
+- `snapshot-merge.ts`: 旧 5 要素版スナップショット（2026-11 に記録停止）の型 `SnapshotEntry` / `SnapshotFile` と追記の純粋関数（`mergeSnapshotEntry` / `emptySnapshotFile`）。型は backfill・試算スクリプトが使う。追記関数は記録停止後は本番で使っていない（`scripts/__tests__/snapshot-merge.test.ts` でユニットテスト化）
 - `cron-health.ts`: 定期実行の見張りの純粋関数（`expectedRuns` で `vercel.json` の cron から起動予定を列挙 / `judgeRun` で workflow_dispatch の実行と突き合わせ / `buildReport` で通知メールを組み立て）。`scripts/check-cron-health.ts`（`npm run check:cron-health`）が使う。`scripts/__tests__/cron-health.test.ts` でユニットテスト化
-- `snapshot-backfill.ts`: 日本版FGスナップショットの C2 / C3 を「その日に公表済みだった JPX データ」で再計算する純粋関数（`recomputeEntry` / `weeksAvailableOn` / `availableFrom`）。`scripts/backfill-japan-fg-snapshots.ts`（`npm run backfill:japan-fg`）が使う。`scripts/__tests__/snapshot-backfill.test.ts` でユニットテスト化
+- `japan-temperature.ts`: 日本版 市場温度（日経225 × 125日移動平均乖離）の日次系列を計算する純粋関数 `computeJapanTemperatureSeries`。過去推移・過去統計・類似日・業種ヒートマップの生成スクリプトが共通で使う。`scripts/__tests__/japan-temperature.test.ts` でユニットテスト化
+- `snapshot-backfill.ts`: 旧 5 要素版スナップショット（2026-11 に記録停止）の C2 / C3 を「その日に公表済みだった JPX データ」で再計算する純粋関数（`recomputeEntry` / `weeksAvailableOn` / `availableFrom`）。`scripts/backfill-japan-fg-snapshots.ts`（`npm run backfill:japan-fg`）が使う。`scripts/__tests__/snapshot-backfill.test.ts` でユニットテスト化
 - `margin-score-candidates.ts`: 信用倍率スコア（C3）の定義候補（倍率の水準 / 倍率の52週レンジ位置 / 倍率の前週比 / 買残の52週レンジ位置 / 買残の4週変化率）を並べる試算用の純粋関数。`scripts/analyze-margin-score-candidates.ts`（`npm run analyze:margin-score`、永続化なし）が使う。本体のスコア計算からは参照しない。`scripts/__tests__/margin-score-candidates.test.ts` でユニットテスト化
 - `trading-date.ts`: 「どの営業日のデータか」を実行時刻ではなく日経225 の最終取引時刻から決める純粋関数（`resolveTradingDate` / `toJstIsoDate`）。スナップショットの日付とアラートの鮮度ガードが共用。`scripts/__tests__/trading-date.test.ts` でユニットテスト化
 - `stats-aggregator.ts`: 日米の過去統計生成スクリプトで共通する温度帯別リターン集計関数 `aggregateLevelReturns<K>` に加え、分析記事用の 2D 集計関数 `aggregateJointReturns<K>` を提供。`scripts/__tests__/{stats-aggregator,joint-aggregator}.test.ts` でユニットテスト化

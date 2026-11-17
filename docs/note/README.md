@@ -47,6 +47,10 @@
 - **統計表**: note は markdown 表非対応。スタイル付き HTML を組んで headless browser で 2x スケール撮影し画像化する（例: `images/backtest-table.png`。免責文と `kabuonkei.com` クレジットを画像内に入れる）
 - 生成した図版は `docs/note/images/` に保存し、原稿から相対パスで参照する。撮影元の HTML は `docs/note/images/src/` に残す（データ更新で数字や期間表記が変わったときに撮り直せるようにするため）。撮影例: `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --force-device-scale-factor=2 --window-size=1280,670 --screenshot=<出力.png> file://<ソース.html>`
 
+## 定義変更時の追記（2026-11-17）
+
+2026-11-17 に日本版の温度を C1（日経225 × 125日移動平均乖離）単独に変更した。公開済みの 001・002 は本文を書き換えず、各原稿の末尾にある「【追記 2026/11/17】」を note 記事の冒頭に貼り付ける（貼り付けは手動）。以後の記事は新しい定義の数字で書く。
+
 ## 投稿フロー
 
 1. 原稿を `docs/note/NNN-<slug>.md` に作成（数字はデータ基準日時点の実値）

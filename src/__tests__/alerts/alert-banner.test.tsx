@@ -17,7 +17,7 @@ describe("AlertBanner", () => {
   it("日本が極寒のとき強調表示", () => {
     render(<AlertBanner japanScore={15} usScore={50} />);
     expect(screen.getByText(/今、温度が極端です/)).toBeInTheDocument();
-    expect(screen.getByText(/日本 極寒 \(日経225モメンタム 15\)/)).toBeInTheDocument();
+    expect(screen.getByText(/日本 極寒/)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /このタイミングで登録/ })
     ).toBeInTheDocument();

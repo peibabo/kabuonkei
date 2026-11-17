@@ -1,6 +1,6 @@
 # 温度アラート（メール通知）
 
-極端温度（米国 F&G / 日本版の日経225 モメンタムが `≤20` or `≥80`）に遷移したタイミングで、事前登録したメールアドレスに通知を送る機能。Tier1 のリテンション施策かつ将来のマネタイズ基盤（メール資産）。
+極端温度（米国 F&G / 日本の市場温度が `≤20` or `≥80`）に遷移したタイミングで、事前登録したメールアドレスに通知を送る機能。Tier1 のリテンション施策かつ将来のマネタイズ基盤（メール資産）。
 
 ## 全体像
 
@@ -23,7 +23,7 @@
  - 平日 7 時台 JST (US)   → scripts/check-temperature-alerts.ts --variant us
  - 平日 18 時台 JST (JP)  → 同 --variant jp
     │
-    ├─ スコア取得（US: VIX + F&G / JP: snapshots.json 最新の C1）
+    ├─ スコア取得（US: VIX + F&G / JP: japan-temperature-history.json の最新）
     ├─ Redis の last-state と比較 → 状態遷移判定
     ├─ shouldFire なら variant の verified 購読者を列挙
     └─ Resend で並列送信（120ms throttle）→ last-state 更新
@@ -46,18 +46,14 @@
   - それ以外（neutral→cold/hot または cold↔hot 直接反転）→ 発火、`kind=curr`
 - 初回実行時（prev 未設定）は `"neutral"` 扱い → バックフィル時の誤発火を回避
 
-## 日本版の判定スコア（C1 = 日経225 モメンタム単独）
+## 日本版の判定スコア
 
-日本版は 5 要素の総合スコアではなく、**C1（日経225 の 125 日移動平均乖離を 0〜100 にしたスコア）だけ**で判定する（`src/lib/alerts/jp-score.ts::computeJpAlertScore()`）。2026-11-16 に総合 → C1・C5 平均へ、続けて C1 単独へ切り替えた。
+日本版は**サイトのゲージと同じ市場温度**（日経225 × 125 日移動平均乖離、定義は [temperature-score.md](./temperature-score.md)）で判定する。`src/data/japan-temperature-history.json` の最新エントリを読む。
 
-- **総合スコアをやめた理由**: 需給 3 要素（C2〜C4）は週次公表で遅れ、高止まりしやすい。2026-11-06（日経 -5.96%）は C1=7 / C5=38 でも総合 65°で、当日の需給のままだと C1・C5 が 0 でも総合 56 止まり。5 要素が揃う 148 日（2026-04-17〜11-13）の総合の最低は 44 で、極寒（≤20）に届かない
-- **C5（ドル円モメンタム）を外した理由**: 2007-07 以降の 4731 営業日の試算（`npm run analyze:jp-composition`）で、C1+C5 は C1 単独に比べて (1) 極寒通知が多く（72 回 vs 41 回）、(2) 通知後の日経225 のリターンが低く（3 か月後 +0.1% vs +1.8%、基準は +2.3%）、(3) 前日比 -5% 以下の 30 日のうち極寒域だった日も少ない（21 日 vs 23 日）。2026-11-06 も C1 単独なら 7°で極寒
+- 経緯: 当初は 5 要素の総合スコアで判定していたが、需給 3 要素の高止まりで極寒（≤20）に事実上届かなかった（2026-11-06 の日経 -5.96% でも総合 65°）。2026-11-16 にアラートだけ C1・C5 の平均に切り替え（#137）、2026-11-17 にゲージごと市場温度の定義を C1 単独にそろえ、アラートもゲージと同じ値で判定するようになった
 - **頻度の目安**（同じヒステリシスで再現）: 2007-07 以降で極寒 41 回 / 過熱 40 回。2017-05 以降では極寒 8 回 / 過熱 17 回
-- **根拠の強さ**: 通知は同じ下落局面で繰り返し出るため独立した局面は少なく、C1 単独でも通知日のその後のリターンは基準を明確には上回らない。過熱側は、どの組み合わせでも「その後のリターンが低い」という傾向は見えていない
-- **ゲージとの食い違い**: トップ画面のゲージは 5 要素の総合のまま。総合が過熱（例: 2026-11-16 は 68°）でも C1 が 19°で極寒通知が出ることがある。メールの件名・見出しは「日本市場（日経225モメンタム）が極寒圏に突入」とし、本文に総合スコアを併記する。`AlertBanner` も「日本 極寒 (日経225モメンタム 19)」と表記し、`/alerts` の「通知のタイミング」にも説明がある
-- **類似日**: メールの「近い過去の類似日」も C1 で探す。`japan-similar-days.json` のスコアは C1+C5 の 2 要素版なので、`japan-temperature-history.json` の `c1` に差し替えてから検索する（`replaceScores()`、リターンはそのまま）
+- **根拠の強さ**: 通知は同じ下落局面で繰り返し出るため独立した局面は少なく、極寒通知の後のリターンは基準を明確には上回らない。過熱側も「その後のリターンが低い」という傾向は見えていない（`npm run analyze:jp-composition`）
 - **限界**: 高値圏からの急落（2013-05-23、2016-11-09、2026-03-09 など）は拾えない。「日経 -5% 以下」のような急落そのものの通知は別条件が必要で、未実装（登録時の同意内容と異なるため、新しい選択肢として設計する想定）
-- スナップショットは欠損要素を 50 で記録し、どの要素が欠けたかは残らない。Yahoo Finance の取得失敗で C1 が欠けた日は 50（平温）として扱われ、失報の可能性がある。画面側（`jpAlertScoreFromComponents()`）は `available` を見て、欠損なら null を返す
 
 ## Redis キー設計（`src/lib/alerts/keys.ts`）
 
@@ -126,8 +122,8 @@
 
 - `scripts/check-temperature-alerts.ts`（`npm run alerts:check -- --variant us|jp [--dry-run]`）
   - US: VIX → `fetchFearGreedIndex(vix)` で取得
-  - JP: `src/data/japan-fg-snapshots.json` の `snapshots` 配列末尾の `components.nikkeiMa`（C1）で判定（snapshot-japan-fg ワークフローが 17:00 JST に更新）。総合スコアはメールの参考値にだけ使う
-  - **JP スコアの鮮度ガード**（`pickFreshJpScore()`、`scripts/_lib/alert-state.ts`）: 最新エントリの日付が直近営業日（日経225 の最終取引日、`resolveTradingDate()`）でなければ採用せず exit 1（状態も更新しない）。C1 が入っていないエントリも不採用（総合スコアで代用しない）。snapshot job の遅延/失敗時に古い値で誤発火/失報するのを防ぐ。スナップショットと同じ基準なので、両ジョブが遅延して翌日未明に走っても、休場日でも成立する（休場日は同じ値を再評価するだけで状態は変わらない）
+  - JP: `src/data/japan-temperature-history.json` の `daily` 末尾の `score`（市場温度）で判定（snapshot-japan-fg ワークフローが平日 17 時台に再生成）
+  - **JP スコアの鮮度ガード**（`pickFreshJpScore()`、`scripts/_lib/alert-state.ts`）: 最新エントリの日付が直近営業日（日経225 の最終取引日、`resolveTradingDate()`）でなければ採用せず exit 1（状態も更新しない）。生成 job の遅延/失敗時に古い値で誤発火/失報するのを防ぐ。推移ファイルの日付と同じ基準（日経225 の取引日）なので、両ジョブが遅延して翌日未明に走っても、休場日でも成立する（休場日は同じ値を再評価するだけで状態は変わらない）
   - **閾値 20/80 の単一ソース**: `src/lib/alerts/state-transition.ts` の `COLD_THRESHOLD` / `HOT_THRESHOLD`。UI 文言（/alerts・AlertBanner・AlertSignupForm・AlertVariantCheckboxes）、メールテンプレート、X bot・シェア文言はすべてここを参照
   - **温度帯ラベルは実スコアから導出**: hot アラートの「過熱/沸騰」表記は `getSentimentLevel(score)` で決める。スコアちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）で、メール/ツイート/シェア文言とサイト表示のラベル食い違いを防ぐ
   - **送信環境変数のプリフライト**（`missingSendEnv()`）: dry-run 以外では `RESEND_API_KEY` / `RESEND_FROM_EMAIL` 未設定なら送信ループ・状態更新に進む前に exit 1。ワークフロー側も `onboarding@resend.dev` への暗黙フォールバックを置かない（サンドボックス送信元だと実購読者に届かず沈黙失敗するため。初期運用でサンドボックスを使う場合は Repository Variable に明示的に設定する）
@@ -137,7 +133,7 @@
   - 通常は Vercel Cron が workflow_dispatch で起動する（US: 平日 7 時台 JST / JP: 平日 18 時台 JST。[operations.md の「定期実行」](../operations.md#定期実行vercel-cron--github-actions) 参照）
   - 予備の schedule: `0 22 * * 0-4`（US）/ `15 8 * * 1-5`（JP）。GitHub 側の遅延で数時間後に走るが、last-state が更新済みなので再送はされない
   - workflow_dispatch で variant と dry_run を手動指定可能
-  - JP variant は cron 遅延レース対策として、待ち受ける日付（UTC 日付 = 翌朝 9:00 JST の寄り付きまでは前日分）のスナップショットが main に現れるまで最大 12 分ポーリング（`git fetch` + 該当ファイルのみ checkout）。タイムアウト時はスクリプト側の鮮度ガードが中断する
+  - JP variant は cron 遅延レース対策として、待ち受ける日付（UTC 日付 = 翌朝 9:00 JST の寄り付きまでは前日分）の市場温度（`japan-temperature-history.json`）が main に現れるまで最大 12 分ポーリング（`git fetch` + 該当ファイルのみ checkout）。タイムアウト時はスクリプト側の鮮度ガードが中断する
 
 ## 環境変数
 
@@ -195,7 +191,6 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 
 ## テスト
 
-- `src/__tests__/alerts/jp-score.test.ts` — 日本版の判定スコア（C1 単独、欠損時 null）
 - `src/__tests__/alerts/state-transition.test.ts` — ヒステリシス + 発火判定の境界値
 - `src/__tests__/alerts/tokens.test.ts` — HMAC ラウンドトリップ・改ざん・期限
 - `src/__tests__/alerts/keys.test.ts` — Redis キー命名
@@ -209,7 +204,7 @@ _dmarc.kabuonkei.com  TXT  "v=DMARC1; p=quarantine; rua=mailto:info@kabuonkei.co
 
 ## 後続の候補
 
-0. **急落通知**: 「日経225 前日比 -5% 以下」（2017-05 以降で 8 日、うち 2 日は C1 でも極寒域の外）。温度通知とは別の選択肢として追加する
+0. **急落通知**: 「日経225 前日比 -5% 以下」（2017-05 以降で 8 日、うち 2 日は市場温度でも極寒域の外）。温度通知とは別の選択肢として追加する
 1. **Web Push**: 同じ Redis / 発火ロジックに Web Push Subscription を追加レイヤーとして積む（メールとの共存）
 2. **LINE / Discord Webhook**: ユーザー側が登録した webhook URL に送信する方式
 3. **カスタム閾値**: プリセット（≤20/≥80）に加えて、ユーザーが任意のスコア範囲を指定

@@ -8,7 +8,6 @@ import { COLD_THRESHOLD, HOT_THRESHOLD } from "@/lib/alerts/state-transition";
 import type { AlertVariant } from "@/lib/types";
 
 interface Props {
-  /** 日本版アラートの判定スコア（C1 = 日経225 モメンタム。ゲージの総合スコアではない） */
   japanScore: number | null;
   usScore: number | null;
 }
@@ -36,11 +35,11 @@ export default function AlertBanner({ japanScore, usScore }: Props) {
     }
     if (isCold(japanScore)) {
       variants.push("jp_cold");
-      labels.push(`日本 極寒 (日経225モメンタム ${japanScore})`);
+      labels.push(`日本 極寒 (${japanScore})`);
     }
     if (isHot(japanScore)) {
       variants.push("jp_hot");
-      labels.push(`日本 過熱 (日経225モメンタム ${japanScore})`);
+      labels.push(`日本 過熱 (${japanScore})`);
     }
     const extreme = variants.length > 0;
     return {

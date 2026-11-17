@@ -72,9 +72,6 @@ export default function AlertsPage() {
             <li>米国市場: 平日 07:00 JST（寄り前ブリーフィング）</li>
             <li>日本市場: 平日 17:15 JST（大引け後）</li>
             <li>
-              日本市場は日経225 モメンタム（125 日移動平均との乖離を 0〜100 にしたスコア）で判定します。需給データなどを含む総合スコア（トップ画面のゲージ）とは数値が異なることがあります
-            </li>
-            <li>
               前回が平温で、今回が極端域に突入した時のみ発火（連続発火なし・±5pt のヒステリシス付き）
             </li>
           </ul>
@@ -103,7 +100,7 @@ export default function AlertsPage() {
               温度スコアとは何ですか？
             </h3>
             <p className="text-sm mt-1">
-              VIX や Fear & Greed Index、日本市場の需給データなどから算出する 0〜100
+              米国は VIX をもとにした Fear & Greed、日本は日経225 と 125 日移動平均の乖離から算出する 0〜100
               の市場センチメント指標です。詳しくは
               <Link
                 href="/learn/what-is-fear-greed"

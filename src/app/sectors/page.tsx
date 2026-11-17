@@ -91,7 +91,7 @@ export default function SectorsPage() {
               セルの<strong>赤が濃いほど平均リターンが高く</strong>、緑が濃いほど低い（日本式の配色）
             </li>
             <li>
-              温度は<strong>C1（日経225 vs 125日移動平均）+ C5（ドル円モメンタム）の 2 要素簡易版</strong>で、トップページの 5 要素スコアとは計算が異なります
+              温度はトップページと同じ<strong>市場温度（日経225 と 125 日移動平均の乖離）</strong>です
             </li>
             <li>
               業種リターンは <strong>TOPIX-17 シリーズ連動 ETF（NEXT FUNDS 1617〜1633）の終値</strong>を proxy にしています（東証33業種ベースではありません）

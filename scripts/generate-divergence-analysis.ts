@@ -3,7 +3,7 @@
  *
  * 入力:
  *   - Yahoo Finance: ^VIX / ^GSPC / ^N225 日足 (過去20年)
- *   - src/data/japan-temperature-history.json (2016-10〜、日本版温度 C1+C5)
+ *   - src/data/japan-temperature-history.json (2016-10〜、日本版 市場温度 = 日経225 × 125日移動平均乖離)
  *   - 米国版温度は VIX → estimateFearGreedFromVix() で再構成
  *
  * 出力: src/data/divergence-analysis.json
@@ -374,7 +374,7 @@ async function main() {
     gapQuantiles,
     latestContext,
     note:
-      "日本版株温計スコア (C1+C5 簡易) と米国版温度スコア (VIX 由来) の差 (gap = JP - US) を、" +
+      "日本版 市場温度 (日経225 × 125日移動平均乖離) と米国版温度スコア (VIX 由来) の差 (gap = JP - US) を、" +
       "両指標が計算できる 2016 年以降の米国取引日基準で算出。" +
       "Primary は乖離バンド × {S&P500, 日経225} の 1M/3M/6M 前方リターン (および N225-S&P500 平均スプレッド)、" +
       "Joint は乖離バンド × 日本版温度バンド × 日経225 のクロス集計。" +

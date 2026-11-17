@@ -19,11 +19,6 @@ export interface AlertEmailInput {
   market: AlertMarket;
   kind: AlertKind;
   score: number;
-  /**
-   * 日本版のみ: 5要素の総合スコア（サイトのゲージに出る値）。
-   * 判定は日経225 モメンタム（C1）なので、数字が違う理由を本文に添える。
-   */
-  overallScore?: number | null;
   dateLabelJst: string;
   dashboardUrl: string;
   unsubscribeUrl: string;
@@ -116,12 +111,7 @@ ${input.unsubscribeUrl}
 }
 
 export function buildAlertEmail(input: AlertEmailInput): EmailContent {
-  // 日本版は日経225 モメンタム単独で判定する。ゲージ（5要素の総合）と温度帯が食い違う日が
-  // あるので、何が極端域に入ったのかを件名・見出しに明記する
-  const market =
-    input.market === "jp"
-      ? `${MARKET_LABEL.jp}市場（日経225モメンタム）`
-      : `${MARKET_LABEL[input.market]}市場`;
+  const market = MARKET_LABEL[input.market];
   // 温度帯ラベルは kind の固定文言ではなく実スコアから導出する。
   // スコアちょうど 80 は温度計ゲージと同じ「過熱」（沸騰は 81 以上）で、
   // メールとサイト表示のラベル食い違いを避ける。
@@ -130,7 +120,7 @@ export function buildAlertEmail(input: AlertEmailInput): EmailContent {
     sentiment: getSentimentLevel(input.score),
     description: getSentimentDescription(input.score),
   };
-  const subject = `${kind.emoji} 【株温計】${market}が${kind.sentiment}圏に突入（スコア${input.score}）`;
+  const subject = `${kind.emoji} 【株温計】${market}市場が${kind.sentiment}圏に突入（スコア${input.score}）`;
 
   const similarLine = input.similarDay
     ? `▶ 近い過去の類似日: ${input.similarDay.date}（${input.similarDay.label}）` +
@@ -147,17 +137,11 @@ export function buildAlertEmail(input: AlertEmailInput): EmailContent {
       ].join("")
     : "";
 
-  // 日本版は日経225 モメンタムで判定するため、ゲージ（5要素の総合）と数字が違う理由を添える
-  const basisNote =
-    input.market === "jp" && input.overallScore != null
-      ? `このスコアは日経225 モメンタム（125 日移動平均との乖離）です。需給データなどを含む総合スコア（サイトのゲージ）は ${input.overallScore} です。`
-      : "";
-
-  const text = `${input.dateLabelJst} 時点で、${market}の温度が ${kind.sentiment} 圏に突入しました。
+  const text = `${input.dateLabelJst} 時点で、${market}市場の温度が ${kind.sentiment} 圏に突入しました。
 
 スコア: ${input.score} / 100
 判定: ${kind.sentiment}（${kind.description}）
-${basisNote ? `\n※ ${basisNote}\n` : ""}
+
 ▶ ダッシュボードで詳細を見る
 ${input.dashboardUrl}
 ${similarLine ? `\n${similarLine}\n` : ""}
@@ -194,7 +178,7 @@ ${input.unsubscribeUrl}
   const html = `<!doctype html>
 <html lang="ja"><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#111;line-height:1.6;max-width:560px;margin:0 auto;padding:24px;">
   <p style="color:#777;font-size:12px;margin:0 0 8px 0;">${escapeHtml(input.dateLabelJst)} 時点</p>
-  <h2 style="font-size:20px;margin:0 0 12px 0;">${kind.emoji} ${escapeHtml(market)}が${escapeHtml(kind.sentiment)}圏に突入</h2>
+  <h2 style="font-size:20px;margin:0 0 12px 0;">${kind.emoji} ${escapeHtml(market)}市場が${escapeHtml(kind.sentiment)}圏に突入</h2>
   <table role="presentation" style="border-collapse:collapse;margin:12px 0;">
     <tr>
       <td style="background:${barColor};color:#fff;font-size:28px;font-weight:700;padding:12px 20px;border-radius:8px;">
@@ -203,7 +187,6 @@ ${input.unsubscribeUrl}
     </tr>
   </table>
   <p><strong>判定:</strong> ${escapeHtml(kind.sentiment)}（${escapeHtml(kind.description)}）</p>
-  ${basisNote ? `<p style="color:#555;font-size:13px;">※ ${escapeHtml(basisNote)}</p>` : ""}
   <p style="margin:24px 0;">
     <a href="${escapeHtml(input.dashboardUrl)}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;">ダッシュボードで詳細を見る</a>
   </p>

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import StaticPageLayout from "@/components/StaticPageLayout";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description:
-    "株温計のプライバシーポリシー。アクセス解析および Cookie の利用方針について記載しています。",
+    "株温計のプライバシーポリシー。アクセス解析・Cookie・広告（アフィリエイト）の取り扱いについて記載しています。",
 };
 
 export default function PrivacyPage() {
@@ -97,7 +98,38 @@ export default function PrivacyPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          4. 第三者提供
+          4. 広告・アフィリエイトについて
+        </h2>
+        <p>
+          当サイトは、アフィリエイトプログラム（A8.net、もしもアフィリエイト等）を利用して、外部サービスや商品を紹介することがあります。広告リンクを経由してサービスの申込や商品の購入が行われた場合、運営者は広告主から成果報酬を受け取ることがあります。
+        </p>
+        <ul className="list-disc pl-6 space-y-1 mt-2">
+          <li>広告（アフィリエイト）リンクを掲載する箇所には、「PR」等の表示を行います</li>
+          <li>
+            成果の計測のため、アフィリエイトプログラムの運営会社や広告主が Cookie 等を利用して、広告リンクのクリックや申込の有無に関する情報を取得することがあります。これらの情報に、氏名・メールアドレスなど個人を特定できる情報は含まれません
+          </li>
+          <li>
+            第三者配信の広告サービスを利用する場合、Cookie を使用して、ユーザーの当サイトや他サイトへの過去のアクセス情報に基づいた広告が表示されることがあります
+          </li>
+          <li>
+            Cookie の利用はブラウザの設定で無効にできます。無効にしてもサイトの主要機能はご利用いただけます
+          </li>
+          <li>
+            温度アラートにご登録いただいたメールアドレスを、広告主やアフィリエイトプログラムの運営会社に提供することはありません
+          </li>
+        </ul>
+        <p className="mt-2">
+          紹介するサービスの選び方や、分析コンテンツの中立性についての方針は
+          <Link href="/terms" className="underline hover:text-gray-900">
+            利用規約
+          </Link>
+          （第 8 条）に記載しています。
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
+          5. 第三者提供
         </h2>
         <p>
           当サイトは、法令に基づく開示請求がある場合を除き、取得した情報を第三者に提供・販売することはありません。
@@ -106,7 +138,7 @@ export default function PrivacyPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          5. 外部サービスへのリンク
+          6. 外部サービスへのリンク
         </h2>
         <p>
           当サイトは外部サービス（Yahoo Finance、CNN、JPX 等）から取得したデータを表示することがあります。これら外部サービスにおける情報の取り扱いについては、各サービスのプライバシーポリシーをご確認ください。
@@ -115,7 +147,7 @@ export default function PrivacyPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          6. 改定
+          7. 改定
         </h2>
         <p>
           本ポリシーは必要に応じて改定されることがあります。重要な変更がある場合は、当サイト上で告知します。
@@ -124,7 +156,7 @@ export default function PrivacyPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          7. メール通知（温度アラート）の登録・解除
+          8. メール通知（温度アラート）の登録・解除
         </h2>
         <p>
           温度アラートのご登録はトップページの登録フォームから任意で行っていただけます。ご登録後、確認メールのリンクをクリックして完了する二段階確認方式を採用しています。
@@ -156,7 +188,7 @@ export default function PrivacyPage() {
 
       <section>
         <h2 className="text-xl font-bold text-gray-900 mt-8 mb-3">
-          8. お問い合わせ
+          9. お問い合わせ
         </h2>
         <p>
           本ポリシーに関するお問い合わせ、個人関連情報の取り扱いについてのご質問は、下記までご連絡ください。
@@ -172,7 +204,7 @@ export default function PrivacyPage() {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 4 月 23 日</p>
+      <p className="text-sm text-gray-500 pt-6">最終改定日: 2026 年 11 月 17 日</p>
     </StaticPageLayout>
   );
 }

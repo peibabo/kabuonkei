@@ -100,7 +100,7 @@ export default function AlertsPage() {
               温度スコアとは何ですか？
             </h3>
             <p className="text-sm mt-1">
-              VIX や Fear & Greed Index、日本市場の需給データなどから算出する 0〜100
+              米国は VIX をもとにした Fear & Greed、日本は日経225 と 125 日移動平均の乖離から算出する 0〜100
               の市場センチメント指標です。詳しくは
               <Link
                 href="/learn/what-is-fear-greed"

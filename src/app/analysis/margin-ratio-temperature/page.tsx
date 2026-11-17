@@ -173,7 +173,7 @@ export default function MarginRatioTemperaturePage() {
             株温計（日本版 Fear & Greed）とは
           </h2>
           <p className="leading-relaxed">
-            株温計の日本版温度スコアは、日経225 の 125 日移動平均乖離（C1）と USD/JPY の 50 日モメンタム（C5）の等ウェイト平均で算出する 0-100 のスコアです。20 以下が<strong>極寒（総悲観）</strong>、81 以上が<strong>沸騰（総楽観）</strong>。
+            株温計の日本版温度スコアは、日経225 の終値と 125 日移動平均との乖離率から算出する 0-100 のスコアです（サイトのゲージ・アラートと同じ定義）。20 以下が<strong>極寒（総悲観）</strong>、81 以上が<strong>沸騰（総楽観）</strong>。
             {" "}
             <Link href="/" className="underline hover:text-gray-900">
               トップページの温度計
@@ -217,7 +217,7 @@ export default function MarginRatioTemperaturePage() {
               <strong>信用倍率</strong>: JPX「信用取引現在高 過去推移表」(二市場計・金額ベース)。週次、申込日（金曜日）基準
             </li>
             <li>
-              <strong>温度スコア</strong>: 株温計の日本版温度（C1+C5 簡易 2 要素版）。日次
+              <strong>温度スコア</strong>: 株温計の日本版 市場温度（日経225 × 125 日移動平均乖離）。日次
             </li>
             <li>
               <strong>日経225 終値</strong>: Yahoo Finance の ^N225 日足

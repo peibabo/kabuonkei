@@ -147,7 +147,7 @@ export default async function Image() {
               <span
                 style={{ fontSize: 36, fontWeight: 800, color: "#0f172a" }}
               >
-                C4 要素
+                需給の温度
               </span>
             </div>
           </div>

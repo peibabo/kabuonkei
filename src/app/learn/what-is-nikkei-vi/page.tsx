@@ -12,6 +12,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX（米国の恐怖指数）との違い、平時20前後／30超で警戒／40超でパニックという水準別の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を初心者向けに解説します。";
 const PUBLISHED_AT = "2026-06-18";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -104,7 +105,7 @@ export default function WhatIsNikkeiViPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -133,6 +134,8 @@ export default function WhatIsNikkeiViPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -321,13 +324,12 @@ export default function WhatIsNikkeiViPage() {
           </p>
           <p className="text-base leading-relaxed mt-3">
             一方、日本版の市場温度スコアは VIX や日経VI のようなボラティリティ指数ではなく、
-            日経225 の移動平均乖離率・裁定残・海外勢フロー・信用倍率・ドル円モメンタムという
-            <strong>5 つの需給・マクロ要素</strong>を束ねて算出しています。
-            日経VI を直接は使っていませんが、<strong>将来的な拡張候補</strong>として、
-            データ取得環境が整えば日本版「恐怖指数」要素の検討対象に位置付けています。
+            <strong>日経225 の終値と 125 日移動平均との乖離率</strong>から算出しています。
+            日経VI は Yahoo Finance などの一般データソースで継続取得するのが難しいため直接は使っていませんが、
+            <strong>将来的な拡張候補</strong>として、データ取得環境が整えば過去データで効果を検証したうえで加える方針です。
           </p>
           <p className="text-base leading-relaxed mt-3">
-            「米国は VIX、日本は需給・マクロの合成」という非対称な作り方は、
+            「米国は VIX、日本は日経225 の移動平均乖離」という非対称な作り方は、
             <strong>『取れるデータで一番筋の良い指標を組む』という現実的な設計判断</strong>の結果です。
             今日の日米の温度は{" "}
             <Link href="/" className="underline hover:text-gray-900">

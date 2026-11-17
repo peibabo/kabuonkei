@@ -192,8 +192,8 @@ export default function SectorRotationTemperaturePage() {
           <ul className="list-disc pl-6 mt-3 space-y-1 text-base leading-relaxed">
             <li>
               <strong>温度帯</strong>: 極寒（0-20）/ 冷え込み（21-40）/
-              平温（41-60）/ 過熱（61-80）/ 沸騰（81-100）。温度は C1（日経225
-              vs 125日移動平均）+ C5（ドル円モメンタム）の 2 要素簡易版
+              平温（41-60）/ 過熱（61-80）/ 沸騰（81-100）。温度はトップページと同じ市場温度（日経225
+              と 125 日移動平均の乖離）
             </li>
             <li>
               <strong>業種</strong>: 東証 TOPIX-17 シリーズの 17 分類。リターンは連動
@@ -256,10 +256,6 @@ export default function SectorRotationTemperaturePage() {
           <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed">
             <li>
               <strong className="text-red-700">極寒帯のサンプルは {coldAvg.occurrences} 日と少ない</strong>。しかも過去10年の極寒は、コロナショック（2020）や令和のブラックマンデー（2024）のように<strong>V字回復した暴落</strong>が中心です。リーマン級の長期下落（下げ続けて極寒が何ヶ月も続く相場）が来た場合、「極寒で景気敏感を買えば戻る」がそのまま通用する保証はありません
-            </li>
-            <li>
-              <strong>温度は 2 要素簡易版</strong>（C1+C5）。トップページの 5
-              要素スコアとは計算が異なります
             </li>
             <li>
               <strong>業種リターンは ETF proxy</strong>。信託報酬・乖離を含み、東証33業種分類とも異なります

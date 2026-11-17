@@ -246,7 +246,7 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
           VIX × 日本版株温計 × 日経225（クロス市場ヒートマップ）
         </h2>
         <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-          米国の恐怖指数（VIX）と、日本の需給ベース温度（日本版株温計）は独立したセンチメント指標です。
+          米国の恐怖指数（VIX）と、日本の市場温度（日本版株温計）は別々の市場から作るセンチメント指標です。
           同時水準の組合せで、その後の日経225 がどう動いたかを {analysis.joint.sampleSize} 取引日分
           （{analysis.joint.dataRange.from} 〜 {analysis.joint.dataRange.to}）集計しました。
           <span className="block text-xs text-gray-500 mt-1">

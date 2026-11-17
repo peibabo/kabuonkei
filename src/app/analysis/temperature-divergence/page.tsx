@@ -190,7 +190,7 @@ export default function TemperatureDivergencePage() {
               <strong>米国版温度</strong> — VIX (恐怖指数) を 0-100 にマッピングしたセンチメント指標。S&P500 のオプション市場の予想変動率がベース
             </li>
             <li>
-              <strong>日本版温度</strong> — 日経225 の 125 日 MA 乖離 (C1) と USDJPY の 50 日モメンタム (C5) の等ウェイト平均。需給ベース
+              <strong>日本版温度</strong> — 日経225 の終値と 125 日移動平均との乖離率を 0-100 にしたスコア。約半年の株価トレンドがベース
             </li>
           </ul>
           <p className="leading-relaxed mt-3">
@@ -212,7 +212,7 @@ export default function TemperatureDivergencePage() {
             </li>
           </ul>
           <p className="leading-relaxed mt-3 text-sm">
-            VIX が急騰すれば米国版温度は急落しますが、日本版は需給ベースなので即座には反応しません。逆に円安・日経高で日本版だけ熱くなる局面もあります。
+            VIX が急騰すれば米国版温度は急落しますが、日本版は約半年の平均との比較なので、1 日の値動きだけでは大きくは動きません。逆に日経だけが上がり続けて日本版だけ熱くなる局面もあります。
           </p>
         </section>
 
@@ -297,8 +297,8 @@ export default function TemperatureDivergencePage() {
               95、VIX 40 → 5 の線形マッピング)
             </li>
             <li>
-              <strong>日本版温度</strong>: 株温計の日本版スコア (C1 = 日経225 vs
-              125日MA、C5 = USDJPY 50日モメンタム の等ウェイト平均)
+              <strong>日本版温度</strong>: 株温計の日本版 市場温度 (日経225 の終値と
+              直前 125 営業日の移動平均との乖離率、±15% を 0-100 に換算)
             </li>
             <li>
               <strong>S&amp;P500</strong>: Yahoo Finance の ^GSPC 日足終値

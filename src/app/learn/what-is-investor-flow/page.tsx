@@ -10,8 +10,9 @@ const ARTICLE_PATH = "/learn/what-is-investor-flow";
 const ARTICLE_TITLE =
   "投資部門別売買動向とは？外国人投資家のフローを毎週どう読むか";
 const ARTICLE_DESCRIPTION =
-  "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。外国人投資家・個人・自己・投資信託など主体別の現物/先物の売買フローを、株温計の温度スコア C2 要素としての扱いも含めて整理。なぜ外国人フローが日本市場の主役と言われるのかも具体的な数字で示します。";
+  "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。外国人投資家・個人・自己・投資信託など主体別の現物/先物の売買フローを、株温計の「需給の温度」での扱いも含めて整理。なぜ外国人フローが日本市場の主役と言われるのかも具体的な数字で示します。";
 const PUBLISHED_AT = "2026-05-08";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -44,7 +45,7 @@ const TOC_ITEMS = [
   { href: "#categories", label: "主要な投資主体 6 区分" },
   { href: "#foreign", label: "なぜ外国人フローが主役なのか" },
   { href: "#how-to-read", label: "読み方のコツ 4 つ" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計 C2 要素）" },
+  { href: "#temperature", label: "温度スコアとの関係（株温計の需給の温度）" },
   { href: "#where", label: "毎週どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -88,7 +89,7 @@ export default function WhatIsInvestorFlowPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -117,6 +118,8 @@ export default function WhatIsInvestorFlowPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -169,7 +172,7 @@ export default function WhatIsInvestorFlowPage() {
               個人と外国人は<strong>逆方向に動くことが多い</strong>。外国人売り越し → 個人買い向かい、というパターンは下落相場の代表的なサイン
             </li>
             <li>
-              株温計では外国人フローを日本版温度スコアの<strong>C2 要素</strong>として組み込み、毎週の売買を温度に反映させています
+              株温計では外国人フローを<strong>「需給の温度」</strong>の材料にして、日経225 の市場温度と並べて毎日表示しています
             </li>
           </ul>
         </section>
@@ -307,58 +310,22 @@ export default function WhatIsInvestorFlowPage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計 C2 要素）
+            温度スコアとの関係（株温計の需給の温度）
           </h2>
           <p className="text-base leading-relaxed">
-            株温計の<strong>日本版「市場温度スコア」</strong>では、外国人投資家のフローを
-            <strong>C2 要素</strong>として組み込んでいます。具体的には、JPX 公表の週次データから
-            外国人の現物買越額を追跡し、長期分布の中での相対水準（スコア化）に変換しています。
+            株温計の日本版では、外国人投資家の<strong>直近 4 週の売買差引の合計</strong>を 0〜100 に換算しています
+            （4 週で 2 兆円の売り越しを 0、2 兆円の買い越しを 100）。
+            これに信用買い残の 4 週変化を合わせた平均を<strong>「需給の温度」</strong>として、ゲージの下に別枠で表示しています。
           </p>
-
-          <div className="overflow-x-auto not-prose mt-4">
-            <table className="w-full text-base border border-gray-200 rounded-lg">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-3 py-2 text-left font-semibold">要素</th>
-                  <th className="px-3 py-2 text-left font-semibold">中身</th>
-                  <th className="px-3 py-2 text-left font-semibold">外国人フローとの関係</th>
-                </tr>
-              </thead>
-              <tbody className="[&>tr>td]:px-3 [&>tr>td]:py-2 [&>tr]:border-t [&>tr]:border-gray-100">
-                <tr>
-                  <td className="font-semibold">C1</td>
-                  <td>日経225 の 125 日移動平均との乖離率</td>
-                  <td>結果としての株価（外国人フローの帰結）</td>
-                </tr>
-                <tr className="bg-amber-50">
-                  <td className="font-semibold">C2</td>
-                  <td>投資主体別売買動向（外国人フロー）</td>
-                  <td>本記事の主題</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C3</td>
-                  <td>信用倍率</td>
-                  <td>個人投資家のポジション偏り（外国人と独立、逆相関しやすい）</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C4</td>
-                  <td>裁定残バランス</td>
-                  <td>主に証券会社の自己ポジション（独立）</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C5</td>
-                  <td>USDJPY 50 日モメンタム</td>
-                  <td>外国人の投資判断に影響するマクロ要因</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
           <p className="text-base leading-relaxed mt-3">
-            注目したいのは<strong>外国人フロー（C2）と信用倍率（C3）を別要素として捉えている点</strong>です。
-            外国人の動きと個人の動きを別々の要素で捉えることで、
-            「外国人売り越し × 個人買い越し」のような典型パターンが温度スコアの中で互いに打ち消し合い、
-            相対的に温度が中立に保たれる仕組みになっています。
+            2026 年 11 月までは、外国人フローを日経225 の移動平均乖離・信用倍率・裁定残・ドル円の勢いと合わせた 5 要素の平均で
+            市場温度を出していました。しかし JPX の公表は週 1 回で、データが温度に反映されるのは週末から 1〜2 週後です。
+            急落の当日には前の週までの「買い越し」が残っていて、温度を高めに見せてしまうことがありました。
+          </p>
+          <p className="text-base leading-relaxed mt-3">
+            そこで現在は、<strong>市場温度を日経225 の 125 日移動平均乖離だけで決め</strong>、
+            外国人フローは市場温度に混ぜずに参考として並べる形にしています。
+            「株価は冷えているのに外国人はまだ買い越し」のような、株価と需給の食い違いをそのまま読めるのがこの形の利点です。
           </p>
         </section>
 
@@ -385,7 +352,7 @@ export default function WhatIsInvestorFlowPage() {
             </li>
             <li>
               <strong>株温計のトップページ</strong>: 日本市場データセクションで外国人投資家フローの
-              直近水準と推移を可視化。温度スコアの C2 要素として既に組み込まれた数値も毎日反映
+              直近水準と推移を可視化。市場温度のゲージの下には、外国人フローを使った「需給の温度」も出しています
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

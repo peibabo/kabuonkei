@@ -89,19 +89,7 @@ export default function AboutPage() {
               </Link>
               （日本版）
             </strong>
-            : 日経225モメンタム、海外投資家フロー、
-            <Link href="/glossary#margin-ratio" className="underline hover:text-gray-900">
-              信用倍率
-            </Link>
-            、
-            <Link href="/glossary#arbitrage-balance" className="underline hover:text-gray-900">
-              裁定残
-            </Link>
-            バランス、
-            <Link href="/glossary#usdjpy-momentum" className="underline hover:text-gray-900">
-              ドル円モメンタム
-            </Link>
-            の 5 要素から算出した独自スコア
+            : 日経225 が 125 日移動平均からどれだけ離れているかを 0〜100 にしたスコア。ゲージの下に、海外投資家フローと信用買い残の増減から作る「需給の温度」を参考として並べています
           </li>
           <li>
             <strong>

@@ -10,8 +10,9 @@ const ARTICLE_PATH = "/learn/what-is-fear-greed";
 const ARTICLE_TITLE =
   "Fear & Greed Index とは？CNN 米国版の中身と、日本版を株温計でどう作っているか";
 const ARTICLE_DESCRIPTION =
-  "Fear & Greed Index（CNN 恐怖と欲望指数）の構成 7 要素・スコアの読み方・実用上の使いどころを腰を据えて解説。日本版を作るとしたら何が違うのかも、株温計の独自スコア（5 要素）と対比しながら整理します。";
+  "Fear & Greed Index（CNN 恐怖と欲望指数）の構成 7 要素・スコアの読み方・実用上の使いどころを腰を据えて解説。日本版を作るとしたら何が違うのかも、株温計の市場温度（日経225 の移動平均乖離＋需給の温度）と対比しながら整理します。";
 const PUBLISHED_AT = "2026-04-28";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -44,7 +45,7 @@ const TOC_ITEMS = [
   { href: "#bands", label: "スコアの読み方（5 段階）" },
   { href: "#components", label: "構成 7 要素を 1 つずつ" },
   { href: "#vix-vs", label: "VIX との違い・関係" },
-  { href: "#japan", label: "日本版を作るとしたら？— 株温計の 5 要素" },
+  { href: "#japan", label: "日本版を作るとしたら？— 株温計の市場温度" },
   { href: "#how-to-use", label: "実用上の使いどころ" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -101,7 +102,7 @@ export default function WhatIsFearGreedPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -130,6 +131,8 @@ export default function WhatIsFearGreedPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -186,7 +189,7 @@ export default function WhatIsFearGreedPage() {
               <Link href="/glossary#kabuonkei-score" className="underline hover:text-gray-900">
                 市場温度スコア
               </Link>
-              、5 要素）。CNN の 7 要素との違いも本記事で対比します
+              ）。CNN の 7 要素との違いも本記事で対比します
             </li>
           </ul>
         </section>
@@ -352,7 +355,7 @@ export default function WhatIsFearGreedPage() {
 
         <section id="japan" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            日本版を作るとしたら？— 株温計の 5 要素
+            日本版を作るとしたら？— 株温計の市場温度
           </h2>
           <p className="text-base leading-relaxed">
             残念ながら<strong>「日本版 Fear &amp; Greed Index」は CNN は公開していません</strong>。
@@ -361,58 +364,51 @@ export default function WhatIsFearGreedPage() {
             <Link href="/glossary#kabuonkei-score" className="underline hover:text-gray-900">
               市場温度スコア
             </Link>
-            は、まさに「日本版 Fear &amp; Greed Index」を独自設計したものです。
+            は、その日本版を独自に設計したものです。
           </p>
 
           <p className="text-base leading-relaxed mt-3">
-            CNN 米国版とは構成要素を変えています。米国版の 7 要素は<strong>NYSE の高値安値や
-            ジャンク債スプレッドなど米国市場固有のデータ</strong>を多く含むため、日本市場ではそのまま
-            流用できません。代わりに、日本市場で取得しやすく説明力のあるデータを 5 つ選び、等ウェイトで統合しています。
+            CNN 米国版の 7 要素は<strong>NYSE の高値安値やジャンク債スプレッドなど米国市場固有のデータ</strong>を多く含むため、
+            日本市場ではそのまま流用できません。株温計も当初は、日本で取得しやすいデータを 5 つ（日経225 の移動平均乖離・
+            海外投資家フロー・信用倍率・裁定残・ドル円の勢い）選んで等ウェイトで統合していました。
+          </p>
+
+          <p className="text-base leading-relaxed mt-3">
+            ところが運用してみると、<strong>JPX が週次で公表する需給データは 1〜2 週遅れるうえに高止まりしやすく</strong>、
+            日経平均が 1 日で約 6% 下げた 2026 年 11 月 6 日にもスコアが「過熱」のままでした。
+            過去約 19 年分のデータで組み合わせを検証したところ、ドル円の勢いを足すと急落局面の判定がむしろ悪くなることもわかりました。
+            そこで 2026 年 11 月から、<strong>市場温度は CNN の Market Momentum にあたる 1 つの指標だけ</strong>で決め、
+            需給データは混ぜずに「需給の温度」として横に並べる形に改めています。
           </p>
 
           <div className="overflow-x-auto not-prose mt-4">
             <table className="w-full text-base border border-gray-200 rounded-lg">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-semibold">要素</th>
+                  <th className="px-3 py-2 text-left font-semibold">表示</th>
                   <th className="px-3 py-2 text-left font-semibold">中身</th>
                   <th className="px-3 py-2 text-left font-semibold">CNN 版での近い要素</th>
                 </tr>
               </thead>
               <tbody className="[&>tr>td]:px-3 [&>tr>td]:py-2 [&>tr]:border-t [&>tr]:border-gray-100">
                 <tr>
-                  <td className="font-semibold">C1</td>
-                  <td>日経225 の 125 日移動平均との乖離率</td>
+                  <td className="font-semibold">市場温度</td>
+                  <td>日経225 の終値と 125 日移動平均との乖離率（±15% を 0〜100 に換算）</td>
                   <td>Market Momentum</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">C2</td>
-                  <td>裁定残バランス（買い残−売り残）</td>
-                  <td>Stock Price Breadth に近い需給情報</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C3</td>
-                  <td>投資主体別売買動向（外国人フロー）</td>
-                  <td>Safe Haven Demand に近いリスク選好の方向</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C4</td>
-                  <td>信用倍率</td>
-                  <td>Put/Call 比率に近い「個人投資家のポジション偏り」</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold">C5</td>
-                  <td>USDJPY 50 日モメンタム</td>
-                  <td>日本固有要素（米国版にはない）</td>
+                  <td className="font-semibold">需給の温度（参考）</td>
+                  <td>海外投資家の 4 週累計の売買差引と、信用買い残の 4 週変化の平均（JPX 週次データ）</td>
+                  <td>日本固有の需給情報（米国版にはない）</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <p className="text-base leading-relaxed mt-3">
-            米国版にあって日本版にないのが<strong>VIX 相当（日経VI）の組み込み</strong>です。
-            これは技術的な理由で、Yahoo Finance などの一般データソースから日経VI を継続取得するのが現状難しいためです。
-            将来 J-Quants や JPX 公式 API の整備が進めば、日経VI 相当の C6 要素を追加することも検討対象に置いています。
+            米国版にあって日本版にないのが<strong>VIX 相当（日経VI）</strong>です。
+            Yahoo Finance などの一般データソースから日経VI を継続取得するのが現状難しいためです。
+            今後は日経VI や騰落レシオなどの候補を過去データで検証し、効果が確かめられたものだけを市場温度に加える方針です。
             日経VI そのものの定義は{" "}
             <Link href="/glossary#nikkei-vi" className="underline hover:text-gray-900">
               用語集「日経VI」

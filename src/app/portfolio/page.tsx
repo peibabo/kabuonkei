@@ -502,7 +502,7 @@ export default function PortfolioPage() {
               <strong>対象銘柄</strong>: 日本版 = ^N225、米国版 = ^GSPC（いずれも Yahoo Finance 日足終値）
             </li>
             <li>
-              <strong>温度スコア</strong>: 日本版 = C1（日経225 vs 125日MA）+ C5（USDJPY 50日モメンタム）の等ウェイト平均 /
+              <strong>温度スコア</strong>: 日本版 = 市場温度（日経225 の終値と 125 日移動平均の乖離率）/
               米国版 = VIX から線形推定（株温計トップの米国版温度と同一ロジック）
             </li>
             <li>
@@ -568,7 +568,7 @@ export default function PortfolioPage() {
               同じ温度信号の寄与が逆転する可能性があります（が、それを検証するデータは本サイトにはまだありません）
             </li>
             <li>
-              <strong>温度スコア自体の過剰最適化リスク</strong>: 株温計のスコア（特に日本版 C1+C5）は現在の相場特性をもとに閾値が設計されています。<strong>将来も同じ働きをする保証はありません</strong>
+              <strong>温度スコア自体の過剰最適化リスク</strong>: 株温計のスコアは現在の相場特性をもとに閾値が設計されています。<strong>将来も同じ働きをする保証はありません</strong>
             </li>
           </ul>
         </section>

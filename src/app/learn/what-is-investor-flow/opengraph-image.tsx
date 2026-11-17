@@ -9,7 +9,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const charSet =
-    "投資部門別売買動向とは外国人投資家フロー毎週どう読むか海外現物先物市場シェア株温計kabuonkei解説記事JPX要素";
+    "投資部門別売買動向とは外国人投資家フロー毎週どう読むか海外現物先物市場シェア株温計kabuonkei解説記事JPX要素需給の度";
   const fonts = await buildNotoSansJpFonts(charSet);
 
   const svgDataUri = `data:image/svg+xml;base64,${Buffer.from(
@@ -151,7 +151,7 @@ export default async function Image() {
               <span
                 style={{ fontSize: 40, fontWeight: 800, color: "#0f172a" }}
               >
-                C3 要素
+                需給の温度
               </span>
             </div>
           </div>

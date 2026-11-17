@@ -12,6 +12,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "騰落レシオ（値上がり銘柄数 ÷ 値下がり銘柄数）の意味、25 日移動平均の計算方法、「120 超え＝過熱／70 割れ＝底値圏」という水準別の目安、だましシグナルへの注意、株温計の市場温度スコアとの関係を初心者向けに解説します。";
 const PUBLISHED_AT = "2026-06-18";
+const MODIFIED_AT = "2026-11-17";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -88,7 +89,7 @@ export default function WhatIsAdvanceDeclineRatioPage() {
     headline: ARTICLE_TITLE,
     description: ARTICLE_DESCRIPTION,
     datePublished: PUBLISHED_AT,
-    dateModified: PUBLISHED_AT,
+    dateModified: MODIFIED_AT,
   });
 
   const breadcrumbItems = [
@@ -117,6 +118,8 @@ export default function WhatIsAdvanceDeclineRatioPage() {
 
         <p className="text-xs text-gray-500 not-prose">
           公開: <time dateTime={PUBLISHED_AT}>{PUBLISHED_AT}</time>
+          {" / "}
+          更新: <time dateTime={MODIFIED_AT}>{MODIFIED_AT}</time>
           {" / "}
           短い定義だけ確認したい場合は{" "}
           <Link
@@ -316,13 +319,13 @@ export default function WhatIsAdvanceDeclineRatioPage() {
             >
               市場温度スコア（日本版）
             </Link>
-            は、C1（日経225 の移動平均乖離率）・C2（海外勢フロー）・C3（信用倍率）・C4（裁定残）・C5（ドル円モメンタム）の
-            5 要素から算出しており、<strong>騰落レシオは現状の構成要素には含まれていません</strong>。
+            は、日経225 の終値と 125 日移動平均との乖離率から算出しており、<strong>騰落レシオは含まれていません</strong>。
+            株温計でも追加の候補として過去約 19 年分で検証しましたが、現時点では判定がはっきり良くなるとは言えなかったため見送っています。
           </p>
           <p className="text-base leading-relaxed mt-3">
             ただし、騰落レシオと市場温度スコアは<strong>「相場の過熱／冷え込みを 1 つの数字で掴む」という狙いが共通</strong>しています。
-            騰落レシオが市場の<strong>幅（ブレッド）</strong>に注目するのに対し、市場温度スコアは
-            <strong>需給・センチメント・マクロを横断的に</strong>束ねている、という役割の違いがあります。
+            騰落レシオが市場の<strong>幅（ブレッド）</strong>、つまり何銘柄が上がっているかに注目するのに対し、
+            市場温度スコアは<strong>指数そのものが半年平均からどれだけ離れたか</strong>を見ている、という役割の違いがあります。
           </p>
           <p className="text-base leading-relaxed mt-3">
             実用上は、<strong>「騰落レシオが過熱を示し、かつ市場温度スコアも高い」</strong>といったように、

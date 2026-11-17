@@ -50,7 +50,9 @@ interface Props {
 function CustomTooltip({
   active,
   payload,
+  showBoost = false,
 }: {
+  showBoost?: boolean;
   active?: boolean;
   payload?: Array<{
     payload: {
@@ -91,7 +93,7 @@ function CustomTooltip({
           <span className="font-semibold">{d.benchmarkDca.toFixed(1)}</span>
         </p>
       )}
-      {d.benchmarkDcaBoost != null && (
+      {showBoost && d.benchmarkDcaBoost != null && (
         <p>
           <span className="text-gray-500">積立＋極寒上乗せ</span>{" "}
           <span className="font-semibold">{d.benchmarkDcaBoost.toFixed(1)}</span>
@@ -289,7 +291,7 @@ function ColdBoostCard({
       <p className="text-sm text-gray-600 mb-3 leading-relaxed">
         いつもの月次積立を続けながら、<strong>月初の温度が極寒の月だけ積立額を {boost.multiplier} 倍</strong>にした場合です。
         予算（元手）の総額は月次積立と同じで、多く買った分だけ予算が早く尽きます。
-        「同じ速さの積立」は、温度を見ずに同じ月に予算を使い切る積立で、これとの差が<strong>温度の効果</strong>です。
+        「同じ速さの積立」は、温度を見ずに同じ月に予算を使い切る積立で、これとの差をおおむね<strong>温度の効果</strong>とみなします。
       </p>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -323,7 +325,8 @@ function ColdBoostCard({
         </li>
       </ul>
       <p className="text-xs text-gray-500 mt-3 leading-relaxed">
-        ⚠️ この期間に月初が極寒だったのは全 {boost.totalMonths} か月のうち <strong>{boost.coldMonths} 回</strong>だけで、結果は数回の暴落で決まっています。
+        ⚠️ この期間に月初が極寒だったのは全 {boost.totalMonths} か月のうち <strong>{boost.coldMonths} 回</strong>だけで（実質 2 つの暴落局面）、結果はその数回で決まっています。
+        「同じ速さの積立」は、上乗せが予算を使い切る月を後から知って決めた対照です。極寒の月が期間の途中にあったため、上乗せ側は温度と関係なくわずかに早めに投じており、温度の効果にはこの差も一部含まれます。
         このシナリオは温度ルールの成績を見たあとで追加したもので、倍率（{boost.multiplier} 倍）も 1 つの例です。将来も同じ結果になる保証はありません。
       </p>
     </section>
@@ -616,7 +619,7 @@ export default function PortfolioBody({ history }: Props) {
               tickLine={false}
               domain={["dataMin", "dataMax"]}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip showBoost={section.coldBoostDca != null} />} />
             <Legend
               wrapperStyle={{ fontSize: "13px" }}
               iconSize={8}

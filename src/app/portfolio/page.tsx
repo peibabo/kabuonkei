@@ -5,13 +5,14 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import PortfolioBody from "@/components/portfolio/PortfolioBody";
 import Breadcrumb from "@/components/Breadcrumb";
 import { getPortfolioHistory } from "@/lib/portfolio";
+import { returnColorClass } from "@/lib/format";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 
 const ARTICLE_PATH = "/portfolio";
 const ARTICLE_TITLE = "温度連動バーチャルポートフォリオ（シミュレーション）";
 const ARTICLE_DESCRIPTION =
-  "温度連動ポートフォリオを月次積立(DCA)・一括買い持ちと日米で比較。積立との差の大半は「配分の高さ」由来で、温度信号の純寄与はリターンでも最大DDでもマイナス。温度計は timing ツールではなく「極寒で狼狽売りしないための規律」として使う、という正直な検証を公開。";
+  "温度連動ポートフォリオを月次積立(DCA)・一括買い持ちと日米で比較。積立との差は「配分の高さ」と温度信号の純寄与の合計で、純寄与は日米ともマイナス。温度計は timing ツールではなく「極寒で狼狽売りしないための規律」として使う、という正直な検証を公開。";
 const PUBLISHED_AT = "2026-04-23";
 
 export const metadata: Metadata = {
@@ -67,11 +68,19 @@ export default function PortfolioPage() {
   /** "+1.2pp" / "-1.7pp"。値がなければ "—" */
   const pp = (n: number | null | undefined) =>
     n == null ? "—" : `${n >= 0 ? "+" : ""}${n.toFixed(1)}pp`;
+  /** "+12.3%" / "-4.5%"。値がなければ "—" */
+  const pct = (n: number | null | undefined) =>
+    n == null ? "—" : `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
   const bothBeatDca = jpStats.alphaVsDca > 0 && usStats.alphaVsDca > 0;
   const bothContribNegative =
     (jpContrib?.alphaVsConstant ?? 0) < 0 && (usContrib?.alphaVsConstant ?? 0) < 0;
   const jpBoost = history.portfolios.jp.coldBoostDca;
   const usBoost = history.portfolios.us.coldBoostDca;
+  const bothDdWorse =
+    (jpContrib?.ddVsConstant ?? 0) < 0 && (usContrib?.ddVsConstant ?? 0) < 0;
+  /** 積立との差のうち「配分を高めに保った」効果（積立との差 − 温度信号の純寄与） */
+  const allocEffect = (stats: typeof jpStats, c: typeof jpContrib) =>
+    c ? stats.alphaVsDca - c.alphaVsConstant : null;
   const avgEquityPct = (c: typeof jpContrib) =>
     c ? `${(c.avgEquityRatio * 100).toFixed(0)}%` : "—";
 
@@ -198,7 +207,7 @@ export default function PortfolioPage() {
           </p>
           <p className="text-sm text-gray-700 leading-relaxed mb-3">
             ※ 2026 年 11 月に日本版の温度を「日経225 と 125 日移動平均の乖離」に一本化したのに合わせ、日本版は全期間を計算し直しました。
-            それまでの定義（ドル円の勢いとの平均）では、日本版は積立を +22.5pp 上回っていました。
+            あわせて、日本版の最初の約 13 か月（2016 年 4 月〜2017 年 5 月）に温度が欠けていて温度ルールが現金のままになっていた不具合も直しています。
           </p>
 
           <div className="bg-white rounded-lg p-4 border border-amber-200 mb-4">
@@ -220,7 +229,7 @@ export default function PortfolioPage() {
               ).map(([label, stats, contrib]) => (
                 <li key={label}>
                   <strong>{label}</strong>: 温度信号の純寄与は{" "}
-                  <strong className={contrib && contrib.alphaVsConstant < 0 ? "text-red-600" : undefined}>
+                  <strong className={contrib ? returnColorClass(contrib.alphaVsConstant) : undefined}>
                     {pp(contrib?.alphaVsConstant)}
                     {contrib && contrib.alphaVsConstant < 0 ? "（マイナス）" : ""}
                   </strong>
@@ -232,23 +241,24 @@ export default function PortfolioPage() {
                 </li>
               ))}
               <li>
-                <strong>最大DD でも温度信号はプラスに働いていない</strong>: 定数配分と比べて JP で{" "}
-                {jpContrib ? Math.abs(jpContrib.ddVsConstant).toFixed(1) : "—"}pp / US で{" "}
-                {usContrib ? Math.abs(usContrib.ddVsConstant).toFixed(1) : "—"}pp <strong>深い</strong>。
-                極寒ほど株比率を上げる逆張りルールのため、下落の最終局面では定数配分より深く食らう
+                <strong>最大DD</strong>: 定数配分との差は JP {jpContrib ? `${jpContrib.ddVsConstant >= 0 ? "+" : ""}${jpContrib.ddVsConstant.toFixed(1)}pp` : "—"} / US{" "}
+                {usContrib ? `${usContrib.ddVsConstant >= 0 ? "+" : ""}${usContrib.ddVsConstant.toFixed(1)}pp` : "—"}（マイナスは定数配分より深い）。
+                {bothDdWorse
+                  ? "極寒ほど株比率を上げる逆張りルールのため、下落の最終局面では定数配分より深く食らっています"
+                  : ""}
               </li>
             </ul>
           </div>
 
           <p className="text-base text-gray-800 leading-relaxed mb-3">
-            つまり温度計は、<strong>「リターンを上げるための timing シグナル」としては限定的〜逆効果</strong>で、
+            つまり温度計は、<strong>「リターンを上げるための timing シグナル」としては{bothContribNegative ? "逆効果" : "限定的"}</strong>で、
             <strong>最大ドローダウンも、同じ平均配分の定数戦略と比べると浅くなっていません</strong>
             （買い持ちより浅いのは、温度の効果ではなく平均株比率が 100% 未満という配分効果です）。
             この正直な結果を踏まえると、このページが役に立つのは次のような方です:
           </p>
           <ul className="list-disc pl-6 space-y-1 text-base text-gray-800 mb-3">
             <li>
-              すでに NISA 積立をしている人で、<strong>普段は株比率を積立より高めに保つことで積立超えを狙いたい</strong>方（ただし「timing で勝つ」期待はしないこと）
+              すでに NISA 積立をしている人で、<strong>普段は株比率を積立より高めに保ちたい</strong>方（積立との差は主に配分の高さで決まり、「timing で勝つ」期待はしないこと）
             </li>
             <li>
               まとまった現金があり、一括投入と完全積立の中間的な入れ方を探している人
@@ -263,9 +273,9 @@ export default function PortfolioPage() {
             <p className="text-base text-gray-800 leading-relaxed mb-3">
               一方、<strong>いつもの積立を続けながら、極寒の月だけ多く買う</strong>形（参考シナリオ「積立＋極寒で上乗せ」）では、
               月次積立との差が JP {pp(jpBoost.boostVsDca)} / US {pp(usBoost.boostVsDca)} でした。
-              このうち早めに投じた効果を除いた温度の効果は JP {pp(jpBoost.timingEffect)} / US {pp(usBoost.timingEffect)} と小さく、
-              月初が極寒だったのも全 {jpBoost.totalMonths} か月で {jpBoost.coldMonths} 回だけです。
-              「過熱で減らす」より「極寒で買い増す」ほうが、少なくとも過去10年では温度の使い方として筋が良かった、という程度の材料として見てください。
+              このうち早めに投じた効果をおおむね除いた温度の効果は JP {pp(jpBoost.timingEffect)} / US {pp(usBoost.timingEffect)} と小さく、
+              月初が極寒だったのも全 {jpBoost.totalMonths} か月で JP {jpBoost.coldMonths} 回 / US {usBoost.coldMonths} 回（実質 2 つの暴落局面）だけです。
+              「極寒で買い増す」使い方なら温度が少しは役に立った可能性がある、という程度の材料として見てください（米国の温度の効果は偶然と区別できない大きさです）。
             </p>
           )}
           <p className="text-base text-gray-800 leading-relaxed">
@@ -333,7 +343,7 @@ export default function PortfolioPage() {
           </ul>
           <p className="text-base leading-relaxed mt-3 text-gray-600">
             絶対リターンはどちらの市場でも一括買い持ちが最も高く、温度ルールと月次積立（DCA）の差は JP {pp(jpStats.alphaVsDca)} / US {pp(usStats.alphaVsDca)} です。
-            その内訳を見ると、<strong>積立との差は主に「配分を高めに保った」効果で決まり、温度信号の純寄与は{bothContribNegative ? "日米ともマイナス" : "限定的"}</strong>です（詳細は「ルール選定プロセスと温度信号の寄与度」セクションで）。
+            その内訳は、<strong>「配分を高めに保った」効果（JP {pp(allocEffect(jpStats, jpContrib))} / US {pp(allocEffect(usStats, usContrib))}）と、温度信号の純寄与（JP {pp(jpContrib?.alphaVsConstant)} / US {pp(usContrib?.alphaVsConstant)}）の合計</strong>です（詳細は「ルール選定プロセスと温度信号の寄与度」セクションで）。
             最大DD は一括買い持ちより浅い（JP {Math.abs(jpStats.maxDrawdown - jpStats.benchmarkMaxDrawdown).toFixed(1)}pp / US {Math.abs(usStats.maxDrawdown - usStats.benchmarkMaxDrawdown).toFixed(1)}pp 改善）一方、積立よりはやや深いという「中間」の位置付け。
             <strong className="text-red-700">特に米国は積立より {Math.abs(usStats.maxDrawdown - usStats.dcaMaxDrawdown).toFixed(1)}pp 深いので、暴落耐性は積立のほうが上</strong>です。
           </p>
@@ -449,12 +459,12 @@ export default function PortfolioPage() {
                 <tr>
                   <td className="font-semibold">🇯🇵 JP リターン</td>
                   <td className="text-right font-mono">
-                    +{jpStats.totalReturn.toFixed(1)}%
+                    {pct(jpStats.totalReturn)}
                   </td>
                   <td className="text-right font-mono text-gray-600">
-                    +{jpContrib ? jpContrib.constantStats.totalReturn.toFixed(1) : "—"}%
+                    {pct(jpContrib?.constantStats.totalReturn)}
                   </td>
-                  <td className="text-right font-mono font-bold text-emerald-700">
+                  <td className={`text-right font-mono font-bold ${returnColorClass(jpContrib?.alphaVsConstant)}`}>
                     {jpContrib ? (jpContrib.alphaVsConstant >= 0 ? "+" : "") + jpContrib.alphaVsConstant.toFixed(2) : "—"}pp
                   </td>
                 </tr>
@@ -473,12 +483,12 @@ export default function PortfolioPage() {
                 <tr>
                   <td className="font-semibold">🇺🇸 US リターン</td>
                   <td className="text-right font-mono">
-                    +{usStats.totalReturn.toFixed(1)}%
+                    {pct(usStats.totalReturn)}
                   </td>
                   <td className="text-right font-mono text-gray-600">
-                    +{usContrib ? usContrib.constantStats.totalReturn.toFixed(1) : "—"}%
+                    {pct(usContrib?.constantStats.totalReturn)}
                   </td>
-                  <td className="text-right font-mono font-bold text-red-600">
+                  <td className={`text-right font-mono font-bold ${returnColorClass(usContrib?.alphaVsConstant)}`}>
                     {usContrib ? (usContrib.alphaVsConstant >= 0 ? "+" : "") + usContrib.alphaVsConstant.toFixed(2) : "—"}pp
                   </td>
                 </tr>
@@ -519,7 +529,7 @@ export default function PortfolioPage() {
               「急落前にクッションを入れる道具」としては機能していません
             </li>
             <li>
-              <strong>積立との差のほとんどは「配分の高さ」由来</strong>:
+              <strong>積立との差を押し上げたのは「配分の高さ」</strong>:
               平均 {avgEquityPct(jpContrib)}（JP）/ {avgEquityPct(usContrib)}（US）の株比率は、積立の平均 50% より明確に高い。強い右肩上がりの過去10年では、
               この差だけで大きなリターン差が生まれました。
               <strong>「温度の timing が勝利の源泉」ではなく「長めに株を持ち続けたほうが勝つ相場だった」</strong>のが本当の姿です
@@ -527,9 +537,15 @@ export default function PortfolioPage() {
           </ul>
           <p className="text-base leading-relaxed bg-blue-50 border border-blue-200 rounded-lg p-3">
             💡 <strong>まとめ</strong>: 過去10年のバックテストでは、温度信号の純寄与は
-            <strong>リターンでも最大DDでもプラスになっていません</strong>。
-            積立(DCA)との差の大半は、単に「株比率を高めに保った」かどうかで決まっています。
-            <strong>もし温度を一切見ず定数 {avgEquityPct(jpContrib)} 前後で持ち続けていても、リターン・最大DDとも同等以上だった</strong>という事実は、
+            <strong>リターンで JP {pp(jpContrib?.alphaVsConstant)} / US {pp(usContrib?.alphaVsConstant)}</strong>
+            {bothContribNegative && bothDdWorse ? "で、最大DDでもプラスになっていません" : ""}。
+            積立(DCA)を上回ったのは、主に「株比率を高めに保った」からです。
+            {bothContribNegative && bothDdWorse ? (
+              <strong>温度を一切見ず、同じ平均株比率（JP {avgEquityPct(jpContrib)} / US {avgEquityPct(usContrib)}）で持ち続けていたほうが、リターン・最大DDとも良かった</strong>
+            ) : (
+              <strong>温度を見ずに同じ平均株比率で持ち続けた場合との差は、上の表のとおりです</strong>
+            )}
+            という事実は、
             このサイトの価値提案を再考する材料でもあります。
             それでも温度計に意味があるとすれば、<strong>「極寒で狼狽売りしない・沸騰で調子に乗らない」ための客観的な物差し</strong>という、
             バックテストの数字には出にくい役割です。

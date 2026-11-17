@@ -394,6 +394,13 @@ describe("積立＋極寒で上乗せ", () => {
     expect(planColdBoost([50, 50, 50]).exhaustedMonth).toBe(3);
     // スコアのない月は通常どおり 1 回分
     expect(planColdBoost([null, 50]).coldMonths).toBe(0);
+    // 予算の残りが 3 回分に満たない極寒の月は、残りを使い切ってその月で終わる
+    expect(planColdBoost([50, 50, 10, 10])).toEqual({
+      multiplier: 3,
+      totalMonths: 4,
+      coldMonths: 1,
+      exhaustedMonth: 3,
+    });
   });
 
   it("極寒の月に安く多く買った分だけ、同じ速さの積立を上回る", () => {
@@ -454,6 +461,22 @@ describe("積立＋極寒で上乗せ", () => {
     const day = appended.daily[0];
     expect(day.benchmarkDcaBoost).toBeCloseTo(full.endState.boostUnits! * 120, 2);
     expect(day.benchmarkDcaSameSpeed).toBeCloseTo(full.endState.sameSpeedUnits! * 120, 2);
+  });
+
+  it("上乗せの状態を持たない古い終端状態から続けると、0 から始めた系列を出さない", () => {
+    const { priceMap, priceDates, scoreOf } = build([
+      { score: 50, price: 100 },
+      { score: 50, price: 110 },
+    ]);
+    const r = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      startState: { equityUnits: 1, cash: 0, benchmarkUnits: 1, lastEquityRatio: 1 },
+    });
+    expect(r.daily.every((d) => d.benchmarkDcaBoost === undefined)).toBe(true);
+    expect(r.daily.every((d) => d.benchmarkDcaSameSpeed === undefined)).toBe(true);
   });
 
   it("系列が欠けた古いデータでは成績を出さない", () => {

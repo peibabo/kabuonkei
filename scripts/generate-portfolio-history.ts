@@ -11,7 +11,7 @@
  */
 
 import YahooFinance from "yahoo-finance2";
-import { writeFileSync, mkdirSync, readFileSync } from "fs";
+import { writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import {
   DEFAULT_PORTFOLIO_RULE,
@@ -28,6 +28,7 @@ import {
 import type { SentimentLevel } from "../src/lib/types";
 import { estimateFearGreedFromVix, fetchDailyCloses, sleep } from "./_lib/shared";
 import { getSentimentLevel } from "../src/lib/sentiment";
+import { computeJapanTemperatureSeries } from "./_lib/japan-temperature";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -246,16 +247,20 @@ async function main() {
   const vix = await fetchDailyCloses(yahooFinance, "^VIX", period1, period2);
   console.log(`  → ${vix.size} 日分`);
 
-  // 日本温度履歴 JSON（既存、10 年分の市場温度）
-  const jpHistoryPath = resolve(
-    __dirname,
-    "../src/data/japan-temperature-history.json"
+  // 日本の市場温度は、ここで取得した ^N225 から直接計算する（推移 JSON と同じ共通関数）。
+  // 推移 JSON は「直近 10 年」の取得範囲で、移動平均の 125 営業日分だけスコアの始まりが遅れる。
+  // それを読むと START_DATE からスコアのない期間ができ、その間は温度ルールが現金 100% のままになっていた
+  // （2016-04〜2017-05 の約 13 か月。2026-11 に修正）。period1 を START_DATE の約半年前にしてあるので、
+  // ここで計算すれば初日からスコアがそろう
+  const jpScoreMap = new Map(
+    computeJapanTemperatureSeries(n225).map((p) => [p.date, p.score])
   );
-  const jpHistoryRaw = JSON.parse(readFileSync(jpHistoryPath, "utf-8")) as {
-    daily: Array<{ date: string; score: number }>;
-  };
-  const jpScoreMap = new Map<string, number>();
-  for (const p of jpHistoryRaw.daily) jpScoreMap.set(p.date, p.score);
+  const firstJpScoreDate = [...jpScoreMap.keys()].sort()[0];
+  if (firstJpScoreDate > START_DATE) {
+    throw new Error(
+      `日本の市場温度が START_DATE（${START_DATE}）までにそろわない（最初のスコア ${firstJpScoreDate}）。period1 を早める`
+    );
+  }
 
   // 日本版ポートフォリオ: ^N225 + 日本温度
   const jpSection = buildSection(

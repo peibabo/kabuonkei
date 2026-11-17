@@ -259,7 +259,9 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
     startState?.dcaCash ?? (startState ? 0 : rule.initialNav);
   let dcaMonthlyContribution = startState?.dcaMonthlyContribution ?? 0;
   let dcaRemainingContributions = startState?.dcaRemainingContributions ?? 0;
-  // 積立＋極寒上乗せと、その対照（同じ速さの積立）
+  // 積立＋極寒上乗せと、その対照（同じ速さの積立）。
+  // 上乗せの状態を持たない古い終端状態から続ける場合は、0 から始めた系列を出さない
+  const trackBoost = !startState || startState.boostUnits != null;
   let boostUnits = startState?.boostUnits ?? 0;
   let boostCash = startState?.boostCash ?? (startState ? 0 : rule.initialNav);
   let sameSpeedUnits = startState?.sameSpeedUnits ?? 0;
@@ -371,8 +373,12 @@ export function simulatePortfolio(opts: SimulateOptions): SimulateResult {
       nav: round2(nav),
       benchmark: round2(benchmarkUnits * price),
       benchmarkDca: round2(dcaNav),
-      benchmarkDcaBoost: round2(boostUnits * price + boostCash),
-      benchmarkDcaSameSpeed: round2(sameSpeedUnits * price + sameSpeedCash),
+      ...(trackBoost
+        ? {
+            benchmarkDcaBoost: round2(boostUnits * price + boostCash),
+            benchmarkDcaSameSpeed: round2(sameSpeedUnits * price + sameSpeedCash),
+          }
+        : {}),
       equityRatio: round4(actualRatio),
       score: scoreOf(date),
     });

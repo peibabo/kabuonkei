@@ -15,8 +15,8 @@ import {
  * 最新 NAV と 積立（DCA）対比、現在配分を要約表示し、/portfolio へ誘導する。
  *
  * 表示順は「α vs 積立（DCA） → 配分 → 最大DD 改善（vs 買い持ち）」の順。
- * NISA 積立勢に響く「α vs DCA」を主役に置く（日本版は 2026-11 の温度定義変更後わずかにマイナス）。
- * maxDD は補助情報。
+ * NISA 積立勢に響く「α vs DCA」を主役に置く。maxDD は補助情報。
+ * 積立との差の大半は配分の高さ由来で、温度信号の純寄与は日米ともマイナス（/portfolio で開示）。
  */
 export default function PortfolioTeaserCard() {
   const history = useMemo(() => getPortfolioHistory(), []);
@@ -62,7 +62,7 @@ export default function PortfolioTeaserCard() {
         温度スコアに応じて株/現金比率を月次に切り替えるシミュレーション。
         <span className="text-gray-500">
         過去約10年の<strong className="text-gray-700">積立(DCA)との差は JP {jp.stats.alphaVsDca >= 0 ? "+" : ""}{jp.stats.alphaVsDca.toFixed(0)}pp / US {us.stats.alphaVsDca >= 0 ? "+" : ""}{us.stats.alphaVsDca.toFixed(0)}pp</strong>。
-        記事内で<strong>差の大半は「配分の高さ」由来で、温度信号の純寄与はマイナス</strong>という正直な分解も公開中。
+        記事内で<strong>差を「配分の高さ」と「温度信号の純寄与」に分けた</strong>正直な検証も公開中。
         </span>
       </p>
 

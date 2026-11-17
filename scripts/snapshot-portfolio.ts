@@ -100,6 +100,8 @@ async function appendSection(
     scoreOf,
     rule: DEFAULT_PORTFOLIO_RULE,
     startState: section.endState,
+    // 既存の最終日と同じ月の日は月初扱いしない（月次リバランスの仕様どおりにする）
+    previousDate: lastDate,
   });
 
   const mergedDaily = [...section.daily, ...result.daily];

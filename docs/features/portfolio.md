@@ -20,7 +20,7 @@
 ## データ層
 - `src/data/portfolio-history.json`: 日米 2 ポートフォリオの `daily[]` / `trades[]` / `stats` / `current` / `endState` / `cashYieldSensitivity` / `temperatureContribution` を同梱
 - 生成（全再生成）: `npm run generate:portfolio-history`（`scripts/generate-portfolio-history.ts`）
-- 差分 append: `npm run snapshot:portfolio`（`scripts/snapshot-portfolio.ts`）。既存 JSON の `endState` から継続。`cashYieldSensitivity` は spread で無変更保持（月次フル再生成で更新）
+- 差分 append: `npm run snapshot:portfolio`（`scripts/snapshot-portfolio.ts`）。既存 JSON の `endState` から継続。既存の最終日を `previousDate` として渡し、同じ月の日は月初扱いしない（2026-11 までは追記した先頭日を毎回月初とみなし、月の途中でも温度帯が変わればリバランスしていた）。`cashYieldSensitivity` は spread で無変更保持（月次フル再生成で更新）
 - 純粋関数: `scripts/_lib/portfolio-sim.ts`（`simulatePortfolio` / `DEFAULT_PORTFOLIO_RULE` / `computeStats` / `computeMaxDrawdown` / `computeSharpe`）
 - ユニットテスト: `scripts/__tests__/portfolio-sim.test.ts`（リバランス発火 / NAV 保全 / 差分モード連続性）
 - アクセサ: `src/lib/portfolio.ts`（`getPortfolioHistory` / `slicePortfolioDailyByDays` / `resolveBandByScore`、`PortfolioCashYieldScenario` / `PortfolioTemperatureContribution` 型）

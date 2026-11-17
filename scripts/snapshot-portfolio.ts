@@ -18,6 +18,9 @@ import {
   type PortfolioStats,
   type SimulatorStartState,
   type TradeLog,
+  computeColdBoostStats,
+  type ColdBoostPlan,
+  type ColdBoostStats,
 } from "./_lib/portfolio-sim";
 import {
   estimateFearGreedFromVix,
@@ -53,6 +56,8 @@ interface PortfolioSectionJson {
   endState: SimulatorStartState;
   /** 現金金利の感度分析。日次 append ではそのまま保持する（月次フル再生成で更新） */
   cashYieldSensitivity?: CashYieldScenarioJson[];
+  /** 積立＋極寒で上乗せ。計画は保持し、成績だけ再計算する */
+  coldBoostDca?: ColdBoostPlan & ColdBoostStats;
 }
 
 interface PortfolioHistoryJson {
@@ -105,6 +110,7 @@ async function appendSection(
   // 続いた結果なので、元の base = initialNav でそのまま計算する
   const { computeStats } = await import("./_lib/portfolio-sim");
   const stats = computeStats(mergedDaily, initialNav);
+  const coldBoostStats = computeColdBoostStats(mergedDaily, initialNav);
 
   const last = mergedDaily[mergedDaily.length - 1];
   const latestScore = last.score;
@@ -127,6 +133,9 @@ async function appendSection(
       benchmarkDca: last.benchmarkDca,
     },
     endState: result.endState,
+    ...(section.coldBoostDca && coldBoostStats
+      ? { coldBoostDca: { ...section.coldBoostDca, ...coldBoostStats } }
+      : {}),
   };
 }
 

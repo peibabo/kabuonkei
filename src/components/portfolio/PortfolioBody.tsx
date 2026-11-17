@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import type {
   PortfolioCashYieldScenario,
+  PortfolioColdBoostDca,
   PortfolioHistory,
   PortfolioMarket,
   PortfolioSection,
@@ -49,7 +50,9 @@ interface Props {
 function CustomTooltip({
   active,
   payload,
+  showBoost = false,
 }: {
+  showBoost?: boolean;
   active?: boolean;
   payload?: Array<{
     payload: {
@@ -57,6 +60,7 @@ function CustomTooltip({
       nav: number;
       benchmark: number;
       benchmarkDca?: number;
+      benchmarkDcaBoost?: number;
       equityRatio: number;
       score: number | null;
     };
@@ -89,6 +93,12 @@ function CustomTooltip({
           <span className="font-semibold">{d.benchmarkDca.toFixed(1)}</span>
         </p>
       )}
+      {showBoost && d.benchmarkDcaBoost != null && (
+        <p>
+          <span className="text-gray-500">積立＋極寒上乗せ</span>{" "}
+          <span className="font-semibold">{d.benchmarkDcaBoost.toFixed(1)}</span>
+        </p>
+      )}
       <p>
         <span className="text-gray-500">株比率</span>{" "}
         <span className="font-semibold">
@@ -105,6 +115,12 @@ function CustomTooltip({
 function formatPct(value: number): string {
   const sign = value > 0 ? "+" : "";
   return `${sign}${value.toFixed(2)}%`;
+}
+
+/** pp（パーセントポイント）の差を "+1.23pp" の形にする */
+function formatPp(value: number): string {
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${value.toFixed(2)}pp`;
 }
 
 function AllocationBar({ equityRatio }: { equityRatio: number }) {
@@ -175,7 +191,7 @@ function StatsTable({ section }: { section: PortfolioSection }) {
             <td
               className={`text-right font-mono ${returnColorClass(s.alphaVsDca)}`}
             >
-              {formatPct(s.alphaVsDca)} pp
+              {formatPp(s.alphaVsDca)}
             </td>
           </tr>
           <tr>
@@ -196,7 +212,7 @@ function StatsTable({ section }: { section: PortfolioSection }) {
             <td
               className={`text-right font-mono ${returnColorClass(cagrVsDca)}`}
             >
-              {formatPct(cagrVsDca)} pp
+              {formatPp(cagrVsDca)}
             </td>
           </tr>
           <tr>
@@ -242,6 +258,78 @@ function StatsTable({ section }: { section: PortfolioSection }) {
         累計で 100 を全額投入する点で、他 2 戦略と元手を揃えて比較できます。
       </p>
     </div>
+  );
+}
+
+/**
+ * 参考シナリオ「積立＋極寒で上乗せ」。月次積立・同じ速さの積立と並べ、
+ * 積立との差のうち「早めに投じた効果」を除いた温度の効果を示す。
+ */
+function ColdBoostCard({
+  boost,
+  dcaReturn,
+  dcaMaxDrawdown,
+}: {
+  boost: PortfolioColdBoostDca;
+  dcaReturn: number;
+  dcaMaxDrawdown: number;
+}) {
+  const rows: Array<{ label: string; ret: number; dd: number; strong?: boolean }> = [
+    { label: `積立＋極寒で上乗せ（極寒の月は ${boost.multiplier} 倍）`, ret: boost.boostReturn, dd: boost.boostMaxDrawdown, strong: true },
+    { label: `同じ速さの積立（${boost.exhaustedMonth} か月で使い切る）`, ret: boost.sameSpeedReturn, dd: boost.sameSpeedMaxDrawdown },
+    { label: `月次積立（${boost.totalMonths} か月で使い切る）`, ret: dcaReturn, dd: dcaMaxDrawdown },
+  ];
+  return (
+    <section
+      aria-labelledby="cold-boost-heading"
+      className="bg-white rounded-2xl shadow-md p-6"
+      data-testid="cold-boost-card"
+    >
+      <h3 id="cold-boost-heading" className="text-lg font-bold text-gray-900 mb-2">
+        参考シナリオ: 積立＋極寒で上乗せ
+      </h3>
+      <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+        いつもの月次積立を続けながら、<strong>月初の温度が極寒の月だけ積立額を {boost.multiplier} 倍</strong>にした場合です。
+        予算（元手）の総額は月次積立と同じで、多く買った分だけ予算が早く尽きます。
+        「同じ速さの積立」は、温度を見ずに同じ月に予算を使い切る積立で、これとの差をおおむね<strong>温度の効果</strong>とみなします。
+      </p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-gray-500 border-b">
+              <th className="text-left font-normal py-1">シナリオ</th>
+              <th className="text-right font-normal py-1">リターン</th>
+              <th className="text-right font-normal py-1">最大DD</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.label} className="border-b border-gray-100">
+                <td className={`py-1.5 ${r.strong ? "font-semibold text-gray-900" : "text-gray-700"}`}>{r.label}</td>
+                <td className={`py-1.5 text-right font-mono ${returnColorClass(r.ret)}`}>{formatPct(r.ret)}</td>
+                <td className="py-1.5 text-right font-mono text-gray-700">{r.dd.toFixed(2)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <ul className="mt-3 text-sm text-gray-800 space-y-1">
+        <li>
+          月次積立との差:{" "}
+          <span className={`font-mono font-semibold ${returnColorClass(boost.boostVsDca)}`}>{formatPp(boost.boostVsDca)}</span>
+        </li>
+        <li>
+          うち温度の効果（同じ速さの積立との差）:{" "}
+          <span className={`font-mono font-semibold ${returnColorClass(boost.timingEffect)}`}>{formatPp(boost.timingEffect)}</span>
+          <span className="text-gray-500">（残りは早めに投じた効果）</span>
+        </li>
+      </ul>
+      <p className="text-xs text-gray-500 mt-3 leading-relaxed">
+        ⚠️ この期間に月初が極寒だったのは全 {boost.totalMonths} か月のうち <strong>{boost.coldMonths} 回</strong>だけで（実質 2 つの暴落局面）、結果はその数回で決まっています。
+        「同じ速さの積立」は、上乗せが予算を使い切る月を後から知って決めた対照です。極寒の月が期間の途中にあったため、上乗せ側は温度と関係なくわずかに早めに投じており、温度の効果にはこの差も一部含まれます。
+        このシナリオは温度ルールの成績を見たあとで追加したもので、倍率（{boost.multiplier} 倍）も 1 つの例です。将来も同じ結果になる保証はありません。
+      </p>
+    </section>
   );
 }
 
@@ -306,7 +394,7 @@ function CashYieldSensitivityTable({
                 <td
                   className={`text-right font-mono ${returnColorClass(s.stats.alpha)}`}
                 >
-                  {formatPct(s.stats.alpha)} pp
+                  {formatPp(s.stats.alpha)}
                 </td>
                 <td className="text-right font-mono">
                   {s.stats.sharpe.toFixed(2)}
@@ -490,7 +578,7 @@ export default function PortfolioBody({ history }: Props) {
             <div
               className={`text-xl font-bold font-mono ${returnColorClass(section.stats.alpha)}`}
             >
-              {formatPct(section.stats.alpha)} pp
+              {formatPp(section.stats.alpha)}
             </div>
             <div className="text-sm text-gray-500">
               ベンチ: {section.current.benchmark.toFixed(1)}
@@ -531,7 +619,7 @@ export default function PortfolioBody({ history }: Props) {
               tickLine={false}
               domain={["dataMin", "dataMax"]}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip showBoost={section.coldBoostDca != null} />} />
             <Legend
               wrapperStyle={{ fontSize: "13px" }}
               iconSize={8}
@@ -564,12 +652,28 @@ export default function PortfolioBody({ history }: Props) {
               strokeDasharray="2 3"
               dot={false}
             />
+            {section.coldBoostDca && (
+              <Line
+                name="積立＋極寒上乗せ"
+                type="monotone"
+                dataKey="benchmarkDcaBoost"
+                stroke="#7c3aed"
+                strokeWidth={1.5}
+                dot={false}
+              />
+            )}
           </ComposedChart>
         </ResponsiveContainer>
         <p className="text-xs text-gray-500 mt-2">
           温度ルール = {section.equitySymbol} と現金を月次にリバランス /
           一括買い持ち = 初日に {section.equitySymbol} を全額購入し保有 /
           月次積立 = 同額を N ヶ月に按分して毎月投入（NISA 積立型）
+          {section.coldBoostDca && (
+            <>
+              {" "}/ 積立＋極寒上乗せ = 月次積立と同じ額で、月初の温度が極寒の月だけ{" "}
+              {section.coldBoostDca.multiplier} 倍買う（予算が尽きたら終了）
+            </>
+          )}
         </p>
       </section>
 
@@ -579,6 +683,10 @@ export default function PortfolioBody({ history }: Props) {
         </h3>
         <StatsTable section={section} />
       </section>
+
+      {section.coldBoostDca && (
+        <ColdBoostCard boost={section.coldBoostDca} dcaReturn={section.stats.dcaReturn} dcaMaxDrawdown={section.stats.dcaMaxDrawdown} />
+      )}
 
       {section.cashYieldSensitivity &&
         section.cashYieldSensitivity.length > 0 && (

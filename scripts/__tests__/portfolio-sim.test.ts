@@ -7,6 +7,9 @@ import {
   computeStats,
   resolveBand,
   simulatePortfolio,
+  planColdBoost,
+  computeColdBoostStats,
+  COLD_BOOST_MULTIPLIER,
 } from "../_lib/portfolio-sim";
 
 describe("resolveBand", () => {
@@ -359,5 +362,132 @@ describe("simulatePortfolio — DCA ベンチマーク", () => {
     //   NAV = 1.125 * 100 = 112.5
     const last = result.daily[result.daily.length - 1];
     expect(last.benchmarkDca).toBeCloseTo(112.5, 1);
+  });
+});
+
+describe("積立＋極寒で上乗せ", () => {
+  /** 各月の 1 日・2 日の 2 営業日。月初のスコアと価格を指定する */
+  function build(months: Array<{ score: number; price: number }>) {
+    const priceMap = new Map<string, number>();
+    const scores = new Map<string, number>();
+    months.forEach((m, i) => {
+      const ym = `2026-${String(i + 1).padStart(2, "0")}`;
+      priceMap.set(`${ym}-01`, m.price);
+      priceMap.set(`${ym}-02`, m.price);
+      scores.set(`${ym}-01`, m.score);
+      scores.set(`${ym}-02`, m.score);
+    });
+    const priceDates = [...priceMap.keys()].sort();
+    return { priceMap, priceDates, scoreOf: (d: string) => scores.get(d) ?? null };
+  }
+
+  it("planColdBoost: 極寒の月に 3 回分使い、その分早く予算が尽きる", () => {
+    expect(COLD_BOOST_MULTIPLIER).toBe(3);
+    // 5 か月・2 か月目だけ極寒 → 1 + 3 + 1 = 5 回分で 3 か月目に使い切る
+    expect(planColdBoost([50, 10, 50, 50, 50])).toEqual({
+      multiplier: 3,
+      totalMonths: 5,
+      coldMonths: 1,
+      exhaustedMonth: 3,
+    });
+    // 極寒がなければ普通の積立と同じく最後の月に使い切る
+    expect(planColdBoost([50, 50, 50]).exhaustedMonth).toBe(3);
+    // スコアのない月は通常どおり 1 回分
+    expect(planColdBoost([null, 50]).coldMonths).toBe(0);
+    // 予算の残りが 3 回分に満たない極寒の月は、残りを使い切ってその月で終わる
+    expect(planColdBoost([50, 50, 10, 10])).toEqual({
+      multiplier: 3,
+      totalMonths: 4,
+      coldMonths: 1,
+      exhaustedMonth: 3,
+    });
+  });
+
+  it("極寒の月に安く多く買った分だけ、同じ速さの積立を上回る", () => {
+    // 2 か月目が極寒で価格が半分。最後は元の価格に戻る
+    const { priceMap, priceDates, scoreOf } = build([
+      { score: 50, price: 100 },
+      { score: 10, price: 50 },
+      { score: 50, price: 100 },
+      { score: 50, price: 100 },
+      { score: 50, price: 100 },
+    ]);
+    const r = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+    expect(r.coldBoostPlan).toMatchObject({ coldMonths: 1, exhaustedMonth: 3, totalMonths: 5 });
+    const last = r.daily.at(-1)!;
+    // 上乗せ: 20 + 60 + 20 を 100 / 50 / 100 で買う → 0.2 + 1.2 + 0.2 = 1.6 単位 → 160
+    expect(last.benchmarkDcaBoost).toBeCloseTo(160, 5);
+    // 同じ速さの積立: 100/3 ずつ 3 か月 → 1/3 + 2/3 + 1/3 = 4/3 単位 → 133.33
+    expect(last.benchmarkDcaSameSpeed).toBeCloseTo(133.33, 1);
+    // 普通の積立: 20 ずつ 5 か月 → 0.2 + 0.4 + 0.2 + 0.2 + 0.2 = 1.2 単位 → 120
+    expect(last.benchmarkDca).toBeCloseTo(120, 5);
+
+    const stats = computeColdBoostStats(r.daily, 100)!;
+    expect(stats.boostReturn).toBeCloseTo(60, 5);
+    expect(stats.boostVsDca).toBeCloseTo(40, 5);
+    expect(stats.timingEffect).toBeCloseTo(26.67, 1);
+  });
+
+  it("フル生成のあとの日次追記では、買い終えた単位数のまま価格に連動する", () => {
+    const { priceMap, priceDates, scoreOf } = build([
+      { score: 50, price: 100 },
+      { score: 15, price: 70 },
+      { score: 30, price: 80 },
+      { score: 50, price: 90 },
+      { score: 50, price: 110 },
+      { score: 70, price: 120 },
+    ]);
+    // 月次のフル生成は 5 か月分、6 か月目は日次の追記で足す
+    const full = simulatePortfolio({
+      priceMap,
+      priceDates: priceDates.slice(0, 10),
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+    });
+    expect(full.endState.boostCash).toBeCloseTo(0, 9);
+    expect(full.endState.sameSpeedCash).toBeCloseTo(0, 9);
+    const appended = simulatePortfolio({
+      priceMap,
+      priceDates: priceDates.slice(10),
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      startState: full.endState,
+    });
+    const day = appended.daily[0];
+    expect(day.benchmarkDcaBoost).toBeCloseTo(full.endState.boostUnits! * 120, 2);
+    expect(day.benchmarkDcaSameSpeed).toBeCloseTo(full.endState.sameSpeedUnits! * 120, 2);
+  });
+
+  it("上乗せの状態を持たない古い終端状態から続けると、0 から始めた系列を出さない", () => {
+    const { priceMap, priceDates, scoreOf } = build([
+      { score: 50, price: 100 },
+      { score: 50, price: 110 },
+    ]);
+    const r = simulatePortfolio({
+      priceMap,
+      priceDates,
+      scoreOf,
+      rule: DEFAULT_PORTFOLIO_RULE,
+      startState: { equityUnits: 1, cash: 0, benchmarkUnits: 1, lastEquityRatio: 1 },
+    });
+    expect(r.daily.every((d) => d.benchmarkDcaBoost === undefined)).toBe(true);
+    expect(r.daily.every((d) => d.benchmarkDcaSameSpeed === undefined)).toBe(true);
+  });
+
+  it("系列が欠けた古いデータでは成績を出さない", () => {
+    expect(
+      computeColdBoostStats(
+        [
+          { date: "2026-01-01", nav: 100, benchmark: 100, benchmarkDca: 100, equityRatio: 1, score: 50 },
+          { date: "2026-01-02", nav: 100, benchmark: 100, benchmarkDca: 100, equityRatio: 1, score: 50 },
+        ],
+        100,
+      ),
+    ).toBeNull();
   });
 });

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getEventsMeta } from "@/lib/events";
+import { getEventPublishedAt, getEventsMeta } from "@/lib/events";
+import { LEARN_ARTICLES, latestLearnModifiedAt } from "@/lib/learn-articles";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
@@ -7,15 +8,32 @@ import { getPortfolioHistory } from "@/lib/portfolio";
 import { getJapanSectorHeatmap } from "@/lib/japan-sector-heatmap";
 import { getStockCodes, getStockTemperatureFile } from "@/lib/stock-temperature";
 
+/** 利用規約・プライバシーポリシーの最終改定日（各ページの「最終改定日」と揃える） */
+const TERMS_REVISED_AT = "2026-04-23";
+const PRIVACY_REVISED_AT = "2026-11-17";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
   const now = new Date();
 
-  const eventRoutes: MetadataRoute.Sitemap = getEventsMeta().map((e) => ({
+  // lastModified は内容が実際に変わった日にする。デプロイのたびに全ページを「今日更新」にすると
+  // Google が lastmod を信用しなくなるため、更新日を管理していない固定ページには付けない
+  const events = getEventsMeta();
+  const latestEventPublishedAt = new Date(
+    events.map(getEventPublishedAt).sort().at(-1) ?? "2026-04-19"
+  );
+  const eventRoutes: MetadataRoute.Sitemap = events.map((e) => ({
     url: `${siteUrl}/events/${e.slug}`,
-    lastModified: now,
+    lastModified: new Date(getEventPublishedAt(e)),
     changeFrequency: "yearly",
     priority: 0.5,
+  }));
+
+  const learnRoutes: MetadataRoute.Sitemap = LEARN_ARTICLES.map((a) => ({
+    url: `${siteUrl}/learn/${a.slug}`,
+    lastModified: new Date(a.modifiedAt),
+    changeFrequency: "monthly",
+    priority: 0.7,
   }));
 
   // 銘柄別温度は毎営業日再生成されるので generatedAt を使う
@@ -61,49 +79,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${siteUrl}/about`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/glossary`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/widget`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${siteUrl}/events`,
-      lastModified: now,
+      lastModified: latestEventPublishedAt,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/guide`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/guide/nisa-tsumitate`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${siteUrl}/guide/short-term-trader`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${siteUrl}/guide/fire-long-term`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
@@ -115,70 +126,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${siteUrl}/learn`,
-      lastModified: now,
+      lastModified: new Date(latestLearnModifiedAt()),
       changeFrequency: "monthly",
       priority: 0.7,
     },
-    {
-      url: `${siteUrl}/learn/when-to-buy-stocks`,
-      lastModified: new Date("2026-06-18"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-usdjpy-momentum`,
-      lastModified: new Date("2026-06-18"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-nikkei-vi`,
-      lastModified: new Date("2026-06-18"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-advance-decline-ratio`,
-      lastModified: new Date("2026-06-18"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-vix`,
-      lastModified: new Date("2026-04-28"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-fear-greed`,
-      lastModified: new Date("2026-04-28"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-margin-ratio`,
-      lastModified: new Date("2026-04-28"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-investor-flow`,
-      lastModified: new Date("2026-05-08"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-arbitrage-balance`,
-      lastModified: new Date("2026-05-08"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/learn/what-is-drawdown`,
-      lastModified: new Date("2026-05-08"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
+    ...learnRoutes,
     {
       url: `${siteUrl}/analysis/margin-ratio-temperature`,
       lastModified: marginAnalysisModified,
@@ -217,19 +169,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${siteUrl}/alerts`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/terms`,
-      lastModified: now,
+      lastModified: new Date(TERMS_REVISED_AT),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${siteUrl}/privacy`,
-      lastModified: now,
+      lastModified: new Date(PRIVACY_REVISED_AT),
       changeFrequency: "yearly",
       priority: 0.3,
     },

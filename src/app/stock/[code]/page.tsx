@@ -34,6 +34,8 @@ import {
   topPercent,
 } from "@/lib/stock-temperature";
 import { buildStockPageMetadata } from "@/lib/stock-temperature/metadata";
+import { getEventsMeta } from "@/lib/events";
+import { buildStockRelatedReading } from "@/lib/related-reading";
 
 export const dynamic = "error";
 export const dynamicParams = false;
@@ -257,6 +259,22 @@ export default async function StockPage(props: Params) {
             <StockScoreList items={peers} />
           </section>
         )}
+
+        <section className="not-prose">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">温度の読み方を深める</h2>
+          <ul className="space-y-1.5 text-sm">
+            {buildStockRelatedReading(code, getEventsMeta()).map((r) => (
+              <li key={r.href} className="flex gap-2">
+                <span className="shrink-0 text-xs text-gray-500 border border-gray-200 rounded px-1.5 py-0.5">
+                  {r.kind}
+                </span>
+                <Link href={r.href} className="underline hover:text-gray-900">
+                  {r.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section className="not-prose text-sm text-gray-600">
           <h2 className="text-base font-bold text-gray-900 mb-1">株価の温度とは</h2>

@@ -24,7 +24,7 @@
 
 ## ページ
 
-- `/stock/[code]`（`src/app/stock/[code]/page.tsx`、SSG・`dynamicParams = false`）: 現在の温度と温度帯、前日・1週間前・1か月前比、日経225内・業種内の順位、直近90日の推移（サーバー描画 SVG `src/components/stock/TemperatureChartSvg.tsx`）と最高/最低/平均、過去1年の温度帯別日数と「上位 X% の熱さ」、直近30営業日の表、同業種で温度が高い5銘柄、解説、更新日時と免責
+- `/stock/[code]`（`src/app/stock/[code]/page.tsx`、SSG・`dynamicParams = false`）: 現在の温度と温度帯、前日・1週間前・1か月前比、日経225内・業種内の順位、直近90日の推移（サーバー描画 SVG `src/components/stock/TemperatureChartSvg.tsx`）と最高/最低/平均、過去1年の温度帯別日数と「上位 X% の熱さ」、直近30営業日の表、同業種で温度が高い5銘柄、「温度の読み方を深める」（関連記事 6 本）、解説、更新日時と免責
 - `/stock`: 東証33業種別の一覧
 - `/ranking`: 温度の高い/低い TOP50、前日比の上昇/下落 TOP20。順位は同じ値なら同順位（`ranksWithTies`）で、銘柄ページの順位（`rankOf`）と一致する
 - HTML サイズ: 一覧系は行数が多いため `StockScoreList` で素の `<a>`・table 側の一括クラス・温度色のクラス化で軽量化（2026-11 時点で /stock 約183KB、/ranking 約153KB、各銘柄ページ約70KB、いずれも非圧縮）
@@ -32,4 +32,5 @@
 - 配色: 表の温度・温度帯は温度帯カラー（`SENTIMENT_TEXT_CLASS` / `getSentimentTextClass`）、前日比などの温度差は日本式（上昇=赤 / 低下=緑 / 変化なし=グレー、`scoreDiffColorClass`）
 - 温度帯の一覧・文字色クラスは `src/lib/sentiment.ts`（`SENTIMENT_LEVELS` / `getSentimentTextClass`）を使う。JSON-LD は `src/components/JsonLd.tsx` でサーバー HTML に直接埋め込む（他ページの `next/script` 方式と違い、JS を実行しないクローラーにも見える）
 - 対象を広げるときの注意: `/stock` は全銘柄を1ページに並べているため、500銘柄を超えるあたりで業種別ページへの分割が必要になる
+- 関連記事欄（`src/lib/related-reading.ts` の `buildStockRelatedReading`）: 定番 3 本（買い時まとめ・Fear & Greed 解説・業種ローテーション分析）＋解説・分析・イベント記事から銘柄コードのハッシュで決まる 3 本。225 ページ全体で全記事に内部リンクが張られる（2026-11-18、記事が Google に「検出 - 未登録」のまま取りに来られていなかったための対策。テストで全記事にリンクがあることを確認）。解説記事を足したら `src/lib/learn-articles.ts`、分析記事を足したら `ANALYSIS_READINGS` にも追加する
 - SEO: タイトル `{銘柄名}（{コード}）の株価の温度｜株温計`、動的 description、canonical、OGP（サイト共通画像）、Dataset + BreadcrumbList JSON-LD。sitemap に全件収録

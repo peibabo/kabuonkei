@@ -206,7 +206,7 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
                     <td className={isCurrent ? "font-semibold" : ""}>
                       {b.band}
                       {isCurrent && (
-                        <span className="block text-[10px] text-gray-400">
+                        <span className="block text-[11px] text-gray-400">
                           ▲ 現在
                         </span>
                       )}
@@ -283,7 +283,7 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
                         </span>
                       </div>
                       {isCurrent && (
-                        <span className="text-[10px] text-gray-400">
+                        <span className="text-[11px] text-gray-400">
                           ◀ 現在
                         </span>
                       )}
@@ -306,7 +306,7 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
                     >
                       VIX {vb.label}
                       {isCurrentVix && (
-                        <span className="block text-[10px] text-gray-400">
+                        <span className="block text-[11px] text-gray-400">
                           ▲ 現在
                         </span>
                       )}
@@ -349,7 +349,7 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
                           >
                             {formatReturn(stats.avgReturn)}
                           </div>
-                          <div className="text-[10px] text-gray-500">
+                          <div className="text-[11px] text-gray-500">
                             勝率 {stats.winRate.toFixed(0)}% / n={cell.occurrences}
                           </div>
                         </td>

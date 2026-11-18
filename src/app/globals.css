@@ -8,6 +8,12 @@
   --font-serif-jp-fallback: var(--font-serif-jp);
 }
 
+@theme {
+  /* 小さめの文字を読みやすく: Tailwind 既定の xs 12px / sm 14px を 1px ずつ拡大 */
+  --text-xs: 0.8125rem; /* 13px */
+  --text-sm: 0.9375rem; /* 15px */
+}
+
 html {
   /* ヒーロー / ヘッダー内アンカー (#alert-banner, #similar 等) のスムーススクロール */
   scroll-behavior: smooth;

@@ -247,7 +247,7 @@ function JpFooter({ data }: { data: JapanFearGreedData }) {
             );
           })}
         </div>
-        <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+        <p className="text-[12px] text-gray-500 mt-2 leading-relaxed">
           JPX の週次公表データで、1〜2 週遅れて動きます。上の市場温度には含めていません
         </p>
       </div>

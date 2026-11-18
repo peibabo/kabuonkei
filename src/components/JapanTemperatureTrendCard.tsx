@@ -44,7 +44,7 @@ function CustomTooltip({
         市場温度: {row.score}（{getSentimentLevel(row.score)}）
       </p>
       {row.nikkei != null && (
-        <p className="text-[10px] text-gray-500">
+        <p className="text-[11px] text-gray-500">
           日経225: {row.nikkei.toLocaleString("ja-JP")}
         </p>
       )}
@@ -128,7 +128,7 @@ export default function JapanTemperatureTrendCard({ currentScore }: Props) {
 
       <TemperatureLegend />
 
-      <p className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500 leading-relaxed">
+      <p className="mt-3 pt-3 border-t border-gray-100 text-[12px] text-gray-500 leading-relaxed">
         市場温度 = 日経225 の終値と、直前 125 営業日の移動平均との乖離（±15% を 0〜100）。過去 10 年分を同じ式で計算しています。
       </p>
     </div>

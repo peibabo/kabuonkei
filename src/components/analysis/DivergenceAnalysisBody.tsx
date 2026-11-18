@@ -219,7 +219,7 @@ export default function DivergenceAnalysisBody({ analysis }: Props) {
                 >
                   スプレッド
                   <br />
-                  <span className="text-[10px] font-normal text-gray-500">
+                  <span className="text-[11px] font-normal text-gray-500">
                     (N225 − S&amp;P500)
                   </span>
                 </th>
@@ -253,7 +253,7 @@ export default function DivergenceAnalysisBody({ analysis }: Props) {
                     <td className={isCurrent ? "font-semibold" : ""}>
                       {b.band}
                       {isCurrent && (
-                        <span className="block text-[10px] text-gray-400">
+                        <span className="block text-[11px] text-gray-400">
                           ▲ 現在
                         </span>
                       )}
@@ -337,7 +337,7 @@ export default function DivergenceAnalysisBody({ analysis }: Props) {
                         <span className={isCurrent ? "font-bold" : ""}>{tb}</span>
                       </div>
                       {isCurrent && (
-                        <span className="text-[10px] text-gray-400">
+                        <span className="text-[11px] text-gray-400">
                           ◀ 現在
                         </span>
                       )}
@@ -360,7 +360,7 @@ export default function DivergenceAnalysisBody({ analysis }: Props) {
                     >
                       {gb.label}
                       {isCurrentGap && (
-                        <span className="block text-[10px] text-gray-400">
+                        <span className="block text-[11px] text-gray-400">
                           ▲ 現在
                         </span>
                       )}
@@ -403,7 +403,7 @@ export default function DivergenceAnalysisBody({ analysis }: Props) {
                           >
                             {formatReturn(stats.avgReturn)}
                           </div>
-                          <div className="text-[10px] text-gray-500">
+                          <div className="text-[11px] text-gray-500">
                             勝率 {stats.winRate.toFixed(0)}% / n={cell.occurrences}
                           </div>
                         </td>

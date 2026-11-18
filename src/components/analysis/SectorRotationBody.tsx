@@ -215,13 +215,13 @@ export default function SectorRotationBody() {
                 <th className="px-3 py-2 text-left font-semibold">温度帯</th>
                 <th className="px-3 py-2 text-right font-semibold">
                   🛡 ディフェンシブ
-                  <span className="block text-[10px] font-normal text-gray-400">
+                  <span className="block text-[11px] font-normal text-gray-400">
                     食品・医薬品・電力ガス
                   </span>
                 </th>
                 <th className="px-3 py-2 text-right font-semibold">
                   ⚙️ 景気敏感
-                  <span className="block text-[10px] font-normal text-gray-400">
+                  <span className="block text-[11px] font-normal text-gray-400">
                     鉄鋼非鉄・機械・電機精密
                   </span>
                 </th>

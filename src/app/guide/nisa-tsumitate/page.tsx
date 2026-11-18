@@ -76,7 +76,7 @@ export default function NisaTsumitateGuidePage() {
                 <td className="px-3 py-2 whitespace-nowrap">極寒 (0-20)</td>
                 <td className="px-3 py-2">総悲観・積立停止の誘惑が最大</td>
                 <td className="px-3 py-2">
-                  <strong>むしろチャンス局面</strong>。通常の積立を続ける。余剰資金があればスポット追加検討。
+                  <strong>積立を止めないのが大事な局面</strong>。過去の極寒の後は上昇が多かったものの局面の数は少ないので、まずは通常の積立を続ける。
                 </td>
               </tr>
               <tr className="border-t">

@@ -1,6 +1,7 @@
 "use client";
 
 import MiniChart from "./MiniChart";
+import LearnLink from "./LearnLink";
 import type { MarginTradingWeek, ChartPoint } from "@/lib/types";
 
 interface Props {
@@ -20,6 +21,7 @@ export default function MarginTradingCard({ latest, ratioHistory }: Props) {
       <h2 className="text-lg font-bold text-gray-700 mb-1">🇯🇵 信用倍率</h2>
       <p className="text-xs text-gray-500 mb-1">
         買い残が多いほど上値が重くなる傾向
+        <LearnLink href="/learn/what-is-margin-ratio" />
       </p>
       <p className="text-xs text-gray-400 mb-4">{latest.date} 現在</p>
 

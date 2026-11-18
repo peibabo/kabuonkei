@@ -17,6 +17,7 @@ import {
 } from "@/lib/temperature-history";
 import type { TemperaturePoint } from "@/lib/temperature-history";
 import TemperatureLegend from "./_trend/TemperatureLegend";
+import { sliceByDays } from "@/lib/slice-by-days";
 import TrendCardHeader from "./_trend/TrendCardHeader";
 import { formatXAxisDate } from "./_trend/formatXAxisDate";
 import { US_TREND_PERIODS, type UsTrendPeriod } from "./_trend/periods";
@@ -63,8 +64,8 @@ export default function TemperatureTrendCard({ vixChart, currentScore }: Props) 
   }, [vixChart]);
 
   const displayData = useMemo(() => {
-    const days = US_TREND_PERIODS.days[period];
-    return mergedData.slice(-days);
+    // 件数ではなく暦日で切る（営業日数で切ると 3ヶ月が約 4ヶ月分になり、日本版とずれる）
+    return sliceByDays(mergedData, US_TREND_PERIODS.days[period]);
   }, [mergedData, period]);
 
   if (displayData.length === 0) return null;

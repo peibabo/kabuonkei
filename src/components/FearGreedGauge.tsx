@@ -10,6 +10,7 @@ import type {
   JapanFearGreedComponent,
   JapanFearGreedData,
 } from "@/lib/types";
+import Link from "next/link";
 import ShareButton from "./share/ShareButton";
 import HistoricalPercentileBadge from "./HistoricalPercentileBadge";
 
@@ -188,6 +189,12 @@ function formatRaw(c: JapanFearGreedComponent): string | null {
   return formatSignedPct(c.rawValue);
 }
 
+/** 需給の各要素から解説記事へのリンク先 */
+const SUPPLY_LEARN_LINKS: Record<string, string> = {
+  foreignFlow: "/learn/what-is-investor-flow",
+  marginBuyChange: "/learn/what-is-margin-ratio",
+};
+
 function JpFooter({ data }: { data: JapanFearGreedData }) {
   const nikkeiMa = data.components.find((c) => c.id === "nikkeiMa");
   const supplyComponents = data.components.filter((c) => c.group === "supply");
@@ -197,7 +204,14 @@ function JpFooter({ data }: { data: JapanFearGreedData }) {
     <>
       {nikkeiMa?.rawValue != null && (
         <p className="border-t border-gray-100 pt-4 text-sm text-gray-600 text-center">
-          日経225 は 125 日移動平均から{" "}
+          日経225 は{" "}
+          <Link
+            href="/glossary#kabuonkei-score"
+            className="underline decoration-dotted underline-offset-2 hover:text-gray-900"
+          >
+            125 日移動平均
+          </Link>
+          （直近約半年の平均値）から{" "}
           <span className="font-mono font-semibold text-gray-800">
             {formatSignedPct(nikkeiMa.rawValue)}
           </span>
@@ -232,9 +246,18 @@ function JpFooter({ data }: { data: JapanFearGreedData }) {
                     className="inline-block w-2 h-2 rounded-full flex-shrink-0"
                     style={{ backgroundColor: compColor }}
                   />
-                  <span className={`truncate ${c.available ? "text-gray-700" : "text-gray-400"}`}>
-                    {c.label}
-                  </span>
+                  {SUPPLY_LEARN_LINKS[c.id] ? (
+                    <Link
+                      href={SUPPLY_LEARN_LINKS[c.id]}
+                      className={`truncate underline decoration-dotted underline-offset-2 hover:text-gray-900 ${c.available ? "text-gray-700" : "text-gray-400"}`}
+                    >
+                      {c.label}
+                    </Link>
+                  ) : (
+                    <span className={`truncate ${c.available ? "text-gray-700" : "text-gray-400"}`}>
+                      {c.label}
+                    </span>
+                  )}
                   {raw && <span className="text-gray-400 font-mono">{raw}</span>}
                 </div>
                 <span

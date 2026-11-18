@@ -1,104 +1,95 @@
 import { formatSignedDelta } from "@/lib/format";
-import { getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
+import { getSentimentColor } from "@/lib/sentiment";
 import Sparkline from "./Sparkline";
 
-interface TileSpec {
+interface WeekTileProps {
   label: string;
-  value: string;
-  sub: string;
-  color?: string;
-  sparkline?: number[];
-  sparklineLabel?: string;
+  /** 約 1 週間前 → 今 の温度（古い→新しい順）。2 点未満なら「—」表示 */
+  series: number[];
 }
 
-function Tile({ label, value, sub, color, sparkline, sparklineLabel }: TileSpec) {
+/** 週の変化幅を言葉にする（1 日の変化より幅が大きいので閾値も広め） */
+export function weekChangeLabel(delta: number): string {
+  if (delta >= 10) return "↑ 大きく上昇";
+  if (delta >= 3) return "↗ 上昇";
+  if (delta <= -10) return "↓ 大きく下降";
+  if (delta <= -3) return "↘ 下降";
+  return "→ ほぼ横ばい";
+}
+
+/**
+ * 確定済みの過去点（5 営業日前〜前営業日）の末尾に今の値を足して、
+ * 「約 1 週間前 → 今」の系列にする。日米とも同じ形（`market-data.ts` で作成）。
+ */
+export function buildWeekSeries(
+  history: number[] | undefined,
+  current: number | null,
+): number[] {
+  if (current == null) return [];
+  if (!history || history.length === 0) return [];
+  return [...history, current];
+}
+
+function WeekTile({ label, series }: WeekTileProps) {
+  if (series.length < 2) {
+    return (
+      <div className="bg-white border border-gray-300 px-4 py-4 md:px-5 md:py-5 flex flex-col">
+        <p className="text-xs text-gray-500 tracking-wider">{label}</p>
+        <p className="mt-1 text-3xl md:text-4xl font-bold leading-none">—</p>
+      </div>
+    );
+  }
+  const from = series[0];
+  const to = series[series.length - 1];
+  const delta = to - from;
+  const color = getSentimentColor(to);
+
   return (
     <div className="bg-white border border-gray-300 px-4 py-4 md:px-5 md:py-5 flex flex-col">
       <p className="text-xs text-gray-500 tracking-wider">{label}</p>
-      <p
-        className="mt-1 text-3xl md:text-4xl font-bold tabular-nums leading-none"
-        style={{ color: color ?? "#111111" }}
-      >
-        {value}
+      <p className="mt-1 text-3xl md:text-4xl font-bold tabular-nums leading-none text-gray-900">
+        {formatSignedDelta(delta)}
       </p>
-      <p className="mt-1 text-xs md:text-sm text-gray-700">{sub}</p>
-      {sparkline && sparkline.length >= 2 && (
-        <div className="mt-2">
-          <Sparkline
-            values={sparkline}
-            color={color ?? "#374151"}
-            ariaLabel={sparklineLabel ?? "直近推移"}
-            className="w-full h-5 md:h-6"
-          />
-        </div>
-      )}
+      <p className="mt-1 text-xs md:text-sm text-gray-700 tabular-nums">
+        {Math.round(from)}° → <span style={{ color }}>{Math.round(to)}°</span>
+        <span className="ml-2">{weekChangeLabel(delta)}</span>
+      </p>
+      <div className="mt-2">
+        <Sparkline
+          values={series}
+          color={color}
+          ariaLabel={`${label}の温度推移`}
+          className="w-full h-5 md:h-6"
+        />
+      </div>
     </div>
   );
 }
 
-function deltaSub(delta: number | null): string {
-  if (delta == null) return "前回データなし";
-  if (delta >= 5) return "↑ 上昇";
-  if (delta <= -5) return "↓ 下降";
-  if (delta > 0) return "↗ わずか上昇";
-  if (delta < 0) return "↘ わずか下降";
-  return "→ 横ばい";
-}
-
 /**
- * 補足 2 タイル: 平均 / 昨日比
- * 半円ゲージ (FearGreedGauge) が JP/US スコアの主役なので、
- * ここでは「日米合算の温度感」と「動き」だけを見せる。
- *
- * 平均 sparkline は JP / US の 7 日推移を index 単位で平均した系列。
+ * 補足 2 タイル: 日本・米国それぞれの「この 1 週間」の温度変化。
+ * 日米は温度の定義が違うため平均はとらず、別々に見せる。
  */
 export default function TemperatureTiles({
   jp,
   us,
-  jpDelta,
-  usDelta,
   jpSparkline,
   usSparkline,
 }: {
   jp: number | null;
   us: number;
-  jpDelta: number | null;
-  usDelta: number;
   jpSparkline?: number[];
   usSparkline?: number[];
 }) {
-  const avg = jp != null ? Math.round((jp + us) / 2) : null;
-  const avgLevel = avg != null ? getSentimentLevel(avg) : null;
-  const avgColor = avg != null ? getSentimentColor(avg) : undefined;
-
-  // 平均の昨日比は「日米平均の昨日比」として算出（jp 取得不可なら US だけで）
-  const avgDelta =
-    jp != null && jpDelta != null ? (jpDelta + usDelta) / 2 : usDelta;
-
-  // 平均 sparkline: JP と US の sparkline を index ごとに平均（長さは短い方に揃える）
-  const avgSparkline = (() => {
-    if (!jpSparkline || jpSparkline.length === 0) return usSparkline;
-    if (!usSparkline || usSparkline.length === 0) return jpSparkline;
-    const len = Math.min(jpSparkline.length, usSparkline.length);
-    const jpTail = jpSparkline.slice(-len);
-    const usTail = usSparkline.slice(-len);
-    return jpTail.map((v, i) => (v + usTail[i]) / 2);
-  })();
-
   return (
     <div className="grid grid-cols-2 gap-3 mb-10">
-      <Tile
-        label="日米平均"
-        value={avg != null ? `${avg}°` : "—"}
-        sub={avgLevel ?? "—"}
-        color={avgColor}
-        sparkline={avgSparkline}
-        sparklineLabel="日米平均 直近"
+      <WeekTile
+        label="🇯🇵 日本 この1週間"
+        series={buildWeekSeries(jpSparkline, jp)}
       />
-      <Tile
-        label="昨日比（日米平均）"
-        value={formatSignedDelta(avgDelta, 1)}
-        sub={deltaSub(avgDelta)}
+      <WeekTile
+        label="🇺🇸 米国 この1週間"
+        series={buildWeekSeries(usSparkline, us)}
       />
     </div>
   );

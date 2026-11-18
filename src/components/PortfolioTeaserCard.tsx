@@ -5,10 +5,58 @@ import { useMemo } from "react";
 import { getPortfolioHistory } from "@/lib/portfolio";
 import { trackEvent } from "@/lib/analytics";
 import {
-  formatDrawdownGap,
   drawdownGapColorClass,
+  formatDrawdownGap,
+  formatReturn,
   returnColorClass,
 } from "@/lib/format";
+import type { PortfolioSection } from "@/lib/portfolio";
+
+/** 差（パーセントポイント）を「+19.8 ポイント」の形にする */
+function formatPoint(value: number, digits = 1): string {
+  return `${value >= 0 ? "+" : ""}${value.toFixed(digits)} ポイント`;
+}
+
+/** 最大の下げ幅の差（DD は負値なので、正 = 温度ルールのほうが下げが小さい） */
+function DrawdownGap({ diff }: { diff: number }) {
+  return <span className={drawdownGapColorClass(diff)}>{formatDrawdownGap(diff)}</span>;
+}
+
+function MarketSummary({
+  label,
+  portfolio,
+  band,
+}: {
+  label: string;
+  portfolio: PortfolioSection;
+  band: string;
+}) {
+  const { stats, current } = portfolio;
+  const ddVsBuyHold = stats.maxDrawdown - stats.benchmarkMaxDrawdown;
+  const ddVsDca = stats.maxDrawdown - stats.dcaMaxDrawdown;
+  return (
+    <div className="border border-gray-100 rounded-lg p-3 bg-white">
+      <div className="text-xs text-gray-500 mb-1">{label}</div>
+      <div className={`text-sm font-semibold ${returnColorClass(stats.alphaVsDca)}`}>
+        毎月の積立より{" "}
+        <span className="font-bold">{formatPoint(stats.alphaVsDca)}</span>
+      </div>
+      <div className="text-xs text-gray-500 mt-0.5">
+        10 年の累計: この方法 {formatReturn(stats.totalReturn)} / 毎月の積立{" "}
+        {formatReturn(stats.dcaReturn)}
+      </div>
+      <div className="text-sm mt-2">
+        今の割合: 株 <strong>{(current.equityRatio * 100).toFixed(0)}%</strong>{" "}
+        / 現金 {(current.cashRatio * 100).toFixed(0)}%
+        <span className="ml-2 text-gray-400">（{band}）</span>
+      </div>
+      <div className="text-xs text-gray-500 mt-1 leading-relaxed">
+        いちばん大きく下げたとき: 買って持ち続けるより <DrawdownGap diff={ddVsBuyHold} />
+        、毎月の積立より <DrawdownGap diff={ddVsDca} />
+      </div>
+    </div>
+  );
+}
 
 /**
  * Dashboard 第 5 章（詳しく見る）に配置するポートフォリオ導線カード。
@@ -34,12 +82,6 @@ export default function PortfolioTeaserCard() {
     ? "bg-amber-50 border border-amber-300 rounded-2xl shadow-md p-6"
     : "bg-white rounded-2xl shadow-md p-6";
 
-  // DD 差分（自PF − 比較対象。DD は負値なので正 = 温度ルールのほうが浅い）
-  const jpDdVsBuyHold = jp.stats.maxDrawdown - jp.stats.benchmarkMaxDrawdown;
-  const usDdVsBuyHold = us.stats.maxDrawdown - us.stats.benchmarkMaxDrawdown;
-  const jpDdVsDca = jp.stats.maxDrawdown - jp.stats.dcaMaxDrawdown;
-  const usDdVsDca = us.stats.maxDrawdown - us.stats.dcaMaxDrawdown;
-
   return (
     <div className={containerClass}>
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -59,76 +101,25 @@ export default function PortfolioTeaserCard() {
       </div>
 
       <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-        温度スコアに応じて株/現金比率を月次に切り替えるシミュレーション。
-        <span className="text-gray-500">
-        過去約10年の<strong className="text-gray-700">積立(DCA)との差は JP {jp.stats.alphaVsDca >= 0 ? "+" : ""}{jp.stats.alphaVsDca.toFixed(0)}pp / US {us.stats.alphaVsDca >= 0 ? "+" : ""}{us.stats.alphaVsDca.toFixed(0)}pp</strong>。
-        記事内で<strong>差を「配分の高さ」と「温度信号の純寄与」に分けた</strong>正直な検証も公開中。
-        </span>
+        温度に応じて株と現金の割合を月に 1 回切り替えた場合のシミュレーション。
+        過去約 10 年の成績を、毎月同じ額を買い続ける
+        <Link href="/glossary#dca" className="underline hover:text-gray-900">
+          積立
+        </Link>
+        と比べると、
+        <strong className="text-gray-700">
+          日本 {formatPoint(jp.stats.alphaVsDca, 0)} / 米国 {formatPoint(us.stats.alphaVsDca, 0)}
+        </strong>
+        。ただし差の大半は株の割合が高いことによるもので、温度で切り替えた効果そのものは記事内で分けて検証しています。
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="border border-gray-100 rounded-lg p-3 bg-white">
-          <div className="text-xs text-gray-500 mb-1">🇯🇵 日本版</div>
-          <div className={`text-sm font-semibold ${returnColorClass(jp.stats.alphaVsDca)}`}>
-            積立 (DCA) 比{" "}
-            <span className="font-bold">
-              {jp.stats.alphaVsDca >= 0 ? "+" : ""}
-              {jp.stats.alphaVsDca.toFixed(1)}pp
-            </span>
-          </div>
-          <div className="text-[12px] text-gray-500 mt-0.5">
-            温度 {jp.stats.totalReturn.toFixed(1)}% / 積立{" "}
-            {jp.stats.dcaReturn.toFixed(1)}%
-          </div>
-          <div className="text-sm mt-2">
-            株 <strong>{(jp.current.equityRatio * 100).toFixed(0)}%</strong>{" "}
-            / 現金 {(jp.current.cashRatio * 100).toFixed(0)}%
-            <span className="ml-2 text-gray-400">（{jpBand}）</span>
-          </div>
-          <div className="text-[12px] text-gray-400 mt-1">
-            最大DD vs 買い持ち:{" "}
-            <span className={drawdownGapColorClass(jpDdVsBuyHold)}>
-              {formatDrawdownGap(jpDdVsBuyHold)}
-            </span>
-            {" / "}vs 積立:{" "}
-            <span className={drawdownGapColorClass(jpDdVsDca)}>
-              {formatDrawdownGap(jpDdVsDca)}
-            </span>
-          </div>
-        </div>
-        <div className="border border-gray-100 rounded-lg p-3 bg-white">
-          <div className="text-xs text-gray-500 mb-1">🇺🇸 米国版</div>
-          <div className={`text-sm font-semibold ${returnColorClass(us.stats.alphaVsDca)}`}>
-            積立 (DCA) 比{" "}
-            <span className="font-bold">
-              {us.stats.alphaVsDca >= 0 ? "+" : ""}
-              {us.stats.alphaVsDca.toFixed(1)}pp
-            </span>
-          </div>
-          <div className="text-[12px] text-gray-500 mt-0.5">
-            温度 {us.stats.totalReturn.toFixed(1)}% / 積立{" "}
-            {us.stats.dcaReturn.toFixed(1)}%
-          </div>
-          <div className="text-sm mt-2">
-            株 <strong>{(us.current.equityRatio * 100).toFixed(0)}%</strong>{" "}
-            / 現金 {(us.current.cashRatio * 100).toFixed(0)}%
-            <span className="ml-2 text-gray-400">（{usBand}）</span>
-          </div>
-          <div className="text-[12px] text-gray-400 mt-1">
-            最大DD vs 買い持ち:{" "}
-            <span className={drawdownGapColorClass(usDdVsBuyHold)}>
-              {formatDrawdownGap(usDdVsBuyHold)}
-            </span>
-            {" / "}vs 積立:{" "}
-            <span className={drawdownGapColorClass(usDdVsDca)}>
-              {formatDrawdownGap(usDdVsDca)}
-            </span>
-          </div>
-        </div>
+        <MarketSummary label="🇯🇵 日本版" portfolio={jp} band={jpBand} />
+        <MarketSummary label="🇺🇸 米国版" portfolio={us} band={usBand} />
       </div>
       {hasExtreme && (
         <p className="mt-3 text-xs text-amber-700">
-          ⚡ 現在どちらかが極端温度帯。次回リバランスでの配分変動に注意。
+          ⚡ 今はどちらかが極端な温度帯です。次の月初の切り替えで株と現金の割合が大きく変わることがあります。
         </p>
       )}
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import MiniChart from "./MiniChart";
+import LearnLink from "./LearnLink";
 import type { ArbitrageBalanceDay, ChartPoint } from "@/lib/types";
 
 interface Props {
@@ -19,6 +20,7 @@ export default function ArbitrageBalanceCard({ latest, buyHistory }: Props) {
       <h2 className="text-lg font-bold text-gray-700 mb-1">🇯🇵 裁定残</h2>
       <p className="text-xs text-gray-500 mb-1">
         買い残が多いほど将来の売り圧力に
+        <LearnLink href="/learn/what-is-arbitrage-balance" />
       </p>
       <p className="text-xs text-gray-400 mb-4">{latest.date} 現在</p>
 

@@ -2,6 +2,7 @@ import {
   getScorePercentile,
   type DistributionMarket,
 } from "@/lib/score-distribution";
+import { getSentimentLevel } from "@/lib/sentiment";
 
 interface Props {
   score: number;
@@ -11,8 +12,8 @@ interface Props {
 /**
  * 過去10年中のスコア位置づけを示すバッジ。
  *
- * - 下位 20% 以下: 「❄️ 歴史的にも冷たい水準」
- * - 上位 20% 以上: 「🔥 歴史的にも熱い水準」
+ * - 下位 20% 以下かつ温度帯が極寒/冷え込み: 「❄️ 歴史的にも冷たい水準」
+ * - 上位 20% 以上かつ温度帯が過熱/沸騰: 「🔥 歴史的にも熱い水準」
  * - それ以外: 通常（📊 過去10年中、下位 XX%）
  *
  * データ未生成時は null を返して非表示。
@@ -30,8 +31,14 @@ export default function HistoricalPercentileBadge({ score, market }: Props) {
   // 上位何% は 100 - percentile で計算
   const upperPct = Math.round(100 - percentile);
 
+  // 温度帯と矛盾する表示（例: 平温 48 なのに「冷たい」）を避けるため、
+  // 冷たい/熱いバッジは温度帯も冷側・熱側のときだけ出す
+  const level = getSentimentLevel(score);
+  const isColdBand = level === "極寒" || level === "冷え込み";
+  const isHotBand = level === "過熱" || level === "沸騰";
+
   // 極端温度のバッジ
-  if (percentile <= 20) {
+  if (percentile <= 20 && isColdBand) {
     return (
       <div className="mt-3 px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 text-xs leading-relaxed text-center">
         <p className="font-semibold text-blue-700">
@@ -45,7 +52,7 @@ export default function HistoricalPercentileBadge({ score, market }: Props) {
     );
   }
 
-  if (percentile >= 80) {
+  if (percentile >= 80 && isHotBand) {
     return (
       <div className="mt-3 px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-xs leading-relaxed text-center">
         <p className="font-semibold text-red-700">

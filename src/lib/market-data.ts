@@ -1,4 +1,8 @@
-import type { MarketData, JapanMarketData } from "./types";
+import type { MarketData, JapanMarketData, ChartPoint } from "./types";
+import {
+  getStaticTemperatureHistory,
+  mergeTemperatureData,
+} from "./temperature-history";
 import { computeJapanFearGreed } from "./japan-fear-greed";
 import rawJapanMarketData from "@/data/japan-market-data.json";
 import { fetchFearGreedIndex } from "./fear-greed";
@@ -22,26 +26,31 @@ import { getJstDateKey } from "./jst-date";
 
 const japanMarketData = rawJapanMarketData as unknown as JapanMarketData;
 
+/** 「この 1 週間」タイル用に、今の値の前に置く確定済みの過去点の数（5 営業日前 → 今） */
+const WEEK_HISTORY_POINTS = 5;
+
 /**
- * 直近 7 営業日の日本版温度スコアを返す（古い → 新しい順）。
- * 過去推移の末尾 7 件を採用。
+ * 日本版の直近 5 営業日の温度（古い → 新しい順）。今の値の立会日以降は除く
+ * （表示側で今の値を末尾に足すため。休場日・寄り付き前でも二重にならないよう sessionDate で切る）。
  */
-function pickJapanSparkline(): number[] {
+function pickJapanSparkline(sessionDate: string): number[] {
   return getJapanHistory()
-    .slice(-7)
+    .filter((p) => p.date < sessionDate)
+    .slice(-WEEK_HISTORY_POINTS)
     .map((p) => p.score);
 }
 
 /**
- * 米国版 sparkline。CNN は週次粒度（previousClose / oneWeekAgo / oneMonthAgo）しか取れないため、
- * Phase 1 では oneWeekAgo → previousClose → 現在値 の 3 点を簡易表示する。
+ * 米国版の直近 5 営業日の温度（古い → 新しい順）。今の値の立会日以降は除く。
+ * CNN が使えない間は oneWeekAgo / previousClose も今の値になってしまうため、
+ * 推移チャートと同じ「静的な推移 + VIX チャートから推定」の系列を使う。
  */
-function buildUsSparkline(
-  current: number,
-  previousClose: number,
-  oneWeekAgo: number,
-): number[] {
-  return [oneWeekAgo, previousClose, current];
+function pickUsSparkline(vixChart: ChartPoint[]): number[] {
+  const sessionDate = vixChart.at(-1)?.date ?? getJstDateKey();
+  return mergeTemperatureData(getStaticTemperatureHistory(), vixChart)
+    .filter((p) => p.date < sessionDate)
+    .slice(-WEEK_HISTORY_POINTS)
+    .map((p) => p.score);
 }
 
 /**
@@ -97,11 +106,9 @@ export async function fetchAllMarketData(): Promise<MarketData> {
       snapshots: japanHistory,
       todayJstKey: sessionDate,
     }),
-    japanSparkline: pickJapanSparkline(),
-    usSparkline: buildUsSparkline(
-      fearGreed.score,
-      fearGreed.previousClose,
-      fearGreed.oneWeekAgo,
+    japanSparkline: pickJapanSparkline(sessionDate),
+    usSparkline: pickUsSparkline(
+      volatility.find((v) => v.symbol === "^VIX")?.chart ?? [],
     ),
     volatility,
     indices,

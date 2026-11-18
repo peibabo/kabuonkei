@@ -1,6 +1,7 @@
 "use client";
 
 import MiniChart from "./MiniChart";
+import LearnLink from "./LearnLink";
 import type { VolatilityData } from "@/lib/types";
 import { formatJstDateTimeLabel } from "@/lib/jst-date";
 
@@ -11,7 +12,11 @@ interface Props {
 export default function VolatilityCard({ data }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-lg font-bold text-gray-700 mb-4">ボラティリティ</h2>
+      <h2 className="text-lg font-bold text-gray-700 mb-1">ボラティリティ</h2>
+      <p className="text-xs text-gray-500 mb-4">
+        相場の不安の大きさ。高いほど値動きが荒い
+        <LearnLink href="/learn/what-is-vix" />
+      </p>
       <div className="space-y-6">
         {data.map((item) => (
           <div key={item.symbol}>

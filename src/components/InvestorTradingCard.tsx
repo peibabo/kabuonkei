@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import type { InvestorTradingWeek, ChartPoint } from "@/lib/types";
 import MiniChart from "./MiniChart";
+import LearnLink from "./LearnLink";
 
 interface Props {
   latest: InvestorTradingWeek;
@@ -34,6 +35,7 @@ export default function InvestorTradingCard({
       </h2>
       <p className="text-xs text-gray-500 mb-1">
         誰が買って、誰が売っている？
+        <LearnLink href="/learn/what-is-investor-flow" />
       </p>
       <p className="text-xs text-gray-400 mb-4">
         {latest.weekLabel}（{latest.startDate} 〜 {latest.endDate}）

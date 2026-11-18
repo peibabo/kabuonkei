@@ -88,7 +88,7 @@ export default function AlertBanner({ japanScore, usScore }: Props) {
                 ⚠️ 今、温度が極端です: {extremeLabel}
               </p>
               <p className="text-xs text-red-800 mt-0.5">
-                次にこの状態が来たとき、メールでお知らせします。
+                めったに来ない局面です。登録すると、温度が {COLD_THRESHOLD} 以下・{HOT_THRESHOLD} 以上に入った日にメールが届きます（今の局面が終わった後、次に極端な温度帯へ入ったときから）。
               </p>
             </>
           ) : (

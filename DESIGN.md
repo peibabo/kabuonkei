@@ -87,7 +87,7 @@ CTA ラベル末尾は半角矢印 `→` で統一。
 |---|---|---|
 | `DashboardHeader` | 紙面 | タイトル明朝 + 罫線帯 |
 | `HeadlineHero` | 紙面 | `border-y` + 大型明朝見出し |
-| `TemperatureTiles` | 紙面 | 細罫線タイル × 2（日米平均 / 昨日比、半円ゲージ章カードの内側に配置） |
+| `TemperatureTiles` | 紙面 | 細罫線タイル × 2（日本・米国それぞれの「この 1 週間」の変化、半円ゲージ章カードの内側に配置） |
 | `Sparkline`（独自 SVG） | 紙面 | 線色 = sentiment / gray-700 |
 | `FearGreedGauge` | 章カード | 既存 `rounded-2xl` 維持 |
 | `SimilarDaysCard` 等 | 章カード | 既存維持 |

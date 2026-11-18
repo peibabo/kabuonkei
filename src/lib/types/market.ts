@@ -23,13 +23,13 @@ export interface MarketData {
    */
   japanLevelStreak: number | null;
   /**
-   * 直近 7 日間の日本版温度スコア（古い→新しい順）。
-   * トップ画面ヒーロータイル内 sparkline 用。空配列なら表示しない。
+   * 日本版の直近 5 営業日の温度スコア（古い→新しい順、今の値の立会日は含まない）。
+   * トップの「この 1 週間」タイル用。表示側で今の値を末尾に足す。空配列なら「—」。
    */
   japanSparkline: number[];
   /**
-   * 直近 7 日間の米国版温度スコア（古い→新しい順）。
-   * 現状は previousClose / oneWeekAgo / 現在値の 3 点のみ。Phase 2 で拡張余地あり。
+   * 米国版の直近 5 営業日の温度スコア（古い→新しい順、今の値の立会日は含まない）。
+   * 静的な推移 + VIX チャートからの推定で作る（CNN の oneWeekAgo はフォールバック中は使えない）。
    */
   usSparkline: number[];
   volatility: VolatilityData[];

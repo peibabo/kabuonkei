@@ -15,11 +15,17 @@ export interface UseMarketDataResult {
  * `/api/market` から MarketData を取得する hook。
  * 初回マウント時に 1 回取得し、以降 15 分ごとに再取得する。
  * unmount 時に interval をクリア。
+ *
+ * `initialData` を渡すと（トップページのサーバー描画）、それを最初から表示して
+ * 初回の取得を省き、15 分ごとの再取得だけを行う。
  */
-export function useMarketData(): UseMarketDataResult {
-  const [data, setData] = useState<MarketData | null>(null);
+export function useMarketData(
+  initialData: MarketData | null = null,
+): UseMarketDataResult {
+  const [data, setData] = useState<MarketData | null>(initialData);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(initialData == null);
+  const hasInitialData = initialData != null;
 
   useEffect(() => {
     let cancelled = false;
@@ -40,13 +46,13 @@ export function useMarketData(): UseMarketDataResult {
       }
     }
 
-    fetchData();
+    if (!hasInitialData) fetchData();
     const interval = setInterval(fetchData, POLL_INTERVAL_MS);
     return () => {
       cancelled = true;
       clearInterval(interval);
     };
-  }, []);
+  }, [hasInitialData]);
 
   return { data, loading, error };
 }

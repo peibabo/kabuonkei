@@ -24,7 +24,8 @@
 - **イベント詳細ページ（`/events/[slug]`）** - 15件の主要市場イベントについて、その日の日米温度・前後±90日の温度推移・1M/3M/6M/1Y 実リターンに加え、各イベントごとの「当時の背景と市場心理」解説（Markdown 本文、1本 500〜600字）を表示する恒久 URL（全件 SSG、イベント別 OG 画像付き）
 - **主要イベント一覧（`/events`）** - 15件を日付降順で俯瞰できるインデックスページ。Footer・About・類似日カード末尾から導線あり
 - **投資家タイプ別ガイド（`/guide`）** - NISA積立 / 短期トレーダー / FIRE目指し の 3 タイプ別に、温度帯ごとの具体的なアクション指針を解説するガイドページ。Footer・About から導線あり
-- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。現在4本公開：
+- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。現在5本公開：
+  - 「日経平均が1日5%以上下げた後どうなった？— 1985年以降の急落を全件検証」（`/analysis/nikkei-crash-aftermath`）: 急落した日に買った場合の 1ヶ月〜1年後のリターン、急落した日が底だったか、急落した日の温度別の比較、全件一覧
   - 「暴落時に強い業種はどれ？— 温度帯×17業種の過去10年検証」（`/analysis/sector-rotation-temperature`）: 極寒後に最も戻ったのはディフェンシブではなく機械・電機・鉄鋼という逆説を軸に、温度帯別のセクターローテーションを検証。基データは `/sectors` と共通
   - 「日本だけ熱い・米国は冷静——日米温度の乖離が ±20 を超えた日、その後の日経225 と S&P500 はどう動いたか？」（`/analysis/temperature-divergence`）: 日米温度差バンド × {S&P500, 日経225} の翌 1/3/6ヶ月リターン + N225-S&P500 平均スプレッド、温度差 × 日本版温度のクロス市場 2D
   - 「信用倍率 × 株温計 — 過去10年の徹底検証」（`/analysis/margin-ratio-temperature`）: JPX 公表の週次信用倍率 × 株温計 × 日経225 の 2D ヒートマップ
@@ -76,6 +77,7 @@ npm run generate:margin-history             # 信用倍率の 20 年超週次バ
 npm run generate:margin-analysis            # 信用倍率 × 株温計 × 日経225 の分析 JSON（/analysis 用）
 npm run generate:vix-sp500                  # VIX × S&P500 × 日経225 + JP温度クロスの分析 JSON（/analysis 用）
 npm run generate:divergence                 # 日米温度の乖離 × {N225, S&P500} 前方リターン分析 JSON（/analysis 用）
+npm run generate:nikkei-crash               # 日経225 の急落（1日 -5% 以下）後の値動き JSON（/analysis 用）
 npm run generate:portfolio-history          # 温度連動ポートフォリオ バックフィル（/portfolio 用、月次フル再生成）
 npm run snapshot:portfolio                  # 温度連動ポートフォリオ 日次 append（平日 JST 07:00 に自動実行）
 

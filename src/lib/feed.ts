@@ -7,6 +7,10 @@ import { getMarginRatioAnalysis } from "./margin-ratio-analysis";
 import { getVixSp500Analysis } from "./vix-sp500-analysis";
 import { getDivergenceAnalysis } from "./divergence-analysis";
 import { getJapanSectorHeatmap } from "./japan-sector-heatmap";
+import {
+  getNikkeiCrashAnalysis,
+  NIKKEI_CRASH_ARTICLE,
+} from "./nikkei-crash-analysis";
 import { getPortfolioHistory } from "./portfolio";
 import { getEventsMeta, getEventPublishedAt } from "./events";
 import type { EventMeta } from "./types";
@@ -93,6 +97,17 @@ function collectEntries(): FeedEntry[] {
       "市場温度が極寒（総悲観）だった日の後、TOPIX-17 の 17 業種がどう動いたかを過去 10 年で集計。極寒後に最も戻ったのはディフェンシブではなく機械・電機・鉄鋼という検証結果を公開。",
     publishedAt: "2026-07-08",
     updatedAt: sectorHeatmap.generatedAt,
+  });
+
+  const crash = getNikkeiCrashAnalysis();
+  entries.push({
+    id: `${SITE_ORIGIN}${NIKKEI_CRASH_ARTICLE.path}`,
+    url: `${SITE_ORIGIN}${NIKKEI_CRASH_ARTICLE.path}`,
+    title: NIKKEI_CRASH_ARTICLE.title,
+    summary:
+      "1985年以降の日経平均の急落（1日 -5% 以下）をすべて洗い出し、その後 1ヶ月〜1年のリターン、急落した日が底だったか、その後どこまで下げたかを検証した分析記事。",
+    publishedAt: NIKKEI_CRASH_ARTICLE.publishedAt,
+    updatedAt: crash.generatedAt,
   });
 
   const portfolio = getPortfolioHistory();

@@ -5,6 +5,10 @@ import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 import { getJapanSectorHeatmap } from "@/lib/japan-sector-heatmap";
+import {
+  getNikkeiCrashAnalysis,
+  NIKKEI_CRASH_ARTICLE,
+} from "@/lib/nikkei-crash-analysis";
 
 export const metadata: Metadata = {
   title: "分析記事",
@@ -33,7 +37,16 @@ export default function AnalysisIndexPage() {
   const vixAnalysis = getVixSp500Analysis();
   const divergenceAnalysis = getDivergenceAnalysis();
   const sectorHeatmap = getJapanSectorHeatmap();
+  const crashAnalysis = getNikkeiCrashAnalysis();
   const articles: AnalysisArticle[] = [
+    {
+      slug: NIKKEI_CRASH_ARTICLE.slug,
+      icon: "📉",
+      title: NIKKEI_CRASH_ARTICLE.title,
+      description:
+        "1985年以降、日経平均が1日で5%以上下げた急落をすべて洗い出し、その後 1ヶ月〜1年の値動きを検証。急落した日に買うと成績は良かった一方、急落した日がそのまま底だったことはほとんどなかった。",
+      dateLabel: `最終更新: ${crashAnalysis.generatedAt}`,
+    },
     {
       slug: "sector-rotation-temperature",
       icon: "🔄",

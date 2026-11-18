@@ -19,9 +19,15 @@ import MarketDataSection from "./dashboard/MarketDataSection";
 import AlertBanner from "./alerts/AlertBanner";
 import HeadlineHero from "./hero/HeadlineHero";
 import TemperatureTiles from "./hero/TemperatureTiles";
+import type { MarketData } from "@/lib/types";
 
-export default function Dashboard() {
-  const { data, loading, error } = useMarketData();
+interface DashboardProps {
+  /** サーバー側で取得済みのデータ。null ならブラウザで /api/market から取得する */
+  initialData?: MarketData | null;
+}
+
+export default function Dashboard({ initialData = null }: DashboardProps) {
+  const { data, loading, error } = useMarketData(initialData);
 
   if (loading) return <LoadingView />;
   if (error || !data)

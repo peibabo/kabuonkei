@@ -46,6 +46,7 @@
 
 ## SEO / 計測
 - **metadata**: `src/app/layout.tsx` で title テンプレート / openGraph / twitter card / canonical / google-site-verification を定義。`metadataBase` は `NEXT_PUBLIC_SITE_URL` ベース
+- **トップページのサーバー描画**: 2026-11-18 まではブラウザで `/api/market` を取得して描画しており、サーバーが返す HTML は「市場データを読み込み中...」とフッターだけだった（JS を実行しない AI アシスタントのクローラーにはほぼ空、Google にも記事への導線が見えない）。現在は `src/app/page.tsx` が 15 分 ISR でデータを取得し、`Dashboard` の `initialData` に渡す
 - **robots / sitemap**: `src/app/robots.ts` / `src/app/sitemap.ts`。sitemap には `/`, `/about`, `/glossary`, `/widget`, `/events`, `/guide` + 3 ガイド, `/analysis` + 分析記事, `/portfolio`, `/sectors`, `/alerts`, `/events/[slug]` 全件, `/stock` + `/stock/[code]` 全件, `/ranking`, `/terms`, `/privacy` を収録。`lastModified` は内容が実際に変わった日だけを入れる（解説記事は `src/lib/learn-articles.ts` の `modifiedAt`、イベントは公開日、データ系は各 JSON の `generatedAt`、利用規約・プライバシーは最終改定日）。更新日を管理していない固定ページには付けない（以前はデプロイ日を全ページに入れており、Google が lastmod を信用しなくなるため 2026-11-18 に変更）。解説記事の一覧は `src/lib/learn-articles.ts` に集約し、`/learn` 一覧・sitemap・銘柄別ページの関連記事で共有する（各記事ページの `PUBLISHED_AT` / `MODIFIED_AT` と一致することをテストで確認）
 - **記事 JSON-LD**: `src/lib/article-jsonld.ts` の `buildArticleJsonLd({url, headline, description, datePublished, dateModified, imageUrl?})` で schema.org Article 用 JSON 文字列を生成し、記事ページで `<Script type="application/ld+json">` として埋め込む（分析記事で利用）
 - **WebSite + Organization JSON-LD**: `src/lib/website-jsonld.ts` の `buildWebSiteJsonLd()` を `src/app/layout.tsx` でグローバルに埋め込む。サイト名・運営組織（リブラボ）・ロゴを通知し、Google サイトリンク検索ボックス候補に乗せる

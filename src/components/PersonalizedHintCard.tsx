@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useIsClient } from "@/hooks/useIsClient";
 import Link from "next/link";
 import PeriodSwitcher from "@/components/_trend/PeriodSwitcher";
 import { getSentimentColor, getSentimentLevel } from "@/lib/sentiment";
@@ -28,27 +29,32 @@ const TAB_LABELS: Record<Persona, string> = {
   "fire-long-term": PERSONA_META["fire-long-term"].tabLabel,
 };
 
-export default function PersonalizedHintCard({ japanScore, usScore }: Props) {
-  const [persona, setPersona] = useState<Persona>(DEFAULT_PERSONA);
-  const [hydrated, setHydrated] = useState(false);
-
-  // localStorage からの復元（SSR でのちらつき回避のため useEffect で）
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (
-        stored === "nisa-tsumitate" ||
-        stored === "short-term-trader" ||
-        stored === "fire-long-term"
-      ) {
-        setPersona(stored);
-      }
-    } catch {
-      // localStorage が無効な環境ではデフォルトで続行
+/** 読み込み時に 1 回だけ localStorage を読む（サーバーでは null） */
+function readStoredPersonaOnce(): Persona | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (
+      stored === "nisa-tsumitate" ||
+      stored === "short-term-trader" ||
+      stored === "fire-long-term"
+    ) {
+      return stored;
     }
-    setHydrated(true);
-  }, []);
+  } catch {
+    // localStorage が無効な環境ではデフォルトで続行
+  }
+  return null;
+}
+
+export default function PersonalizedHintCard({ japanScore, usScore }: Props) {
+  // 前回選んだタイプは localStorage から読む。サーバー描画と初回ハイドレーションでは既定のタイプにして
+  // ずれを防ぎ、ブラウザでは読み込み時に 1 回だけ読む（別タブの変更には追従しない。従来どおり）
+  const isClient = useIsClient();
+  const [storedPersona] = useState(readStoredPersonaOnce);
+  const [selectedPersona, setPersona] = useState<Persona | null>(null);
+  const persona =
+    selectedPersona ?? (isClient ? storedPersona : null) ?? DEFAULT_PERSONA;
 
   const handleChange = (next: Persona) => {
     setPersona(next);
@@ -126,13 +132,11 @@ export default function PersonalizedHintCard({ japanScore, usScore }: Props) {
         <span aria-hidden="true">→</span>
       </Link>
 
-      {!hydrated && (
-        <noscript>
-          <p className="mt-3 text-xs text-gray-400">
-            ※ JavaScript 有効時は前回選択したタイプが自動で開きます
-          </p>
-        </noscript>
-      )}
+      <noscript>
+        <p className="mt-3 text-xs text-gray-400">
+          ※ JavaScript 有効時は前回選択したタイプが自動で開きます
+        </p>
+      </noscript>
     </div>
   );
 }

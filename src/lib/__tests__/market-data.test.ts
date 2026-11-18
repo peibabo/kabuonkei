@@ -37,8 +37,7 @@ describe("createMemoCache", () => {
   });
 
   it("invalidate で即座に null に戻る", () => {
-    let clock = 0;
-    const cache = createMemoCache<number>(1000, () => clock);
+    const cache = createMemoCache<number>(1000, () => 0);
     cache.set(42);
     expect(cache.get()).toBe(42);
     cache.invalidate();

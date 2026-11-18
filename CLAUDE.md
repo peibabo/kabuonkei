@@ -15,6 +15,7 @@
 - **yahoo-finance2** (v3) でVIX・主要指数・為替・米国債利回りを取得
 - **CNN Fear & Greed API** でセンチメントデータを取得（bot検知でブロック時は VIX ベース推定にフォールバック）
 - **Recharts** でミニチャート描画
+- Web フォントは自前ホスト（`public/fonts/` + `src/app/fonts.css`、`next/font/google` は使わない）。変更は `npm run fonts:download`。詳細は DESIGN.md のタイポグラフィ
 - **Vitest + Testing Library** でテスト
 - APIキャッシュ: `/api/market` Route Handler の ISR（`revalidate = 900` 秒 = 15 分）。トップページ（`src/app/page.tsx`）も同じ 15 分の ISR でサーバー側に `fetchAllMarketData()` を呼び、最初の HTML に温度・見出し・各セクションを含める（JS を実行しないクローラー向け。取得失敗・20 秒超えならブラウザで `/api/market` から取得する従来の動きに戻る）
 - デプロイ先: Vercel

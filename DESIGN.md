@@ -43,12 +43,14 @@
 
 | 用途 | フォント | Tailwind | 備考 |
 |---|---|---|---|
-| 朝刊見出し（H1 / Hero H2） | **Noto Serif JP 800** | `.font-serif-jp font-extrabold` | `next/font/google` で読み込み、`--font-serif-jp` 経由 |
+| 朝刊見出し（H1 / Hero H2） | **Noto Serif JP 800** | `.font-serif-jp font-extrabold` | 自前ホスト（下記）、`--font-serif-jp` 経由 |
 | 本文 (和文) | **Noto Sans JP 400 / 500** | （body 既定） | `--font-sans` のチェーン先頭 |
 | 数値 | **Geist Mono / tabular-nums** | `tabular-nums` または `font-mono` | スコア・パーセント・通貨で固定幅化 |
 | 欧文ロゴ・補助 | Geist Sans | （body 既定） | 和文フォント未読込時のフォールバック |
 
 `font-family` チェーン: `var(--font-sans-jp), var(--font-geist-sans), Arial, Helvetica, sans-serif`
+
+フォントは自前ホスト（2026-11-18〜）。`next/font/google` はビルドのたびに Google へ取りに行き、Vercel のビルドキャッシュ起因で失敗することがあったため、`public/fonts/` に Google と同じ unicode-range 分割の woff2 を置き、`src/app/fonts.css` の `@font-face` で読み込む（ブラウザはページに出る文字の分だけ取得する）。書体・ウェイトを変えるときは `scripts/download-fonts.ts` を直して `npm run fonts:download` を実行し、生成物（`public/fonts/`・`fonts.css`・`font-preloads.ts`）をコミットする。OG 画像（`src/lib/og/fonts.ts`）は実行時に Google Fonts から取得する別系統で、取得失敗時はシステムフォントに落ちる。
 
 文字サイズ: 読みやすさのため `globals.css` の `@theme` で Tailwind 既定を 1px 拡大している（`text-xs` = 13px / `text-sm` = 15px）。任意値も最小 11px（注記類は 12px）とし、10px 以下は使わない。
 

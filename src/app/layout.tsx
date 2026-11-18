@@ -1,35 +1,15 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import { preload } from "react-dom";
+// フォントは public/fonts/ に自前で置き、fonts.css の @font-face で読み込む（next/font/google は
+// ビルド時に Google へ取りに行き、Vercel のビルドキャッシュ起因で失敗することがあったため）。
+// 書体やウェイトを変えるときは scripts/download-fonts.ts を直して npm run fonts:download
+import "./fonts.css";
 import "./globals.css";
+import { FONT_PRELOADS } from "./font-preloads";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { buildWebSiteJsonLd } from "@/lib/website-jsonld";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// 朝刊スタイルの和文タイポグラフィ。見出し = Serif、本文 = Sans
-const notoSerifJp = Noto_Serif_JP({
-  variable: "--font-serif-jp",
-  subsets: ["latin"],
-  weight: ["600", "800"],
-  display: "swap",
-});
-
-const notoSansJp = Noto_Sans_JP({
-  variable: "--font-sans-jp",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap",
-});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION;
@@ -85,11 +65,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  for (const href of FONT_PRELOADS) {
+    preload(href, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  }
   return (
-    <html
-      lang="ja"
-      className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${notoSerifJp.variable} h-full antialiased`}
-    >
+    <html lang="ja" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-[#fafaf7]">
         <Script
           id="website-jsonld"

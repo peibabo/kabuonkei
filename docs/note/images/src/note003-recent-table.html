@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- note 第3弾 2016年以降の急落と11月6日（1200×790 を 2x 撮影）。配色は日本式（プラス=赤 / マイナス=青）
+     数字は nikkei-crash-analysis.json（2026-11-18 生成）の episodes。11/06 の行は japan-temperature-history.json の 11/18 終値で補足 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px; height: 790px; background: #fafaf7; color: #111; padding: 46px 56px 0;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; position: relative;
+  }
+  h1 { font-size: 34px; font-weight: 900; letter-spacing: -0.01em; }
+  .sub { margin-top: 16px; font-size: 17px; color: #6b7280; }
+  table { margin-top: 24px; width: 100%; border-collapse: collapse; }
+  th { background: #111827; color: #fff; font-size: 16px; font-weight: 800; height: 50px; text-align: center; }
+  th:first-child, td:first-child { text-align: left; padding-left: 18px; }
+  td { height: 52px; text-align: center; font-size: 19px; color: #374151; border-bottom: 1px solid #e5e7eb; }
+  td:first-child { font-size: 18px; font-weight: 800; color: #111; }
+  td:first-child small { font-size: 14px; font-weight: 500; color: #6b7280; margin-left: 6px; }
+  tr.now td { background: #eff6ff; }
+  tr.now td:first-child { color: #1d4ed8; }
+  .up { color: #dc2626; font-weight: 800; }
+  .down { color: #2563eb; font-weight: 800; }
+  .bottom { font-weight: 900; color: #111; }
+  .muted { color: #9ca3af; font-size: 16px; }
+  .note { position: absolute; left: 56px; bottom: 34px; font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .credit { position: absolute; right: 56px; bottom: 30px; font-size: 17px; font-weight: 700; color: #4b5563; }
+</style>
+</head>
+<body>
+  <h1>2016年以降の急落と、11月6日のいま</h1>
+  <p class="sub">急落した日の終値で買った場合のその後と、その後6ヶ月のうちにさらに下げた幅</p>
+  <table>
+    <tr><th>急落した日</th><th>下落率</th><th>温度</th><th>1ヶ月後</th><th>3ヶ月後</th><th>6ヶ月後</th><th>さらに下げた幅</th></tr>
+    <tr class="now"><td>2026/11/6<small>AI規制ショック</small></td><td>-6.0%</td><td>7°</td>
+      <td class="muted" colspan="3">観測中（11/18終値で <span class="up">+2.8%</span>、8営業日）</td><td class="muted">まだ当日が最安値</td></tr>
+    <tr><td>2026/3/9</td><td>-5.2%</td><td>65°</td><td><span class="up">+6.8%</span></td><td><span class="up">+21.8%</span></td><td><span class="up">+23.8%</span></td><td><span class="down">-3.2%</span></td></tr>
+    <tr><td>2025/4/7<small>トランプ関税ショック</small></td><td>-7.8%</td><td>0°</td><td><span class="up">+20.4%</span></td><td><span class="up">+27.5%</span></td><td><span class="up">+56.0%</span></td><td class="bottom">底</td></tr>
+    <tr><td>2024/8/2<small>令和のブラックマンデー</small></td><td>-5.8%</td><td>24°</td><td><span class="up">+7.7%</span></td><td><span class="up">+9.9%</span></td><td><span class="up">+8.1%</span></td><td><span class="down">-12.4%</span></td></tr>
+    <tr><td>2020/3/9<small>コロナショック</small></td><td>-5.1%</td><td>4°</td><td><span class="down">-1.8%</span></td><td><span class="up">+14.1%</span></td><td><span class="up">+18.8%</span></td><td><span class="down">-16.0%</span></td></tr>
+    <tr><td>2018/12/25<small>クリスマス暴落</small></td><td>-5.0%</td><td>2°</td><td><span class="up">+7.3%</span></td><td><span class="up">+12.3%</span></td><td><span class="up">+12.4%</span></td><td class="bottom">底</td></tr>
+    <tr><td>2016/11/9<small>トランプ当選</small></td><td>-5.4%</td><td>44°</td><td><span class="up">+16.9%</span></td><td><span class="up">+19.7%</span></td><td><span class="up">+21.9%</span></td><td class="bottom">底</td></tr>
+    <tr><td>2016/6/24<small>Brexit</small></td><td>-7.9%</td><td>13°</td><td><span class="up">+9.6%</span></td><td><span class="up">+11.6%</span></td><td><span class="up">+28.0%</span></td><td class="bottom">底</td></tr>
+    <tr><td>2016/2/9</td><td>-5.4%</td><td>4°</td><td><span class="up">+4.8%</span></td><td><span class="up">+2.4%</span></td><td><span class="up">+4.9%</span></td><td><span class="down">-7.0%</span></td></tr>
+  </table>
+  <p class="note">※温度は株温計の市場温度（日経平均と直前125営業日平均の乖離）を当時までさかのぼって計算<br>※過去の統計であり将来を保証しません</p>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

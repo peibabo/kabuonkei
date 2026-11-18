@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- note 第4弾アイキャッチ（1280×670 を 2x 撮影）。数字は ^VIX / ^GSPC（1990-01〜2026-11-17）を 2026-11-18 に集計した値 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 670px; background: #fafaf7; color: #111;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+    position: relative; overflow: hidden;
+  }
+  .kicker { position: absolute; left: 72px; top: 64px; font-size: 22px; font-weight: 700; color: #2563eb; letter-spacing: 0.04em; }
+  h1 { position: absolute; left: 72px; top: 108px; font-size: 58px; font-weight: 900; line-height: 1.25; letter-spacing: -0.01em; }
+  h1 .hl { color: #2563eb; }
+  .lead { position: absolute; left: 72px; top: 300px; width: 560px; font-size: 21px; line-height: 1.6; color: #6b7280; }
+  .foot { position: absolute; left: 72px; bottom: 96px; width: 640px; white-space: nowrap; font-size: 16px; line-height: 1.75; color: #6b7280; }
+  .credit { position: absolute; right: 72px; bottom: 36px; font-size: 19px; font-weight: 700; color: #4b5563; }
+  .panel { position: absolute; right: 72px; top: 96px; width: 450px; }
+  .ttl { font-size: 18px; font-weight: 700; color: #4b5563; margin-bottom: 18px; }
+  .row { margin-bottom: 22px; }
+  .lbl { font-size: 18px; font-weight: 800; color: #111; display: flex; justify-content: space-between; align-items: baseline; }
+  .lbl small { font-size: 14px; font-weight: 500; color: #6b7280; margin-left: 6px; }
+  .lbl .v { font-size: 34px; font-weight: 900; }
+  .bar { margin-top: 6px; height: 22px; background: #e5e7eb; border-radius: 6px; position: relative; }
+  .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; background: #9ca3af; }
+  .row.hit .bar i { background: #111827; }
+  .row.hit .v { color: #2563eb; }
+</style>
+</head>
+<body>
+  <div class="kicker">株温計・データ検証 第4弾</div>
+  <h1>VIX<span class="hl">30超え</span>は<br>「買い場」だったのか</h1>
+  <p class="lead">「6ヶ月後の勝率82%」を、<br>1回ずつ数え直したら普段の日より低かった</p>
+  <p class="foot">VIX・S&amp;P500 の終値（1990年1月〜2026年11月17日）で集計<br>※過去の統計であり将来のリターンを保証するものではありません</p>
+  <div class="panel">
+    <p class="ttl">S&amp;P500 を買って6ヶ月後に上がっていた割合</p>
+    <div class="row"><p class="lbl"><span>VIX30以上の日すべて<small>744日</small></span><span class="v">82%</span></p><div class="bar"><i style="width:82%"></i></div></div>
+    <div class="row hit"><p class="lbl"><span>30を超えた最初の日<small>35回</small></span><span class="v">66%</span></p><div class="bar"><i style="width:66%"></i></div></div>
+    <div class="row"><p class="lbl"><span>普段の日<small>全営業日</small></span><span class="v">74%</span></p><div class="bar"><i style="width:74%"></i></div></div>
+  </div>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

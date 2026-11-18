@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- note 第4弾 検証4 VIX 20〜30 × 極寒（1200×600 を 2x 撮影）。配色は日本式（プラス=赤 / マイナス=青）
+     数字は ^VIX（米国の日付）× 翌営業日（東京）の日本の温度（日経225 と直前125営業日平均の乖離、1990年からさかのぼって計算）、
+     日経平均はその翌営業日の終値で買ったとして 2026-11-18 に集計 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px; height: 600px; background: #fafaf7; color: #111; padding: 46px 56px 0;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; position: relative;
+  }
+  h1 { font-size: 34px; font-weight: 900; letter-spacing: -0.01em; }
+  .sub { margin-top: 16px; font-size: 17px; color: #6b7280; }
+  table { margin-top: 26px; width: 100%; border-collapse: collapse; }
+  th { background: #111827; color: #fff; font-size: 17px; font-weight: 800; height: 52px; text-align: center; }
+  th:first-child, td:first-child { text-align: left; padding-left: 20px; }
+  td { height: 80px; text-align: center; font-size: 22px; color: #374151; border-bottom: 1px solid #e5e7eb; }
+  td:first-child { font-size: 20px; font-weight: 800; color: #111; line-height: 1.3; }
+  td:first-child small { display: block; font-size: 14px; font-weight: 500; color: #6b7280; }
+  td .w { display: block; font-size: 15px; color: #6b7280; margin-top: 2px; }
+  tr.hl td { background: #eff6ff; }
+  tr.sep td { border-top: 3px solid #d1d5db; }
+  .up { color: #dc2626; font-weight: 800; }
+  .note { position: absolute; left: 56px; bottom: 30px; font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .credit { position: absolute; right: 56px; bottom: 30px; font-size: 17px; font-weight: 700; color: #4b5563; }
+</style>
+</head>
+<body>
+  <h1>VIX 20〜30 × 日本の温度「極寒」のあと、日経平均は</h1>
+  <p class="sub">上段: 平均リターン / 下段: 上がっていた回数・割合。2026年11月18日はこの組み合わせ（VIX 25.5・温度 16°）</p>
+  <table>
+    <tr><th>集計した期間</th><th>3ヶ月後</th><th>6ヶ月後</th><th>1年後</th></tr>
+    <tr><td>2017年5月以降<small>サイトの表と同じ期間（4回）</small></td>
+      <td><span class="up">+11.4%</span><span class="w">4回中4回</span></td>
+      <td><span class="up">+16.1%</span><span class="w">4回中4回</span></td>
+      <td><span class="up">+26.1%</span><span class="w">4回中4回</span></td></tr>
+    <tr class="hl"><td>1990年以降<small>同じ組み合わせ（33回）</small></td>
+      <td><span class="up">+1.4%</span><span class="w">55%</span></td>
+      <td><span class="up">+3.4%</span><span class="w">55%</span></td>
+      <td><span class="up">+5.3%</span><span class="w">52%</span></td></tr>
+    <tr class="sep"><td>参考: 極寒のときすべて<small>VIXは問わない、1990年以降（36回）</small></td>
+      <td><span class="up">+1.1%</span><span class="w">56%</span></td>
+      <td><span class="up">+2.4%</span><span class="w">58%</span></td>
+      <td><span class="up">+8.4%</span><span class="w">56%</span></td></tr>
+  </table>
+  <p class="note">※20営業日以内に続いた場合は1回にまとめ、VIXが出た日（米国）の翌営業日（東京）の終値で買ったとして計算<br>※温度は株温計と同じ定義で1990年までさかのぼって計算。過去の統計であり将来を保証しません</p>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

@@ -114,7 +114,7 @@ export default function SimilarDaysCard({
 
       {rest.length > 0 && (
         <>
-          <p className="text-xs text-gray-500 mb-2">類似度TOP5（スコア差が近い順）</p>
+          <p className="text-xs text-gray-500 mb-2">似ている日 TOP5（温度が近い順。日付が 30 日以内の日は 1 件にまとめています）</p>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -126,13 +126,13 @@ export default function SimilarDaysCard({
                     温度
                   </th>
                   <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
-                    1M
+                    1ヶ月後
                   </th>
                   <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
-                    3M
+                    3ヶ月後
                   </th>
                   <th className="px-2 py-2 text-center text-xs text-gray-400 font-medium">
-                    6M
+                    6ヶ月後
                   </th>
                 </tr>
               </thead>

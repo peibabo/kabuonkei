@@ -42,7 +42,7 @@
   - `jp.scores`: 既存 `japan-temperature-history.json` の `daily[].score` を再利用
 - 生成スクリプト: `npm run generate:score-distribution`（`scripts/generate-score-distribution.ts`）
 - アクセサ: `src/lib/score-distribution.ts`（`getScorePercentile(score, market)` / `getDistributionMeta()`）。二分探索で O(log n) の percentile 計算。JSON 未生成時は `null` を返して UI 非表示
-- UI: `src/components/HistoricalPercentileBadge.tsx` を `FearGreedGauge` のスコア直下に組み込み。下位 20% 以下は青系 + ❄️、上位 20% 以上は赤系 + 🔥、それ以外は灰色テキスト
+- UI: `src/components/HistoricalPercentileBadge.tsx` を `FearGreedGauge` のスコア直下に組み込み。下位 20% 以下かつ温度帯が極寒・冷え込みなら青系 + ❄️、上位 20% 以上かつ過熱・沸騰なら赤系 + 🔥、それ以外は灰色テキスト（米国版は過去の分布が高めに偏っており、平温 48 でも下位 14% になるため、温度帯と矛盾する「冷たい」表示を避ける）
 - 生成順序の依存: `japan-temperature-history.json` を読み込むため `generate:japan-temperature-history` の後に実行する必要あり（CI workflow で順序固定）
 
 ## データ品質（異常クオートの除去）

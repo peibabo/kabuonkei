@@ -103,7 +103,12 @@ function HighlightMessage({
     (threeMonth.winRate / 100) * threeMonth.sampleSize
   );
   const temperatureLabel = market === "us" ? "米国版温度" : "日本版温度";
-  const indexPhrase = `${indexLabel}が上昇`;
+  // 直近の日はまだ 3 ヶ月後が来ていないので、分母は「結果が出ている日数」にそろえる
+  const sampleSize = threeMonth.sampleSize;
+  // winRate は小数 1 桁に丸めて保存されている。1,000 日未満なら 1 日でも下落があれば 99.9 以下になるので、
+  // 100 ちょうどのときだけ「すべて」と書ける（それ以上の日数では丸めで 100 になりうるので書かない）
+  const allWon = sampleSize > 0 && sampleSize < 1000 && threeMonth.winRate === 100;
+  const isExtreme = stats.level === "極寒" || stats.level === "沸騰";
 
   return (
     <div
@@ -119,16 +124,25 @@ function HighlightMessage({
           {stats.level}
         </span>
         」だった
-        <span className="font-bold">{stats.occurrences}日間</span>
-        のうち、3ヶ月後に{indexPhrase}したのは
+        <span className="font-bold">{stats.occurrences}日</span>
+        のうち、3ヶ月後の結果が出ている
+        <span className="font-bold">{sampleSize}日</span>
+        では、
         <span className="font-bold">
-          {winCount}回（{threeMonth.winRate.toFixed(0)}%）
+          {allWon
+            ? `すべて（${threeMonth.winRate.toFixed(0)}%）`
+            : `${winCount}日（${threeMonth.winRate.toFixed(0)}%）`}
         </span>
-        、平均リターンは
+        で{indexLabel}が上昇。平均リターンは
         <span className="font-bold" style={{ color }}>
           {formatReturn(threeMonth.avgReturn)}
         </span>
       </p>
+      {isExtreme && (
+        <p className="mt-1.5 text-xs text-gray-500 leading-relaxed">
+          ※ これらの日は数回の急落・急騰局面に集中しており、局面の数で見ると少数です。
+        </p>
+      )}
     </div>
   );
 }

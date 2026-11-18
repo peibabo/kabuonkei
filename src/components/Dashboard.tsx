@@ -72,8 +72,6 @@ export default function Dashboard({ initialData = null }: DashboardProps) {
         <TemperatureTiles
           jp={japanScore}
           us={usScore}
-          jpDelta={jpDelta}
-          usDelta={usDelta}
           jpSparkline={data.japanSparkline}
           usSparkline={data.usSparkline}
         />

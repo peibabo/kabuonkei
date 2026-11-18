@@ -33,7 +33,18 @@ describe("HistoricalStatsCard", () => {
   it("ハイライトメッセージにリターン情報を含む", () => {
     const { container } = render(<HistoricalStatsCard market="us" currentScore={10} />);
     expect(container.textContent).toContain("極寒");
-    expect(container.textContent).toContain("3ヶ月後にS&P500が上昇した");
+    expect(container.textContent).toContain("3ヶ月後の結果が出ている");
+    expect(container.textContent).toContain("S&P500が上昇");
+  });
+
+  it("極端な温度帯では局面が少数である注記を出す", () => {
+    const { container } = render(<HistoricalStatsCard market="us" currentScore={10} />);
+    expect(container.textContent).toContain("局面の数で見ると少数");
+  });
+
+  it("平温では局面の注記を出さない", () => {
+    const { container } = render(<HistoricalStatsCard market="us" currentScore={50} />);
+    expect(container.textContent).not.toContain("局面の数で見ると少数");
   });
 
   it("注意書きを表示する", () => {

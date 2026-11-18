@@ -71,12 +71,61 @@ describe("findSimilarDays", () => {
 
   it("TOP N で件数が制限される", () => {
     const history: SimilarDayEntry[] = Array.from({ length: 20 }, (_, i) => ({
-      date: `2024-01-${String(i + 1).padStart(2, "0")}`,
+      // 同じ局面の除外（30 日以内）にかからないよう 2 ヶ月おきの日付にする
+      date: new Date(Date.UTC(2020, i * 2, 1)).toISOString().slice(0, 10),
       score: 50 + i,
       ...baseEntry,
     }));
     const result = findSimilarDays(50, history, {}, 3);
     expect(result).toHaveLength(3);
+  });
+
+  it("選んだ日から 30 日以内の日は同じ局面として除外する", () => {
+    const history: SimilarDayEntry[] = [
+      { date: "2025-04-22", score: 16, ...baseEntry },
+      { date: "2025-04-21", score: 16, ...baseEntry },
+      { date: "2025-04-03", score: 16, ...baseEntry },
+      { date: "2025-05-20", score: 15, ...baseEntry },
+      { date: "2020-05-07", score: 16, ...baseEntry },
+      { date: "2020-03-01", score: 14, ...baseEntry },
+    ];
+    const result = findSimilarDays(16, history, {}, 5);
+    expect(result.map((r) => r.date)).toEqual([
+      "2025-04-22",
+      "2020-05-07",
+      "2020-03-01",
+    ]);
+  });
+
+  it("同じ局面にラベルつきの日があれば、温度差 +2 以内ならそちらを代表にする", () => {
+    const history: SimilarDayEntry[] = [
+      { date: "2020-03-09", score: 5, ...baseEntry },
+      { date: "2020-03-19", score: 7, ...baseEntry },
+      { date: "2020-03-23", score: 9, ...baseEntry },
+    ];
+    const events = { "2020-03-19": "コロナショック", "2020-03-23": "別ラベル" };
+    const result = findSimilarDays(5, history, events, 5);
+    expect(result).toHaveLength(1);
+    expect(result[0].date).toBe("2020-03-19");
+    expect(result[0].eventLabel).toBe("コロナショック");
+  });
+
+  it("ラベルつきの日でも温度差が離れすぎていれば差し替えない", () => {
+    const history: SimilarDayEntry[] = [
+      { date: "2020-03-09", score: 5, ...baseEntry },
+      { date: "2020-03-19", score: 9, ...baseEntry },
+    ];
+    const result = findSimilarDays(5, history, { "2020-03-19": "コロナショック" }, 5);
+    expect(result.map((r) => r.date)).toEqual(["2020-03-09"]);
+  });
+
+  it("31 日離れていれば別の局面として残す", () => {
+    const history: SimilarDayEntry[] = [
+      { date: "2025-01-01", score: 50, ...baseEntry },
+      { date: "2025-02-01", score: 50, ...baseEntry },
+    ];
+    const result = findSimilarDays(50, history, {}, 5);
+    expect(result).toHaveLength(2);
   });
 
   it("scoreDiff フィールドが正しく計算される", () => {

@@ -16,5 +16,6 @@
 - UI: `src/components/SimilarDaysCard.tsx`（日本版/米国版共通、Dashboard で2列配置）。イベントラベル付き行は `/events/[slug]?ref=event_link` へのリンクとして描画
 - 検索ロジック: `findSimilarDays(currentScore, history, events, topN)`
   - スコア差が小さい順。同率ならイベントラベル付きを優先、さらに同率なら新しい日付を優先
+  - すでに選んだ日から 30 暦日以内の日は同じ局面とみなして飛ばす（`SAME_EPISODE_DAYS`）。上位 5 件が 2025 年 4 月の数日で埋まるような偏りを避けるため。ツイート・アラートメールも同じ関数を使う
   - `return3m` が null のエントリ（最近すぎて未到達）は除外
 - イベント詳細ページとの紐付けは `src/components/dashboard/SimilarDaysSection.tsx` で `date → slug` マップを注入して行う

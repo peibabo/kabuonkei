@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-17",
+  "generatedAt": "2026-11-18",
   "dataRange": {
     "from": "2016-04-22",
-    "to": "2026-11-17"
+    "to": "2026-11-18"
   },
   "rule": {
     "bands": [
@@ -53134,6 +53134,16 @@
           "benchmarkDcaSameSpeed": 212.94,
           "equityRatio": 0.6558,
           "score": 57
+        },
+        {
+          "date": "2026-11-17",
+          "nav": 252.96,
+          "benchmark": 350.96,
+          "benchmarkDca": 205.41,
+          "benchmarkDcaBoost": 213.03,
+          "benchmarkDcaSameSpeed": 210.75,
+          "equityRatio": 0.6534,
+          "score": 48
         }
       ],
       "trades": [
@@ -53563,30 +53573,30 @@
         }
       ],
       "stats": {
-        "totalReturn": 154.67,
-        "benchmarkReturn": 254.59,
-        "alpha": -99.92,
-        "cagr": 9.25,
-        "benchmarkCagr": 12.72,
+        "totalReturn": 152.96,
+        "benchmarkReturn": 250.96,
+        "alpha": -98,
+        "cagr": 9.18,
+        "benchmarkCagr": 12.61,
         "maxDrawdown": -29.17,
         "benchmarkMaxDrawdown": -33.92,
-        "sharpe": 0.72,
+        "sharpe": 0.71,
         "benchmarkSharpe": 0.76,
-        "dcaReturn": 107.54,
-        "dcaCagr": 7.15,
+        "dcaReturn": 105.41,
+        "dcaCagr": 7.05,
         "dcaMaxDrawdown": -17.72,
-        "dcaSharpe": 0.7,
-        "alphaVsDca": 47.13
+        "dcaSharpe": 0.69,
+        "alphaVsDca": 47.55
       },
       "current": {
-        "date": "2026-11-16",
-        "score": 57,
+        "date": "2026-11-17",
+        "score": 48,
         "band": "平温",
-        "equityRatio": 0.6558,
-        "cashRatio": 0.3442,
-        "nav": 254.67,
-        "benchmark": 354.59,
-        "benchmarkDca": 207.54
+        "equityRatio": 0.6534,
+        "cashRatio": 0.3466,
+        "nav": 252.96,
+        "benchmark": 350.96,
+        "benchmarkDca": 205.41
       },
       "endState": {
         "equityUnits": 0.022517909914808894,
@@ -53693,12 +53703,12 @@
         "totalMonths": 128,
         "coldMonths": 3,
         "exhaustedMonth": 122,
-        "boostReturn": 115.24,
+        "boostReturn": 113.03,
         "boostMaxDrawdown": -18.74,
-        "sameSpeedReturn": 112.94,
+        "sameSpeedReturn": 110.75,
         "sameSpeedMaxDrawdown": -18.34,
-        "boostVsDca": 7.7,
-        "timingEffect": 2.3
+        "boostVsDca": 7.62,
+        "timingEffect": 2.28
       }
     }
   }

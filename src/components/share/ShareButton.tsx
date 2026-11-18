@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useIsClient } from "@/hooks/useIsClient";
 import { createPortal } from "react-dom";
 import { trackEvent } from "@/lib/analytics";
 import { formatJstDateLabel } from "@/lib/jst-date";
@@ -20,14 +21,11 @@ export interface ShareButtonProps {
  */
 export default function ShareButton(props: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // Portal 先の document.body はブラウザでしか使えないので、マウント後だけ描画する
+  const mounted = useIsClient();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://kabuonkei.com";
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   function handleOpen() {
     trackEvent("share_sheet_open", { market: props.market });

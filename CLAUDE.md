@@ -38,7 +38,7 @@
 - [温度推移データ（ハイブリッド方式 B+A）](docs/features/temperature-history.md)
 - [今日の類似日（Similar Days）](docs/features/similar-days.md)
 - [イベント詳細ページ `/events/[slug]`](docs/features/events.md)
-- [分析記事 `/analysis/[slug]`（信用倍率・VIX・日米乖離・温度帯×業種）](docs/features/analysis.md)
+- [分析記事 `/analysis/[slug]`（信用倍率・VIX・日米乖離・温度帯×業種・日経平均の急落後）](docs/features/analysis.md)
 - [温度連動バーチャルポートフォリオ `/portfolio`](docs/features/portfolio.md)
 - [銘柄別の株価の温度 `/stock` / `/ranking`（日経225、z値方式）](docs/features/stock-temperature.md)
 - [温度アラート（メール通知）](docs/features/alerts.md)

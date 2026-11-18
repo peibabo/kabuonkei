@@ -6,6 +6,10 @@ import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
 import { getDivergenceAnalysis } from "@/lib/divergence-analysis";
 import { getPortfolioHistory } from "@/lib/portfolio";
 import { getJapanSectorHeatmap } from "@/lib/japan-sector-heatmap";
+import {
+  getNikkeiCrashAnalysis,
+  NIKKEI_CRASH_ARTICLE,
+} from "@/lib/nikkei-crash-analysis";
 import { getStockCodes, getStockTemperatureFile } from "@/lib/stock-temperature";
 
 /** 利用規約・プライバシーポリシーの最終改定日（各ページの「最終改定日」と揃える） */
@@ -61,12 +65,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // セクターヒートマップは毎月1日に再生成されるので generatedAt を使う
   const sectorHeatmap = getJapanSectorHeatmap();
   const sectorHeatmapModified = new Date(sectorHeatmap.generatedAt);
+  const crashAnalysisModified = new Date(getNikkeiCrashAnalysis().generatedAt);
   const analysisIndexModified = new Date(
     Math.max(
       marginAnalysisModified.getTime(),
       vixAnalysisModified.getTime(),
       divergenceAnalysisModified.getTime(),
-      sectorHeatmapModified.getTime()
+      sectorHeatmapModified.getTime(),
+      crashAnalysisModified.getTime()
     )
   );
 
@@ -152,6 +158,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/analysis/sector-rotation-temperature`,
       lastModified: sectorHeatmapModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}${NIKKEI_CRASH_ARTICLE.path}`,
+      lastModified: crashAnalysisModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

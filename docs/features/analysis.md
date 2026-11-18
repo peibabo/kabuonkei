@@ -2,6 +2,22 @@
 
 独自データを掛け合わせた深掘り SEO 記事の置き場所。ペルソナ別の `/guide`、イベント別の `/events` とは別枠で、トピック×独自データのハイブリッド記事を貯める。収益化戦略上は「すでにメイン口座を持つ中級者」向けに信用取引サブ口座アフィなどの文脈適合 CTA を添える。
 
+## 第5弾: 日経平均の急落後（`/analysis/nikkei-crash-aftermath`）
+
+「日経平均が1日5%以上下げた後どうなったか」を 1985 年以降の全件で検証する記事（2026-11-18 公開。11/06 の -6% 急落の直後で「暴落 その後」「底はいつ」系の検索需要を狙う）。フックは「急落した日に買うと 3ヶ月後の成績は良いが、急落した日が底だったのは 25 回中 4 回だけ → 分けて買う」。
+
+**データ層**:
+- `src/data/nikkei-crash-analysis.json`: Yahoo `^N225` 日足（1985-01〜）から生成。生成スクリプト: `npm run generate:nikkei-crash`（`scripts/generate-nikkei-crash-analysis.ts`）。月次の `update-historical-stats.yml` で再生成し、新しい急落は自動で一覧と集計に入る。JST 16 時より前の実行では当日の途中値を捨てる（月次ジョブは 9 時起動のため）
+- 集計の純粋関数: `scripts/_lib/nikkei-crash.ts` の `computeNikkeiCrashAnalysis()`。前日比 -5% 以下を急落日とし、直前の急落から 20 営業日以内の急落は同じ回にまとめる（最初の日を買った日とする）。前方リターンは 21/63/126/252 営業日。その後の最大下落は 126 営業日以内の最安値まで（6ヶ月未経過の回は `isComplete: false` で底の集計から除く）。温度は `computeJapanTemperatureSeries()` で 1985 年までさかのぼって計算し、20 以下を「寒い」として比較
+- 型とアクセサ: `src/lib/nikkei-crash-analysis.ts`（`getNikkeiCrashAnalysis` / `getLatestCrashEpisode` / `getFailedCrashEpisodes` = 6ヶ月後マイナスの回）
+
+**UI**:
+- `src/app/analysis/nikkei-crash-aftermath/page.tsx`: Server Component のみ（期間切替なし。表は 4 期間を横に並べる）。結論・検証のやり方・急落 vs 普段の日・底だったか・温度別・外れた例・全件一覧・注意点。本文の数字はすべて JSON から描画時に算出。GA4 の `analysis_view` は `src/components/analysis/AnalysisViewTracker.tsx`（Server Component の記事用の汎用部品）で送る
+- `opengraph-image.tsx`: グレー系。3ヶ月後の平均と「◯回中◯回だけ底」の対比
+- `/analysis` 一覧・sitemap・`/feed.xml`・`related-reading.ts`（銘柄ページの関連記事の巡回枠）に追加
+
+**テスト**: `scripts/__tests__/nikkei-crash.test.ts`（閾値・まとめ方・前方リターン・未経過の扱い・温度の振り分け・生成済み JSON の整合）
+
 ## 第4弾: 温度帯×業種（`/analysis/sector-rotation-temperature`）
 
 「暴落時はディフェンシブ銘柄」の通説を検証する記事。極寒帯の後 3 ヶ月で最も戻ったのは機械・電機・鉄鋼（景気敏感）で、ディフェンシブ（食品・医薬品・電力ガス）との差は約 8pp という逆説がフック。SEO は「暴落時 強い業種」「セクターローテーション」系クエリ狙い。

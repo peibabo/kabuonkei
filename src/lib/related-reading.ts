@@ -6,6 +6,7 @@
  * 225 ページ全体で各記事にまんべんなくリンクが張られるようにする（同じ銘柄では毎回同じ記事になる）。
  */
 import { LEARN_ARTICLES } from "./learn-articles";
+import { NIKKEI_CRASH_ARTICLE } from "./nikkei-crash-analysis";
 
 export interface ReadingLink {
   href: string;
@@ -21,6 +22,11 @@ export interface ReadingEvent {
 
 /** 分析記事（/analysis/[slug]）。タイトルは関連記事欄向けの短い形 */
 export const ANALYSIS_READINGS: ReadingLink[] = [
+  {
+    href: NIKKEI_CRASH_ARTICLE.path,
+    title: NIKKEI_CRASH_ARTICLE.shortTitle,
+    kind: "分析",
+  },
   {
     href: "/analysis/sector-rotation-temperature",
     title: "暴落時に強い業種はどれ？温度帯×17業種の検証",

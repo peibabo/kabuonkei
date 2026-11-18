@@ -78,7 +78,7 @@ export default function SectorHeatmapTable({ period, currentLevel }: Props) {
                     </span>
                   </div>
                   {isCurrent && (
-                    <span className="text-[10px] text-gray-400">
+                    <span className="text-[11px] text-gray-400">
                       ◀ 現在
                     </span>
                   )}
@@ -123,7 +123,7 @@ export default function SectorHeatmapTable({ period, currentLevel }: Props) {
                     >
                       {formatReturn(periodStats.avgReturn)}
                     </div>
-                    <div className="text-[10px] text-gray-500">
+                    <div className="text-[11px] text-gray-500">
                       勝率{periodStats.winRate.toFixed(0)}% / n=
                       {periodStats.sampleSize}
                     </div>

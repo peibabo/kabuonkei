@@ -50,6 +50,8 @@
 
 `font-family` チェーン: `var(--font-sans-jp), var(--font-geist-sans), Arial, Helvetica, sans-serif`
 
+文字サイズ: 読みやすさのため `globals.css` の `@theme` で Tailwind 既定を 1px 拡大している（`text-xs` = 13px / `text-sm` = 15px）。任意値も最小 11px（注記類は 12px）とし、10px 以下は使わない。
+
 ## 4. レイアウト・カード形状
 
 ### 紙面レイヤー（ヒーロー / 号数帯）

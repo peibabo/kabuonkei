@@ -230,7 +230,7 @@ export default function ShareSheet(props: ShareSheetProps) {
               </span>
               <span>埋め込みコード（HTML）を見る</span>
             </summary>
-            <pre className="mt-2 bg-gray-900 text-gray-100 text-[10px] rounded-lg p-3 overflow-x-auto leading-relaxed">
+            <pre className="mt-2 bg-gray-900 text-gray-100 text-[11px] rounded-lg p-3 overflow-x-auto leading-relaxed">
               <code>{embedHtml}</code>
             </pre>
           </details>

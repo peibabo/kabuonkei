@@ -187,7 +187,7 @@ export default function MarginRatioAnalysisBody({ analysis }: Props) {
                         <span className={isCurrent ? "font-bold" : ""}>{tb}</span>
                       </div>
                       {isCurrent && (
-                        <span className="text-[10px] text-gray-400">◀ 現在</span>
+                        <span className="text-[11px] text-gray-400">◀ 現在</span>
                       )}
                     </th>
                   );
@@ -208,7 +208,7 @@ export default function MarginRatioAnalysisBody({ analysis }: Props) {
                     >
                       {rb.label}
                       {isCurrentRatioBand && (
-                        <span className="block text-[10px] text-gray-400">
+                        <span className="block text-[11px] text-gray-400">
                           ▲ 現在
                         </span>
                       )}
@@ -249,7 +249,7 @@ export default function MarginRatioAnalysisBody({ analysis }: Props) {
                           >
                             {formatReturn(stats.avgReturn)}
                           </div>
-                          <div className="text-[10px] text-gray-500">
+                          <div className="text-[11px] text-gray-500">
                             勝率 {stats.winRate.toFixed(0)}% / n={cell.occurrences}
                           </div>
                         </td>

@@ -98,7 +98,7 @@ export default function InvestingBooksCTA({
           </li>
         ))}
       </ul>
-      <p className="text-[11px] text-gray-500 mt-3 leading-relaxed">
+      <p className="text-[12px] text-gray-500 mt-3 leading-relaxed">
         ※ 書籍は編集者（運営者 ao）が実際に参考にしている古典です。将来的にリンクが Amazon アソシエイト経由に切り替わる可能性があります（PR）。
       </p>
     </aside>

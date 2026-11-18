@@ -90,7 +90,7 @@ export default function MarginAccountCTA({ placement }: Props) {
           </li>
         ))}
       </ul>
-      <p className="text-[11px] text-gray-500 mt-3 leading-relaxed">
+      <p className="text-[12px] text-gray-500 mt-3 leading-relaxed">
         ※ 信用取引は担保となる現金または有価証券を預けたうえで、証券会社から資金や株式を借りて売買する取引です。元本を超える損失が発生する可能性があるため、仕組みとリスクを十分にご確認のうえご利用ください。
       </p>
     </aside>

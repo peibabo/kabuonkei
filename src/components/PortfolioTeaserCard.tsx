@@ -76,7 +76,7 @@ export default function PortfolioTeaserCard() {
               {jp.stats.alphaVsDca.toFixed(1)}pp
             </span>
           </div>
-          <div className="text-[11px] text-gray-500 mt-0.5">
+          <div className="text-[12px] text-gray-500 mt-0.5">
             温度 {jp.stats.totalReturn.toFixed(1)}% / 積立{" "}
             {jp.stats.dcaReturn.toFixed(1)}%
           </div>
@@ -85,7 +85,7 @@ export default function PortfolioTeaserCard() {
             / 現金 {(jp.current.cashRatio * 100).toFixed(0)}%
             <span className="ml-2 text-gray-400">（{jpBand}）</span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-1">
+          <div className="text-[12px] text-gray-400 mt-1">
             最大DD vs 買い持ち:{" "}
             <span className={drawdownGapColorClass(jpDdVsBuyHold)}>
               {formatDrawdownGap(jpDdVsBuyHold)}
@@ -105,7 +105,7 @@ export default function PortfolioTeaserCard() {
               {us.stats.alphaVsDca.toFixed(1)}pp
             </span>
           </div>
-          <div className="text-[11px] text-gray-500 mt-0.5">
+          <div className="text-[12px] text-gray-500 mt-0.5">
             温度 {us.stats.totalReturn.toFixed(1)}% / 積立{" "}
             {us.stats.dcaReturn.toFixed(1)}%
           </div>
@@ -114,7 +114,7 @@ export default function PortfolioTeaserCard() {
             / 現金 {(us.current.cashRatio * 100).toFixed(0)}%
             <span className="ml-2 text-gray-400">（{usBand}）</span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-1">
+          <div className="text-[12px] text-gray-400 mt-1">
             最大DD vs 買い持ち:{" "}
             <span className={drawdownGapColorClass(usDdVsBuyHold)}>
               {formatDrawdownGap(usDdVsBuyHold)}

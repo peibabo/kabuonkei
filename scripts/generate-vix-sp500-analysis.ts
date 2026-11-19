@@ -3,13 +3,13 @@
  *
  * 入力:
  *   - Yahoo Finance: ^VIX / ^GSPC / ^N225 日足 (過去20年)
- *   - src/data/japan-temperature-history.json (2016-04-22〜、日本版 市場温度 = 日経225 × 125日移動平均乖離)
+ *   - src/data/japan-temperature-history.json (直近約10年、日本版 市場温度 = 日経225 × 125日移動平均乖離)
  *
  * 出力: src/data/vix-sp500-analysis.json
  *
  * 集計:
  *   - Primary (1D): VIX バンド × {S&P500, 日経225} の 1M/3M/6M 前方リターン
- *   - Joint (2D): VIX × 日本版温度バンド × 日経225 のクロス市場集計 (2016〜)
+ *   - Joint (2D): VIX × 日本版温度バンド × 日経225 のクロス市場集計 (温度履歴がある直近約10年)
  *   - VIX の historical quantile (p25/p50/p75/p95) + 最新値
  *
  * 実行: npm run generate:vix-sp500
@@ -344,7 +344,7 @@ async function main() {
     latestContext,
     note:
       "Primary は VIX 終値 × S&P500/日経225 終値の同日基準、JST 換算で前方 30/90/180 カレンダー日後の終値比較。" +
-      "Joint は 2016 年以降に日本版 市場温度 (日経225 × 125日移動平均乖離)が計算できる期間を対象に、VIX バンド × 日本版温度帯 ごとに日経225 の前方リターンをクロス集計。" +
+      "Joint は日本版 市場温度 (日経225 × 125日移動平均乖離)の履歴がある直近約10年を対象に、VIX バンド × 日本版温度帯 ごとに日経225 の前方リターンをクロス集計。" +
       "^VIX は米国のセンチメント指標、日本版温度は独立した需給ベースなので、同時水準の組合せ効果を見ることができる。",
   };
 

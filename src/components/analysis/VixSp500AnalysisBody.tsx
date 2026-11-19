@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { PeriodStats } from "@/lib/historical-stats";
 import {
   type VixAnalysisPeriodKey,
+  type VixEpisode,
+  type VixEpisodeSummary,
+  type VixPrimaryBand,
   type VixSp500Analysis,
   computeVixPercentile,
   findVixJointCell,
@@ -239,6 +243,14 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
         </p>
       </section>
 
+      {analysis.episodes && (
+        <EpisodeSection
+          summary={analysis.episodes}
+          highBand={analysis.primary.bands.find((b) => b.band === "30〜")}
+          period={period}
+        />
+      )}
+
       <InvestingBooksCTA placement="middle_cta" />
 
       <section id="joint" className="my-10 not-prose">
@@ -365,5 +377,156 @@ export default function VixSp500AnalysisBody({ analysis }: Props) {
 
       <InvestingBooksCTA placement="bottom_cta" />
     </>
+  );
+}
+
+function StatCells({ stats }: { stats: PeriodStats | undefined }) {
+  if (!stats || stats.sampleSize === 0) {
+    return (
+      <>
+        <td className="text-right text-gray-300">—</td>
+        <td className="text-right text-gray-300">—</td>
+      </>
+    );
+  }
+  return (
+    <>
+      <td className={`text-right font-mono ${returnColorClass(stats.avgReturn)}`}>
+        {formatReturn(stats.avgReturn)}
+      </td>
+      <td className="text-right font-mono">{stats.winRate.toFixed(0)}%</td>
+    </>
+  );
+}
+
+function EpisodeSection({
+  summary,
+  highBand,
+  period,
+}: {
+  summary: VixEpisodeSummary;
+  highBand: VixPrimaryBand | undefined;
+  period: VixAnalysisPeriodKey;
+}) {
+  const { episodes, firstDay, baseline, bottom, threshold, totalDays } = summary;
+  const longest = episodes.reduce<VixEpisode | null>(
+    (m, e) => (m == null || e.days > m.days ? e : m),
+    null
+  );
+  return (
+    <section id="episodes" className="my-10 not-prose">
+      <h2 className="text-xl font-bold text-gray-900 mb-2">
+        「日数」で数えるか、「回数」で数えるか
+      </h2>
+      <p className="text-sm text-gray-700 leading-relaxed mb-4">
+        上の表は、VIX が {threshold} 以上だった<strong>日</strong>をすべて数えています（{totalDays} 日）。
+        この数え方だと、長く続いた危機ほど多く数えられ、その後半の<strong>底に近い日</strong>が成績を押し上げます。
+        {longest && (
+          <>
+            {" "}たとえば {longest.start} から {longest.end} までの 1 回だけで {longest.days} 日あり、全体の
+            {Math.round((longest.days / totalDays) * 100)}% を占めます。
+          </>
+        )}
+        そこで、前に {threshold} 以上だった日から {summary.gapTradingDays} 営業日以内のものを同じ 1 回にまとめ、
+        <strong>{threshold} を超えた最初の日</strong>に S&amp;P500 を買った場合も集計しました（{episodes.length} 回）。
+      </p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border border-gray-200 rounded-lg min-w-[480px]">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-3 py-2 text-left font-semibold">
+                買った日（{PERIOD_LABELS[period]}）
+              </th>
+              <th className="px-3 py-2 text-right font-semibold">平均リターン</th>
+              <th className="px-3 py-2 text-right font-semibold">勝率</th>
+            </tr>
+          </thead>
+          <tbody className="[&>tr>td]:px-3 [&>tr>td]:py-2 [&>tr]:border-t [&>tr]:border-gray-100">
+            <tr>
+              <td>
+                VIX {threshold} 以上の日すべて
+                <span className="block text-[11px] text-gray-500">日数で数える（{highBand?.sp500[period].sampleSize ?? totalDays} 日）</span>
+              </td>
+              <StatCells stats={highBand?.sp500[period]} />
+            </tr>
+            <tr className="bg-amber-50">
+              <td className="font-semibold">
+                {threshold} を超えた最初の日
+                <span className="block text-[11px] font-normal text-gray-500">
+                  回数で数える（{firstDay[period].sampleSize} 回）
+                </span>
+              </td>
+              <StatCells stats={firstDay[period]} />
+            </tr>
+            <tr>
+              <td>
+                普段の日
+                <span className="block text-[11px] text-gray-500">全取引日</span>
+              </td>
+              <StatCells stats={baseline[period]} />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="text-sm text-gray-700 leading-relaxed mt-4">
+        {threshold} を超えた最初の日の終値が、その後 6ヶ月の S&amp;P500 の最安値だったのは
+        <strong className="mx-1">
+          {bottom.of} 回中 {bottom.count} 回
+        </strong>
+        でした。「VIX が高い時期に良い買い場があった」ことと、「{threshold} を超えた日に買えば良かった」ことは別の話です。
+        危機の前半か後半かは、そのときには分かりません。
+      </p>
+
+      <details className="mt-4">
+        <summary className="text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+          {episodes.length} 回の一覧を見る
+        </summary>
+        <div className="overflow-x-auto mt-3">
+          <table className="w-full text-xs border border-gray-200 rounded-lg min-w-[560px]">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-2 py-2 text-left font-semibold">最初の日</th>
+                <th className="px-2 py-2 text-right font-semibold">日数</th>
+                <th className="px-2 py-2 text-right font-semibold">最高 VIX</th>
+                <th className="px-2 py-2 text-right font-semibold">1ヶ月後</th>
+                <th className="px-2 py-2 text-right font-semibold">3ヶ月後</th>
+                <th className="px-2 py-2 text-right font-semibold">6ヶ月後</th>
+                <th className="px-2 py-2 text-right font-semibold">その後の最安値まで</th>
+              </tr>
+            </thead>
+            <tbody className="[&>tr>td]:px-2 [&>tr>td]:py-1.5 [&>tr]:border-t [&>tr]:border-gray-100">
+              {episodes.map((e) => (
+                <tr key={e.start}>
+                  <td className="font-mono">{e.start}</td>
+                  <td className="text-right font-mono">{e.days}</td>
+                  <td className="text-right font-mono">{e.peakVix.toFixed(1)}</td>
+                  {PERIODS.map((p) => {
+                    const v = e.sp500[p];
+                    return (
+                      <td
+                        key={p}
+                        className={`text-right font-mono ${v == null ? "text-gray-300" : returnColorClass(v)}`}
+                      >
+                        {v == null ? "—" : formatReturn(v)}
+                      </td>
+                    );
+                  })}
+                  <td className="text-right font-mono">
+                    {e.sp500Drawdown == null
+                      ? "—"
+                      : e.sp500Drawdown >= 0
+                        ? "その日が底"
+                        : formatReturn(e.sp500Drawdown)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[11px] text-gray-500 mt-2">
+          リターンは最初の日の S&amp;P500 終値から 30/90/180 日後の終値まで。「その後の最安値まで」は 180 日以内の最安終値までの変化率。
+        </p>
+      </details>
+    </section>
   );
 }

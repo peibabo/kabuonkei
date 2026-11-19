@@ -11,6 +11,7 @@
  *   - Primary (1D): VIX バンド × {S&P500, 日経225} の 1M/3M/6M 前方リターン
  *   - Joint (2D): VIX × 日本版温度バンド × 日経225 のクロス市場集計 (2016〜)
  *   - VIX の historical quantile (p25/p50/p75/p95) + 最新値
+ *   - Episodes: VIX 30 以上を「1 回の高騰」ごとにまとめ、最初の日に S&P500 を買った場合（回数ベース）
  *
  * 実行: npm run generate:vix-sp500
  */
@@ -32,6 +33,8 @@ import {
   aggregateLevelReturns,
 } from "./_lib/stats-aggregator";
 import type { PeriodStats } from "./_lib/shared";
+import { computeVixEpisodes } from "./_lib/vix-episodes";
+import type { VixEpisodeSummary } from "../src/lib/vix-sp500-analysis";
 import type { SentimentLevel } from "../src/lib/types";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
@@ -86,6 +89,7 @@ interface AnalysisOutput {
   vixBands: VixBand[];
   tempBands: SentimentLevel[];
   primary: { bands: PrimaryBandOutput[] };
+  episodes: VixEpisodeSummary;
   joint: {
     dataRange: { from: string; to: string };
     sampleSize: number;
@@ -232,6 +236,12 @@ async function main() {
     };
   });
 
+  // --- 3b. 回数ベース: VIX 30 以上を 1 回ずつにまとめる ---
+  const episodes = computeVixEpisodes(vixMap, spMap, FORWARD_DAYS);
+  console.log(
+    `VIX ${episodes.threshold} 以上: ${episodes.totalDays} 日 → ${episodes.episodes.length} 回`
+  );
+
   // --- 4. Joint 2D: VIX × JP 温度 × 日経225 ---
   // temp 履歴とのオーバーラップを対象にする
   const jointOverlapFrom = tempDates[0];
@@ -332,6 +342,7 @@ async function main() {
     vixBands: VIX_BANDS,
     tempBands: SENTIMENT_RANGES.map((r) => r.level),
     primary: { bands: primaryBands },
+    episodes,
     joint: {
       dataRange: {
         from: jointDates[0] ?? jointOverlapFrom,
@@ -344,6 +355,7 @@ async function main() {
     latestContext,
     note:
       "Primary は VIX 終値 × S&P500/日経225 終値の同日基準、JST 換算で前方 30/90/180 カレンダー日後の終値比較。" +
+      "Episodes は VIX 30 以上の日を前の該当日から 20 営業日以内なら同じ 1 回にまとめ、最初の日に S&P500 を買った場合の回数ベース集計（baseline は全取引日）。" +
       "Joint は 2016 年以降に日本版 市場温度 (日経225 × 125日移動平均乖離)が計算できる期間を対象に、VIX バンド × 日本版温度帯 ごとに日経225 の前方リターンをクロス集計。" +
       "^VIX は米国のセンチメント指標、日本版温度は独立した需給ベースなので、同時水準の組合せ効果を見ることができる。",
   };

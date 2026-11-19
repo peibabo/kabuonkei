@@ -1,0 +1,53 @@
+<!doctype html>
+<!-- note 第4弾 検証1 日数で数える / 回数で数える / 普段の日（1200×600 を 2x 撮影）。配色は日本式（プラス=赤 / マイナス=青）
+     数字は ^VIX / ^GSPC（1990-01-02〜2026-11-17）を 2026-11-18 に集計した値（原稿ヘッダの集計ロジック参照） -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px; height: 600px; background: #fafaf7; color: #111; padding: 46px 56px 0;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; position: relative;
+  }
+  h1 { font-size: 34px; font-weight: 900; letter-spacing: -0.01em; }
+  .sub { margin-top: 16px; font-size: 17px; color: #6b7280; }
+  table { margin-top: 26px; width: 100%; border-collapse: collapse; }
+  th { background: #111827; color: #fff; font-size: 17px; font-weight: 800; height: 52px; text-align: center; }
+  th:first-child, td:first-child { text-align: left; padding-left: 20px; }
+  td { height: 80px; text-align: center; font-size: 22px; color: #374151; border-bottom: 1px solid #e5e7eb; }
+  td:first-child { font-size: 20px; font-weight: 800; color: #111; line-height: 1.3; }
+  td:first-child small { display: block; font-size: 14px; font-weight: 500; color: #6b7280; }
+  td .w { display: block; font-size: 15px; color: #6b7280; margin-top: 2px; }
+  td .w.hl { color: #111; font-weight: 800; font-size: 17px; }
+  tr.hl td { background: #eff6ff; }
+  .up { color: #dc2626; font-weight: 800; }
+  .note { position: absolute; left: 56px; bottom: 30px; font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .credit { position: absolute; right: 56px; bottom: 30px; font-size: 17px; font-weight: 700; color: #4b5563; }
+</style>
+</head>
+<body>
+  <h1>VIXが30以上の日に S&amp;P500 を買っていたら</h1>
+  <p class="sub">上段: 平均リターン / 下段: 買った日より上がっていた割合。1990年1月〜2026年11月17日の終値で集計</p>
+  <table>
+    <tr><th>買った日</th><th>1ヶ月後</th><th>3ヶ月後</th><th>6ヶ月後</th><th>1年後</th></tr>
+    <tr><td>VIXが30以上の日すべて<small>日数で数える（744日）</small></td>
+      <td><span class="up">+2.6%</span><span class="w">71%</span></td>
+      <td><span class="up">+6.7%</span><span class="w">77%</span></td>
+      <td><span class="up">+12.7%</span><span class="w hl">82%</span></td>
+      <td><span class="up">+22.1%</span><span class="w">87%</span></td></tr>
+    <tr class="hl"><td>30を超えた最初の日<small>回数で数える（35回、1年後は34回）</small></td>
+      <td><span class="up">+1.4%</span><span class="w">63%</span></td>
+      <td><span class="up">+4.2%</span><span class="w">71%</span></td>
+      <td><span class="up">+6.2%</span><span class="w hl">66%</span></td>
+      <td><span class="up">+7.2%</span><span class="w">62%</span></td></tr>
+    <tr><td>普段の日<small>全営業日</small></td>
+      <td><span class="up">+0.8%</span><span class="w">64%</span></td>
+      <td><span class="up">+2.4%</span><span class="w">70%</span></td>
+      <td><span class="up">+4.9%</span><span class="w hl">74%</span></td>
+      <td><span class="up">+10.2%</span><span class="w">81%</span></td></tr>
+  </table>
+  <p class="note">※前に30以上だった日から20営業日以内に再び30以上になった場合は1回にまとめ、最初の日の終値で買ったとして計算<br>※配当・手数料は含まない。過去の統計であり将来を保証しません</p>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

@@ -4,8 +4,6 @@ export interface ResendSendInput {
   text: string;
   html: string;
   headers?: Record<string, string>;
-  /** 添付ファイル。content は base64 文字列 */
-  attachments?: Array<{ filename: string; content: string }>;
 }
 
 export interface ResendSendResult {
@@ -35,7 +33,6 @@ export async function sendEmail(input: ResendSendInput): Promise<ResendSendResul
       text: input.text,
       html: input.html,
       headers: input.headers,
-      attachments: input.attachments?.length ? input.attachments : undefined,
     }),
   });
 

@@ -68,8 +68,7 @@
 - `NEXT_PUBLIC_SITE_URL` — canonical / OGP / sitemap のベース URL
 - `NEXT_PUBLIC_GA_ID` — Google Analytics 4 の測定 ID
 - `GOOGLE_SITE_VERIFICATION` — Google Search Console サイト所有権確認コード
-- `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` — X（Twitter）Bot 投稿用（OAuth 1.0a User Context、Read and Write 権限）。2026-11-19 以降の本番はメール送信モードのため使っていない
-- `X_DRAFT_EMAIL` — X 投稿の下書きメールの送り先（GitHub Actions の Repository Variable。未設定なら `OPS_ALERT_EMAIL` → `info@kabuonkei.com`）
+- `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` — X（Twitter）Bot 投稿用（OAuth 1.0a User Context、Read and Write 権限）
 - `RESEND_API_KEY` — Resend の送信 API Key（温度アラートメール）。株温計専用アカウント（info@kabuonkei.com、無料枠は 1 Verified Domain のため kabunote.jp とはアカウント分離）
 - `RESEND_FROM_EMAIL` — 送信元アドレス。`alerts@kabuonkei.com`（2026-07-10 にドメイン検証を完了しサンドボックスから切替済み。GitHub Actions 側は Secret ではなく Repository Variable）
 - `KV_REST_API_URL` / `KV_REST_API_TOKEN` — Upstash Redis REST（Vercel Marketplace の Upstash for Redis 統合で自動注入。GitHub Actions 側は Secrets に同名で手動コピー）
@@ -99,22 +98,22 @@
 - **認証**: Vercel は環境変数 `CRON_SECRET` を `Authorization: Bearer ...` で送る。API 側は一致しなければ 401、`CRON_SECRET` が未設定なら常に 401
 - **GitHub トークン**: `GITHUB_DISPATCH_TOKEN` は Fine-grained personal access token（対象リポジトリ `peibabo/kabuonkei` のみ、権限は **Actions: Read and write** だけ）。有効期限が切れると起動できなくなるので、期限前に再発行して Vercel の環境変数を差し替える
 - **予備の `schedule`**: 各ワークフローの `schedule` は残してあり、Vercel からの起動が動かなかった日だけ遅れて実行される。共通の `guard` ジョブ（`.github/workflows/_fallback-guard.yml`）が「直近 20 時間に `workflow_dispatch` の実行が成功済み（または実行中）」なら schedule 起動をスキップする。スキップしないと、深夜の不要な再生成やデータ更新が走ったり、X Bot が二重投稿したりするため。`check-temperature-alerts.yml` だけは guard を入れていない（米国版と日本版が同じワークフローで区別しにくく、Redis の last-state で再送されないため）
-- **見張り（失敗の通知）**: `check-cron-health.yml`（`npm run check:cron-health`、`scripts/check-cron-health.ts`）が毎日 JST 20 時台に、直近 26 時間の起動予定（`vercel.json` の cron × `CRON_JOBS`）それぞれについて「予定時刻から 6 時間以内に始まった `workflow_dispatch` の実行が成功したか」を調べる。失敗、または起動されていない（Vercel Cron の停止・`GITHUB_DISPATCH_TOKEN` の期限切れなど）ものがあれば、Resend で運営者にメールする（宛先は Repository Variable `OPS_ALERT_EMAIL`、未設定なら `info@kabuonkei.com`）。予備の schedule が遅れて成功していても、外部起動の経路が壊れていれば通知する。異常が続く間は毎日届く。既知の失敗で通知が不要なものは `scripts/check-cron-health.ts` の `MUTED_WORKFLOWS` に入れる（2026-11-19 時点: なし。X Bot はメール送信モードに切り替えたので外した）。`-- --dry-run` で送信せず内容を確認できる。メールの到達確認は、ワークフローを手動実行して `send_test` にチェックを入れる（架空の異常 1 件で送信する）
+- **見張り（失敗の通知）**: `check-cron-health.yml`（`npm run check:cron-health`、`scripts/check-cron-health.ts`）が毎日 JST 20 時台に、直近 26 時間の起動予定（`vercel.json` の cron × `CRON_JOBS`）それぞれについて「予定時刻から 6 時間以内に始まった `workflow_dispatch` の実行が成功したか」を調べる。失敗、または起動されていない（Vercel Cron の停止・`GITHUB_DISPATCH_TOKEN` の期限切れなど）ものがあれば、Resend で運営者にメールする（宛先は Repository Variable `OPS_ALERT_EMAIL`、未設定なら `info@kabuonkei.com`）。予備の schedule が遅れて成功していても、外部起動の経路が壊れていれば通知する。異常が続く間は毎日届く。既知の失敗で通知が不要なものは `scripts/check-cron-health.ts` の `MUTED_WORKFLOWS` に入れる（2026-11-19 時点: なし）。`-- --dry-run` で送信せず内容を確認できる。メールの到達確認は、ワークフローを手動実行して `send_test` にチェックを入れる（架空の異常 1 件で送信する）
 - **動作確認**: Vercel ダッシュボードの Cron Jobs（実行履歴・手動実行）と、GitHub Actions の実行一覧でイベントが `workflow_dispatch` になっていること。手元からは `curl -H "Authorization: Bearer $CRON_SECRET" https://www.kabuonkei.com/api/cron/japan-snapshot`
 - **ジョブを増やすとき**: `CRON_JOBS` と `vercel.json` の両方に追加する（`src/__tests__/cron-dispatch.test.ts` が対応のずれを検出する）
 
 ## X（Twitter）Bot — 朝の寄り前ブリーフィング
-- **2026-11-19 から手動投稿（メール送信モード）**: X API が 2026-11-06 から 402（Payment Required）を返すようになったため、X には自動投稿せず、投稿文＋温度カード画像を毎朝メールで運営者に送り、人（またはアシスタント）が X に投稿する。メールは件名 `【X投稿】M/D(曜) 寄り前チェック`、本文の `----- 投稿文ここから -----` 〜 `----- 投稿文ここまで -----` の間が投稿文そのもの、画像は `daily-temperature.png` として添付（画像 URL も併記）、`x.com/intent/post` の「X で投稿する」リンク付き。下書きの組み立ては `buildDraftEmail()`。投稿文が加重 280 字を超えるときはメールに注意書きが入る。日米とも温度が取れなかった日は投稿文を作れないのでワークフローを失敗させる（夜の見張りが知らせる。X API モードも同じ）。`-- --email --dry-run` で送信せずにメールの件名・本文を確認できる。X API で自動投稿に戻すときは、ワークフローの `--email` を外して `X_API_*` を env に戻す
+- **経緯（2026-11）**: X API が 2026-11-06 から 402（Payment Required）を返し投稿が止まっていた。2026-11-19 に「投稿文＋画像を毎朝メールで送り手動投稿する」方式を試したが（PR #157）運用に乗らず取り消し、同日 X API の支払いをして自動投稿に戻した（見張りの通知対象にも戻した）
 - **目的**: 定常流入源として、平日毎朝 JST 7 時台に前営業日引け時点の日米温度＋類似日ナラティブを投稿
 - **投稿時刻**: 平日 JST 7 時台（Vercel Cron の `morning` ジョブ、UTC 22 時台 Sun-Thu）
   - 9:00 以降だと日本市場が開いて「今日の温度」と言えない非対称が生じるため、寄り前時間帯に限定
   - 日本版は `snapshot-japan-fg.yml`（平日 17 時台 JST）で取得済みのデータを反映 = **前営業日引け時点**
   - 米国版は直前の米国引け（JST 5:00〜6:00）時点の VIX/F&G = 完全確定データ
-- **投稿内容**: テキスト＋画像。日米いずれかのスコアが取得できていれば毎日、動的生成画像（`/api/og/daily`）を添付する（両方欠損の日は投稿しない）。画像を添付しないと X が投稿本文の URL からトップページの静的 `og:image`（デフォルトの「株温計」画像）をスクレイプしてしまうため、通常日も温度入りキャプチャを必ず添付する。極端温度（score ≤ 20 or ≥ 80）時はテキスト側のヘッダーが「⚠️ 極寒アラート」「🔥 沸騰アラート」に変化する
-- **投稿スクリプト**: `scripts/post-daily-temperature-tweet.ts`（`npm run post:daily-tweet`。`-- --email` で下書きメール送信、`-- --dry-run` で投稿・送信せず出力確認）
+- **投稿内容**: テキスト＋画像。日米いずれかのスコアが取得できていれば毎日、動的生成画像（`/api/og/daily`）を添付する（`shouldAttachImage`）。画像を添付しないと X が投稿本文の URL からトップページの静的 `og:image`（デフォルトの「株温計」画像）をスクレイプしてしまうため、通常日も温度入りキャプチャを必ず添付する。極端温度（score ≤ 20 or ≥ 80）時はテキスト側のヘッダーが「⚠️ 極寒アラート」「🔥 沸騰アラート」に変化する
+- **投稿スクリプト**: `scripts/post-daily-temperature-tweet.ts`（`npm run post:daily-tweet`、`-- --dry-run` で投稿せず出力確認）
 - **動的OG画像**: `src/app/api/og/daily/route.tsx`（`ImageResponse` で日米温度を可視化した1200×630 PNG）
 - **自動実行**: `.github/workflows/post-daily-tweet.yml`（Vercel Cron の `morning` ジョブから起動。予備の schedule は `45 23 * * 0-4` = JST 08:45 で、外部起動が成功していればスキップ。手動 workflow_dispatch も可）
-- **必要な GitHub Secrets / Variables**: メール送信モードは Secret `RESEND_API_KEY`、Variable `RESEND_FROM_EMAIL` / `NEXT_PUBLIC_SITE_URL`（任意で `X_DRAFT_EMAIL`）。X API で投稿するときは Secrets `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET`
+- **必要な GitHub Secrets**: `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET`（Repository variable として `NEXT_PUBLIC_SITE_URL` も設定）
 - **Bot用 X アカウント作成と開発者申請は別作業**（X Developer Portal で Project+App を作り、OAuth 1.0a User Context の Read and Write 権限で 4 つのキーを発行）
 - **文字数安全弁**: `estimateWeightedLength()` で加重280字超過時は類似日行を自動省略
 

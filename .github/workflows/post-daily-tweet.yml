@@ -32,14 +32,10 @@ jobs:
           node-version: 22
           cache: 'npm'
       - run: npm ci
-      # X API が 402（Payment Required）を返すようになったため（2026-11-06〜）、X には投稿せず
-      # 投稿文＋温度カード画像を運営者にメールし、人が（またはアシスタントが）手動で投稿する。
-      # X API での自動投稿に戻すときは --email を外し、X_API_* を env に戻す
-      - run: npm run post:daily-tweet -- --email
+      - run: npm run post:daily-tweet
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          RESEND_FROM_EMAIL: ${{ vars.RESEND_FROM_EMAIL }}
-          # 送り先。未設定なら OPS_ALERT_EMAIL → info@kabuonkei.com
-          X_DRAFT_EMAIL: ${{ vars.X_DRAFT_EMAIL }}
-          OPS_ALERT_EMAIL: ${{ vars.OPS_ALERT_EMAIL }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}

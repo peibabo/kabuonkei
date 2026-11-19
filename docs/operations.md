@@ -98,12 +98,12 @@
 - **認証**: Vercel は環境変数 `CRON_SECRET` を `Authorization: Bearer ...` で送る。API 側は一致しなければ 401、`CRON_SECRET` が未設定なら常に 401
 - **GitHub トークン**: `GITHUB_DISPATCH_TOKEN` は Fine-grained personal access token（対象リポジトリ `peibabo/kabuonkei` のみ、権限は **Actions: Read and write** だけ）。有効期限が切れると起動できなくなるので、期限前に再発行して Vercel の環境変数を差し替える
 - **予備の `schedule`**: 各ワークフローの `schedule` は残してあり、Vercel からの起動が動かなかった日だけ遅れて実行される。共通の `guard` ジョブ（`.github/workflows/_fallback-guard.yml`）が「直近 20 時間に `workflow_dispatch` の実行が成功済み（または実行中）」なら schedule 起動をスキップする。スキップしないと、深夜の不要な再生成やデータ更新が走ったり、X Bot が二重投稿したりするため。`check-temperature-alerts.yml` だけは guard を入れていない（米国版と日本版が同じワークフローで区別しにくく、Redis の last-state で再送されないため）
-- **見張り（失敗の通知）**: `check-cron-health.yml`（`npm run check:cron-health`、`scripts/check-cron-health.ts`）が毎日 JST 20 時台に、直近 26 時間の起動予定（`vercel.json` の cron × `CRON_JOBS`）それぞれについて「予定時刻から 6 時間以内に始まった `workflow_dispatch` の実行が成功したか」を調べる。失敗、または起動されていない（Vercel Cron の停止・`GITHUB_DISPATCH_TOKEN` の期限切れなど）ものがあれば、Resend で運営者にメールする（宛先は Repository Variable `OPS_ALERT_EMAIL`、未設定なら `info@kabuonkei.com`）。予備の schedule が遅れて成功していても、外部起動の経路が壊れていれば通知する。異常が続く間は毎日届く。既知の失敗で通知が不要なものは `scripts/check-cron-health.ts` の `MUTED_WORKFLOWS` に入れる（2026-11-16 時点: X API の 402 が未解決の `post-daily-tweet.yml`。解決したら外す）。`-- --dry-run` で送信せず内容を確認できる。メールの到達確認は、ワークフローを手動実行して `send_test` にチェックを入れる（架空の異常 1 件で送信する）
+- **見張り（失敗の通知）**: `check-cron-health.yml`（`npm run check:cron-health`、`scripts/check-cron-health.ts`）が毎日 JST 20 時台に、直近 26 時間の起動予定（`vercel.json` の cron × `CRON_JOBS`）それぞれについて「予定時刻から 6 時間以内に始まった `workflow_dispatch` の実行が成功したか」を調べる。失敗、または起動されていない（Vercel Cron の停止・`GITHUB_DISPATCH_TOKEN` の期限切れなど）ものがあれば、Resend で運営者にメールする（宛先は Repository Variable `OPS_ALERT_EMAIL`、未設定なら `info@kabuonkei.com`）。予備の schedule が遅れて成功していても、外部起動の経路が壊れていれば通知する。異常が続く間は毎日届く。既知の失敗で通知が不要なものは `scripts/check-cron-health.ts` の `MUTED_WORKFLOWS` に入れる（2026-11-19 時点: なし）。`-- --dry-run` で送信せず内容を確認できる。メールの到達確認は、ワークフローを手動実行して `send_test` にチェックを入れる（架空の異常 1 件で送信する）
 - **動作確認**: Vercel ダッシュボードの Cron Jobs（実行履歴・手動実行）と、GitHub Actions の実行一覧でイベントが `workflow_dispatch` になっていること。手元からは `curl -H "Authorization: Bearer $CRON_SECRET" https://www.kabuonkei.com/api/cron/japan-snapshot`
 - **ジョブを増やすとき**: `CRON_JOBS` と `vercel.json` の両方に追加する（`src/__tests__/cron-dispatch.test.ts` が対応のずれを検出する）
 
 ## X（Twitter）Bot — 朝の寄り前ブリーフィング
-- **2026-11 時点の状態**: X API が 2026-11-06 から 402（Payment Required）を返し、投稿は毎日失敗している（見張りの通知からは除外中）。2026-11-19 に「投稿文＋画像を毎朝メールで送り手動投稿する」方式を試したが（PR #157）、運用に乗らなかったため取り消した。X API の支払いをすれば、そのまま自動投稿が再開する
+- **経緯（2026-11）**: X API が 2026-11-06 から 402（Payment Required）を返し投稿が止まっていた。2026-11-19 に「投稿文＋画像を毎朝メールで送り手動投稿する」方式を試したが（PR #157）運用に乗らず取り消し、同日 X API の支払いをして自動投稿に戻した（見張りの通知対象にも戻した）
 - **目的**: 定常流入源として、平日毎朝 JST 7 時台に前営業日引け時点の日米温度＋類似日ナラティブを投稿
 - **投稿時刻**: 平日 JST 7 時台（Vercel Cron の `morning` ジョブ、UTC 22 時台 Sun-Thu）
   - 9:00 以降だと日本市場が開いて「今日の温度」と言えない非対称が生じるため、寄り前時間帯に限定

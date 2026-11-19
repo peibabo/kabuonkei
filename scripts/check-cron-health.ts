@@ -36,10 +36,9 @@ const SELF_WORKFLOW = "check-cron-health.yml";
 
 /**
  * 既知の失敗で、毎日通知しても意味がないもの。ログには出すがメールには含めない。
- * - post-daily-tweet.yml: X API が 402（Payment Required）を返す。2026-11-16 時点でユーザー判断により保留中。
- *   解決したらここから外すこと
+ * 2026-11-19 時点: なし（X API の 402 は支払いで解消したため post-daily-tweet.yml を外した）
  */
-const MUTED_WORKFLOWS: readonly string[] = ["post-daily-tweet.yml"];
+const MUTED_WORKFLOWS: readonly string[] = [];
 
 async function fetchDispatchRuns(
   workflow: string,

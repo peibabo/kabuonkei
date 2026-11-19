@@ -16,18 +16,15 @@ import { writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import { fetchDailyCloses } from "./_lib/shared";
 import { computeNikkeiCrashAnalysis } from "./_lib/nikkei-crash";
-import { toJstIsoDate } from "./_lib/trading-date";
+import { dropIntradayToday, toJstIsoDate } from "./_lib/trading-date";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
 const PERIOD_START = "1985-01-01";
-/** この時刻（JST）より前の実行では当日分の終値を使わない */
-const SAFE_CLOSE_HOUR_JST = 16;
 
 async function main() {
   const now = new Date();
   const todayJst = toJstIsoDate(now);
-  const hourJst = (now.getUTCHours() + 9) % 24;
   // period2 は排他的なので翌日を渡す
   const period2 = toJstIsoDate(new Date(now.getTime() + 24 * 60 * 60 * 1000));
 
@@ -38,7 +35,7 @@ async function main() {
     PERIOD_START,
     period2
   );
-  if (hourJst < SAFE_CLOSE_HOUR_JST && nikkei.delete(todayJst)) {
+  if (dropIntradayToday(nikkei, now)) {
     console.log(`  取引時間中の実行のため ${todayJst} の値を除外`);
   }
   console.log(`  → ${nikkei.size} 日分取得`);

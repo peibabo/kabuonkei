@@ -21,6 +21,7 @@
 - `headline.ts`: トップ画面ヒーロー「今日の見出し」生成の純粋関数（決定木 v2）。`getHeadlineStateKey` でレベル組み合わせを 16 状態キーに写像し、`HEADLINE_POOLS`（base + 昨日比 ±5 のトレンド候補 + 日本レベル 3 日以上連続の streak 候補）から `dayNumber` で決定的に日替わり選択（`buildHeroCopy`）。レベルが違ってもスコア差 < 10 なら `resolveNearBoundary` の接近オーバーライドで `NEAR_POOLS`（「日米ほぼ同温」系）に切替し、境界の丸め誤差を対比として報じない
 - `level-streak.ts`: 現在の日本温度レベルの連続営業日数を `japan-temperature-history.json` から計算する純粋関数（`computeJapanLevelStreak`）。`fetchAllMarketData` がサーバ側で呼び、`MarketData.japanLevelStreak` として配信
 - `stock-temperature/`: 銘柄別の株価の温度。`score.ts`（`computeStockTemperatureSeries`: 125日MA乖離 ÷ 直近250日の振れ幅 = z 値を ±2σ で 0〜100 に）/ `stats.ts`（前日・週・月比、90日統計、1年分位、順位、ランキング、業種グループ化の純関数）/ `format.ts` / `metadata.ts`（3ページ共通のメタ情報）/ `types.ts`（対象範囲 `UNIVERSES`）/ `index.ts`（`stock-temperatures.json` のアクセサ）。詳細は [docs/features/stock-temperature.md](features/stock-temperature.md)
+- `learn-extra-stats.ts`: 解説記事に載せる補足の集計（実現ボラ帯・ドル円の勢いの帯・SQ 週）`learn-extra-stats.json` の型と読み込み。生成は `scripts/_lib/learn-extra-stats.ts`
 - `learn-articles.ts`: 解説記事（`/learn/[slug]`）の一覧 `LEARN_ARTICLES`（タイトル・短いタイトル・公開日・更新日）と `latestLearnModifiedAt`。`/learn` 一覧・sitemap・銘柄別ページの関連記事で共有
 - `related-reading.ts`: 銘柄別ページの関連記事欄（`buildStockRelatedReading`: 定番 3 本 + 銘柄コードで決まる 3 本）と分析記事の一覧 `ANALYSIS_READINGS`
 

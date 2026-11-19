@@ -5,6 +5,9 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import ForwardReturnTable from "@/components/learn/ForwardReturnTable";
+import { getLearnExtraStats } from "@/lib/learn-extra-stats";
+import { formatReturn } from "@/lib/format";
 
 const ARTICLE_PATH = "/learn/what-is-usdjpy-momentum";
 const ARTICLE_TITLE =
@@ -12,7 +15,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "なぜ円安は日本株に追い風で円高は逆風になりやすいのか、リスクオフ局面で「円高＋株安」が同時に起きる仕組み（円キャリー取引の巻き戻し）、単純な逆相関では読めない注意点、「ドル円モメンタム」という指標と、株温計がそれを温度スコアから外した理由を初心者向けに解説します。";
 const PUBLISHED_AT = "2026-06-18";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -50,6 +53,11 @@ const TOC_ITEMS = [
 ];
 
 export default function WhatIsUsdjpyMomentumPage() {
+  const extra = getLearnExtraStats();
+  const mom = extra.usdJpyMomentum;
+  // 「順番どおりに良くなっていない」は、円高→円安の順に 3ヶ月後の平均が上がり続けていないときだけ書く
+  const threeMonth = mom.bands.map((b) => b.returns["3m"].avgReturn);
+  const notOrdered = threeMonth.some((v, i) => i > 0 && v < threeMonth[i - 1]);
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -250,6 +258,47 @@ export default function WhatIsUsdjpyMomentumPage() {
             <strong>「極寒」の判定が増え（41 回 → 72 回）、判定後 3 か月の日経225 のリターンは低く（平均 +1.8% → +0.1%）</strong>なりました。
             次の節で触れるとおり、為替と株の関係は局面で入れ替わるため、平均すると温度の精度を下げていたと考えられます。
             現在の市場温度は日経225 の 125 日移動平均乖離だけで決めており、ドル円は温度に含めていません。
+          </p>
+
+          <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            円安が急に進んだ後、日本株は上がったか（株温計の集計）
+          </h3>
+          <p className="text-base leading-relaxed">
+            ドル円の直近 {mom.window} 営業日の変化率を 5 つの帯に分け、それぞれの日に日経225 を買った場合の
+            その後の成績を {extra.dataRange.from.slice(0, 4)} 年以降の毎日で集計しました。
+          </p>
+
+          <ForwardReturnTable
+            caption={`ドル円の ${mom.window} 営業日の変化率別・その後の日経225（${extra.dataRange.from}〜${extra.dataRange.to}、株温計調べ）`}
+            conditionLabel="ドル円の勢い"
+            countUnit="日"
+            periods={[
+              { key: "3m", label: "3ヶ月後" },
+              { key: "6m", label: "6ヶ月後" },
+            ]}
+            rows={[
+              ...mom.bands.map((b) => ({ label: b.band, count: b.occurrences, stats: b.returns })),
+              { label: "全営業日", count: extra.baseline.occurrences, stats: extra.baseline.returns },
+            ]}
+          />
+
+          <p className="text-base leading-relaxed mt-3">
+            {notOrdered && (
+              <>
+                円高から円安へ帯を並べても、その後の日経225 の成績は<strong>順番どおりに良くなっていません</strong>。
+                円安と株高が同じ時期に起きやすいとしても、ドル円の勢いはその後の数ヶ月を読む手がかりにはならなかった、ということです。
+              </>
+            )}
+            {mom.latest != null && (
+              <>
+                なお {extra.dataRange.to} 時点のドル円の {mom.window} 営業日の変化率は{" "}
+                {formatReturn(mom.latest)} です。
+              </>
+            )}
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ 同じ相場の時期が何十日も続けて数えられているため、日数ほど独立した事例はありません。
+            「円安だから買い」「円高だから売り」と機械的に決めず、次の節の注意点と合わせて読んでください。
           </p>
         </section>
 

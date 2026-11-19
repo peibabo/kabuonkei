@@ -5,6 +5,7 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import { LearnDataTable } from "@/components/learn/ForwardReturnTable";
 
 const ARTICLE_PATH = "/learn/what-is-advance-decline-ratio";
 const ARTICLE_TITLE =
@@ -12,7 +13,23 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "騰落レシオ（値上がり銘柄数 ÷ 値下がり銘柄数）の意味、25 日移動平均の計算方法、「120 超え＝過熱／70 割れ＝底値圏」という水準別の目安、だましシグナルへの注意、株温計の市場温度スコアとの関係を初心者向けに解説します。";
 const PUBLISHED_AT = "2026-06-18";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
+
+/**
+ * 市場温度に騰落レシオを足した場合の比較（npm run analyze:jp-composition -- --from 2007-01-01 の出力から転記）。
+ * 試算スクリプトは結果をファイルに残さないため、数字は検証した時点のもので固定する。
+ * 3ヶ月後の成績は、その日の終値から 90 日後の日経225（平均・プラスだった割合）。
+ */
+const AD_CHECK = {
+  checkedAt: "2026-11-19",
+  period: "2007 年 7 月〜2026 年 11 月",
+  rows: [
+    { label: "極寒（20 以下）に入った回数", current: "41 回", withAd: "48 回" },
+    { label: "極寒に入った日の 3ヶ月後", current: "+1.8%・62%", withAd: "+3.1%・71%" },
+    { label: "温度 20 以下だった全日の 3ヶ月後", current: "+4.7%・66%", withAd: "+2.9%・61%" },
+    { label: "1 日 5% 以上下げた 30 日のうち、極寒と判定できた日", current: "23 日", withAd: "21 日" },
+  ],
+} as const;
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -321,6 +338,40 @@ export default function WhatIsAdvanceDeclineRatioPage() {
             </Link>
             は、日経225 の終値と 125 日移動平均との乖離率から算出しており、<strong>騰落レシオは含まれていません</strong>。
             株温計でも追加の候補として過去約 19 年分で検証しましたが、現時点では判定がはっきり良くなるとは言えなかったため見送っています。
+          </p>
+          <p className="text-base leading-relaxed mt-3">
+            検証の中身は次のとおりです。日経225 の 125 日移動平均乖離だけで温度を出す今のやり方と、
+            それに騰落レシオ（25 日）を足して平均したやり方を、{AD_CHECK.period} の毎営業日で比べました。
+          </p>
+
+          <LearnDataTable caption={`市場温度に騰落レシオを足した場合の比較（${AD_CHECK.period}、${AD_CHECK.checkedAt} 時点の株温計の検証）`}>
+            <thead className="bg-gray-50">
+              <tr>
+                <th scope="col" className="text-left font-semibold">比べたこと</th>
+                <th scope="col" className="text-right font-semibold">今の温度（移動平均乖離だけ）</th>
+                <th scope="col" className="text-right font-semibold">騰落レシオを足した温度</th>
+              </tr>
+            </thead>
+            <tbody>
+              {AD_CHECK.rows.map((r) => (
+                <tr key={r.label}>
+                  <th scope="row" className="text-left font-normal">{r.label}</th>
+                  <td className="text-right font-mono">{r.current}</td>
+                  <td className="text-right font-mono">{r.withAd}</td>
+                </tr>
+              ))}
+            </tbody>
+          </LearnDataTable>
+
+          <p className="text-base leading-relaxed mt-3">
+            騰落レシオを足すと、<strong>「極寒に入った日」に買った成績は良くなる</strong>一方で、
+            <strong>温度が 20 以下だった日全体の成績や、1 日 5% 以上下げた日を極寒と判定できた数は悪くなりました</strong>。
+            良くなる面と悪くなる面が同じくらいあり、市場温度に組み込む決め手にはならない、というのが見送った理由です。
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ この検証の騰落レシオは、<strong>今の日経225 採用銘柄</strong>の値上がり・値下がりから計算したものです。
+            一般に公表される騰落レシオ（東証プライム全銘柄）とは対象の銘柄が違い、過去の銘柄入れ替えも反映していません。
+            「極寒に入った日」は数十回しかなく、数回の局面の結果で平均が大きく動く点にも注意してください。
           </p>
           <p className="text-base leading-relaxed mt-3">
             ただし、騰落レシオと市場温度スコアは<strong>「相場の過熱／冷え込みを 1 つの数字で掴む」という狙いが共通</strong>しています。

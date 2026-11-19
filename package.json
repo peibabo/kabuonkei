@@ -33,7 +33,8 @@
     "check:cron-health": "npx tsx scripts/check-cron-health.ts",
     "report:analytics": "npx tsx scripts/report-analytics.ts",
     "generate:nikkei-crash": "npx tsx scripts/generate-nikkei-crash-analysis.ts",
-    "fonts:download": "npx tsx scripts/download-fonts.ts"
+    "fonts:download": "npx tsx scripts/download-fonts.ts",
+    "generate:learn-extra": "npx tsx scripts/generate-learn-extra-stats.ts"
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0",

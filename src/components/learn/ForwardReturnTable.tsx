@@ -56,7 +56,7 @@ export function LearnDataTable({
 }
 
 /** 0 はどちらの色でもなく灰色にする（format の returnColorClass は 0 を負側に寄せるため） */
-function colorFor(value: number | undefined): string {
+export function learnReturnColorClass(value: number | null | undefined): string {
   if (value === 0) return "text-gray-600";
   return returnColorClass(value);
 }
@@ -105,7 +105,7 @@ export default function ForwardReturnTable({
               const s = row.stats[p.key];
               return (
                 <td key={p.key} className="text-right font-mono whitespace-nowrap">
-                  <span className={colorFor(s?.avgReturn)}>
+                  <span className={learnReturnColorClass(s?.avgReturn)}>
                     {formatReturn(s?.avgReturn)}
                   </span>
                   {/* 直近は先のリターンがまだ出ていないため、件数より少ない数で集計している */}

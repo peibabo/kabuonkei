@@ -1,0 +1,284 @@
+{
+  "generatedAt": "2026-11-19",
+  "dataRange": {
+    "from": "2001-01-04",
+    "to": "2026-11-19"
+  },
+  "baseline": {
+    "occurrences": 6335,
+    "returns": {
+      "1m": {
+        "avgReturn": 0.7,
+        "medianReturn": 1,
+        "winRate": 57.9,
+        "sampleSize": 6314
+      },
+      "3m": {
+        "avgReturn": 2.2,
+        "medianReturn": 1.9,
+        "winRate": 57.4,
+        "sampleSize": 6272
+      },
+      "6m": {
+        "avgReturn": 4.5,
+        "medianReturn": 3.4,
+        "winRate": 59.4,
+        "sampleSize": 6209
+      }
+    }
+  },
+  "realizedVol": {
+    "window": 20,
+    "bands": [
+      {
+        "band": "〜15",
+        "occurrences": 1647,
+        "returns": {
+          "1m": {
+            "avgReturn": 1,
+            "medianReturn": 1.4,
+            "winRate": 63.1,
+            "sampleSize": 1647
+          },
+          "3m": {
+            "avgReturn": 2.4,
+            "medianReturn": 1.7,
+            "winRate": 56.8,
+            "sampleSize": 1647
+          },
+          "6m": {
+            "avgReturn": 5.7,
+            "medianReturn": 4.3,
+            "winRate": 60,
+            "sampleSize": 1647
+          }
+        }
+      },
+      {
+        "band": "15〜25",
+        "occurrences": 3188,
+        "returns": {
+          "1m": {
+            "avgReturn": 0.3,
+            "medianReturn": 0.6,
+            "winRate": 54.7,
+            "sampleSize": 3188
+          },
+          "3m": {
+            "avgReturn": 1.6,
+            "medianReturn": 1.8,
+            "winRate": 56.6,
+            "sampleSize": 3160
+          },
+          "6m": {
+            "avgReturn": 3.9,
+            "medianReturn": 2.3,
+            "winRate": 58.1,
+            "sampleSize": 3159
+          }
+        }
+      },
+      {
+        "band": "25〜35",
+        "occurrences": 1057,
+        "returns": {
+          "1m": {
+            "avgReturn": 1,
+            "medianReturn": 1.1,
+            "winRate": 56.9,
+            "sampleSize": 1039
+          },
+          "3m": {
+            "avgReturn": 2.6,
+            "medianReturn": 1.9,
+            "winRate": 56.7,
+            "sampleSize": 1025
+          },
+          "6m": {
+            "avgReturn": 2.7,
+            "medianReturn": 3.5,
+            "winRate": 59,
+            "sampleSize": 989
+          }
+        }
+      },
+      {
+        "band": "35〜",
+        "occurrences": 443,
+        "returns": {
+          "1m": {
+            "avgReturn": 2,
+            "medianReturn": 2.5,
+            "winRate": 63.6,
+            "sampleSize": 440
+          },
+          "3m": {
+            "avgReturn": 4.4,
+            "medianReturn": 3.8,
+            "winRate": 66.1,
+            "sampleSize": 440
+          },
+          "6m": {
+            "avgReturn": 9.3,
+            "medianReturn": 11.6,
+            "winRate": 68.1,
+            "sampleSize": 414
+          }
+        }
+      }
+    ],
+    "latest": 32.8
+  },
+  "usdJpyMomentum": {
+    "window": 50,
+    "bands": [
+      {
+        "band": "円高が急に進んだ（-5% 以下）",
+        "occurrences": 581,
+        "returns": {
+          "1m": {
+            "avgReturn": 0.7,
+            "medianReturn": 1.2,
+            "winRate": 58.3,
+            "sampleSize": 581
+          },
+          "3m": {
+            "avgReturn": 2.1,
+            "medianReturn": 3.5,
+            "winRate": 64.4,
+            "sampleSize": 579
+          },
+          "6m": {
+            "avgReturn": 6.5,
+            "medianReturn": 6.8,
+            "winRate": 71,
+            "sampleSize": 579
+          }
+        }
+      },
+      {
+        "band": "円高ぎみ（-5〜-2%）",
+        "occurrences": 1153,
+        "returns": {
+          "1m": {
+            "avgReturn": -0.1,
+            "medianReturn": 0.6,
+            "winRate": 54.3,
+            "sampleSize": 1153
+          },
+          "3m": {
+            "avgReturn": 1.4,
+            "medianReturn": 2.2,
+            "winRate": 58.3,
+            "sampleSize": 1133
+          },
+          "6m": {
+            "avgReturn": 3.6,
+            "medianReturn": 4.1,
+            "winRate": 64.8,
+            "sampleSize": 1133
+          }
+        }
+      },
+      {
+        "band": "横ばい（-2〜+2%）",
+        "occurrences": 2571,
+        "returns": {
+          "1m": {
+            "avgReturn": 0.8,
+            "medianReturn": 1.2,
+            "winRate": 60.6,
+            "sampleSize": 2554
+          },
+          "3m": {
+            "avgReturn": 3,
+            "medianReturn": 2.6,
+            "winRate": 59.9,
+            "sampleSize": 2534
+          },
+          "6m": {
+            "avgReturn": 5.5,
+            "medianReturn": 4.2,
+            "winRate": 59.9,
+            "sampleSize": 2486
+          }
+        }
+      },
+      {
+        "band": "円安ぎみ（+2〜+5%）",
+        "occurrences": 1244,
+        "returns": {
+          "1m": {
+            "avgReturn": 0.6,
+            "medianReturn": 0.7,
+            "winRate": 55.2,
+            "sampleSize": 1240
+          },
+          "3m": {
+            "avgReturn": 0.1,
+            "medianReturn": -0.5,
+            "winRate": 47.1,
+            "sampleSize": 1240
+          },
+          "6m": {
+            "avgReturn": 2.1,
+            "medianReturn": -1,
+            "winRate": 47.7,
+            "sampleSize": 1225
+          }
+        }
+      },
+      {
+        "band": "円安が急に進んだ（+5% 以上）",
+        "occurrences": 774,
+        "returns": {
+          "1m": {
+            "avgReturn": 1.8,
+            "medianReturn": 1.7,
+            "winRate": 58.8,
+            "sampleSize": 774
+          },
+          "3m": {
+            "avgReturn": 4.5,
+            "medianReturn": 3.6,
+            "winRate": 59.7,
+            "sampleSize": 774
+          },
+          "6m": {
+            "avgReturn": 5.9,
+            "medianReturn": 3.8,
+            "winRate": 61,
+            "sampleSize": 774
+          }
+        }
+      }
+    ],
+    "latest": 3.9
+  },
+  "sqWeeks": {
+    "bigMoveThreshold": 3,
+    "groups": [
+      {
+        "label": "メジャー SQ の週",
+        "weeks": 103,
+        "avgAbsMove": 2.1,
+        "avgReturn": 0.1,
+        "bigMoveShare": 27.2
+      },
+      {
+        "label": "マイナー SQ の週",
+        "weeks": 208,
+        "avgAbsMove": 2.4,
+        "avgReturn": -0.1,
+        "bigMoveShare": 30.8
+      },
+      {
+        "label": "SQ のない週",
+        "weeks": 1038,
+        "avgAbsMove": 2.2,
+        "avgReturn": 0.2,
+        "bigMoveShare": 24.9
+      }
+    ]
+  }
+}

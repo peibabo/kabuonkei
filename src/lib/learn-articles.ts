@@ -34,7 +34,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "なぜ円安は日本株に追い風で円高は逆風なのか、リスクオフで「円高＋株安」が同時に起きる仕組み（円キャリー巻き戻し）、単純な逆相関では読めない注意点、「ドル円モメンタム」という指標と株温計が温度スコアから外した理由を初心者向けに整理。",
     publishedAt: "2026-06-18",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-nikkei-vi",
@@ -45,7 +45,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX との違い（対象指数・算出元）、平時20前後／30超で警戒／40超でパニックという水準別の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を初心者向けに整理。",
     publishedAt: "2026-06-18",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-advance-decline-ratio",
@@ -56,7 +56,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "騰落レシオ（値上がり銘柄数÷値下がり銘柄数）の意味、25 日移動平均の計算方法、「120 超え＝過熱／70 割れ＝底値圏」という水準別の目安、だましシグナルへの注意、株温計の市場温度スコアとの関係を初心者向けに整理。",
     publishedAt: "2026-06-18",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-drawdown",
@@ -78,7 +78,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX 毎営業日 16:00 公表データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計が温度スコアから外した理由まで整理。",
     publishedAt: "2026-05-08",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-investor-flow",

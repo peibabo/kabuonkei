@@ -127,12 +127,19 @@ export function sanitizeDailyCloses(
   return { kept, dropped };
 }
 
-/** YahooFinance.chart で日足終値の Map<日付, 終値> を取得（異常クオートは除外） */
+/**
+ * YahooFinance.chart で日足終値の Map<日付, 終値> を取得（異常クオートは除外）
+ *
+ * dateShiftHours: 日付キーを作る前にタイムスタンプをずらす時間。為替（JPY=X など）の日足は
+ * ロンドンの 0 時が付くため、夏時間の間は UTC で前日の 23:00 になり、そのままでは 1 日早い日付になる。
+ * 12 を渡すとロンドンの日付で揃う。
+ */
 export async function fetchDailyCloses(
   yf: InstanceType<typeof YahooFinance>,
   symbol: string,
   period1: string,
-  period2: string
+  period2: string,
+  { dateShiftHours = 0 }: { dateShiftHours?: number } = {}
 ): Promise<Map<string, number>> {
   const result = await yf.chart(symbol, {
     period1,
@@ -142,7 +149,9 @@ export async function fetchDailyCloses(
   const entries: DailyClose[] = [];
   for (const q of result.quotes) {
     if (q.close != null) {
-      const dateStr = new Date(q.date).toISOString().split("T")[0];
+      const dateStr = new Date(new Date(q.date).getTime() + dateShiftHours * 3_600_000)
+        .toISOString()
+        .split("T")[0];
       entries.push({ date: dateStr, close: q.close });
     }
   }

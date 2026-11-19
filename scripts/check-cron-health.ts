@@ -17,6 +17,7 @@ import { readFileSync } from "fs";
 import { resolve } from "path";
 import { CRON_JOBS, DISPATCH_REPO } from "../src/lib/cron-dispatch";
 import { sendEmail } from "../src/lib/alerts/resend";
+import { opsAlertEmail } from "../src/lib/ops-email";
 import {
   buildReport,
   expectedRuns,
@@ -28,7 +29,6 @@ import {
 } from "./_lib/cron-health";
 
 const VERCEL_JSON_PATH = resolve(__dirname, "../vercel.json");
-const DEFAULT_OPS_EMAIL = "info@kabuonkei.com";
 const LOOKBACK_HOURS = 26;
 
 /** 見張り自身は対象にしない */
@@ -117,7 +117,7 @@ async function main() {
     return;
   }
 
-  const to = process.env.OPS_ALERT_EMAIL || DEFAULT_OPS_EMAIL;
+  const to = opsAlertEmail();
   console.log(`\n--- 通知内容（宛先: ${to}）---\n${report.subject}\n\n${report.text}`);
   if (dryRun) {
     console.log("\n[DRY RUN] メールは送信しません");

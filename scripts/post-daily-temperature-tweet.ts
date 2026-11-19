@@ -42,6 +42,7 @@ import {
 import { formatJstDateLabel } from "../src/lib/jst-date";
 import { sendEmail } from "../src/lib/alerts/resend";
 import { escapeHtml } from "../src/lib/alerts/email-templates";
+import { opsAlertEmail } from "../src/lib/ops-email";
 import type {
   ChartPoint,
   FearGreedData,
@@ -72,7 +73,10 @@ const EVENTS_META_PATH = resolve(__dirname, "../src/data/events-meta.json");
 
 const DEFAULT_SITE_URL = "https://kabuonkei.com";
 const DAILY_OG_PATH = "/api/og/daily";
-const DEFAULT_DRAFT_EMAIL = "info@kabuonkei.com";
+/** X の投稿上限（加重文字数） */
+export const X_WEIGHTED_LIMIT = 280;
+/** 下書きメールに添付する温度カードのファイル名 */
+const DRAFT_IMAGE_FILENAME = "daily-temperature.png";
 
 /** メール本文で投稿文を囲む目印。受け取った人や AI アシスタントが投稿文だけを切り出せるようにする */
 export const DRAFT_BEGIN = "----- 投稿文ここから -----";
@@ -90,20 +94,6 @@ export interface TweetContext {
   japanSimilar: SimilarDayMatch | null;
   usSimilar: SimilarDayMatch | null;
   siteUrl: string;
-}
-
-/**
- * 日米いずれかのスコアが取得できていれば温度入りキャプチャを添付する。
- * 両方欠損のときだけ false（この場合は投稿自体がスキップされる）。
- * 以前は極端温度 (≤20 / ≥80) の日だけ添付していたが、通常日は X が
- * トップページの静的 og:image をスクレイプしデフォルト画像になっていたため、
- * 毎日 /api/og/daily の動的画像を添付する方針に変更した。
- */
-export function shouldAttachImage(
-  japanScore: number | null,
-  usScore: number | null,
-): boolean {
-  return japanScore != null || usScore != null;
 }
 
 function extremeBadge(
@@ -173,7 +163,7 @@ export function buildTweetBody(ctx: TweetContext): string {
 /**
  * X の加重文字数を概算。
  * URL は常に 23、ASCII は 1、それ以外（日本語・絵文字）は 2 でカウント。
- * 実際の X の計算はもう少し複雑だが、安全側に倒せば 280 以内判定として十分。
+ * 実際の X の計算はもう少し複雑だが、安全側に倒せば X_WEIGHTED_LIMIT 以内判定として十分。
  */
 export function estimateWeightedLength(text: string): number {
   const urlRegex = /https?:\/\/\S+/g;
@@ -195,54 +185,64 @@ export function buildIntentUrl(text: string): string {
 export interface DraftEmailInput {
   dateLabel: string;
   tweetText: string;
-  /** 温度カード画像の URL。null なら画像なし */
-  imageUrl: string | null;
-  /** 画像をメールに添付できたか */
-  imageAttached: boolean;
-  /** 投稿文の加重文字数（概算）。280 を超えるときは本文で注意する */
-  weightedLength?: number;
+  /** 温度カード画像の URL */
+  imageUrl: string;
+  /** 温度カード画像。取得に失敗したときは null（URL から保存するよう案内する） */
+  image: Buffer | null;
 }
 
-/** X に手動投稿するための下書きメール（件名・テキスト・HTML）を組み立てる */
+/**
+ * X に手動投稿するための下書きメールを組み立てる。
+ * 画像は添付ファイルとして返すので、そのまま sendEmail に渡せる。
+ */
 export function buildDraftEmail(input: DraftEmailInput): {
   subject: string;
   text: string;
   html: string;
+  attachments: Array<{ filename: string; content: string }>;
 } {
-  const { dateLabel, tweetText, imageUrl, imageAttached, weightedLength } = input;
-  const overLimit = weightedLength != null && weightedLength > 280;
-  const overLimitNote = `⚠️ 投稿文が長すぎます（概算 ${weightedLength}/280）。X で弾かれる場合は削ってから投稿してください`;
-  const subject = `【X投稿】${dateLabel} 寄り前チェック`;
+  const { dateLabel, tweetText, imageUrl, image } = input;
+  const weighted = estimateWeightedLength(tweetText);
+  const overLimitNote =
+    weighted > X_WEIGHTED_LIMIT
+      ? `⚠️ 投稿文が長すぎます（概算 ${weighted}/${X_WEIGHTED_LIMIT}）。X で弾かれる場合は削ってから投稿してください`
+      : null;
   const intentUrl = buildIntentUrl(tweetText);
-  const imageNote = imageUrl
-    ? imageAttached
-      ? "画像: 添付の daily-temperature.png を付けて投稿してください"
-      : "画像: 添付に失敗しました。下の URL から保存して付けてください"
-    : "画像: なし（日米とも温度が取れなかったため）";
+  const imageNote = image
+    ? `画像: 添付の ${DRAFT_IMAGE_FILENAME} を付けて投稿してください`
+    : "画像: 添付に失敗しました。下の URL から保存して付けてください";
 
-  const textLines = [
+  const text = [
     `${dateLabel} の X 投稿の下書きです。`,
-    ...(overLimit ? [overLimitNote] : []),
+    ...(overLimitNote ? [overLimitNote] : []),
     "",
     DRAFT_BEGIN,
     tweetText,
     DRAFT_END,
     "",
     imageNote,
-  ];
-  if (imageUrl) textLines.push(`画像 URL: ${imageUrl}`);
-  textLines.push("", `投稿画面を開く: ${intentUrl}`);
+    `画像 URL: ${imageUrl}`,
+    "",
+    `投稿画面を開く: ${intentUrl}`,
+  ].join("\n");
 
   const html = `<div style="font-family:sans-serif;line-height:1.6">
-<p>${escapeHtml(dateLabel)} の X 投稿の下書きです。</p>${overLimit ? `\n<p style="color:#c00">${escapeHtml(overLimitNote)}</p>` : ""}
+<p>${escapeHtml(dateLabel)} の X 投稿の下書きです。</p>${overLimitNote ? `\n<p style="color:#c00">${escapeHtml(overLimitNote)}</p>` : ""}
 <p style="color:#888;margin:0">${escapeHtml(DRAFT_BEGIN)}</p>
 <pre style="white-space:pre-wrap;font-family:inherit;background:#f5f5f5;padding:12px;margin:4px 0">${escapeHtml(tweetText)}</pre>
 <p style="color:#888;margin:0">${escapeHtml(DRAFT_END)}</p>
-<p>${escapeHtml(imageNote)}${imageUrl ? `<br><a href="${escapeHtml(imageUrl)}">画像 URL</a>` : ""}</p>
+<p>${escapeHtml(imageNote)}<br><a href="${escapeHtml(imageUrl)}">画像 URL</a></p>
 <p><a href="${escapeHtml(intentUrl)}" style="display:inline-block;background:#000;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">X で投稿する</a></p>
 </div>`;
 
-  return { subject, text: textLines.join("\n"), html };
+  return {
+    subject: `【X投稿】${dateLabel} 寄り前チェック`,
+    text,
+    html,
+    attachments: image
+      ? [{ filename: DRAFT_IMAGE_FILENAME, content: image.toString("base64") }]
+      : [],
+  };
 }
 
 // --- 副作用あり（スクリプト本体） --------------------------------------------
@@ -413,6 +413,16 @@ async function postTweet(text: string, image: Buffer | null): Promise<void> {
   });
 }
 
+function logDraft(label: string, text: string): void {
+  const weighted = estimateWeightedLength(text);
+  console.log(`\n---- ${label} ----`);
+  console.log(text);
+  console.log("----------------");
+  console.log(
+    `加重文字数(概算): ${weighted}/${X_WEIGHTED_LIMIT}${weighted > X_WEIGHTED_LIMIT ? "（超過）" : ""}`,
+  );
+}
+
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
   const emailMode = process.argv.includes("--email");
@@ -472,60 +482,35 @@ async function main() {
   };
 
   let text = buildTweetBody(ctx);
-  const attach = shouldAttachImage(japanScore, usScore);
-  let weighted = estimateWeightedLength(text);
+  logDraft("投稿文", text);
 
-  console.log("\n---- 投稿文 ----");
-  console.log(text);
-  console.log("----------------");
-  console.log(`画像添付: ${attach ? "あり（温度キャプチャ）" : "なし（日米とも欠損）"}`);
-  console.log(`加重文字数(概算): ${weighted}/280`);
-
-  if (weighted > 280) {
-    console.warn("⚠️ 加重文字数が 280 を超過。類似日行を省略して再構築します");
+  if (estimateWeightedLength(text) > X_WEIGHTED_LIMIT) {
+    console.warn(`⚠️ 加重文字数が ${X_WEIGHTED_LIMIT} を超過。類似日行を省略して再構築します`);
     text = buildTweetBody({ ...ctx, japanSimilar: null, usSimilar: null });
-    weighted = estimateWeightedLength(text);
-    console.log("\n---- 縮小後投稿文 ----");
-    console.log(text);
-    console.log("----------------------");
-    console.log(`加重文字数(概算): ${weighted}/280${weighted > 280 ? "（まだ超過）" : ""}`);
+    logDraft("縮小後投稿文", text);
   }
 
-  const imageUrl = attach
-    ? dailyOgImageUrl(siteUrl, { japanScore, usScore, isoDate: jstIsoDate() })
-    : null;
+  // 日米どちらかの温度はある（両方欠損は上で終了済み）ので、温度カード画像は毎日付ける。
+  // 付けないと X が本文の URL からトップの静的 og:image（デフォルト画像）を拾ってしまうため
+  const imageUrl = dailyOgImageUrl(siteUrl, { japanScore, usScore, isoDate: jstIsoDate() });
+  console.log(`画像 URL: ${imageUrl}`);
 
   if (dryRun) {
-    if (imageUrl) console.log(`画像 URL: ${imageUrl}`);
     console.log(`\n[DRY RUN] ${emailMode ? "メール送信" : "投稿"}せず終了`);
     return;
   }
 
-  const image = imageUrl ? await fetchDailyOgImage(imageUrl) : null;
+  const image = await fetchDailyOgImage(imageUrl);
 
   if (emailMode) {
-    const to =
-      process.env.X_DRAFT_EMAIL ||
-      process.env.OPS_ALERT_EMAIL ||
-      DEFAULT_DRAFT_EMAIL;
+    const to = process.env.X_DRAFT_EMAIL || opsAlertEmail();
     const mail = buildDraftEmail({
       dateLabel,
       tweetText: text,
-      imageUrl: imageUrl ? imageUrl.toString() : null,
-      imageAttached: image != null,
-      weightedLength: weighted,
+      imageUrl: imageUrl.toString(),
+      image,
     });
-    const sent = await sendEmail({
-      to,
-      ...mail,
-      ...(image
-        ? {
-            attachments: [
-              { filename: "daily-temperature.png", content: image.toString("base64") },
-            ],
-          }
-        : {}),
-    });
+    const sent = await sendEmail({ to, ...mail });
     if (!sent.ok) throw new Error(`下書きメールの送信に失敗: ${sent.error}`);
     console.log(`\n✅ 下書きメールを送信しました（宛先: ${to}、id=${sent.id}）`);
     return;

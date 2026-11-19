@@ -5,10 +5,10 @@ import {
   buildTweetBody,
   DRAFT_BEGIN,
   DRAFT_END,
+  X_WEIGHTED_LIMIT,
   estimateWeightedLength,
   findSimilarDays,
   formatJstDateLabel,
-  shouldAttachImage,
   type TweetContext,
 } from "../post-daily-temperature-tweet";
 import type { SimilarDayEntry, SimilarDayMatch } from "../../src/lib/types";
@@ -145,27 +145,6 @@ describe("buildTweetBody", () => {
   });
 });
 
-describe("shouldAttachImage", () => {
-  it("両方 null → false（日米とも欠損）", () => {
-    expect(shouldAttachImage(null, null)).toBe(false);
-  });
-  it("日米とも中庸（通常日）→ true（毎日添付）", () => {
-    expect(shouldAttachImage(50, 55)).toBe(true);
-  });
-  it("日本が極寒(20) → true", () => {
-    expect(shouldAttachImage(20, 50)).toBe(true);
-  });
-  it("米国が沸騰(80) → true", () => {
-    expect(shouldAttachImage(50, 80)).toBe(true);
-  });
-  it("日本のみ定義 → true", () => {
-    expect(shouldAttachImage(74, null)).toBe(true);
-  });
-  it("米国のみ定義 → true", () => {
-    expect(shouldAttachImage(null, 68)).toBe(true);
-  });
-});
-
 describe("estimateWeightedLength", () => {
   it("ASCII は 1 文字 1 カウント", () => {
     expect(estimateWeightedLength("hello world")).toBe(11);
@@ -241,9 +220,10 @@ describe("formatJstDateLabel", () => {
 describe("buildDraftEmail（手動投稿用の下書きメール）", () => {
   const tweetText = "🌡 11/20(金) 寄り前チェック\n\n🇯🇵 16 極寒 (恐怖)\n\n▶ https://kabuonkei.com?utm_source=x&utm_campaign=daily";
   const imageUrl = "https://kabuonkei.com/api/og/daily?jp=16&us=40&date=2026-11-20";
+  const image = Buffer.from("png");
 
   it("件名に日付が入り、本文は目印で投稿文を囲む", () => {
-    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true });
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, image });
     expect(mail.subject).toBe("【X投稿】11/20(金) 寄り前チェック");
     const begin = mail.text.indexOf(DRAFT_BEGIN);
     const end = mail.text.indexOf(DRAFT_END);
@@ -254,33 +234,33 @@ describe("buildDraftEmail（手動投稿用の下書きメール）", () => {
     expect(mail.text).toContain("添付の daily-temperature.png");
     expect(mail.text).toContain(`画像 URL: ${imageUrl}`);
     expect(mail.text).toContain(buildIntentUrl(tweetText));
+    expect(mail.text).not.toContain("長すぎます");
+  });
+
+  it("画像を base64 の添付ファイルとして返す", () => {
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, image });
+    expect(mail.attachments).toEqual([{ filename: "daily-temperature.png", content: "cG5n" }]);
   });
 
   it("HTML 版は投稿文をエスケープし、投稿画面へのリンクを持つ", () => {
-    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true });
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, image });
     expect(mail.html).toContain("utm_source=x&amp;utm_campaign=daily");
     expect(mail.html).toContain("X で投稿する");
     expect(mail.html).toContain("https://x.com/intent/post?text=");
   });
 
-  it("画像の添付に失敗したときは URL から保存するよう案内する", () => {
-    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: false });
+  it("画像の取得に失敗したときは添付なしで、URL から保存するよう案内する", () => {
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, image: null });
+    expect(mail.attachments).toEqual([]);
     expect(mail.text).toContain("添付に失敗しました");
     expect(mail.text).toContain(imageUrl);
   });
 
-  it("投稿文が 280 を超えるときだけ注意書きを出す", () => {
-    const over = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true, weightedLength: 300 });
-    expect(over.text).toContain("投稿文が長すぎます（概算 300/280）");
-    expect(over.html).toContain("投稿文が長すぎます");
-    const ok = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true, weightedLength: 184 });
-    expect(ok.text).not.toContain("長すぎます");
-  });
-
-  it("画像なしのときは URL 行を出さない", () => {
-    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl: null, imageAttached: false });
-    expect(mail.text).toContain("画像: なし");
-    expect(mail.text).not.toContain("画像 URL");
+  it("投稿文が上限を超えるときは注意書きを出す", () => {
+    const longText = "あ".repeat(150);
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText: longText, imageUrl, image });
+    expect(mail.text).toContain(`投稿文が長すぎます（概算 300/${X_WEIGHTED_LIMIT}）`);
+    expect(mail.html).toContain("投稿文が長すぎます");
   });
 });
 

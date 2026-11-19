@@ -35,7 +35,7 @@ export async function sendEmail(input: ResendSendInput): Promise<ResendSendResul
       text: input.text,
       html: input.html,
       headers: input.headers,
-      ...(input.attachments?.length ? { attachments: input.attachments } : {}),
+      attachments: input.attachments?.length ? input.attachments : undefined,
     }),
   });
 

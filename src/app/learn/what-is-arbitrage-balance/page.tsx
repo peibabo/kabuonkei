@@ -5,6 +5,12 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import {
+  LearnDataTable,
+  learnReturnColorClass,
+} from "@/components/learn/ForwardReturnTable";
+import { getLearnExtraStats } from "@/lib/learn-extra-stats";
+import { formatReturn } from "@/lib/format";
 
 const ARTICLE_PATH = "/learn/what-is-arbitrage-balance";
 const ARTICLE_TITLE =
@@ -12,7 +18,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "裁定残（裁定取引残高）の見方を初心者向けに解説。裁定買い残と裁定売り残の違い、JPX が毎営業日 16:00 に公表する日次データの読み方、メジャー SQ 前後で起きる「裁定解消売り／買い戻し」、株温計の温度スコアで構成要素から外した理由までまとめます。";
 const PUBLISHED_AT = "2026-05-08";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -52,6 +58,18 @@ const TOC_ITEMS = [
 ];
 
 export default function WhatIsArbitrageBalancePage() {
+  const extra = getLearnExtraStats();
+  const sq = extra.sqWeeks;
+  const none = sq.groups.find((g) => g.label === "SQ のない週");
+  const sqGroups = sq.groups.filter((g) => g.label !== "SQ のない週");
+  // 「動いた幅は SQ のない週と大差ない」は、どの SQ の週でも動いた幅の平均の差が 0.5 ポイント未満のときだけ書く
+  const similarMoves =
+    none != null &&
+    sqGroups.length > 0 &&
+    sqGroups.every((g) => Math.abs(g.avgAbsMove - none.avgAbsMove) < 0.5);
+  // 「3% 以上動いた週は SQ の週のほうがやや多い」は、どの SQ の週でも割合が SQ のない週を上回るときだけ書く
+  const moreBigMoves =
+    none != null && sqGroups.length > 0 && sqGroups.every((g) => g.bigMoveShare > none.bigMoveShare);
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -254,6 +272,73 @@ export default function WhatIsArbitrageBalancePage() {
             裁定ポジションは限月をロールオーバー（次の限月に乗り換え）して維持されることもあるため、
             残高が高いから即「下落要因」と単純化するのは正確ではありません。
             「下落要因として意識される<strong>可能性</strong>のあるストック量」として捉えるのが正確です。
+          </p>
+
+          <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            SQ の週は本当に荒れるのか（株温計の集計）
+          </h3>
+          <p className="text-base leading-relaxed">
+            「SQ の週は相場が荒れる」とよく言われます。{extra.dataRange.from.slice(0, 4)} 年以降の日経225 で、
+            1 週間（前の週の最後の終値からその週の最後の終値まで）の値動きを、SQ のある週とない週に分けて比べました。
+            SQ 日は第 2 金曜日（休場なら前の営業日）としています。
+          </p>
+
+          <LearnDataTable
+            caption={`SQ のある週・ない週の日経225 の値動き（${extra.dataRange.from}〜${extra.dataRange.to}、株温計調べ）`}
+          >
+            <thead className="bg-gray-50">
+              <tr>
+                <th scope="col" className="text-left font-semibold">週の種類</th>
+                <th scope="col" className="text-right font-semibold">週数</th>
+                <th scope="col" className="text-right font-semibold">動いた幅の平均</th>
+                <th scope="col" className="text-right font-semibold">
+                  {sq.bigMoveThreshold}% 以上動いた週
+                </th>
+                <th scope="col" className="text-right font-semibold">騰落率の平均</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sq.groups.map((g) => (
+                <tr key={g.label}>
+                  <th scope="row" className="text-left font-semibold">{g.label}</th>
+                  <td className="text-right font-mono text-gray-600">{g.weeks.toLocaleString()}週</td>
+                  <td className="text-right font-mono">{g.avgAbsMove.toFixed(1)}%</td>
+                  <td className="text-right font-mono">{g.bigMoveShare.toFixed(0)}%</td>
+                  <td className="text-right font-mono">
+                    <span className={learnReturnColorClass(g.avgReturn)}>
+                      {formatReturn(g.avgReturn)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </LearnDataTable>
+
+          <p className="text-base leading-relaxed mt-3">
+            {similarMoves && none && (
+              <>
+                1 週間に動いた幅の平均は、SQ の週が{" "}
+                {sqGroups.map((g) => `${g.label.replace(" の週", "")} ${g.avgAbsMove.toFixed(1)}%`).join("・")}、
+                SQ のない週が {none.avgAbsMove.toFixed(1)}% と大きな差はありませんでした。
+              </>
+            )}
+            {moreBigMoves && none && (
+              <>
+                ただし {sq.bigMoveThreshold}% 以上動いた週の割合は、SQ のない週（{none.bigMoveShare.toFixed(0)}%）より
+                SQ の週のほうがやや多くなっています。
+              </>
+            )}
+            {similarMoves && (
+              <>
+                「SQ の週はいつも荒れる」とまでは言えず、ときどき大きく動く週が混ざる、という程度です。
+              </>
+            )}
+            SQ の影響は、その時点で解消される裁定残の量や、先物の持ち高の偏りによって毎回変わります。
+            「SQ の週は荒れる」と決めつけず、裁定残の水準と合わせて、その回ごとに見るのが現実的です。
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ 週単位の比較なので、SQ 日当日の寄り付きだけが大きく動くような値動きは表に出ません。
+            また日経225 の値動き全体を見ており、裁定残の多い・少ないで分けた集計ではありません（裁定残の長い過去データが手元にないため）。
           </p>
         </section>
 

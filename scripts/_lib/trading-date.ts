@@ -59,3 +59,16 @@ export function resolveTradingDate(
     fallback: false,
   };
 }
+
+/** この時刻（JST）より前の実行では、当日分の終値（取引時間中の途中値）を使わない */
+export const SAFE_CLOSE_HOUR_JST = 16;
+
+/**
+ * 取引時間中（JST 16 時より前）の実行なら、当日の途中値を終値の Map から取り除く。
+ * 取り除いたら true。
+ */
+export function dropIntradayToday(closes: Map<string, number>, now: Date = new Date()): boolean {
+  const hourJst = (now.getUTCHours() + 9) % 24;
+  if (hourJst >= SAFE_CLOSE_HOUR_JST) return false;
+  return closes.delete(toJstIsoDate(now));
+}

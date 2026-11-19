@@ -5,6 +5,11 @@ import WhatIsMarginRatioPage from "@/app/learn/what-is-margin-ratio/page";
 import WhatIsFearGreedPage from "@/app/learn/what-is-fear-greed/page";
 import WhatIsDrawdownPage from "@/app/learn/what-is-drawdown/page";
 import WhenToBuyStocksPage from "@/app/learn/when-to-buy-stocks/page";
+import WhatIsNikkeiViPage from "@/app/learn/what-is-nikkei-vi/page";
+import WhatIsUsdjpyMomentumPage from "@/app/learn/what-is-usdjpy-momentum/page";
+import WhatIsArbitrageBalancePage from "@/app/learn/what-is-arbitrage-balance/page";
+import WhatIsAdvanceDeclineRatioPage from "@/app/learn/what-is-advance-decline-ratio/page";
+import { getLearnExtraStats } from "@/lib/learn-extra-stats";
 import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
 import { getHistoricalStats } from "@/lib/historical-stats";
 import { getNikkeiCrashAnalysis } from "@/lib/nikkei-crash-analysis";
@@ -117,6 +122,56 @@ describe("解説記事に載せた株温計の自前データ", () => {
       0
     );
     expect(total).toBe(analysis.joint.cells.reduce((sum, c) => sum + c.occurrences, 0));
+  });
+});
+
+describe("解説記事に載せた株温計の自前データ（後半）", () => {
+  const extra = getLearnExtraStats();
+
+  it("日経VI: 値動きの大きさの帯と全営業日がその後の日経225 と一緒に出る", () => {
+    render(<WhatIsNikkeiViPage />);
+    const table = screen.getByRole("table", { name: /値動きの大きさ.*その後の日経225/ });
+    for (const b of extra.realizedVol.bands) {
+      expect(within(table).getByRole("row", { name: new RegExp(`^${b.band}%`) })).toHaveTextContent(
+        `${b.occurrences.toLocaleString()}日`
+      );
+    }
+    expect(within(table).getByRole("row", { name: /全営業日/ })).toHaveTextContent(
+      `${extra.baseline.occurrences.toLocaleString()}日`
+    );
+  });
+
+  it("ドル円: 勢いの帯 5 つが出て、日数の合計は全営業日を超えない", () => {
+    render(<WhatIsUsdjpyMomentumPage />);
+    const table = screen.getByRole("table", { name: /ドル円の .* 営業日の変化率別/ });
+    const bands = extra.usdJpyMomentum.bands;
+    expect(bands).toHaveLength(5);
+    for (const b of bands) {
+      expect(within(table).getByRole("row", { name: new RegExp(b.band.replace(/[()+]/g, "\\$&")) })).toBeInTheDocument();
+    }
+    expect(bands.reduce((s, b) => s + b.occurrences, 0)).toBeLessThanOrEqual(extra.baseline.occurrences);
+  });
+
+  it("裁定残: SQ のある週・ない週の 3 区分が週数つきで出る", () => {
+    render(<WhatIsArbitrageBalancePage />);
+    const table = screen.getByRole("table", { name: /SQ のある週・ない週/ });
+    expect(extra.sqWeeks.groups.map((g) => g.label)).toEqual([
+      "メジャー SQ の週",
+      "マイナー SQ の週",
+      "SQ のない週",
+    ]);
+    for (const g of extra.sqWeeks.groups) {
+      expect(within(table).getByRole("row", { name: new RegExp(g.label) })).toHaveTextContent(
+        `${g.weeks.toLocaleString()}週`
+      );
+    }
+  });
+
+  it("騰落レシオ: 足した場合と今の温度の比較表が出る", () => {
+    render(<WhatIsAdvanceDeclineRatioPage />);
+    const table = screen.getByRole("table", { name: /市場温度に騰落レシオを足した場合の比較/ });
+    expect(within(table).getAllByRole("row")).toHaveLength(5);
+    expect(table).toHaveTextContent("41 回");
   });
 });
 

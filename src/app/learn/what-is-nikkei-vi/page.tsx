@@ -5,6 +5,9 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import ForwardReturnTable from "@/components/learn/ForwardReturnTable";
+import { getLearnExtraStats } from "@/lib/learn-extra-stats";
+import { formatReturn } from "@/lib/format";
 
 const ARTICLE_PATH = "/learn/what-is-nikkei-vi";
 const ARTICLE_TITLE =
@@ -12,7 +15,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "日経VI（日経平均ボラティリティー・インデックス）の意味、VIX（米国の恐怖指数）との違い、平時20前後／30超で警戒／40超でパニックという水準別の目安、^JNV のデータ取得制約、株温計が VIX 系を主系列にしている理由を初心者向けに解説します。";
 const PUBLISHED_AT = "2026-06-18";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -45,6 +48,7 @@ const TOC_ITEMS = [
   { href: "#vs-vix", label: "VIX との違い" },
   { href: "#levels", label: "水準別の意味" },
   { href: "#data", label: "データ取得の制約（^JNV）" },
+  { href: "#realized", label: "値動きの大きさで代わりに測ると" },
   { href: "#kabuonkei", label: "株温計が VIX 系を主系列にする理由" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -100,6 +104,16 @@ const VS_VIX = [
 ];
 
 export default function WhatIsNikkeiViPage() {
+  const extra = getLearnExtraStats();
+  const vol = extra.realizedVol;
+  const roughest = vol.bands[vol.bands.length - 1];
+  // 「値動きが荒い時期ほど、その後の成績が良かった」は、最も荒い帯の 3ヶ月後の平均がどの帯と全営業日よりも高いときだけ書く
+  const roughestIsBest =
+    roughest != null &&
+    vol.bands.every(
+      (b) => b === roughest || roughest.returns["3m"].avgReturn > b.returns["3m"].avgReturn
+    ) &&
+    roughest.returns["3m"].avgReturn > extra.baseline.returns["3m"].avgReturn;
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -304,6 +318,63 @@ export default function WhatIsNikkeiViPage() {
             株温計でも、この取得制約を率直な事情として扱っています。
             「日本版の恐怖指数を主系列に据えられないのは、概念の問題ではなく<strong>安定して取得できるデータソースの問題</strong>」
             というのが実態です。日経VI が手軽に取れる環境であれば、日本版温度の有力な構成候補になり得ます。
+          </p>
+        </section>
+
+        <section id="realized" className="scroll-mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
+            値動きの大きさで代わりに測ると（株温計の集計）
+          </h2>
+          <p className="text-base leading-relaxed">
+            日経VI は「これから 1 か月、日経平均がどれくらい動きそうか」をオプション価格から逆算した数字です。
+            その時系列は手に入らないため、株温計では代わりに<strong>日経225 が実際にどれだけ動いたか</strong>
+            （直近 {vol.window} 営業日の日々の値動きのばらつきを年率にした数字。実現ボラティリティと呼びます）を計算し、
+            その水準別に、その後の日経225 を {extra.dataRange.from.slice(0, 4)} 年以降の毎日で集計しました。
+            日経VI は「予想」、こちらは「実績」なので同じ数字にはなりませんが、相場が荒れると両方とも跳ね上がります。
+          </p>
+
+          <ForwardReturnTable
+            caption={`日経225 の値動きの大きさ（直近 ${vol.window} 営業日・年率）の水準別・その後の日経225（${extra.dataRange.from}〜${extra.dataRange.to}、株温計調べ）`}
+            conditionLabel="値動きの大きさ"
+            countUnit="日"
+            periods={[
+              { key: "3m", label: "3ヶ月後" },
+              { key: "6m", label: "6ヶ月後" },
+            ]}
+            rows={[
+              ...vol.bands.map((b) => ({
+                label: `${b.band}%`,
+                count: b.occurrences,
+                stats: b.returns,
+                highlight: b === roughest,
+              })),
+              { label: "全営業日", count: extra.baseline.occurrences, stats: extra.baseline.returns },
+            ]}
+          />
+
+          <p className="text-base leading-relaxed mt-3">
+            {roughestIsBest && roughest && (
+              <>
+                値動きが最も荒い時期（年率 {roughest.band}%）に買った場合、3ヶ月後の日経225 は平均{" "}
+                <strong>{formatReturn(roughest.returns["3m"].avgReturn)}・勝率 {roughest.returns["3m"].winRate.toFixed(0)}%</strong>
+                で、全営業日の平均 {formatReturn(extra.baseline.returns["3m"].avgReturn)} を上回りました。
+                VIX の「30 超え」と同じく、不安が最も強い局面ほど、その後は戻りやすかったことになります。
+              </>
+            )}
+            {vol.latest != null && (
+              <>
+                なお {extra.dataRange.to} 時点の直近 {vol.window} 営業日の値動きの大きさは年率 {vol.latest}% です。
+              </>
+            )}
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ 値動きが荒い日は 2008 年の金融危機や 2020 年のコロナショックなど数回の急落の時期に続けて現れるため、
+            日数ほど独立した事例はありません。その中には、2008 年秋のように荒れたあとさらに下げた局面も含まれています。
+            急落した日からの値動きは{" "}
+            <Link href="/learn/what-is-drawdown" className="underline hover:text-gray-900">
+              ドローダウンの解説
+            </Link>
+            でも集計しています。
           </p>
         </section>
 

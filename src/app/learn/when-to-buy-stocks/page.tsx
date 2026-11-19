@@ -5,6 +5,26 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import ForwardReturnTable, {
+  type ForwardReturnRow,
+} from "@/components/learn/ForwardReturnTable";
+import { formatReturn } from "@/lib/format";
+import {
+  getVixSp500Analysis,
+  poolVixJointCells,
+  VIX_ANALYSIS_ARTICLE,
+  type VixJointCell,
+} from "@/lib/vix-sp500-analysis";
+
+/**
+ * 「重ねると何が変わるか」の 3 グループ。組み合わせを手で選ぶと都合の良いセルだけを見せることになるため、
+ * VIX × 日本の温度の全セルをルールで 3 つに分けて、どのセルも必ずどこかに入るようにする。
+ */
+const isFearful = (c: VixJointCell) =>
+  (c.vixBand === "20〜30" || c.vixBand === "30〜") &&
+  (c.tempBand === "極寒" || c.tempBand === "冷え込み");
+const isComplacent = (c: VixJointCell) =>
+  c.vixBand === "〜15" && (c.tempBand === "過熱" || c.tempBand === "沸騰");
 
 const ARTICLE_PATH = "/learn/when-to-buy-stocks";
 const ARTICLE_TITLE =
@@ -12,7 +32,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "「株の買い時はいつ？」に 1 つの指標で答えは出ません。センチメント（VIX・Fear&Greed・日経VI）・需給（信用倍率・投資主体別・裁定残・騰落レシオ）・リスク（ドローダウン）・マクロ（ドル円）の 4 カテゴリで過熱感と底値圏を見極める考え方を、各指標の解説記事と株温計の市場温度スコアへの導線つきで整理します。";
 const PUBLISHED_AT = "2026-06-18";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -137,6 +157,26 @@ function IndicatorList({ items }: { items: IndicatorLink[] }) {
 }
 
 export default function WhenToBuyStocksPage() {
+  const vixAnalysis = getVixSp500Analysis();
+  const cells = vixAnalysis.joint.cells;
+  const fearful = poolVixJointCells(cells.filter(isFearful));
+  const complacent = poolVixJointCells(cells.filter(isComplacent));
+  const others = poolVixJointCells(cells.filter((c) => !isFearful(c) && !isComplacent(c)));
+  const jointRows: ForwardReturnRow[] = [
+    { label: "悲観がそろった日", count: fearful.occurrences, stats: fearful.returns, highlight: true },
+    { label: "それ以外の日", count: others.occurrences, stats: others.returns },
+    { label: "楽観がそろった日", count: complacent.occurrences, stats: complacent.returns },
+  ];
+  // 本文の結論はデータが支えるときだけ出す（データは定期的に作り直されるため）
+  const f3 = fearful.returns["3m"];
+  const o3 = others.returns["3m"];
+  const c3 = complacent.returns["3m"];
+  const fearfulBeatsAll =
+    f3 != null && o3 != null && c3 != null &&
+    f3.avgReturn > o3.avgReturn && f3.avgReturn > c3.avgReturn;
+  const complacentIsWorst =
+    f3 != null && o3 != null && c3 != null &&
+    c3.avgReturn < o3.avgReturn && c3.avgReturn < f3.avgReturn;
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -315,6 +355,70 @@ export default function WhenToBuyStocksPage() {
             </Link>
             で確認できます。
           </p>
+
+          <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            重ねると何が変わるか（株温計の集計）
+          </h3>
+          <p className="text-base leading-relaxed">
+            ① センチメントの代表である米国の{" "}
+            <Link href="/learn/what-is-vix" className="underline hover:text-gray-900">
+              VIX
+            </Link>
+            と、日本の市場温度を重ねたときの、その後の日経225 を
+            {vixAnalysis.joint.dataRange.from.slice(0, 4)}〜{vixAnalysis.joint.dataRange.to.slice(0, 4)} 年の毎日で集計しました。
+            VIX と日本の温度の組み合わせを、次の 3 つに分けています。
+          </p>
+          <ul className="list-disc pl-6 mt-2 space-y-1 text-base leading-relaxed">
+            <li>
+              <strong>悲観がそろった日</strong>: VIX 20 以上で、日本の温度が冷え込み以下（40 以下）
+            </li>
+            <li>
+              <strong>楽観がそろった日</strong>: VIX 15 未満で、日本の温度が過熱以上（61 以上）
+            </li>
+            <li>
+              <strong>それ以外の日</strong>: どちらかだけが悲観・楽観の日や、どちらも中くらいの日
+            </li>
+          </ul>
+
+          <ForwardReturnTable
+            caption={`VIX の水準 × 日本の市場温度・その後の日経225（${vixAnalysis.joint.dataRange.from}〜${vixAnalysis.joint.dataRange.to}、株温計調べ）`}
+            conditionLabel="VIX × 日本の温度"
+            countUnit="日"
+            periods={[
+              { key: "3m", label: "3ヶ月後" },
+              { key: "6m", label: "6ヶ月後" },
+            ]}
+            rows={jointRows}
+          />
+
+          <p className="text-base leading-relaxed mt-3">
+            {fearfulBeatsAll && f3 && (
+              <>
+                米国の恐怖（VIX が高い）と日本の冷え込みが<strong>重なった日は、3ヶ月後の日経225 が平均{" "}
+                {formatReturn(f3.avgReturn)}</strong>と、ほかの日より成績が良くなりました。
+              </>
+            )}
+            {complacentIsWorst && c3 && (
+              <>
+                逆に VIX が低く日本も熱い「みんなが安心している日」は平均 {formatReturn(c3.avgReturn)}・
+                プラスだった割合 {c3.winRate.toFixed(0)}% と、3 つの中でいちばん低い結果でした。
+              </>
+            )}
+            {fearfulBeatsAll && complacentIsWorst && (
+              <>1 つの指標だけで見るより、向きがそろったときのほうが差がはっきり出ます。</>
+            )}
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ 悲観がそろう日は 2020 年のコロナショックなど数回の急落の時期に集中していて、
+            日数ほど独立した事例はありません。成績はその数回の局面の結果に大きく左右され、次も同じになる保証はありません。
+            「それ以外の日」は性格の違う組み合わせの寄せ集めで、中身の成績にはばらつきがあります。
+            組み合わせごとの全データは{" "}
+            <Link href={VIX_ANALYSIS_ARTICLE.path} className="underline hover:text-gray-900">
+              「{VIX_ANALYSIS_ARTICLE.title}」
+            </Link>
+            にあります。
+          </p>
+
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
             <p className="text-sm leading-relaxed">
               💡 <strong>過去の似た局面も参考に</strong>: 株温計は、現在の温度に近かった過去日とその後のリターンを並べる{" "}

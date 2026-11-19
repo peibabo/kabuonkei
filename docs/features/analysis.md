@@ -64,11 +64,12 @@
 
 **データ層**:
 - `src/data/vix-sp500-analysis.json`: Yahoo Finance `^VIX` / `^GSPC` / `^N225` 日足 (過去20年、約5000取引日) + `japan-temperature-history.json` を結合して、(a) VIX バンド (`〜15 / 15〜20 / 20〜30 / 30〜`) 別の S&P500・日経225 前方リターン (1M/3M/6M)、(b) VIX × 日本版温度バンドの joint 2D（日経225 前方リターンベース、Primary が20年あるのに対し joint は temp 履歴オーバーラップの直近約10年（2026-11 時点で 2017-05-24〜）に限定）、(c) VIX の historical quantile (p25/p50/p75/p95) と最新値を格納。生成スクリプト: `npm run generate:vix-sp500`（`scripts/generate-vix-sp500-analysis.ts`）
+- `episodes`（回数ベース、`scripts/_lib/vix-episodes.ts` の `computeVixEpisodes()`）: VIX 30 以上の日を、前の該当日から 20 営業日以内なら同じ 1 回にまとめ、最初の日に S&P500 を買った場合の 1M/3M/6M リターン、全取引日の baseline、最初の日が 180 日以内の最安値だった回数、回ごとの一覧を格納。Primary の「30〜」は日数ベースで長引いた危機（リーマン期など）の後半が多く数えられるため、併記して読み違いを防ぐ（note 第4弾で指摘）
 - VIX と米国版株温計スコアは相関が強い（米国版スコアは VIX 由来）ため、joint の第2軸には**独立な**日本版温度を採用
 
 **UI**:
 - `src/app/analysis/vix-threshold-sp500/page.tsx`: Server Component。目次・用語解説・`VixSp500AnalysisBody` 埋め込み・示唆・手法・関連リンクで構成。JSON-LD 埋込、最新更新日明示
-- `src/components/analysis/VixSp500AnalysisBody.tsx`: Client Component。`PeriodSwitcher<1m|3m|6m>` で期間切替、quartile 表・Primary 1D 表 (S&P500 + 日経225 横並び)・Joint 2D ヒートマップ (`heatmapCellStyle` 流用、`LOW_SAMPLE_THRESHOLD = 20`)。VIX が p75 以上 or 日本温度が極端時に上部アラート。`trackEvent("analysis_view", {slug:"vix-threshold-sp500"})`
+- `src/components/analysis/VixSp500AnalysisBody.tsx`: Client Component。`PeriodSwitcher<1m|3m|6m>` で期間切替、quartile 表・Primary 1D 表 (S&P500 + 日経225 横並び)・回数ベースの比較表と回ごとの一覧（`#episodes`、JSON に `episodes` がある場合のみ）・Joint 2D ヒートマップ (`heatmapCellStyle` 流用、`LOW_SAMPLE_THRESHOLD = 20`)。VIX が p75 以上 or 日本温度が極端時に上部アラート。`trackEvent("analysis_view", {slug:"vix-threshold-sp500"})`
 - `src/components/analysis/InvestingBooksCTA.tsx`: Client Component。Amazon 書籍3冊（敗者のゲーム / ウォール街のランダム・ウォーカー / 賢明なる投資家）。**暫定仕様**: Amazon 商品ページ直リンク。Amazon アソシエイト登録後に associate tag 付き URL に差し替える。GA4 イベント `book_cta_click(article, book, placement)`
 - `src/app/analysis/vix-threshold-sp500/opengraph-image.tsx`: 赤系グラデの静的 OG。VIX 最新値 / 中央値 / サンプル数を描画
 - sitemap: `/analysis/vix-threshold-sp500` (`priority: 0.6`, `lastModified = vix-sp500-analysis.json.generatedAt`)

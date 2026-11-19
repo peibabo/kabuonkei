@@ -24,6 +24,29 @@ export interface VixJointCell {
   returns: Record<VixAnalysisPeriodKey, PeriodStats>; // 日経225 ベース
 }
 
+/** VIX 30 以上を「1 回の高騰」ごとにまとめた回数ベースの集計（scripts/_lib/vix-episodes.ts） */
+export interface VixEpisode {
+  start: string;
+  end: string;
+  days: number;
+  firstVix: number;
+  peakVix: number;
+  peakDate: string;
+  sp500: Record<VixAnalysisPeriodKey, number | null>;
+  /** 最初の日の終値から 180 日以内の最安終値まで（%）。0 なら最初の日が底（さらに下げた回は -0.1 以下）。未経過は null */
+  sp500Drawdown: number | null;
+}
+
+export interface VixEpisodeSummary {
+  threshold: number;
+  gapTradingDays: number;
+  totalDays: number;
+  episodes: VixEpisode[];
+  firstDay: Record<VixAnalysisPeriodKey, PeriodStats>;
+  baseline: Record<VixAnalysisPeriodKey, PeriodStats>;
+  bottom: { count: number; of: number };
+}
+
 export interface VixSp500Analysis {
   generatedAt: string;
   dataRange: { from: string; to: string };
@@ -31,6 +54,8 @@ export interface VixSp500Analysis {
   vixBands: VixBand[];
   tempBands: SentimentLevel[];
   primary: { bands: VixPrimaryBand[] };
+  /** 古い JSON には無い */
+  episodes?: VixEpisodeSummary;
   joint: {
     dataRange: { from: string; to: string };
     sampleSize: number;

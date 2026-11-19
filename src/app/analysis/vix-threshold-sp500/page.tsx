@@ -11,8 +11,11 @@ import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 const ARTICLE_PATH = "/analysis/vix-threshold-sp500";
 const ARTICLE_TITLE =
   "VIX が 30 を超えた日、その後 S&P500 はどう動いたか？— 過去20年の検証";
+const HAS_EPISODES = getVixSp500Analysis().episodes != null;
 const ARTICLE_DESCRIPTION =
-  "「VIX 30 超え＝パニック＝危険」は本当か？ 過去約 20 年・5000 取引日を集計すると、VIX が高いときほど S&P500 の翌 1/3/6ヶ月リターンと勝率は高い傾向。日本版株温計とのクロス市場ビューも併載。";
+  "「VIX 30 超え＝パニック＝危険」は本当か？ 過去約 20 年・5000 取引日を集計すると、VIX が高かった日ほど S&P500 の翌 1/3/6ヶ月リターンと勝率は高い傾向。" +
+  (HAS_EPISODES ? "30 を超えた最初の日だけを 1 回ずつ数えた集計と、" : "") +
+  "日本版株温計とのクロス市場ビューも併載。";
 const PUBLISHED_AT = "2026-04-23";
 
 export const metadata: Metadata = {
@@ -47,11 +50,23 @@ const TOC_ITEMS = [
   { href: "#kabuonkei", label: "株温計との関係" },
   { href: "#quartile", label: "VIXの歴史的分布" },
   { href: "#primary", label: "VIX 別の日米リターン" },
+  ...(HAS_EPISODES
+    ? [{ href: "#episodes", label: "日数で数えるか、回数で数えるか" }]
+    : []),
   { href: "#joint", label: "VIX × 日本温度 クロス市場" },
   { href: "#implications", label: "示唆 — 逆張り指標としての VIX" },
   { href: "#method", label: "データと手法" },
   { href: "#related", label: "関連リンク" },
 ];
+
+/** 表示上の丸め（整数 %）でそろえて比べる */
+function compareWord(a: number, b: number): string {
+  const x = Math.round(a);
+  const y = Math.round(b);
+  if (x > y) return "を上回りました";
+  if (x < y) return "を下回りました";
+  return "と同じでした";
+}
 
 export default function VixThresholdSp500Page() {
   const analysis = getVixSp500Analysis();
@@ -65,6 +80,9 @@ export default function VixThresholdSp500Page() {
 
   const highVixBand = analysis.primary.bands.find((b) => b.band === "30〜");
   const highVix3m = highVixBand?.sp500["3m"];
+  const episodes = analysis.episodes;
+  const ep6m = episodes?.firstDay["6m"];
+  const base6m = episodes?.baseline["6m"];
 
   const breadcrumbItems = [
     { name: "ホーム", path: "/" },
@@ -130,7 +148,16 @@ export default function VixThresholdSp500Page() {
                 S&P500 は平均 {highVix3m.avgReturn >= 0 ? "+" : ""}
                 {highVix3m.avgReturn.toFixed(1)}% / 勝率 {highVix3m.winRate.toFixed(0)}%
               </strong>
-              。つまり<strong>「VIX 高騰＝むしろ買い場だった」</strong>のが過去 20 年のデータが示す事実です。
+              。VIX が高かった時期には、<strong>結果的に良い買い場が多かった</strong>ことになります。
+            </p>
+          )}
+          {episodes && ep6m && base6m && ep6m.sampleSize > 0 && (
+            <p className="leading-relaxed mt-3">
+              ただしこれは、VIX が 30 以上だった<strong>日</strong>をすべて数えた数字です。長引いた危機ほど多く数えられるため、
+              続けて起きたものを 1 回にまとめ、<strong>30 を超えた最初の日</strong>に買った場合も集計しました。
+              こちらは 6ヶ月後の勝率が <strong>{ep6m.winRate.toFixed(0)}%</strong>（{ep6m.sampleSize} 回）で、普段の日（{base6m.winRate.toFixed(0)}%）
+              {compareWord(ep6m.winRate, base6m.winRate)}
+              （<a href="#episodes" className="underline hover:text-gray-900">日数で数えるか、回数で数えるか</a>）。
             </p>
           )}
           <p className="leading-relaxed mt-3">
@@ -213,12 +240,20 @@ export default function VixThresholdSp500Page() {
             示唆 — 逆張り指標としての VIX
           </h2>
           <p className="leading-relaxed">
-            集計結果から読み取れるのは、以下の三点です。
+            集計結果から読み取れるのは、以下の点です。
           </p>
           <ol className="list-decimal pl-6 space-y-2 text-sm leading-relaxed mt-3">
             <li>
               <strong>VIX が高いほど、翌 1/3/6ヶ月の S&P500 平均リターンと勝率は上がる</strong>傾向。特に 30 以上のパニック帯では、3ヶ月後の勝率が 70% 台に達する日が多い
             </li>
+            {episodes && ep6m && base6m && ep6m.sampleSize > 0 && (
+              <li>
+                ただし日数で数えた成績には、長引いた危機の後半（底に近い日）が多く含まれる。<strong>30 を超えた最初の日</strong>に買った場合、6ヶ月後の勝率は {ep6m.winRate.toFixed(0)}%（普段の日 {base6m.winRate.toFixed(0)}%）で、最初の日がその後 6ヶ月の底だったのは {episodes.bottom.of} 回中 {episodes.bottom.count} 回。
+                {Math.round(ep6m.winRate) <= Math.round(base6m.winRate)
+                  ? "「30 を超えた」ことは、急いで買う理由にはならない"
+                  : "最初の日に買っても普段の日より成績は良かったが、その日が底とは限らない"}
+              </li>
+            )}
             <li>
               これは「VIX 30 超えの時点では、すでに悲観は織り込み済み／売り圧力が一巡しているケースが多い」ことの経験的な表れ。逆に VIX 15 未満の平穏期は、<strong>目立たないがドローダウンに変わる可能性もある油断相場</strong>
             </li>
@@ -227,7 +262,7 @@ export default function VixThresholdSp500Page() {
             </li>
           </ol>
           <p className="leading-relaxed mt-3">
-            同じ VIX 水準でも、日本版温度が<strong>極寒</strong>（すでに売り一巡）か<strong>平温以上</strong>（まだ調整が始まったばかり）かで、その後の動きは変わります。下のクロス市場ヒートマップで、自分が気になるセル（VIX 高 × 極寒 等）を確認してみてください。
+            同じ VIX 水準でも、日本版温度が<strong>極寒</strong>（すでに売り一巡）か<strong>平温以上</strong>（まだ調整が始まったばかり）かで、その後の動きは変わります。上のクロス市場ヒートマップで、自分が気になるセル（VIX 高 × 極寒 等）を確認してみてください。
           </p>
         </section>
 
@@ -254,6 +289,9 @@ export default function VixThresholdSp500Page() {
             </li>
             <li>
               <strong>将来リターン</strong>: 各取引日の終値から 30 / 90 / 180 カレンダー日先の同指数終値を比較。該当日が取引日でない場合は 7 日以内の直近取引日で補完
+            </li>
+            <li>
+              <strong>回数ベースの集計</strong>: VIX 30 以上の日のうち、前の 30 以上の日から 20 営業日以内のものは同じ 1 回にまとめ、最初の日の S&amp;P500 終値で買ったとして集計。普段の日は全取引日
             </li>
           </ul>
         </section>

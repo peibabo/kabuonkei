@@ -5,6 +5,9 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import ForwardReturnTable from "@/components/learn/ForwardReturnTable";
+import { getHistoricalStats } from "@/lib/historical-stats";
+import { formatReturn } from "@/lib/format";
 
 const ARTICLE_PATH = "/learn/what-is-fear-greed";
 const ARTICLE_TITLE =
@@ -12,7 +15,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "Fear & Greed Index（CNN 恐怖と欲望指数）の構成 7 要素・スコアの読み方・実用上の使いどころを腰を据えて解説。日本版を作るとしたら何が違うのかも、株温計の市場温度（日経225 の移動平均乖離＋需給の温度）と対比しながら整理します。";
 const PUBLISHED_AT = "2026-04-28";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -97,6 +100,21 @@ const COMPONENTS = [
 ];
 
 export default function WhatIsFearGreedPage() {
+  const usStats = getHistoricalStats("us");
+  const usYears =
+    Number(usStats.dataRange.to.slice(0, 4)) - Number(usStats.dataRange.from.slice(0, 4));
+  const coldest = usStats.levels.find((l) => l.level === "極寒");
+  const bandRanges = usStats.levels
+    .map((l) => `${l.level} ${l.scoreRange[0]}〜${l.scoreRange[1]}`)
+    .join(" / ");
+  // 「怖がっているときほど上がりやすかった」は、極寒の 3ヶ月後の平均がどの帯よりも高いときだけ書く
+  const coldestIsBest =
+    coldest != null &&
+    usStats.levels.every(
+      (l) => l === coldest || coldest.stats["3m"].avgReturn > l.stats["3m"].avgReturn
+    );
+  // リーマンショック（2008 年）が集計期間に入っているか
+  const coversGfc = usStats.dataRange.from <= "2008-09-01";
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -257,6 +275,62 @@ export default function WhatIsFearGreedPage() {
             実用的には<strong>「25 以下（極度の恐怖）」「75 以上（極度の欲望）」</strong>に入ったときに、
             「いつもと違う水準にいる」サインとして相場を見直すのが基本の使い方です。
             「中立」「やや恐怖」「やや欲望」のレンジで取引判断を変えると、ノイズを拾い続けるだけで終わりがちです。
+          </p>
+
+          <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            恐怖の日に買うと、その後どうだったか（株温計の検証）
+          </h3>
+          <p className="text-base leading-relaxed">
+            CNN は過去のスコアを一括で配布していないため、株温計では同じ「0〜100 の米国センチメント」を
+            VIX から推定した<strong>米国版の温度</strong>で作り、過去{" "}
+            {usYears} 年の毎日について、その後の S&amp;P500 を集計しています。
+            温度の区切りは株温計の 5 段階（{bandRanges}）で、
+            CNN のラベルとは幅が少し違います。
+          </p>
+
+          <ForwardReturnTable
+            caption={`米国版の温度帯別・その後の S&P500（${usStats.dataRange.from}〜${usStats.dataRange.to}、株温計調べ）`}
+            conditionLabel="温度帯"
+            countUnit="日"
+            periods={[
+              { key: "1m", label: "1ヶ月後" },
+              { key: "3m", label: "3ヶ月後" },
+            ]}
+            rows={usStats.levels.map((l) => ({
+              label: `${l.level}（${l.scoreRange[0]}〜${l.scoreRange[1]}）`,
+              count: l.occurrences,
+              stats: l.stats,
+              highlight: l.level === "極寒",
+            }))}
+          />
+
+          <p className="text-base leading-relaxed mt-3">
+            {coldest && (
+              <>
+                極寒（極度の恐怖に近い水準）の日に S&amp;P500 を買っていた場合、3ヶ月後は平均{" "}
+                <strong>{formatReturn(coldest.stats["3m"].avgReturn)}・勝率 {coldest.stats["3m"].winRate.toFixed(0)}%</strong>
+                でした。
+              </>
+            )}
+            {coldestIsBest && (
+              <>
+                「みんなが怖がっているときほど、その後は上がりやすかった」という、Fear &amp; Greed Index が逆張りの目安として
+                使われる理由がデータにも表れています。
+              </>
+            )}
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ 極寒の日は数少ない急落の時期に続けて現れるため、日数ほど独立した事例はありません。
+            {!coversGfc && (
+              <>
+                また上の期間には 2008 年のような「恐怖のあとにさらに長く下げた」局面が入っていません。
+              </>
+            )}
+            温度帯ごとの詳しい成績は{" "}
+            <Link href="/" className="underline hover:text-gray-900">
+              トップページ
+            </Link>
+            の過去統計でも、今日の温度と並べて確認できます。
           </p>
         </section>
 

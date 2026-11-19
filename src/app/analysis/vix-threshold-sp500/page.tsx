@@ -4,13 +4,15 @@ import Script from "next/script";
 import StaticPageLayout from "@/components/StaticPageLayout";
 import VixSp500AnalysisBody from "@/components/analysis/VixSp500AnalysisBody";
 import Breadcrumb from "@/components/Breadcrumb";
-import { getVixSp500Analysis } from "@/lib/vix-sp500-analysis";
+import {
+  getVixSp500Analysis,
+  VIX_ANALYSIS_ARTICLE,
+} from "@/lib/vix-sp500-analysis";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
 
-const ARTICLE_PATH = "/analysis/vix-threshold-sp500";
-const ARTICLE_TITLE =
-  "VIX が 30 を超えた日、その後 S&P500 はどう動いたか？— 過去20年の検証";
+const ARTICLE_PATH = VIX_ANALYSIS_ARTICLE.path;
+const ARTICLE_TITLE = VIX_ANALYSIS_ARTICLE.title;
 const HAS_EPISODES = getVixSp500Analysis().episodes != null;
 const ARTICLE_DESCRIPTION =
   "「VIX 30 超え＝パニック＝危険」は本当か？ 過去約 20 年・5000 取引日を集計すると、VIX が高かった日ほど S&P500 の翌 1/3/6ヶ月リターンと勝率は高い傾向。" +

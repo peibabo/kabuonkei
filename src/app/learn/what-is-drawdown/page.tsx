@@ -5,6 +5,12 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import {
+  getNikkeiCrashAnalysis,
+  NIKKEI_CRASH_ARTICLE,
+} from "@/lib/nikkei-crash-analysis";
+import { formatReturn } from "@/lib/format";
+import { LearnDataTable } from "@/components/learn/ForwardReturnTable";
 
 const ARTICLE_PATH = "/learn/what-is-drawdown";
 const ARTICLE_TITLE =
@@ -12,7 +18,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "ドローダウン (DD) と最大ドローダウンの意味、計算式、過去の S&P500・日経225 のDD実績、なぜリターンより最大DDが投資判断で重要かを解説。株温計のバーチャルポートフォリオによる「温度信号は最大DDを浅くしたのか」の正直な検証結果との接続もまとめます。";
 const PUBLISHED_AT = "2026-05-08";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -97,6 +103,17 @@ const NIKKEI_DRAWDOWNS = [
 ];
 
 export default function WhatIsDrawdownPage() {
+  const crash = getNikkeiCrashAnalysis();
+  const dd = crash.summary.drawdown;
+  const crashFromYear = crash.dataRange.from.slice(0, 4);
+  // 集計（summary.drawdown）と同じく、6ヶ月が経過して最安値が確定した局面だけを数える
+  const deepFollowUps = crash.episodes.filter(
+    (e) => e.isComplete && e.maxFurtherDrawdown <= -10
+  ).length;
+  // 「急落した日が底だったのは少数」と書けるのは半分未満のときだけ
+  const bottomIsRare = dd.bottomOnCrashDay * 2 < dd.count;
+  const crashBeatsBaseline =
+    crash.summary.episodes["1y"].avgReturn > crash.summary.baseline["1y"].avgReturn;
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -340,6 +357,69 @@ export default function WhatIsDrawdownPage() {
             S&amp;P500 は<strong>1980 年以降の平均インラ年DDが約 -14%</strong>、日経225 はバブル崩壊以降の長期低迷を経験しているため
             国によってリスクプロファイルがかなり異なります。「年に一度くらい -10〜-15% はあるもの」というのが米国の感覚、
             日本市場はそれに加えて<strong>長期低迷（バブル崩壊期は 30 年以上の回復を要した）</strong>のリスクも織り込んでおく必要があります。
+          </p>
+
+          <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            急落した日は底だったか？（株温計の集計）
+          </h3>
+          <p className="text-base leading-relaxed">
+            1 日で大きく下げた日は「もう十分下げた」と感じやすいものです。株温計では
+            {crashFromYear} 年以降の日経225 で、前日比 {crash.threshold}% 以下の急落を{" "}
+            {crash.mergeWindow} 営業日以内なら 1 回にまとめて{" "}
+            <strong>{crash.episodes.length} 回</strong>の局面を拾いました。
+            このうち 6ヶ月が経過した {dd.count} 回について、急落した日の終値から
+            その後 6ヶ月の間にどこまで下がったかを調べています。
+          </p>
+
+          <LearnDataTable
+            caption={`日経225 の急落日（前日比 ${crash.threshold}% 以下）から 6ヶ月以内の追加の下落（6ヶ月が経過した ${dd.count} 回、株温計調べ）`}
+          >
+              <tbody>
+                <tr>
+                  <th scope="row" className="text-left font-semibold">急落した日がそのまま底だった</th>
+                  <td className="text-right font-mono">{dd.bottomOnCrashDay} 回 / {dd.count} 回</td>
+                </tr>
+                <tr>
+                  <th scope="row" className="text-left font-semibold">さらに 10% 以上下げた</th>
+                  <td className="text-right font-mono">{deepFollowUps} 回 / {dd.count} 回</td>
+                </tr>
+                <tr>
+                  <th scope="row" className="text-left font-semibold">追加の下落（中央値 / 平均）</th>
+                  <td className="text-right font-mono">
+                    {dd.medianDrawdown.toFixed(1)}% / {dd.avgDrawdown.toFixed(1)}%
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="text-left font-semibold">底をつけるまで（中央値）</th>
+                  <td className="text-right font-mono">{dd.medianDaysToLow} 営業日</td>
+                </tr>
+              </tbody>
+          </LearnDataTable>
+
+          <p className="text-base leading-relaxed mt-3">
+            {bottomIsRare && (
+              <>
+                急落した日が底だったのは少数で、多くの局面では<strong>そこから中央値で {dd.medianDaysToLow} 営業日ほどかけて、さらに下げ</strong>ています。
+                最大DD は「急落の 1 日」ではなく、その後の数週間〜数ヶ月で深くなるものだ、と分かります。
+              </>
+            )}
+            {crashBeatsBaseline && (
+              <>
+                一方で、急落した日に買った場合の 1 年後の日経225 は平均（1 年が経過した{" "}
+                {crash.summary.episodes["1y"].sampleSize} 回）{" "}
+                {formatReturn(crash.summary.episodes["1y"].avgReturn)} で、全営業日に買った場合の平均{" "}
+                {formatReturn(crash.summary.baseline["1y"].avgReturn)} を上回っていました。
+              </>
+            )}
+            「さらに下がる前提で、資金を分けて買う」のが現実的な付き合い方です。
+            局面ごとの一覧と、その後のリターンは{" "}
+            <Link
+              href={NIKKEI_CRASH_ARTICLE.path}
+              className="underline hover:text-gray-900"
+            >
+              「{NIKKEI_CRASH_ARTICLE.title}」
+            </Link>
+            で公開しています。
           </p>
         </section>
 

@@ -23,7 +23,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "「株の買い時」を 1 指標で当てる方法はありません。センチメント・需給・リスク・マクロ（為替）の 4 カテゴリで過熱感と底値圏を見極める考え方を、各指標の解説記事と市場温度スコアへの導線つきで整理したまとめ記事。",
     publishedAt: "2026-06-18",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-usdjpy-momentum",
@@ -67,7 +67,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "ドローダウン (DD) と最大ドローダウンの意味、計算式、過去の S&P500・日経225 のDD実績、なぜリターンより最大DDが投資判断で重要かを解説。株温計の温度連動ポートフォリオによる「温度信号は最大DDを浅くしたのか」の正直な検証への接続も整理。",
     publishedAt: "2026-05-08",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-arbitrage-balance",
@@ -100,7 +100,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "信用倍率（信用買い残÷信用売り残）の意味、JPX 公表データの読み方、「4 倍超え=過熱」という通説の真偽、株温計の温度スコアと組み合わせた使いどころを初心者向けに解説。",
     publishedAt: "2026-04-28",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-fear-greed",
@@ -111,7 +111,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "CNN Fear & Greed Index の構成 7 要素・スコアの読み方・実用上の使いどころを解説。日本版を作るとしたら何が違うのかも、株温計の市場温度と対比しながら整理します。",
     publishedAt: "2026-04-28",
-    modifiedAt: "2026-11-17",
+    modifiedAt: "2026-11-19",
   },
   {
     slug: "what-is-vix",

@@ -5,6 +5,9 @@ import StaticPageLayout from "@/components/StaticPageLayout";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-jsonld";
+import ForwardReturnTable from "@/components/learn/ForwardReturnTable";
+import { getMarginRatioAnalysis } from "@/lib/margin-ratio-analysis";
+import { formatReturn } from "@/lib/format";
 
 const ARTICLE_PATH = "/learn/what-is-margin-ratio";
 const ARTICLE_TITLE =
@@ -12,7 +15,7 @@ const ARTICLE_TITLE =
 const ARTICLE_DESCRIPTION =
   "信用倍率（信用買い残÷信用売り残）の意味、JPX 公表データの読み方、「4 倍超え=過熱」という通説の真偽、株温計の温度スコアと組み合わせた使いどころを初心者向けに解説。週次データなのに毎週見るべきかという素朴な疑問にも答えます。";
 const PUBLISHED_AT = "2026-04-28";
-const MODIFIED_AT = "2026-11-17";
+const MODIFIED_AT = "2026-11-19";
 
 export const metadata: Metadata = {
   title: ARTICLE_TITLE,
@@ -85,6 +88,19 @@ const BANDS = [
 ];
 
 export default function WhatIsMarginRatioPage() {
+  const marginAnalysis = getMarginRatioAnalysis();
+  // 本文の結論はデータが支えるときだけ出す（データは定期的に作り直されるため）
+  const sixMonth = marginAnalysis.marginalRatio.map((b) => b.returns["6m"].avgReturn);
+  const sortedSixMonth = [...sixMonth].sort((a, b) => a - b);
+  const medianSixMonth = sortedSixMonth[Math.floor((sortedSixMonth.length - 1) / 2)];
+  const fiveOrMoreBand = marginAnalysis.marginalRatio.find((b) => b.band === "5倍〜");
+  // 「5 倍以上でも悪くない」: 6ヶ月後の平均が水準全体の中央（下側）以上
+  const fiveOrMore =
+    fiveOrMoreBand && fiveOrMoreBand.returns["6m"].avgReturn >= medianSixMonth
+      ? fiveOrMoreBand
+      : undefined;
+  // 「倍率が高いほど下がる並びではない」: 低い水準から順に 6ヶ月後の平均が下がり続けていない
+  const notMonotonicDown = sixMonth.some((v, i) => i > 0 && v > sixMonth[i - 1]);
   const jsonLd = buildArticleJsonLd({
     url: ARTICLE_PATH,
     headline: ARTICLE_TITLE,
@@ -252,6 +268,45 @@ export default function WhatIsMarginRatioPage() {
             ただし、<strong>過去 10 年のデータを並べると、この経験則は単独では意外と頼りない</strong>ことが分かります。
             株温計では JPX 公表データと日経225 終値を週次で組み合わせ、信用倍率の水準ごとに翌 1 / 3 / 6 ヶ月後のリターンを集計しました。
             結論として、信用倍率の水準だけ見ても、その後のリターンとの間に強い関係性は見出しにくい——というのが正直な検証結果です。
+          </p>
+
+          <ForwardReturnTable
+            caption={`信用倍率の水準別・その後の日経225（${marginAnalysis.dataRange.from.slice(0, 4)}〜${marginAnalysis.dataRange.to.slice(0, 4)} 年の毎週の申込日を起点、株温計調べ）`}
+            conditionLabel="信用倍率"
+            countUnit="週"
+            periods={[
+              { key: "3m", label: "3ヶ月後" },
+              { key: "6m", label: "6ヶ月後" },
+            ]}
+            rows={marginAnalysis.marginalRatio.map((b) => ({
+              label: b.band,
+              count: b.occurrences,
+              stats: b.returns,
+              highlight: b.band === "5倍〜",
+            }))}
+          />
+
+          <p className="text-base leading-relaxed mt-3">
+            {fiveOrMore && (
+              <>
+                「危険」とされる<strong>5 倍以上の週でも、6ヶ月後の日経225 は平均{" "}
+                {formatReturn(fiveOrMore.returns["6m"].avgReturn)}・勝率{" "}
+                {fiveOrMore.returns["6m"].winRate.toFixed(0)}%</strong>
+                と、ほかの水準と比べて悪くありませんでした。
+              </>
+            )}
+            {notMonotonicDown && (
+              <>
+                水準によって成績に差はあるものの、倍率が高いほど下がる、という並びにはなっていません。
+                近年は倍率そのものが上がり続けている（この期間の中央値は約 {marginAnalysis.ratioQuartiles.p50} 倍）ため、
+                「高倍率の週」が上昇相場の時期に集まっている面もあり、
+                <strong>倍率の高さを売りの合図にするのは根拠が弱い</strong>と言えます。
+              </>
+            )}
+          </p>
+          <p className="text-sm leading-relaxed mt-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+            ⚠️ 週ごとに数えているため、同じ相場の時期が何十週も続けて数えられています。
+            件数ほど独立した事例があるわけではない点に注意してください。勝率は「その後プラスだった割合」です。
           </p>
           <p className="text-base leading-relaxed mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
             🔬 単独では弱いが、<strong>株温計の温度スコアと掛け合わせると読み方が変わる組合せ</strong>があります。

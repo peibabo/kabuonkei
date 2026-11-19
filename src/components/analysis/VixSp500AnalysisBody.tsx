@@ -10,6 +10,7 @@ import {
   type VixSp500Analysis,
   computeVixPercentile,
   findVixJointCell,
+  VIX_JOINT_LOW_SAMPLE_THRESHOLD,
 } from "@/lib/vix-sp500-analysis";
 import { getSentimentColor } from "@/lib/sentiment";
 import { formatReturn, returnColorClass } from "@/lib/format";
@@ -24,7 +25,7 @@ const PERIOD_LABELS: Record<VixAnalysisPeriodKey, string> = {
   "3m": "3ヶ月後",
   "6m": "6ヶ月後",
 };
-const LOW_SAMPLE_THRESHOLD = 20;
+const LOW_SAMPLE_THRESHOLD = VIX_JOINT_LOW_SAMPLE_THRESHOLD;
 
 interface Props {
   analysis: VixSp500Analysis;

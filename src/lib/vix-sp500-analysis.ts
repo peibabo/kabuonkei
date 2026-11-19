@@ -78,6 +78,15 @@ export interface VixSp500Analysis {
   note: string;
 }
 
+/** 分析記事の path・タイトル（記事ページ / 解説記事からのリンクで共有） */
+export const VIX_ANALYSIS_ARTICLE = {
+  path: "/analysis/vix-threshold-sp500",
+  title: "VIX が 30 を超えた日、その後 S&P500 はどう動いたか？— 過去20年の検証",
+} as const;
+
+/** VIX × 日本版温度のクロス集計で、日数がこれ未満のセルは参考値として扱う */
+export const VIX_JOINT_LOW_SAMPLE_THRESHOLD = 20;
+
 export function getVixSp500Analysis(): VixSp500Analysis {
   return analysisData as VixSp500Analysis;
 }
@@ -118,4 +127,33 @@ export function computeVixPercentile(
     99,
     Math.round(95 + ((vix - p95) / Math.max(p95 * 0.1, 1)) * 4)
   );
+}
+
+/** 複数セルをまとめた期間ごとの成績（中央値はセルからは復元できないため持たない） */
+export type PooledPeriodStats = Pick<PeriodStats, "avgReturn" | "winRate" | "sampleSize">;
+
+/**
+ * VIX × 日本版温度のセルをまとめて 1 つのグループの成績にする。
+ * 平均リターン・勝率は各セルの sampleSize で重み付けした平均（＝全日を 1 つに集計したのと同じ）。
+ * 小数第 1 位に丸めて保存されたセルから計算するため、末尾の桁は元データの再集計と僅かにずれうる。
+ */
+export function poolVixJointCells(cells: VixJointCell[]): {
+  occurrences: number;
+  returns: Partial<Record<VixAnalysisPeriodKey, PooledPeriodStats>>;
+} {
+  const returns: Partial<Record<VixAnalysisPeriodKey, PooledPeriodStats>> = {};
+  for (const key of ["1m", "3m", "6m"] as const) {
+    const n = cells.reduce((sum, c) => sum + c.returns[key].sampleSize, 0);
+    if (n === 0) continue;
+    const weighted = (pick: (s: PeriodStats) => number) =>
+      Math.round(
+        (cells.reduce((sum, c) => sum + pick(c.returns[key]) * c.returns[key].sampleSize, 0) / n) * 10
+      ) / 10;
+    returns[key] = {
+      avgReturn: weighted((s) => s.avgReturn),
+      winRate: weighted((s) => s.winRate),
+      sampleSize: n,
+    };
+  }
+  return { occurrences: cells.reduce((sum, c) => sum + c.occurrences, 0), returns };
 }

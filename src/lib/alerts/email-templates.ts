@@ -52,7 +52,7 @@ const KIND_EMOJI: Record<AlertKind, string> = {
   hot: "🔥",
 };
 
-function escapeHtml(s: string): string {
+export function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import {
+  buildDraftEmail,
+  buildIntentUrl,
   buildTweetBody,
+  DRAFT_BEGIN,
+  DRAFT_END,
   estimateWeightedLength,
   findSimilarDays,
   formatJstDateLabel,
@@ -231,5 +235,58 @@ describe("formatJstDateLabel", () => {
     // 2026-04-19 UTC 15:30 = 2026-04-20 JST 00:30
     const d = new Date(Date.UTC(2026, 3, 19, 15, 30, 0));
     expect(formatJstDateLabel(d)).toBe("4/20(月)");
+  });
+});
+
+describe("buildDraftEmail（手動投稿用の下書きメール）", () => {
+  const tweetText = "🌡 11/20(金) 寄り前チェック\n\n🇯🇵 16 極寒 (恐怖)\n\n▶ https://kabuonkei.com?utm_source=x&utm_campaign=daily";
+  const imageUrl = "https://kabuonkei.com/api/og/daily?jp=16&us=40&date=2026-11-20";
+
+  it("件名に日付が入り、本文は目印で投稿文を囲む", () => {
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true });
+    expect(mail.subject).toBe("【X投稿】11/20(金) 寄り前チェック");
+    const begin = mail.text.indexOf(DRAFT_BEGIN);
+    const end = mail.text.indexOf(DRAFT_END);
+    expect(begin).toBeGreaterThanOrEqual(0);
+    expect(end).toBeGreaterThan(begin);
+    // 目印の間を切り出すと投稿文そのものになる
+    expect(mail.text.slice(begin + DRAFT_BEGIN.length, end).trim()).toBe(tweetText);
+    expect(mail.text).toContain("添付の daily-temperature.png");
+    expect(mail.text).toContain(`画像 URL: ${imageUrl}`);
+    expect(mail.text).toContain(buildIntentUrl(tweetText));
+  });
+
+  it("HTML 版は投稿文をエスケープし、投稿画面へのリンクを持つ", () => {
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true });
+    expect(mail.html).toContain("utm_source=x&amp;utm_campaign=daily");
+    expect(mail.html).toContain("X で投稿する");
+    expect(mail.html).toContain("https://x.com/intent/post?text=");
+  });
+
+  it("画像の添付に失敗したときは URL から保存するよう案内する", () => {
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: false });
+    expect(mail.text).toContain("添付に失敗しました");
+    expect(mail.text).toContain(imageUrl);
+  });
+
+  it("投稿文が 280 を超えるときだけ注意書きを出す", () => {
+    const over = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true, weightedLength: 300 });
+    expect(over.text).toContain("投稿文が長すぎます（概算 300/280）");
+    expect(over.html).toContain("投稿文が長すぎます");
+    const ok = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl, imageAttached: true, weightedLength: 184 });
+    expect(ok.text).not.toContain("長すぎます");
+  });
+
+  it("画像なしのときは URL 行を出さない", () => {
+    const mail = buildDraftEmail({ dateLabel: "11/20(金)", tweetText, imageUrl: null, imageAttached: false });
+    expect(mail.text).toContain("画像: なし");
+    expect(mail.text).not.toContain("画像 URL");
+  });
+});
+
+describe("buildIntentUrl", () => {
+  it("投稿文を URL エンコードして x.com の投稿画面リンクにする", () => {
+    const url = buildIntentUrl("a b&c\n改行");
+    expect(url).toBe("https://x.com/intent/post?text=a%20b%26c%0A%E6%94%B9%E8%A1%8C");
   });
 });

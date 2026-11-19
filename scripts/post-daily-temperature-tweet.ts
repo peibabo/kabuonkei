@@ -12,12 +12,16 @@
  *   価格・指数値の生データは一切公開しない（= 一次市場データの再配信には該当させない運用）
  *
  * 実行:
- *   npm run post:daily-tweet              # 実投稿
- *   npm run post:daily-tweet -- --dry-run # 投稿せずコンソール出力のみ
+ *   npm run post:daily-tweet                       # X API で実投稿
+ *   npm run post:daily-tweet -- --email            # X には投稿せず、投稿文＋画像を運営者へメール（手動投稿用）
+ *   npm run post:daily-tweet -- --dry-run          # 投稿せずコンソール出力のみ
+ *
+ * 2026-11 時点の本番は --email（X API が 402 を返すようになったため、手動投稿に切り替えた）。
  *
  * 必要な環境変数:
- *   X_API_KEY / X_API_SECRET / X_ACCESS_TOKEN / X_ACCESS_TOKEN_SECRET
- *   NEXT_PUBLIC_SITE_URL （画像fetch先、省略時 https://kabuonkei.com）
+ *   X API で投稿: X_API_KEY / X_API_SECRET / X_ACCESS_TOKEN / X_ACCESS_TOKEN_SECRET
+ *   メールで送る: RESEND_API_KEY / RESEND_FROM_EMAIL / X_DRAFT_EMAIL（送り先。未設定なら OPS_ALERT_EMAIL → info@kabuonkei.com）
+ *   共通: NEXT_PUBLIC_SITE_URL （画像fetch先、省略時 https://kabuonkei.com）
  */
 
 import YahooFinance from "yahoo-finance2";
@@ -36,6 +40,8 @@ import {
   HOT_THRESHOLD,
 } from "../src/lib/alerts/state-transition";
 import { formatJstDateLabel } from "../src/lib/jst-date";
+import { sendEmail } from "../src/lib/alerts/resend";
+import { escapeHtml } from "../src/lib/alerts/email-templates";
 import type {
   ChartPoint,
   FearGreedData,
@@ -66,6 +72,11 @@ const EVENTS_META_PATH = resolve(__dirname, "../src/data/events-meta.json");
 
 const DEFAULT_SITE_URL = "https://kabuonkei.com";
 const DAILY_OG_PATH = "/api/og/daily";
+const DEFAULT_DRAFT_EMAIL = "info@kabuonkei.com";
+
+/** メール本文で投稿文を囲む目印。受け取った人や AI アシスタントが投稿文だけを切り出せるようにする */
+export const DRAFT_BEGIN = "----- 投稿文ここから -----";
+export const DRAFT_END = "----- 投稿文ここまで -----";
 
 // --- 純粋関数（テスト対象） ----------------------------------------------------
 
@@ -176,6 +187,64 @@ export function estimateWeightedLength(text: string): number {
   return n;
 }
 
+/** 投稿文を X の投稿画面に入れた状態で開くリンク */
+export function buildIntentUrl(text: string): string {
+  return `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+}
+
+export interface DraftEmailInput {
+  dateLabel: string;
+  tweetText: string;
+  /** 温度カード画像の URL。null なら画像なし */
+  imageUrl: string | null;
+  /** 画像をメールに添付できたか */
+  imageAttached: boolean;
+  /** 投稿文の加重文字数（概算）。280 を超えるときは本文で注意する */
+  weightedLength?: number;
+}
+
+/** X に手動投稿するための下書きメール（件名・テキスト・HTML）を組み立てる */
+export function buildDraftEmail(input: DraftEmailInput): {
+  subject: string;
+  text: string;
+  html: string;
+} {
+  const { dateLabel, tweetText, imageUrl, imageAttached, weightedLength } = input;
+  const overLimit = weightedLength != null && weightedLength > 280;
+  const overLimitNote = `⚠️ 投稿文が長すぎます（概算 ${weightedLength}/280）。X で弾かれる場合は削ってから投稿してください`;
+  const subject = `【X投稿】${dateLabel} 寄り前チェック`;
+  const intentUrl = buildIntentUrl(tweetText);
+  const imageNote = imageUrl
+    ? imageAttached
+      ? "画像: 添付の daily-temperature.png を付けて投稿してください"
+      : "画像: 添付に失敗しました。下の URL から保存して付けてください"
+    : "画像: なし（日米とも温度が取れなかったため）";
+
+  const textLines = [
+    `${dateLabel} の X 投稿の下書きです。`,
+    ...(overLimit ? [overLimitNote] : []),
+    "",
+    DRAFT_BEGIN,
+    tweetText,
+    DRAFT_END,
+    "",
+    imageNote,
+  ];
+  if (imageUrl) textLines.push(`画像 URL: ${imageUrl}`);
+  textLines.push("", `投稿画面を開く: ${intentUrl}`);
+
+  const html = `<div style="font-family:sans-serif;line-height:1.6">
+<p>${escapeHtml(dateLabel)} の X 投稿の下書きです。</p>${overLimit ? `\n<p style="color:#c00">${escapeHtml(overLimitNote)}</p>` : ""}
+<p style="color:#888;margin:0">${escapeHtml(DRAFT_BEGIN)}</p>
+<pre style="white-space:pre-wrap;font-family:inherit;background:#f5f5f5;padding:12px;margin:4px 0">${escapeHtml(tweetText)}</pre>
+<p style="color:#888;margin:0">${escapeHtml(DRAFT_END)}</p>
+<p>${escapeHtml(imageNote)}${imageUrl ? `<br><a href="${escapeHtml(imageUrl)}">画像 URL</a>` : ""}</p>
+<p><a href="${escapeHtml(intentUrl)}" style="display:inline-block;background:#000;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">X で投稿する</a></p>
+</div>`;
+
+  return { subject, text: textLines.join("\n"), html };
+}
+
 // --- 副作用あり（スクリプト本体） --------------------------------------------
 
 async function fetchChart(symbol: string, days: number): Promise<ChartPoint[]> {
@@ -272,18 +341,23 @@ export function enrichMatchWithSlug(
   return slug ? { ...match, eventSlug: slug } : match;
 }
 
-async function fetchDailyOgImage(
+function dailyOgImageUrl(
   siteUrl: string,
   params: { japanScore: number | null; usScore: number | null; isoDate: string },
-): Promise<Buffer | null> {
+): URL {
   const url = new URL(DAILY_OG_PATH, siteUrl);
   if (params.japanScore != null)
     url.searchParams.set("jp", String(params.japanScore));
   if (params.usScore != null)
     url.searchParams.set("us", String(params.usScore));
   url.searchParams.set("date", params.isoDate);
+  return url;
+}
+
+async function fetchDailyOgImage(url: URL): Promise<Buffer | null> {
   try {
-    const res = await fetch(url, { cache: "no-store" });
+    // 応答が無いまま止まると下書きメールが寄り付きに間に合わないので 20 秒で打ち切る（画像なしで続行）
+    const res = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(20_000) });
     if (!res.ok) {
       console.warn(`OG画像取得失敗: ${res.status} ${url}`);
       return null;
@@ -341,11 +415,12 @@ async function postTweet(text: string, image: Buffer | null): Promise<void> {
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
+  const emailMode = process.argv.includes("--email");
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
   const dateLabel = formatJstDateLabel();
 
   console.log(
-    `🌡 X Bot 投稿処理開始 (${dateLabel})${dryRun ? " [DRY RUN]" : ""}`,
+    `🌡 X Bot 投稿処理開始 (${dateLabel})${emailMode ? " [メール送信モード]" : ""}${dryRun ? " [DRY RUN]" : ""}`,
   );
 
   const { fearGreed, japanFearGreed } = await loadMarketContext();
@@ -353,6 +428,9 @@ async function main() {
   const usScore = fearGreed?.score ?? null;
 
   if (japanScore == null && usScore == null) {
+    // メール送信モードでは、黙ってスキップすると下書きが届かない理由が分からないので失敗扱いにする
+    // （夜の見張り check-cron-health が失敗として運営者に知らせる）
+    if (emailMode) throw new Error("日米いずれの温度も取得できず、下書きメールを作れませんでした");
     console.warn("日米いずれの温度も取得できず、投稿をスキップします");
     return;
   }
@@ -393,9 +471,9 @@ async function main() {
     siteUrl,
   };
 
-  const text = buildTweetBody(ctx);
+  let text = buildTweetBody(ctx);
   const attach = shouldAttachImage(japanScore, usScore);
-  const weighted = estimateWeightedLength(text);
+  let weighted = estimateWeightedLength(text);
 
   console.log("\n---- 投稿文 ----");
   console.log(text);
@@ -405,41 +483,52 @@ async function main() {
 
   if (weighted > 280) {
     console.warn("⚠️ 加重文字数が 280 を超過。類似日行を省略して再構築します");
-    const shrunk = buildTweetBody({
-      ...ctx,
-      japanSimilar: null,
-      usSimilar: null,
-    });
-    if (dryRun) {
-      console.log("\n---- 縮小後投稿文 ----");
-      console.log(shrunk);
-      console.log("----------------------");
-      return;
-    }
-    let image: Buffer | null = null;
-    if (attach)
-      image = await fetchDailyOgImage(siteUrl, {
-        japanScore,
-        usScore,
-        isoDate: jstIsoDate(),
-      });
-    await postTweet(shrunk, image);
-    console.log("\n✅ 投稿完了（類似日省略）");
-    return;
+    text = buildTweetBody({ ...ctx, japanSimilar: null, usSimilar: null });
+    weighted = estimateWeightedLength(text);
+    console.log("\n---- 縮小後投稿文 ----");
+    console.log(text);
+    console.log("----------------------");
+    console.log(`加重文字数(概算): ${weighted}/280${weighted > 280 ? "（まだ超過）" : ""}`);
   }
+
+  const imageUrl = attach
+    ? dailyOgImageUrl(siteUrl, { japanScore, usScore, isoDate: jstIsoDate() })
+    : null;
 
   if (dryRun) {
-    console.log("\n[DRY RUN] 投稿せず終了");
+    if (imageUrl) console.log(`画像 URL: ${imageUrl}`);
+    console.log(`\n[DRY RUN] ${emailMode ? "メール送信" : "投稿"}せず終了`);
     return;
   }
 
-  let image: Buffer | null = null;
-  if (attach) {
-    image = await fetchDailyOgImage(siteUrl, {
-      japanScore,
-      usScore,
-      isoDate: jstIsoDate(),
+  const image = imageUrl ? await fetchDailyOgImage(imageUrl) : null;
+
+  if (emailMode) {
+    const to =
+      process.env.X_DRAFT_EMAIL ||
+      process.env.OPS_ALERT_EMAIL ||
+      DEFAULT_DRAFT_EMAIL;
+    const mail = buildDraftEmail({
+      dateLabel,
+      tweetText: text,
+      imageUrl: imageUrl ? imageUrl.toString() : null,
+      imageAttached: image != null,
+      weightedLength: weighted,
     });
+    const sent = await sendEmail({
+      to,
+      ...mail,
+      ...(image
+        ? {
+            attachments: [
+              { filename: "daily-temperature.png", content: image.toString("base64") },
+            ],
+          }
+        : {}),
+    });
+    if (!sent.ok) throw new Error(`下書きメールの送信に失敗: ${sent.error}`);
+    console.log(`\n✅ 下書きメールを送信しました（宛先: ${to}、id=${sent.id}）`);
+    return;
   }
 
   await postTweet(text, image);

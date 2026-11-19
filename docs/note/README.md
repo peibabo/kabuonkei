@@ -35,7 +35,7 @@
 | 001 | 日本版「Fear & Greed Index」が無かったので、自分で作った | 開発ストーリー | japan-historical-stats / japan-temperature-history | 原稿あり（[001-japan-fear-greed-story.md](001-japan-fear-greed-story.md)）。公開済み（ https://note.com/ao_bubbles/n/n17cae700d518 ） |
 | 002 | 「極寒で買えば勝率100%」を疑え——111日ぶんの中身を全部バラしてみた | データ検証 | japan-temperature-history / japan-historical-stats | 原稿あり（[002-gokkan-win-rate-anatomy.md](002-gokkan-win-rate-anatomy.md)）。2026-07-09 公開（ https://note.com/ao_bubbles/n/n96afcc218c65 ）。2026-11-16 に 11/13 時点のデータで全数字を再検証し、公開中の記事に反映済み（本文・アイキャッチ・期間別テーブル） |
 | 003 | 日経平均が1日で-6%。11月6日は「底」だったのか——1985年以降の急落26回、その後を全部追った | /analysis 転用（号外） | nikkei-crash-analysis / japan-temperature-history | 原稿あり（[003-nikkei-crash-aftermath.md](003-nikkei-crash-aftermath.md)、データ基準日 2026-11-18）。11/06 の急落（AI規制ショック）の話題性を活かすため VIX 回より前倒し。2026-11-18 公開（ https://note.com/ao_bubbles/n/n2cdead0198d1 ） |
-| 004 | VIXが30を超えた日、S&P500はどう動いたか——「6ヶ月後の勝率82%」を、数え方から疑ってみた | データ検証（/analysis の再検証） | ^VIX / ^GSPC / ^N225（1990〜）・日本の温度を1990年まで再計算 | 原稿あり（[004-vix-30-sp500.md](004-vix-30-sp500.md)、データ基準日 2026-11-18）。サイト記事の日数ベースの勝率を回数ベースで数え直す回。2026-11-19 人間レビュー済み・note 投稿待ち（サイト側の回数ベース追記は PR #156） |
+| 004 | VIXが30を超えた日、S&P500はどう動いたか——「6ヶ月後の勝率82%」を、数え方から疑ってみた | データ検証（/analysis の再検証） | ^VIX / ^GSPC / ^N225（1990〜）・日本の温度を1990年まで再計算 | 原稿あり（[004-vix-30-sp500.md](004-vix-30-sp500.md)、データ基準日 2026-11-18）。サイト記事の日数ベースの勝率を回数ベースで数え直す回。2026-11-19 公開（ https://note.com/ao_bubbles/n/n6a349bd06950 ）。サイト側の回数ベース追記は PR #156 |
 | 005 | 信用倍率と市場温度のクロス分析 | データ検証 | margin-ratio-analysis | 予定 |
 | 006 | 「極寒」のとき強い業種はどこか — 温度帯×17セクター | データ検証 | japan-sector-heatmap | 予定 |
 

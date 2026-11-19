@@ -39,10 +39,10 @@ import {
   COLD_THRESHOLD,
   HOT_THRESHOLD,
 } from "../src/lib/alerts/state-transition";
-import { formatJstDateLabel } from "../src/lib/jst-date";
+import { formatJstDateLabel, getJstDateKey } from "../src/lib/jst-date";
 import { sendEmail } from "../src/lib/alerts/resend";
-import { escapeHtml } from "../src/lib/alerts/email-templates";
-import { opsAlertEmail } from "../src/lib/ops-email";
+import { escapeHtml } from "../src/lib/html";
+import { xDraftEmail } from "../src/lib/ops-email";
 import type {
   ChartPoint,
   FearGreedData,
@@ -362,6 +362,12 @@ async function fetchDailyOgImage(url: URL): Promise<Buffer | null> {
       console.warn(`OG画像取得失敗: ${res.status} ${url}`);
       return null;
     }
+    // 保護ページやエラーページが 200 の HTML で返ってきたときに、壊れた PNG として添付しない
+    const type = res.headers.get("content-type") ?? "";
+    if (!type.startsWith("image/")) {
+      console.warn(`OG画像取得失敗: 画像ではない応答（${type}） ${url}`);
+      return null;
+    }
     const arr = await res.arrayBuffer();
     return Buffer.from(arr);
   } catch (err) {
@@ -370,11 +376,6 @@ async function fetchDailyOgImage(url: URL): Promise<Buffer | null> {
   }
 }
 
-/** JST基準で YYYY-MM-DD を返す */
-export function jstIsoDate(now: Date = new Date()): string {
-  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  return jst.toISOString().slice(0, 10);
-}
 
 async function postTweet(text: string, image: Buffer | null): Promise<void> {
   const appKey = process.env.X_API_KEY;
@@ -438,11 +439,9 @@ async function main() {
   const usScore = fearGreed?.score ?? null;
 
   if (japanScore == null && usScore == null) {
-    // メール送信モードでは、黙ってスキップすると下書きが届かない理由が分からないので失敗扱いにする
+    // 黙ってスキップすると投稿が抜けた理由が分からないので失敗扱いにする
     // （夜の見張り check-cron-health が失敗として運営者に知らせる）
-    if (emailMode) throw new Error("日米いずれの温度も取得できず、下書きメールを作れませんでした");
-    console.warn("日米いずれの温度も取得できず、投稿をスキップします");
-    return;
+    throw new Error("日米いずれの温度も取得できず、投稿文を作れませんでした");
   }
 
   const events = loadEvents();
@@ -492,24 +491,30 @@ async function main() {
 
   // 日米どちらかの温度はある（両方欠損は上で終了済み）ので、温度カード画像は毎日付ける。
   // 付けないと X が本文の URL からトップの静的 og:image（デフォルト画像）を拾ってしまうため
-  const imageUrl = dailyOgImageUrl(siteUrl, { japanScore, usScore, isoDate: jstIsoDate() });
+  const imageUrl = dailyOgImageUrl(siteUrl, { japanScore, usScore, isoDate: getJstDateKey() });
   console.log(`画像 URL: ${imageUrl}`);
 
-  if (dryRun) {
-    console.log(`\n[DRY RUN] ${emailMode ? "メール送信" : "投稿"}せず終了`);
+  if (dryRun && !emailMode) {
+    console.log("\n[DRY RUN] 投稿せず終了");
     return;
   }
 
-  const image = await fetchDailyOgImage(imageUrl);
+  // dry-run では画像を取りに行かず、添付ありの体裁でメール本文を確認する
+  const image = dryRun ? Buffer.alloc(0) : await fetchDailyOgImage(imageUrl);
 
   if (emailMode) {
-    const to = process.env.X_DRAFT_EMAIL || opsAlertEmail();
+    const to = xDraftEmail();
     const mail = buildDraftEmail({
       dateLabel,
       tweetText: text,
       imageUrl: imageUrl.toString(),
       image,
     });
+    if (dryRun) {
+      console.log(`\n---- 下書きメール（宛先: ${to}）----\n件名: ${mail.subject}\n\n${mail.text}`);
+      console.log("\n[DRY RUN] メール送信せず終了");
+      return;
+    }
     const sent = await sendEmail({ to, ...mail });
     if (!sent.ok) throw new Error(`下書きメールの送信に失敗: ${sent.error}`);
     console.log(`\n✅ 下書きメールを送信しました（宛先: ${to}、id=${sent.id}）`);

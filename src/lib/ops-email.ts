@@ -5,3 +5,8 @@ export const DEFAULT_OPS_EMAIL = "info@kabuonkei.com";
 export function opsAlertEmail(): string {
   return process.env.OPS_ALERT_EMAIL || DEFAULT_OPS_EMAIL;
 }
+
+/** X 投稿の下書きメールの送り先。環境変数 X_DRAFT_EMAIL、未設定なら opsAlertEmail() */
+export function xDraftEmail(): string {
+  return process.env.X_DRAFT_EMAIL || opsAlertEmail();
+}

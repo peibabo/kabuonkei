@@ -1,6 +1,7 @@
 import type { AlertKind, AlertMarket, AlertVariant } from "@/lib/types";
 import { getSentimentDescription, getSentimentLevel } from "@/lib/sentiment";
 import { COLD_THRESHOLD, HOT_THRESHOLD } from "./state-transition";
+import { escapeHtml } from "../html";
 
 export interface EmailContent {
   subject: string;
@@ -52,14 +53,6 @@ const KIND_EMOJI: Record<AlertKind, string> = {
   hot: "🔥",
 };
 
-export function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 export function buildVerifyEmail(input: VerifyEmailInput): EmailContent {
   const variantLines = input.variants.map((v) => `- ${variantLabel(v)}`).join("\n");

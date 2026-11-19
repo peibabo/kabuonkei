@@ -81,9 +81,10 @@ npm run generate:nikkei-crash               # 日経225 の急落（1日 -5% 以
 npm run generate:portfolio-history          # 温度連動ポートフォリオ バックフィル（/portfolio 用、月次フル再生成）
 npm run snapshot:portfolio                  # 温度連動ポートフォリオ 日次 append（平日 JST 07:00 に自動実行）
 
-# X Bot（平日 JST 7 時台に GitHub Actions から実行される）
-npm run post:daily-tweet                    # 実投稿（X_API_* が必要）
-npm run post:daily-tweet -- --dry-run       # 投稿せず内容確認のみ
+# X Bot（平日 JST 7 時台に GitHub Actions から実行される。本番は --email で下書きをメールし手動投稿）
+npm run post:daily-tweet -- --email         # 投稿文＋温度カード画像を運営者にメール（RESEND_* が必要）
+npm run post:daily-tweet                    # X API で実投稿（X_API_* が必要。2026-11 時点は 402 で停止中）
+npm run post:daily-tweet -- --dry-run       # 投稿・送信せず内容確認のみ
 
 # 温度アラート（平日 JST 7 時台 米国 / 18 時台 日本に GitHub Actions から実行される）
 npm run alerts:check -- --variant us        # 米国版 発火チェック + メール送信
@@ -108,7 +109,8 @@ vercel
 | `NEXT_PUBLIC_SITE_URL` | canonical URL / OGP / sitemap のベース URL | `https://kabuonkei.com` をデフォルトとして使用 |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics 4 の測定 ID（例: `G-XXXXXXXXXX`） | GA タグを出力しない（開発時の安全策） |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console サイト所有権確認コード | verification メタタグを出さない |
-| `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` | X（Twitter）Bot 投稿用（OAuth 1.0a User Context） | `npm run post:daily-tweet` 実行時に起動直後エラー |
+| `X_API_KEY` / `X_API_SECRET` / `X_ACCESS_TOKEN` / `X_ACCESS_TOKEN_SECRET` | X（Twitter）Bot 投稿用（OAuth 1.0a User Context）。`--email` モードでは不要 | `npm run post:daily-tweet`（`--email` なし）実行時にエラー |
+| `X_DRAFT_EMAIL` | X 投稿の下書きメールの送り先（`--email` モード） | `OPS_ALERT_EMAIL` → `info@kabuonkei.com` の順に使う |
 | `RESEND_API_KEY` / `RESEND_FROM_EMAIL` | 温度アラートの送信（Resend） | `npm run alerts:check` 実行時にエラー |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | 温度アラートの購読者永続化（Upstash Redis、Vercel Marketplace で自動注入） | 同上 |
 | `ALERTS_TOKEN_SECRET` | 確認/配信解除トークンの HMAC 秘密鍵（32 バイト以上） | 同上 |

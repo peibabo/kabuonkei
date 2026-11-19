@@ -12,12 +12,16 @@
  *   価格・指数値の生データは一切公開しない（= 一次市場データの再配信には該当させない運用）
  *
  * 実行:
- *   npm run post:daily-tweet              # 実投稿
- *   npm run post:daily-tweet -- --dry-run # 投稿せずコンソール出力のみ
+ *   npm run post:daily-tweet                       # X API で実投稿
+ *   npm run post:daily-tweet -- --email            # X には投稿せず、投稿文＋画像を運営者へメール（手動投稿用）
+ *   npm run post:daily-tweet -- --dry-run          # 投稿せずコンソール出力のみ
+ *
+ * 2026-11 時点の本番は --email（X API が 402 を返すようになったため、手動投稿に切り替えた）。
  *
  * 必要な環境変数:
- *   X_API_KEY / X_API_SECRET / X_ACCESS_TOKEN / X_ACCESS_TOKEN_SECRET
- *   NEXT_PUBLIC_SITE_URL （画像fetch先、省略時 https://kabuonkei.com）
+ *   X API で投稿: X_API_KEY / X_API_SECRET / X_ACCESS_TOKEN / X_ACCESS_TOKEN_SECRET
+ *   メールで送る: RESEND_API_KEY / RESEND_FROM_EMAIL / X_DRAFT_EMAIL（送り先。未設定なら OPS_ALERT_EMAIL → info@kabuonkei.com）
+ *   共通: NEXT_PUBLIC_SITE_URL （画像fetch先、省略時 https://kabuonkei.com）
  */
 
 import YahooFinance from "yahoo-finance2";
@@ -35,7 +39,10 @@ import {
   COLD_THRESHOLD,
   HOT_THRESHOLD,
 } from "../src/lib/alerts/state-transition";
-import { formatJstDateLabel } from "../src/lib/jst-date";
+import { formatJstDateLabel, getJstDateKey } from "../src/lib/jst-date";
+import { sendEmail } from "../src/lib/alerts/resend";
+import { escapeHtml } from "../src/lib/html";
+import { xDraftEmail } from "../src/lib/ops-email";
 import type {
   ChartPoint,
   FearGreedData,
@@ -66,6 +73,14 @@ const EVENTS_META_PATH = resolve(__dirname, "../src/data/events-meta.json");
 
 const DEFAULT_SITE_URL = "https://kabuonkei.com";
 const DAILY_OG_PATH = "/api/og/daily";
+/** X の投稿上限（加重文字数） */
+export const X_WEIGHTED_LIMIT = 280;
+/** 下書きメールに添付する温度カードのファイル名 */
+const DRAFT_IMAGE_FILENAME = "daily-temperature.png";
+
+/** メール本文で投稿文を囲む目印。受け取った人や AI アシスタントが投稿文だけを切り出せるようにする */
+export const DRAFT_BEGIN = "----- 投稿文ここから -----";
+export const DRAFT_END = "----- 投稿文ここまで -----";
 
 // --- 純粋関数（テスト対象） ----------------------------------------------------
 
@@ -79,20 +94,6 @@ export interface TweetContext {
   japanSimilar: SimilarDayMatch | null;
   usSimilar: SimilarDayMatch | null;
   siteUrl: string;
-}
-
-/**
- * 日米いずれかのスコアが取得できていれば温度入りキャプチャを添付する。
- * 両方欠損のときだけ false（この場合は投稿自体がスキップされる）。
- * 以前は極端温度 (≤20 / ≥80) の日だけ添付していたが、通常日は X が
- * トップページの静的 og:image をスクレイプしデフォルト画像になっていたため、
- * 毎日 /api/og/daily の動的画像を添付する方針に変更した。
- */
-export function shouldAttachImage(
-  japanScore: number | null,
-  usScore: number | null,
-): boolean {
-  return japanScore != null || usScore != null;
 }
 
 function extremeBadge(
@@ -162,7 +163,7 @@ export function buildTweetBody(ctx: TweetContext): string {
 /**
  * X の加重文字数を概算。
  * URL は常に 23、ASCII は 1、それ以外（日本語・絵文字）は 2 でカウント。
- * 実際の X の計算はもう少し複雑だが、安全側に倒せば 280 以内判定として十分。
+ * 実際の X の計算はもう少し複雑だが、安全側に倒せば X_WEIGHTED_LIMIT 以内判定として十分。
  */
 export function estimateWeightedLength(text: string): number {
   const urlRegex = /https?:\/\/\S+/g;
@@ -174,6 +175,74 @@ export function estimateWeightedLength(text: string): number {
     n += code < 0x80 ? 1 : 2;
   }
   return n;
+}
+
+/** 投稿文を X の投稿画面に入れた状態で開くリンク */
+export function buildIntentUrl(text: string): string {
+  return `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+}
+
+export interface DraftEmailInput {
+  dateLabel: string;
+  tweetText: string;
+  /** 温度カード画像の URL */
+  imageUrl: string;
+  /** 温度カード画像。取得に失敗したときは null（URL から保存するよう案内する） */
+  image: Buffer | null;
+}
+
+/**
+ * X に手動投稿するための下書きメールを組み立てる。
+ * 画像は添付ファイルとして返すので、そのまま sendEmail に渡せる。
+ */
+export function buildDraftEmail(input: DraftEmailInput): {
+  subject: string;
+  text: string;
+  html: string;
+  attachments: Array<{ filename: string; content: string }>;
+} {
+  const { dateLabel, tweetText, imageUrl, image } = input;
+  const weighted = estimateWeightedLength(tweetText);
+  const overLimitNote =
+    weighted > X_WEIGHTED_LIMIT
+      ? `⚠️ 投稿文が長すぎます（概算 ${weighted}/${X_WEIGHTED_LIMIT}）。X で弾かれる場合は削ってから投稿してください`
+      : null;
+  const intentUrl = buildIntentUrl(tweetText);
+  const imageNote = image
+    ? `画像: 添付の ${DRAFT_IMAGE_FILENAME} を付けて投稿してください`
+    : "画像: 添付に失敗しました。下の URL から保存して付けてください";
+
+  const text = [
+    `${dateLabel} の X 投稿の下書きです。`,
+    ...(overLimitNote ? [overLimitNote] : []),
+    "",
+    DRAFT_BEGIN,
+    tweetText,
+    DRAFT_END,
+    "",
+    imageNote,
+    `画像 URL: ${imageUrl}`,
+    "",
+    `投稿画面を開く: ${intentUrl}`,
+  ].join("\n");
+
+  const html = `<div style="font-family:sans-serif;line-height:1.6">
+<p>${escapeHtml(dateLabel)} の X 投稿の下書きです。</p>${overLimitNote ? `\n<p style="color:#c00">${escapeHtml(overLimitNote)}</p>` : ""}
+<p style="color:#888;margin:0">${escapeHtml(DRAFT_BEGIN)}</p>
+<pre style="white-space:pre-wrap;font-family:inherit;background:#f5f5f5;padding:12px;margin:4px 0">${escapeHtml(tweetText)}</pre>
+<p style="color:#888;margin:0">${escapeHtml(DRAFT_END)}</p>
+<p>${escapeHtml(imageNote)}<br><a href="${escapeHtml(imageUrl)}">画像 URL</a></p>
+<p><a href="${escapeHtml(intentUrl)}" style="display:inline-block;background:#000;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">X で投稿する</a></p>
+</div>`;
+
+  return {
+    subject: `【X投稿】${dateLabel} 寄り前チェック`,
+    text,
+    html,
+    attachments: image
+      ? [{ filename: DRAFT_IMAGE_FILENAME, content: image.toString("base64") }]
+      : [],
+  };
 }
 
 // --- 副作用あり（スクリプト本体） --------------------------------------------
@@ -272,20 +341,31 @@ export function enrichMatchWithSlug(
   return slug ? { ...match, eventSlug: slug } : match;
 }
 
-async function fetchDailyOgImage(
+function dailyOgImageUrl(
   siteUrl: string,
   params: { japanScore: number | null; usScore: number | null; isoDate: string },
-): Promise<Buffer | null> {
+): URL {
   const url = new URL(DAILY_OG_PATH, siteUrl);
   if (params.japanScore != null)
     url.searchParams.set("jp", String(params.japanScore));
   if (params.usScore != null)
     url.searchParams.set("us", String(params.usScore));
   url.searchParams.set("date", params.isoDate);
+  return url;
+}
+
+async function fetchDailyOgImage(url: URL): Promise<Buffer | null> {
   try {
-    const res = await fetch(url, { cache: "no-store" });
+    // 応答が無いまま止まると下書きメールが寄り付きに間に合わないので 20 秒で打ち切る（画像なしで続行）
+    const res = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(20_000) });
     if (!res.ok) {
       console.warn(`OG画像取得失敗: ${res.status} ${url}`);
+      return null;
+    }
+    // 保護ページやエラーページが 200 の HTML で返ってきたときに、壊れた PNG として添付しない
+    const type = res.headers.get("content-type") ?? "";
+    if (!type.startsWith("image/")) {
+      console.warn(`OG画像取得失敗: 画像ではない応答（${type}） ${url}`);
       return null;
     }
     const arr = await res.arrayBuffer();
@@ -296,11 +376,6 @@ async function fetchDailyOgImage(
   }
 }
 
-/** JST基準で YYYY-MM-DD を返す */
-export function jstIsoDate(now: Date = new Date()): string {
-  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  return jst.toISOString().slice(0, 10);
-}
 
 async function postTweet(text: string, image: Buffer | null): Promise<void> {
   const appKey = process.env.X_API_KEY;
@@ -339,13 +414,24 @@ async function postTweet(text: string, image: Buffer | null): Promise<void> {
   });
 }
 
+function logDraft(label: string, text: string): void {
+  const weighted = estimateWeightedLength(text);
+  console.log(`\n---- ${label} ----`);
+  console.log(text);
+  console.log("----------------");
+  console.log(
+    `加重文字数(概算): ${weighted}/${X_WEIGHTED_LIMIT}${weighted > X_WEIGHTED_LIMIT ? "（超過）" : ""}`,
+  );
+}
+
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
+  const emailMode = process.argv.includes("--email");
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
   const dateLabel = formatJstDateLabel();
 
   console.log(
-    `🌡 X Bot 投稿処理開始 (${dateLabel})${dryRun ? " [DRY RUN]" : ""}`,
+    `🌡 X Bot 投稿処理開始 (${dateLabel})${emailMode ? " [メール送信モード]" : ""}${dryRun ? " [DRY RUN]" : ""}`,
   );
 
   const { fearGreed, japanFearGreed } = await loadMarketContext();
@@ -353,8 +439,9 @@ async function main() {
   const usScore = fearGreed?.score ?? null;
 
   if (japanScore == null && usScore == null) {
-    console.warn("日米いずれの温度も取得できず、投稿をスキップします");
-    return;
+    // 黙ってスキップすると投稿が抜けた理由が分からないので失敗扱いにする
+    // （夜の見張り check-cron-health が失敗として運営者に知らせる）
+    throw new Error("日米いずれの温度も取得できず、投稿文を作れませんでした");
   }
 
   const events = loadEvents();
@@ -393,53 +480,45 @@ async function main() {
     siteUrl,
   };
 
-  const text = buildTweetBody(ctx);
-  const attach = shouldAttachImage(japanScore, usScore);
-  const weighted = estimateWeightedLength(text);
+  let text = buildTweetBody(ctx);
+  logDraft("投稿文", text);
 
-  console.log("\n---- 投稿文 ----");
-  console.log(text);
-  console.log("----------------");
-  console.log(`画像添付: ${attach ? "あり（温度キャプチャ）" : "なし（日米とも欠損）"}`);
-  console.log(`加重文字数(概算): ${weighted}/280`);
-
-  if (weighted > 280) {
-    console.warn("⚠️ 加重文字数が 280 を超過。類似日行を省略して再構築します");
-    const shrunk = buildTweetBody({
-      ...ctx,
-      japanSimilar: null,
-      usSimilar: null,
-    });
-    if (dryRun) {
-      console.log("\n---- 縮小後投稿文 ----");
-      console.log(shrunk);
-      console.log("----------------------");
-      return;
-    }
-    let image: Buffer | null = null;
-    if (attach)
-      image = await fetchDailyOgImage(siteUrl, {
-        japanScore,
-        usScore,
-        isoDate: jstIsoDate(),
-      });
-    await postTweet(shrunk, image);
-    console.log("\n✅ 投稿完了（類似日省略）");
-    return;
+  if (estimateWeightedLength(text) > X_WEIGHTED_LIMIT) {
+    console.warn(`⚠️ 加重文字数が ${X_WEIGHTED_LIMIT} を超過。類似日行を省略して再構築します`);
+    text = buildTweetBody({ ...ctx, japanSimilar: null, usSimilar: null });
+    logDraft("縮小後投稿文", text);
   }
 
-  if (dryRun) {
+  // 日米どちらかの温度はある（両方欠損は上で終了済み）ので、温度カード画像は毎日付ける。
+  // 付けないと X が本文の URL からトップの静的 og:image（デフォルト画像）を拾ってしまうため
+  const imageUrl = dailyOgImageUrl(siteUrl, { japanScore, usScore, isoDate: getJstDateKey() });
+  console.log(`画像 URL: ${imageUrl}`);
+
+  if (dryRun && !emailMode) {
     console.log("\n[DRY RUN] 投稿せず終了");
     return;
   }
 
-  let image: Buffer | null = null;
-  if (attach) {
-    image = await fetchDailyOgImage(siteUrl, {
-      japanScore,
-      usScore,
-      isoDate: jstIsoDate(),
+  // dry-run では画像を取りに行かず、添付ありの体裁でメール本文を確認する
+  const image = dryRun ? Buffer.alloc(0) : await fetchDailyOgImage(imageUrl);
+
+  if (emailMode) {
+    const to = xDraftEmail();
+    const mail = buildDraftEmail({
+      dateLabel,
+      tweetText: text,
+      imageUrl: imageUrl.toString(),
+      image,
     });
+    if (dryRun) {
+      console.log(`\n---- 下書きメール（宛先: ${to}）----\n件名: ${mail.subject}\n\n${mail.text}`);
+      console.log("\n[DRY RUN] メール送信せず終了");
+      return;
+    }
+    const sent = await sendEmail({ to, ...mail });
+    if (!sent.ok) throw new Error(`下書きメールの送信に失敗: ${sent.error}`);
+    console.log(`\n✅ 下書きメールを送信しました（宛先: ${to}、id=${sent.id}）`);
+    return;
   }
 
   await postTweet(text, image);

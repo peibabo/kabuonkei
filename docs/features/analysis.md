@@ -41,7 +41,7 @@
 「日本だけ熱い・米国は冷静」のような日米センチメント乖離局面のその後を、過去約 10 年で検証する記事。Primary は 乖離バンド × {S&P500, 日経225} の前方リターン + N225-S&P500 平均スプレッド、Joint は 乖離バンド × 日本版温度バンドの 2D。**温度差 = JP score - US score** と定義し、5 バンド (`≤ -20 / -20〜-10 / -10〜+10 / +10〜+20 / ≥ +20`) で集計する。
 
 **データ層**:
-- `src/data/divergence-analysis.json`: Yahoo Finance `^VIX` (米国版温度の元データ) / `^GSPC` / `^N225` 日足 (過去20年) と `japan-temperature-history.json` を結合。米国版温度は `estimateFearGreedFromVix()` (VIX 10 → 95、VIX 40 → 5 の線形マッピング) で再構成。日本版温度は市場温度（日経225 × 125日移動平均乖離、2016-10-28〜）。集計対象は両指標が解決できる米国取引日 ≈ 2,300 日。生成スクリプト: `npm run generate:divergence`（`scripts/generate-divergence-analysis.ts`）
+- `src/data/divergence-analysis.json`: Yahoo Finance `^VIX` (米国版温度の元データ) / `^GSPC` / `^N225` 日足 (過去20年) と `japan-temperature-history.json` を結合。米国版温度は `estimateFearGreedFromVix()` (VIX 10 → 95、VIX 40 → 5 の線形マッピング) で再構成。日本版温度は市場温度（日経225 × 125日移動平均乖離、`japan-temperature-history.json` の範囲＝直近約10年。2026-11 時点で 2017-05-24〜）。集計対象は両指標が解決できる米国取引日 ≈ 2,300 日。生成スクリプト: `npm run generate:divergence`（`scripts/generate-divergence-analysis.ts`）
 - 集計時、JP score は同日 or 7 日以内の直近営業日で backward fill。Joint は `aggregateJointReturns` を再利用
 - 温度差バンドは ±Infinity が JSON 化で `null` になる問題を避けるため sentinel 値 `±999` を使用
 
@@ -63,7 +63,7 @@
 「VIX 30 超え＝パニック＝危険」を過去20年で検証する記事。Primary は VIX バンド × {S&P500, 日経225} 1D、Bonus は VIX × 日本版温度 × 日経225 のクロス市場 2D。
 
 **データ層**:
-- `src/data/vix-sp500-analysis.json`: Yahoo Finance `^VIX` / `^GSPC` / `^N225` 日足 (過去20年、約5000取引日) + `japan-temperature-history.json` を結合して、(a) VIX バンド (`〜15 / 15〜20 / 20〜30 / 30〜`) 別の S&P500・日経225 前方リターン (1M/3M/6M)、(b) VIX × 日本版温度バンドの joint 2D（日経225 前方リターンベース、Primary が20年あるのに対し joint は temp 履歴オーバーラップの 2016-10〜 に限定）、(c) VIX の historical quantile (p25/p50/p75/p95) と最新値を格納。生成スクリプト: `npm run generate:vix-sp500`（`scripts/generate-vix-sp500-analysis.ts`）
+- `src/data/vix-sp500-analysis.json`: Yahoo Finance `^VIX` / `^GSPC` / `^N225` 日足 (過去20年、約5000取引日) + `japan-temperature-history.json` を結合して、(a) VIX バンド (`〜15 / 15〜20 / 20〜30 / 30〜`) 別の S&P500・日経225 前方リターン (1M/3M/6M)、(b) VIX × 日本版温度バンドの joint 2D（日経225 前方リターンベース、Primary が20年あるのに対し joint は temp 履歴オーバーラップの直近約10年（2026-11 時点で 2017-05-24〜）に限定）、(c) VIX の historical quantile (p25/p50/p75/p95) と最新値を格納。生成スクリプト: `npm run generate:vix-sp500`（`scripts/generate-vix-sp500-analysis.ts`）
 - VIX と米国版株温計スコアは相関が強い（米国版スコアは VIX 由来）ため、joint の第2軸には**独立な**日本版温度を採用
 
 **UI**:

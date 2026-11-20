@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- note 第5弾アイキャッチ（1280×670 を 2x 撮影）。数字は investor-flow-history.json（2016-01〜2026-11-13 の週）と ^N225（〜2026-11-19）を 2026-11-20 に集計した値 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 670px; background: #fafaf7; color: #111;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+    position: relative; overflow: hidden;
+  }
+  .kicker { position: absolute; left: 72px; top: 64px; font-size: 22px; font-weight: 700; color: #2563eb; letter-spacing: 0.04em; }
+  h1 { position: absolute; left: 72px; top: 108px; font-size: 54px; font-weight: 900; line-height: 1.28; letter-spacing: -0.01em; }
+  h1 .hl { color: #2563eb; }
+  .lead { position: absolute; left: 72px; top: 318px; width: 580px; font-size: 21px; line-height: 1.6; color: #6b7280; }
+  .foot { position: absolute; left: 72px; bottom: 96px; width: 640px; white-space: nowrap; font-size: 16px; line-height: 1.75; color: #6b7280; }
+  .credit { position: absolute; right: 72px; bottom: 36px; font-size: 19px; font-weight: 700; color: #4b5563; }
+  .panel { position: absolute; right: 72px; top: 110px; width: 450px; }
+  .ttl { font-size: 18px; font-weight: 700; color: #4b5563; margin-bottom: 18px; line-height: 1.5; }
+  .row { margin-bottom: 26px; }
+  .lbl { font-size: 18px; font-weight: 800; color: #111; display: flex; justify-content: space-between; align-items: baseline; }
+  .lbl small { font-size: 14px; font-weight: 500; color: #6b7280; margin-left: 6px; }
+  .lbl .v { font-size: 38px; font-weight: 900; }
+  .bar { margin-top: 6px; height: 22px; background: #e5e7eb; border-radius: 6px; position: relative; }
+  .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; background: #9ca3af; }
+  .bar b { position: absolute; left: 50%; top: -6px; bottom: -6px; border-left: 2px dashed #6b7280; }
+  .row.hit .bar i { background: #111827; }
+  .row.hit .v { color: #2563eb; }
+  .mid { font-size: 14px; color: #6b7280; text-align: center; margin-top: -8px; }
+</style>
+</head>
+<body>
+  <div class="kicker">株温計・データ検証 第5弾</div>
+  <h1>「外国人が<span class="hl">1兆円</span><br>売り越した」あと、<br>日経平均はどうなったか</h1>
+  <p class="lead">2016年からの566週を全部調べたら、<br>ニュースを見てからでは「五分五分」だった</p>
+  <p class="foot">JPX「投資部門別売買状況」（東証・名証の合計）と日経平均の終値で集計<br>※過去の統計であり将来のリターンを保証するものではありません</p>
+  <div class="panel">
+    <p class="ttl">海外投資家の売り買いの向きと<br>日経平均の上げ下げが一致した割合</p>
+    <div class="row"><p class="lbl"><span>同じ週<small>566週</small></span><span class="v">68%</span></p><div class="bar"><i style="width:67.7%"></i><b></b></div></div>
+    <div class="row hit"><p class="lbl"><span>公表後の1週間<small>564週</small></span><span class="v">51%</span></p><div class="bar"><i style="width:50.9%"></i><b></b></div></div>
+    <p class="mid">点線 = 50%（コイン投げと同じ）</p>
+  </div>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

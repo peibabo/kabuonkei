@@ -1,0 +1,53 @@
+<!doctype html>
+<!-- note 第5弾 検証2 1兆円以上の売り越し / 買い越し / すべての週（1200×600 を 2x 撮影）。配色は日本式（プラス=赤 / マイナス=青）
+     数字は investor-flow-history.json（2016-01〜2026-11-13 の週）と ^N225（〜2026-11-19）を 2026-11-20 に集計した値（原稿ヘッダの集計ロジック参照） -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px; height: 600px; background: #fafaf7; color: #111; padding: 46px 56px 0;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; position: relative;
+  }
+  h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.01em; }
+  .sub { margin-top: 16px; font-size: 17px; color: #6b7280; }
+  table { margin-top: 26px; width: 100%; border-collapse: collapse; }
+  th { background: #111827; color: #fff; font-size: 17px; font-weight: 800; height: 52px; text-align: center; }
+  th:first-child, td:first-child { text-align: left; padding-left: 20px; }
+  td { height: 80px; text-align: center; font-size: 22px; color: #374151; border-bottom: 1px solid #e5e7eb; }
+  td:first-child { font-size: 20px; font-weight: 800; color: #111; line-height: 1.3; }
+  td:first-child small { display: block; font-size: 14px; font-weight: 500; color: #6b7280; }
+  td .w { display: block; font-size: 15px; color: #6b7280; margin-top: 2px; }
+  td .w.hl { color: #111; font-weight: 800; font-size: 17px; }
+  tr.hl td { background: #eff6ff; }
+  .up { color: #dc2626; font-weight: 800; }
+  .note { position: absolute; left: 56px; bottom: 30px; font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .credit { position: absolute; right: 56px; bottom: 30px; font-size: 17px; font-weight: 700; color: #4b5563; }
+</style>
+</head>
+<body>
+  <h1>外国人が4週間で1兆円以上売り越した・買い越したあとの日経平均</h1>
+  <p class="sub">上段: 平均リターン / 下段: 買った日より上がっていた割合。データ公表の翌営業日の終値で買ったとして計算</p>
+  <table>
+    <tr><th>買った日</th><th>1ヶ月後</th><th>3ヶ月後</th><th>6ヶ月後</th><th>1年後</th></tr>
+    <tr class="hl"><td>1兆円以上の売り越し<small>23回（6ヶ月後は22回、1年後は21回）</small></td>
+      <td><span class="up">+2.0%</span><span class="w">57%</span></td>
+      <td><span class="up">+6.0%</span><span class="w">64%</span></td>
+      <td><span class="up">+11.9%</span><span class="w hl">73%</span></td>
+      <td><span class="up">+21.0%</span><span class="w">81%</span></td></tr>
+    <tr><td>1兆円以上の買い越し<small>22回（6ヶ月後は21回、1年後は18回）</small></td>
+      <td><span class="up">+2.4%</span><span class="w">82%</span></td>
+      <td><span class="up">+5.6%</span><span class="w">76%</span></td>
+      <td><span class="up">+12.6%</span><span class="w hl">90%</span></td>
+      <td><span class="up">+20.6%</span><span class="w">78%</span></td></tr>
+    <tr><td>すべての週（参考）<small>2016年1月〜</small></td>
+      <td><span class="up">+1.3%</span><span class="w">61%</span></td>
+      <td><span class="up">+3.9%</span><span class="w">63%</span></td>
+      <td><span class="up">+8.1%</span><span class="w hl">68%</span></td>
+      <td><span class="up">+15.9%</span><span class="w">77%</span></td></tr>
+  </table>
+  <p class="note">※JPX「投資部門別売買状況」東証・名証の合計（2016年1月〜2026年11月13日の週）。1兆円以上の週が続いた場合は1回にまとめ、最初の週で計算<br>※配当・手数料は含まない。過去の統計であり将来を保証しません</p>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

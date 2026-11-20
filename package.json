@@ -30,6 +30,7 @@
     "post:daily-tweet": "npx tsx scripts/post-daily-temperature-tweet.ts",
     "alerts:check": "npx tsx scripts/check-temperature-alerts.ts",
     "analyze:margin-score": "npx tsx scripts/analyze-margin-score-candidates.ts",
+    "analyze:supply": "npx tsx scripts/analyze-supply-temperature.ts",
     "check:cron-health": "npx tsx scripts/check-cron-health.ts",
     "report:analytics": "npx tsx scripts/report-analytics.ts",
     "generate:nikkei-crash": "npx tsx scripts/generate-nikkei-crash-analysis.ts",

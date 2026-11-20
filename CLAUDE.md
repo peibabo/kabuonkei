@@ -25,7 +25,7 @@
 
 - **米国版 Fear & Greed**: VIX ベース推定を主系列に採用（`src/lib/fear-greed.ts`）。S&P500 のセンチメントを示す
 - **日本版 市場温度**: C1（日経225 の終値と直前 125 営業日の移動平均との乖離、±15% を 0〜100）単独（`src/lib/japan-fear-greed/`、エントリ `computeJapanFearGreed()`。過去系列は `scripts/_lib/japan-temperature.ts`）。ゲージ・推移・過去統計・類似日・アラート・ポートフォリオはすべてこの 1 つの定義で、時系列は `japan-temperature-history.json`
-- **需給の温度**: 海外投資家フロー（4 週累計）と信用買い残の 4 週変化の平均。ゲージ下の別枠に参考表示し、市場温度・アラートには混ぜない（将来リターンとの関係は未検証）
+- **需給の温度**: 海外投資家フロー（4 週累計）と信用買い残の 4 週変化の平均。ゲージ下の別枠に参考表示し、市場温度・アラートには混ぜない（2026-11-20 の試算 `npm run analyze:supply` で将来リターンとの一貫した関係は見つからなかった）
 - 2026-11-17 に 5 要素の等ウェイト平均から切り替えた（需給の高止まりで急落を映さない・裁定残は比率の動く幅が狭く検証もできない・ドル円を足すと過去データで悪化）。旧 5 要素版の記録 `japan-fg-snapshots.json` は書き換えずに残し、画面では使わない
 - UI: `src/components/FearGreedGauge.tsx`（日米共通、PC は 2 列）
 - 詳細 → [docs/features/temperature-score.md](docs/features/temperature-score.md)

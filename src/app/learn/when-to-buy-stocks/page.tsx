@@ -476,6 +476,12 @@ export default function WhenToBuyStocksPage() {
               （VIX 水準別・信用倍率 × 温度・日米温度乖離）
             </li>
             <li>
+              市場温度の元の値で検証:{" "}
+              <Link href="/analysis/nikkei-ma-deviation" className="underline hover:text-gray-900">
+                日経平均の125日線乖離率は買い時・売り時のサインになる？
+              </Link>
+            </li>
+            <li>
               投資スタイル別の読み方:{" "}
               <Link href="/guide" className="underline hover:text-gray-900">
                 投資家タイプ別ガイド

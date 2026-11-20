@@ -545,6 +545,12 @@ export default function NikkeiCrashAftermathPage() {
               — 急落の後、どの業種が戻りやすかったか
             </li>
             <li>
+              <Link href="/analysis/nikkei-ma-deviation" className="underline hover:text-gray-900">
+                日経平均の125日線乖離率は買い時・売り時のサインになる？
+              </Link>{" "}
+              — 1日の値動きではなく、半年の平均からの離れ具合で見た検証
+            </li>
+            <li>
               <Link
                 href="/analysis/vix-threshold-sp500"
                 className="underline hover:text-gray-900"

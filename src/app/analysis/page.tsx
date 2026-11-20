@@ -9,6 +9,10 @@ import {
   getNikkeiCrashAnalysis,
   NIKKEI_CRASH_ARTICLE,
 } from "@/lib/nikkei-crash-analysis";
+import {
+  getNikkeiMaDeviationAnalysis,
+  MA_DEVIATION_ARTICLE,
+} from "@/lib/nikkei-ma-deviation-analysis";
 
 export const metadata: Metadata = {
   title: "分析記事",
@@ -38,7 +42,16 @@ export default function AnalysisIndexPage() {
   const divergenceAnalysis = getDivergenceAnalysis();
   const sectorHeatmap = getJapanSectorHeatmap();
   const crashAnalysis = getNikkeiCrashAnalysis();
+  const maDeviation = getNikkeiMaDeviationAnalysis();
   const articles: AnalysisArticle[] = [
+    {
+      slug: MA_DEVIATION_ARTICLE.slug,
+      icon: "📏",
+      title: MA_DEVIATION_ARTICLE.title,
+      description:
+        "日経平均の125日移動平均からの乖離率（株温計の市場温度の元の値）ごとに、その後 1ヶ月〜1年の値動きを1985年以降で検証。上に離れすぎた後は売り時だったのか、下に離れすぎた後は買い時だったのかを、日数と回数の両方で確かめた。",
+      dateLabel: `最終更新: ${maDeviation.generatedAt}`,
+    },
     {
       slug: NIKKEI_CRASH_ARTICLE.slug,
       icon: "📉",

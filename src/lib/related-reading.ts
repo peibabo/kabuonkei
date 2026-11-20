@@ -7,6 +7,7 @@
  */
 import { LEARN_ARTICLES } from "./learn-articles";
 import { NIKKEI_CRASH_ARTICLE } from "./nikkei-crash-analysis";
+import { MA_DEVIATION_ARTICLE } from "./nikkei-ma-deviation-analysis";
 
 export interface ReadingLink {
   href: string;
@@ -22,6 +23,11 @@ export interface ReadingEvent {
 
 /** 分析記事（/analysis/[slug]）。タイトルは関連記事欄向けの短い形 */
 export const ANALYSIS_READINGS: ReadingLink[] = [
+  {
+    href: MA_DEVIATION_ARTICLE.path,
+    title: MA_DEVIATION_ARTICLE.shortTitle,
+    kind: "分析",
+  },
   {
     href: NIKKEI_CRASH_ARTICLE.path,
     title: NIKKEI_CRASH_ARTICLE.shortTitle,

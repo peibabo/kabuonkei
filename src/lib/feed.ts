@@ -11,6 +11,10 @@ import {
   getNikkeiCrashAnalysis,
   NIKKEI_CRASH_ARTICLE,
 } from "./nikkei-crash-analysis";
+import {
+  getNikkeiMaDeviationAnalysis,
+  MA_DEVIATION_ARTICLE,
+} from "./nikkei-ma-deviation-analysis";
 import { getPortfolioHistory } from "./portfolio";
 import { getEventsMeta, getEventPublishedAt } from "./events";
 import type { EventMeta } from "./types";
@@ -108,6 +112,17 @@ function collectEntries(): FeedEntry[] {
       "1985年以降の日経平均の急落（1日 -5% 以下）をすべて洗い出し、その後 1ヶ月〜1年のリターン、急落した日が底だったか、その後どこまで下げたかを検証した分析記事。",
     publishedAt: NIKKEI_CRASH_ARTICLE.publishedAt,
     updatedAt: crash.generatedAt,
+  });
+
+  const maDeviation = getNikkeiMaDeviationAnalysis();
+  entries.push({
+    id: `${SITE_ORIGIN}${MA_DEVIATION_ARTICLE.path}`,
+    url: `${SITE_ORIGIN}${MA_DEVIATION_ARTICLE.path}`,
+    title: MA_DEVIATION_ARTICLE.title,
+    summary:
+      "日経平均の125日移動平均乖離率ごとに、その後 1ヶ月〜1年のリターンを1985年以降で集計。上に離れすぎた後・下に離れすぎた後の値動きを、日数と回数の両方で検証した分析記事。",
+    publishedAt: MA_DEVIATION_ARTICLE.publishedAt,
+    updatedAt: maDeviation.generatedAt,
   });
 
   const portfolio = getPortfolioHistory();

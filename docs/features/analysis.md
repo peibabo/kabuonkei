@@ -2,6 +2,22 @@
 
 独自データを掛け合わせた深掘り SEO 記事の置き場所。ペルソナ別の `/guide`、イベント別の `/events` とは別枠で、トピック×独自データのハイブリッド記事を貯める。収益化戦略上は「すでにメイン口座を持つ中級者」向けに信用取引サブ口座アフィなどの文脈適合 CTA を添える。
 
+## 第6弾: 125日線乖離率（`/analysis/nikkei-ma-deviation`）
+
+市場温度の元の値である「日経平均の 125 日移動平均乖離率」が、買い時・売り時のサインになるかを 1985 年以降の全営業日で検証する記事（2026-11-20 公開。「移動平均乖離率 買い時」系の検索と、市場温度の定義を C1 単独にしたことの説明を兼ねる）。フックは「+15% 以上に離れた後は 6ヶ月後に上がった回が多く、売り時ではなかった」「−15% 以下は日数で見ると良いが、回数で見ると普段並み」「−10〜−5% は前半と後半で結果が逆」。
+
+**データ層**:
+- `src/data/nikkei-ma-deviation-analysis.json`: Yahoo `^N225` 日足（1985-01〜）から生成。生成スクリプト: `npm run generate:nikkei-ma-deviation`（`scripts/generate-nikkei-ma-deviation-analysis.ts`）。月次の `update-historical-stats.yml` で再生成。JST 16 時より前の実行では当日の途中値を捨てる
+- 集計の純粋関数: `scripts/_lib/nikkei-ma-deviation.ts` の `computeNikkeiMaDeviationAnalysis()`。乖離率は市場温度と同じく当日を含まない直前 125 営業日の平均と比べる（平均の計算は `scripts/_lib/japan-temperature.ts` の `computeTrailingMa125()` を市場温度の系列と共有。最新日の区切り・温度は丸める前の値で決めて `latest.bandKey` / `latest.temperature` に持つ）。区切り（`DEVIATION_BANDS`: −15%以下 / −15〜−10 / −10〜−5 / −5〜+5 / +5〜+10 / +10〜+15 / +15%以上）ごとに 21/63/126/252 営業日後のリターンを日数ベースで集計。時期の違いは、乖離率が取れる日数の中点（`halfSplitDate`、区切りの年を手で選ばない）で前半・後半に分けて集計。±15% を超えた日は前の該当日から 20 営業日以内なら同じ回にまとめ、回数ベース（`lowEpisodes` / `highEpisodes` / `episodeSummary`）も持つ
+- 型とアクセサ: `src/lib/nikkei-ma-deviation-analysis.ts`（`classifyDeviation` / `deviationToTemperature` = トップのゲージと同じ式 / `findDeviationBand`）
+
+**UI**:
+- `src/app/analysis/nikkei-ma-deviation/page.tsx`: Server Component のみ。結論・乖離率と温度の対応表・検証のやり方・区切りごとの表・上側の回・下側の回（日数 vs 回数）・前半と後半・いまの乖離率・注意点。本文の言い回しはデータから決める（例: 前半と後半で「逆」と書くのは、どちらの時期も普段の日と 3 ポイント以上離れて上下が入れ替わる区切りだけ）
+- `opengraph-image.tsx`: グレー系。+15% 以上の回の 6ヶ月後の上昇割合と、−15% 以下の「◯回中◯回」の対比
+- `/analysis` 一覧・sitemap・`/feed.xml`・`related-reading.ts` に追加。`/learn/when-to-buy-stocks`・`/learn/what-is-fear-greed`・`/analysis/nikkei-crash-aftermath` の関連リンクから内部リンク
+
+**テスト**: `scripts/__tests__/nikkei-ma-deviation.test.ts`（区切りの境界・温度への変換・直前 125 日の平均・回のまとめ方・前方リターンと未経過・前半後半の件数・生成済み JSON の整合）
+
 ## 第5弾: 日経平均の急落後（`/analysis/nikkei-crash-aftermath`）
 
 「日経平均が1日5%以上下げた後どうなったか」を 1985 年以降の全件で検証する記事（2026-11-18 公開。11/06 の -6% 急落の直後で「暴落 その後」「底はいつ」系の検索需要を狙う）。フックは「急落した日に買うと 3ヶ月後の成績は良いが、急落した日が底だったのは 25 回中 4 回だけ → 分けて買う」。

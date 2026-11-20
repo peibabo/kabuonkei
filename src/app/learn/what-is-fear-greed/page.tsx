@@ -577,6 +577,13 @@ export default function WhatIsFearGreedPage() {
               >
                 日米温度の乖離が ±20 を超えた日
               </Link>
+              {" "}/{" "}
+              <Link
+                href="/analysis/nikkei-ma-deviation"
+                className="underline hover:text-gray-900"
+              >
+                日経平均の125日線乖離率は買い時のサインになる？
+              </Link>
             </li>
             <li>
               トップ:{" "}

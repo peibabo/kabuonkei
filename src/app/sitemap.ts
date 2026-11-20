@@ -10,6 +10,10 @@ import {
   getNikkeiCrashAnalysis,
   NIKKEI_CRASH_ARTICLE,
 } from "@/lib/nikkei-crash-analysis";
+import {
+  getNikkeiMaDeviationAnalysis,
+  MA_DEVIATION_ARTICLE,
+} from "@/lib/nikkei-ma-deviation-analysis";
 import { getStockCodes, getStockTemperatureFile } from "@/lib/stock-temperature";
 
 /** 利用規約・プライバシーポリシーの最終改定日（各ページの「最終改定日」と揃える） */
@@ -66,13 +70,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const sectorHeatmap = getJapanSectorHeatmap();
   const sectorHeatmapModified = new Date(sectorHeatmap.generatedAt);
   const crashAnalysisModified = new Date(getNikkeiCrashAnalysis().generatedAt);
+  const maDeviationModified = new Date(getNikkeiMaDeviationAnalysis().generatedAt);
   const analysisIndexModified = new Date(
     Math.max(
       marginAnalysisModified.getTime(),
       vixAnalysisModified.getTime(),
       divergenceAnalysisModified.getTime(),
       sectorHeatmapModified.getTime(),
-      crashAnalysisModified.getTime()
+      crashAnalysisModified.getTime(),
+      maDeviationModified.getTime()
     )
   );
 
@@ -164,6 +170,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}${NIKKEI_CRASH_ARTICLE.path}`,
       lastModified: crashAnalysisModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}${MA_DEVIATION_ARTICLE.path}`,
+      lastModified: maDeviationModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

@@ -1,6 +1,12 @@
 import { describe, it, expect } from "vitest";
 import * as XLSX from "xlsx";
-import { extractInvestorLinks, parseInvestorXlsx } from "../_lib/jpx-investor";
+import {
+  extractInvestorLinks,
+  extractLegacyInvestorLinks,
+  parseInvestorXlsx,
+  parseLegacyInvestorXls,
+  parseLegacyWeekLabel,
+} from "../_lib/jpx-investor";
 import {
   extractHistoryExcelUrls,
   extractWeeklyMarginLinks,
@@ -154,6 +160,106 @@ describe("parseInvestorXlsx", () => {
     expect(
       parseInvestorXlsx(toXlsxBuffer(rows), { startDate: "2026-10-26", endDate: "2026-10-30" })
     ).toBeNull();
+  });
+});
+
+describe("parseInvestorXlsx（二市場）", () => {
+  it("market に「二市場」を渡すと二市場の金額行を読み、週コードはプライムの行から取る", () => {
+    const rows = investorRows();
+    const shares2 = [...rows[7]];
+    shares2[0] = null;
+    shares2[1] = "二市場\r\nTokyo & Nagoya Markets";
+    const value2 = [...rows[8]];
+    // 海外 法人の差引だけ変える（買 − 売 も合わせる）
+    value2[21] = 307814267;
+    value2[20] = (value2[19] as number) + 307814267;
+    rows.push(shares2, value2);
+    const week = parseInvestorXlsx(
+      toXlsxBuffer(rows),
+      { startDate: "2026-10-26", endDate: "2026-10-30" },
+      "二市場"
+    );
+    expect(week?.weekLabel).toBe("2026年10月第4週");
+    expect(week?.entities[0]).toEqual({ name: "海外投資家", netAmount: 3063.1 });
+  });
+});
+
+/** 旧形式（〜2026-09）の投資部門別 xls を模したブック（Tokyo & Nagoya シートのみ必要な行） */
+function legacyInvestorBook(label = "2016年2月第1週 2016/2 week1  ( 2/1 - 2/5 )"): Buffer {
+  const rows: unknown[][] = Array.from({ length: 35 }, () => []);
+  rows[0] = ["投資部門別　株式売買状況　東証・名証　[金額]"];
+  rows[3] = [label];
+  rows[11] = [null, null, null, "金額 Value", null, "比率 Ratio", "差引き Balance", "金額 Value", null, "比率 Ratio", "差引き Balance"];
+  // 個人: 買越 187,517,045 千円（差引きは「買い」行）
+  rows[26] = ["個　人", "売り", "Sales", null, "1", "15.3", "-67,858,012", null, "2,215,534,065", "14.6", ""];
+  rows[27] = ["Individuals", "買い", "Purchases", null, "1", "14.8", "", null, "2,403,051,110", "16.2", "187,517,045"];
+  // 海外投資家: 売越 598,964,856 千円（差引きは「売り」行）
+  rows[29] = ["海外投資家", "売り", "Sales", null, "1", "77.6", "-199,942,002", null, "11,775,404,168", "77.6", "-598,964,856"];
+  rows[30] = ["Foreigners", "買い", "Purchases", null, "1", "76.1", "", null, "11,176,439,312", "75.2", ""];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["dummy"]]), "TSE 1st");
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows), "Tokyo & Nagoya");
+  return XLSX.write(wb, { type: "buffer", bookType: "xls" }) as Buffer;
+}
+
+describe("parseLegacyWeekLabel", () => {
+  it("通常の週", () => {
+    expect(parseLegacyWeekLabel("2016年2月第1週 2016/2 week1  ( 2/1 - 2/5 )")).toEqual({
+      weekLabel: "2016年2月第1週",
+      startDate: "2016-02-01",
+      endDate: "2016-02-05",
+    });
+  });
+
+  it("1 月第 1 週が前の年の 12 月から始まる", () => {
+    expect(parseLegacyWeekLabel("2025年1月第1週 2025/1 week1  ( 12/30 - 1/3 )")).toMatchObject({
+      startDate: "2024-12-30",
+      endDate: "2025-01-03",
+    });
+  });
+
+  it("12 月最終週が次の年の 1 月に終わる", () => {
+    expect(parseLegacyWeekLabel("2019年12月第5週 2019/12 week5  ( 12/30 - 1/3 )")).toMatchObject({
+      startDate: "2019-12-30",
+      endDate: "2020-01-03",
+    });
+  });
+});
+
+describe("parseLegacyInvestorXls", () => {
+  it("Tokyo & Nagoya シートの当週の列から、海外投資家と個人の差引（買 − 売）を億円で返す", () => {
+    expect(parseLegacyInvestorXls(legacyInvestorBook())).toEqual({
+      weekLabel: "2016年2月第1週",
+      startDate: "2016-02-01",
+      endDate: "2016-02-05",
+      entities: [
+        { name: "海外投資家", netAmount: -5989.6 },
+        { name: "個人", netAmount: 1875.2 },
+      ],
+    });
+  });
+
+  it("Tokyo & Nagoya のシートがなければ null", () => {
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["x"]]), "TSE 1st");
+    expect(parseLegacyInvestorXls(XLSX.write(wb, { type: "buffer", bookType: "xls" }) as Buffer)).toBeNull();
+  });
+
+  it("週ラベルが読めなければ null", () => {
+    expect(parseLegacyInvestorXls(legacyInvestorBook("投資部門別"))).toBeNull();
+  });
+});
+
+describe("extractLegacyInvestorLinks", () => {
+  it("stock_val_1_YYMMW.xls だけを重複なく抽出する（月次・PDF は除く）", () => {
+    const html = `
+      <a href="/a-att/stock_val_1_260902.xls">x</a>
+      <a href="/a-att/stock_val_1_260902.xls">x</a>
+      <a href="/a-att/stock_val_1_260902.pdf">x</a>
+      <a href="/b-att/stock_val_1_m2601.xls">x</a>`;
+    expect(extractLegacyInvestorLinks(html)).toEqual([
+      "https://www.jpx.co.jp/a-att/stock_val_1_260902.xls",
+    ]);
   });
 });
 

@@ -45,3 +45,11 @@ export function formatSignedDelta(
   if (rounded === 0) return `±${(0).toFixed(digits)}`;
   return `${rounded > 0 ? "+" : ""}${rounded.toFixed(digits)}`;
 }
+
+/** 億円の売買差引を「+1.2兆円」「-3,450億円」の形にする */
+export function formatOkuYen(okuYen: number): string {
+  const sign = okuYen > 0 ? "+" : okuYen < 0 ? "-" : "";
+  const abs = Math.abs(okuYen);
+  if (abs >= 10000) return `${sign}${(abs / 10000).toFixed(1)}兆円`;
+  return `${sign}${Math.round(abs).toLocaleString("ja-JP")}億円`;
+}

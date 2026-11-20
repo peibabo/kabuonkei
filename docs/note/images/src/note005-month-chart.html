@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- note 第5弾 検証3 1兆円以上の売り越し・買い越しが始まった月（1200×600 を 2x 撮影）。売り越し=青 / 買い越し=赤（日本式）
+     数字は investor-flow-history.json（2016-01〜2026-11-13 の週）の 4 週累計を 2026-11-20 に集計した値。月は「4 週累計が初めて 1 兆円を超えた週」の最終日の月 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; height: 600px; background: #fafaf7; color: #111; padding: 46px 56px 0;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; position: relative; }
+  h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.01em; }
+  .sub { margin-top: 14px; font-size: 17px; color: #6b7280; }
+  .legend { position: absolute; left: 34px; top: 150px; font-size: 17px; font-weight: 700; }
+  .legend span { margin-left: 22px; }
+  .legend i { display: inline-block; width: 16px; height: 16px; border-radius: 3px; vertical-align: -2px; margin-right: 6px; }
+  .chart { position: absolute; left: 56px; right: 56px; top: 186px; height: 290px; display: flex; align-items: flex-end; border-bottom: 2px solid #111827; }
+  .col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; }
+  .col.hl { background: #eff6ff; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; }
+  .b { width: 30px; border-radius: 4px 4px 0 0; color: #fff; font-size: 16px; font-weight: 800; text-align: center; padding-top: 4px; }
+  .b.zero { padding: 0; }
+  .sell { background: #2563eb; }
+  .buy { background: #dc2626; }
+  .m { position: absolute; bottom: -34px; font-size: 18px; font-weight: 700; color: #374151; }
+  .col.hl .m { color: #2563eb; font-weight: 900; }
+  .note { position: absolute; left: 56px; bottom: 30px; font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .credit { position: absolute; right: 56px; bottom: 30px; font-size: 17px; font-weight: 700; color: #4b5563; }
+</style>
+</head>
+<body>
+  <h1>外国人の大きな売り越しは、3月・9月・12月に始まっていた</h1>
+  <p class="sub">海外投資家の4週間の合計が1兆円を超えた回の数（始まった週の月）。売り越し23回のうち17回が3月・9月・12月</p>
+  <p class="legend"><span><i style="background:#2563eb"></i>1兆円以上の売り越し（23回）</span><span><i style="background:#dc2626"></i>1兆円以上の買い越し（22回）</span></p>
+  <div class="chart"><div class="col"><div class="bars"><div class="b sell" style="height:38px">1</div><div class="b buy" style="height:76px">2</div></div><p class="m">1月</p></div><div class="col"><div class="bars"><div class="b sell" style="height:38px">1</div><div class="b buy zero" style="height:0px"></div></div><p class="m">2月</p></div><div class="col hl"><div class="bars"><div class="b sell" style="height:266px">7</div><div class="b buy zero" style="height:0px"></div></div><p class="m">3月</p></div><div class="col"><div class="bars"><div class="b sell zero" style="height:0px"></div><div class="b buy" style="height:266px">7</div></div><p class="m">4月</p></div><div class="col"><div class="bars"><div class="b sell zero" style="height:0px"></div><div class="b buy" style="height:76px">2</div></div><p class="m">5月</p></div><div class="col"><div class="bars"><div class="b sell zero" style="height:0px"></div><div class="b buy" style="height:38px">1</div></div><p class="m">6月</p></div><div class="col"><div class="bars"><div class="b sell" style="height:76px">2</div><div class="b buy" style="height:38px">1</div></div><p class="m">7月</p></div><div class="col"><div class="bars"><div class="b sell" style="height:76px">2</div><div class="b buy zero" style="height:0px"></div></div><p class="m">8月</p></div><div class="col hl"><div class="bars"><div class="b sell" style="height:228px">6</div><div class="b buy zero" style="height:0px"></div></div><p class="m">9月</p></div><div class="col"><div class="bars"><div class="b sell zero" style="height:0px"></div><div class="b buy" style="height:114px">3</div></div><p class="m">10月</p></div><div class="col"><div class="bars"><div class="b sell zero" style="height:0px"></div><div class="b buy" style="height:228px">6</div></div><p class="m">11月</p></div><div class="col hl"><div class="bars"><div class="b sell" style="height:152px">4</div><div class="b buy zero" style="height:0px"></div></div><p class="m">12月</p></div></div>
+  <p class="note">※JPX「投資部門別売買状況」東証・名証の合計（2016年1月〜2026年11月13日の週）から株温計が集計<br>※過去の統計であり将来を保証しません</p>
+  <div class="credit">🌡️ kabuonkei.com</div>
+</body>
+</html>

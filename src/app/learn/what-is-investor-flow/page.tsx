@@ -440,8 +440,14 @@ export default function WhatIsInvestorFlowPage() {
                   {formatReturn(bigSell.returns["3m"].avgReturn)}・勝率 {bigSell.returns["3m"].winRate.toFixed(0)}%
                 </strong>
                 で、すべての週の平均 {formatReturn(base3m)} を下回りませんでした。
-                {bigBuyNotWorse &&
-                  "大きく買い越した後も平均以上で、売り越しか買い越しかでその後の向きは分かれていません。外国人の大量の売りを見て慌てて売る理由にも、大量の買いを見て飛び乗る理由にもならない、というのがこの期間のデータです。"}
+                {bigBuyNotWorse && bigBuy && (
+                  <>
+                    大きく買い越した後も平均以上でした
+                    {bigBuy.returns["6m"].winRate > bigSell.returns["6m"].winRate &&
+                      `（6ヶ月後の勝率は買い越しの後が ${bigBuy.returns["6m"].winRate.toFixed(0)}%、売り越しの後が ${bigSell.returns["6m"].winRate.toFixed(0)}% で、買い越しの後のほうが高め）`}
+                    。少なくともこの期間では、外国人の大量の売りを見て慌てて売っても、得にはなっていません。
+                  </>
+                )}
               </>
             )}
             {sellsSeasonal && bigSell && bigBuy && (

@@ -5,15 +5,20 @@
  *   日経VI そのものは取得できないため、日経225 の直近 20 営業日の値動きから計算した年率ボラを代わりに使う
  * - ドル円の勢い（50 営業日の変化率）の帯別・その後の日経225 … ドル円の記事用
  * - SQ のある週とない週の日経225 の値動き … 裁定残の記事用
+ * - 海外投資家の売買（4 週累計）の帯別・その後の日経225 と、売買の向きと株価の向きの一致率 … 投資部門別の記事用
  */
 
 import type {
+  DirectionMatch,
+  InvestorFlowBand,
+  InvestorFlowStats,
   LearnExtraStats,
   LearnPeriodKey,
   LearnReturnBand,
   SqWeekGroup,
 } from "../../src/lib/learn-extra-stats";
 import type { PeriodStats } from "../../src/lib/historical-stats";
+import type { InvestorFlowWeek } from "../../src/lib/investor-flow-history";
 import { buildPeriodStats, round1 } from "./shared";
 import { CRASH_HORIZONS } from "./nikkei-crash";
 
@@ -221,10 +226,134 @@ export function computeSqWeekGroups(closes: Closes, from = ""): SqWeekGroup[] {
   ];
 }
 
+// --- 投資部門別（海外投資家のフロー） ---
+
+/** 海外投資家の 4 週累計の帯（億円）。株温計の「需給の温度」（4 週で ±2 兆円を 0〜100）の 25 / 50 / 75 に当たる ±1 兆円と 0 で区切る */
+export const FLOW_BANDS = [
+  { label: "1 兆円以上の売り越し", min: -Infinity, max: -10_000 },
+  { label: "1 兆円未満の売り越し", min: -10_000, max: 0 },
+  { label: "1 兆円未満の買い越し", min: 0, max: 10_000 },
+  { label: "1 兆円以上の買い越し", min: 10_000, max: Infinity },
+] as const;
+/** 累計する週数（需給の温度と同じ） */
+export const FLOW_WEEKS = 4;
+/**
+ * 週次データは翌週の第 4 営業日（原則木曜）の 15:30 に出る。取引終了と同じ時刻なので、
+ * 「公表後」はその次の営業日の終値から数える（週の最終日の後の 5 営業日目）
+ */
+export const PUBLISH_BUSINESS_DAY = 4;/** 公表後の値動きを見る営業日数（1 週間） */
+const AFTER_PUBLISH_DAYS = 5;
+
+const DAY_MS = 86_400_000;
+const addDays = (date: string, days: number) =>
+  new Date(Date.parse(`${date}T00:00:00Z`) + days * DAY_MS).toISOString().slice(0, 10);
+
+/** date 以上で最初の営業日の位置（なければ -1） */
+function firstIndexOnOrAfter(dates: string[], date: string): number {
+  let lo = 0;
+  let hi = dates.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (dates[mid] < date) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo < dates.length ? lo : -1;
+}
+
+function matchRate(pairs: Array<[number, number]>): DirectionMatch {
+  const valid = pairs.filter(([a, b]) => a !== 0 && b !== 0);
+  const hits = valid.filter(([a, b]) => Math.sign(a) === Math.sign(b)).length;
+  return { weeks: valid.length, matchRate: valid.length ? round1((hits / valid.length) * 100) : 0 };
+}
+
+export function computeInvestorFlowStats(weeks: InvestorFlowWeek[], nikkei: Closes): InvestorFlowStats {
+  const sorted = [...weeks].sort((a, b) => a.endDate.localeCompare(b.endDate));
+  const dates = nikkei.map((c) => c.date);
+  // 前の週とつながっているか: 前の週の最終日と次の週の初日の間に日経225 の営業日がない（大型連休は休場なのでつながる）
+  const connected = (k: number) => {
+    if (k === 0) return false;
+    const i = firstIndexOnOrAfter(dates, addDays(sorted[k - 1].endDate, 1));
+    return i < 0 || dates[i] >= sorted[k].startDate;
+  };
+
+  // 公表翌日の終値の位置。日経225 のデータがまだない（公表前・直後）週は -1
+  const entry = sorted.map((w) => {
+    const firstNext = firstIndexOnOrAfter(dates, addDays(w.endDate, 1));
+    const i = firstNext < 0 ? -1 : firstNext + PUBLISH_BUSINESS_DAY;
+    return i >= 0 && i < dates.length ? i : -1;
+  });
+  const conn = sorted.map((_, k) => connected(k));
+
+  // 4 週累計（途中で週が抜けていたら null）
+  const sum4 = sorted.map((_, k) => {
+    if (k < FLOW_WEEKS - 1) return null;
+    let total = 0;
+    for (let j = k - FLOW_WEEKS + 1; j <= k; j++) {
+      if (j > k - FLOW_WEEKS + 1 && !conn[j]) return null;
+      total += sorted[j].foreign;
+    }
+    return total;
+  });
+
+  const buckets: number[][] = FLOW_BANDS.map(() => []);
+  const episodeStarts: string[][] = FLOW_BANDS.map(() => []);
+  let prevBand = -1;
+  sorted.forEach((_, k) => {
+    const v = sum4[k];
+    const b = v == null ? -1 : bandIndex(v, FLOW_BANDS);
+    if (b >= 0 && entry[k] >= 0) {
+      buckets[b].push(entry[k]);
+      if (!(b === prevBand && conn[k])) episodeStarts[b].push(sorted[k].endDate);
+    }
+    prevBand = b >= 0 && entry[k] >= 0 ? b : -1;
+  });
+  const bands: InvestorFlowBand[] = FLOW_BANDS.map((b, k) => ({
+    band: b.label,
+    occurrences: buckets[k].length,
+    episodes: episodeStarts[k].length,
+    episodeStarts: episodeStarts[k],
+    returns: statsFor(buckets[k], nikkei),
+  }));
+  const allEntries = sum4.flatMap((v, k) => (v != null && entry[k] >= 0 ? [entry[k]] : []));
+
+  // 同じ週の日経225: 前の週の最後の終値 → その週の最後の終値
+  const sameWeek: Array<[number, number]> = [];
+  const afterPublish: Array<[number, number]> = [];
+  const opposite: Array<[number, number]> = [];
+  sorted.forEach((w, k) => {
+    const next = firstIndexOnOrAfter(dates, addDays(w.endDate, 1));
+    const end = (next < 0 ? dates.length : next) - 1;
+    const start = firstIndexOnOrAfter(dates, w.startDate) - 1;
+    if (start >= 0 && end > start && next >= 0) {
+      sameWeek.push([w.foreign, nikkei[end].close / nikkei[start].close - 1]);
+    }
+    const p = entry[k];
+    if (p >= 0 && p + AFTER_PUBLISH_DAYS < nikkei.length) {
+      afterPublish.push([w.foreign, nikkei[p + AFTER_PUBLISH_DAYS].close / nikkei[p].close - 1]);
+    }
+    opposite.push([w.foreign, -w.individual]);
+  });
+  const opp = matchRate(opposite);
+
+  const lastK = sum4.length - 1;
+  return {
+    dataRange: { from: sorted[0]?.startDate ?? "", to: sorted[sorted.length - 1]?.endDate ?? "" },
+    bands,
+    baseline: { occurrences: allEntries.length, returns: statsFor(allEntries, nikkei) },
+    sameWeek: matchRate(sameWeek),
+    afterPublish: matchRate(afterPublish),
+    foreignVsIndividual: { weeks: opp.weeks, oppositeRate: opp.matchRate },
+    latest:
+      lastK >= 0 && sum4[lastK] != null
+        ? { endDate: sorted[lastK].endDate, foreign4w: Math.round(sum4[lastK]!) }
+        : null,
+  };
+}
+
 export function computeLearnExtraStats(
   nikkeiMap: Map<string, number>,
   usdJpyMap: Map<string, number>,
-  { from, generatedAt }: { from: string; generatedAt: string }
+  { from, generatedAt, flowWeeks = [] }: { from: string; generatedAt: string; flowWeeks?: InvestorFlowWeek[] }
 ): LearnExtraStats {
   const nikkei = toSortedCloses(nikkeiMap);
   const usdJpy = toSortedCloses(usdJpyMap);
@@ -256,5 +385,6 @@ export function computeLearnExtraStats(
       bigMoveThreshold: BIG_WEEK_MOVE,
       groups: computeSqWeekGroups(nikkei, from),
     },
+    investorFlow: computeInvestorFlowStats(flowWeeks, nikkei),
   };
 }

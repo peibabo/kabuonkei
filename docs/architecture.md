@@ -21,7 +21,7 @@
 - `headline.ts`: トップ画面ヒーロー「今日の見出し」生成の純粋関数（決定木 v2）。`getHeadlineStateKey` でレベル組み合わせを 16 状態キーに写像し、`HEADLINE_POOLS`（base + 昨日比 ±5 のトレンド候補 + 日本レベル 3 日以上連続の streak 候補）から `dayNumber` で決定的に日替わり選択（`buildHeroCopy`）。レベルが違ってもスコア差 < 10 なら `resolveNearBoundary` の接近オーバーライドで `NEAR_POOLS`（「日米ほぼ同温」系）に切替し、境界の丸め誤差を対比として報じない
 - `level-streak.ts`: 現在の日本温度レベルの連続営業日数を `japan-temperature-history.json` から計算する純粋関数（`computeJapanLevelStreak`）。`fetchAllMarketData` がサーバ側で呼び、`MarketData.japanLevelStreak` として配信
 - `stock-temperature/`: 銘柄別の株価の温度。`score.ts`（`computeStockTemperatureSeries`: 125日MA乖離 ÷ 直近250日の振れ幅 = z 値を ±2σ で 0〜100 に）/ `stats.ts`（前日・週・月比、90日統計、1年分位、順位、ランキング、業種グループ化の純関数）/ `format.ts` / `metadata.ts`（3ページ共通のメタ情報）/ `types.ts`（対象範囲 `UNIVERSES`）/ `index.ts`（`stock-temperatures.json` のアクセサ）。詳細は [docs/features/stock-temperature.md](features/stock-temperature.md)
-- `learn-extra-stats.ts`: 解説記事に載せる補足の集計（実現ボラ帯・ドル円の勢いの帯・SQ 週）`learn-extra-stats.json` の型と読み込み。生成は `scripts/_lib/learn-extra-stats.ts`
+- `learn-extra-stats.ts`: 解説記事に載せる補足の集計（実現ボラ帯・ドル円の勢いの帯・SQ 週・海外投資家フロー）`learn-extra-stats.json` の型と読み込み。生成は `scripts/_lib/learn-extra-stats.ts`
 - `learn-articles.ts`: 解説記事（`/learn/[slug]`）の一覧 `LEARN_ARTICLES`（タイトル・短いタイトル・公開日・更新日）と `latestLearnModifiedAt`。`/learn` 一覧・sitemap・銘柄別ページの関連記事で共有
 - `related-reading.ts`: 銘柄別ページの関連記事欄（`buildStockRelatedReading`: 定番 3 本 + 銘柄コードで決まる 3 本）と分析記事の一覧 `ANALYSIS_READINGS`
 
@@ -38,7 +38,7 @@
 - `score-composition.ts`: 日本版スコアの構成要素の組み合わせ（C1 単独 / C1+C5 / C1+騰落レシオ / C1+25日乖離 など）を過去データで比べる試算用の純粋関数（要素の計算、アラートと同じ状態遷移での通知日の再現、その後のリターン集計）。`scripts/analyze-jp-score-composition.ts`（`npm run analyze:jp-composition`、Yahoo から日経225・ドル円・構成 225 銘柄を取得、永続化なし）が使う。本体のスコア計算からは参照しない。`scripts/__tests__/score-composition.test.ts` でユニットテスト化
 - `jpx-common.ts`: JPX 取得系の共通ヘルパ（`JPX_BASE` / `fetchBuffer` / `fetchText` / `firstSheetRows` / `parseNumberCell` / `digitsToIso`）。下記 `jpx-*.ts` が利用
 - `jpx-margin.ts`: JPX 信用取引残高 Excel を扱う共通パーサ（週次 `*_mtcurrent.xlsx`（2026-10 下旬〜）用 `parseWeeklyMarginXls` / `extractWeeklyMarginLinks` と、連結履歴 `tvdivq0000015969.xls` 用 `parseHistoryMarginXls` / `extractHistoryExcelUrl` / `excelSerialToIso`）。`generate-japan-market-data.ts` / `backfill-margin-ratio-history.ts` が利用
-- `jpx-investor.ts`: JPX 投資部門別売買状況（週次 `stock_1_w_{開始}_{終了}.xlsx`、2026-10 下旬〜の横持ちレイアウト）のパーサ `extractInvestorLinks` / `parseInvestorXlsx`。東証プライムの金額差引を主体別に億円で返す（海外投資家 = 法人+個人、個人 = 現金+信用）。`generate-japan-market-data.ts` が利用
+- `jpx-investor.ts`: JPX 投資部門別売買状況（週次 `stock_1_w_{開始}_{終了}.xlsx`、2026-10 下旬〜の横持ちレイアウト）のパーサ `extractInvestorLinks` / `parseInvestorXlsx`。東証プライムの金額差引を主体別に億円で返す（海外投資家 = 法人+個人、個人 = 現金+信用）。`generate-japan-market-data.ts` が利用。`parseInvestorXlsx` は `market` に「二市場」も渡せる。旧形式（〜2026-09 の `stock_val_1_YYMMW.xls`、年ごとの一覧 `00-00-archives-NN.html`）は `parseLegacyInvestorXls`（Tokyo & Nagoya シートの当週列。見出しの「金額」はセル結合で値より 1 列左）で、`update-investor-flow-history.ts` が過去の推移に使う
 - `jpx-listed.ts`: JPX 東証上場銘柄一覧（`data_j.xlsx`）のパーサ `extractListedFileUrl` / `parseListedXlsx`（コード・銘柄名（NFKC）・33業種）。`generate-stock-temperatures.ts` が利用
 - `jpx-arbitrage.ts`: JPX 裁定取引に係る現物ポジション（日次 `YYMMDD.xls`）のパーサ `extractArbitrageLinks` / `parseArbitrageXls`。`generate-japan-market-data.ts` が利用
 - `portfolio-sim.ts`: 温度連動ポートフォリオのシミュレータ純粋関数（`simulatePortfolio` / `DEFAULT_PORTFOLIO_RULE` / `computeStats` / `computeMaxDrawdown` / `computeSharpe`）

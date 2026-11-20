@@ -5,6 +5,8 @@
  * - 値動きの大きさ（実現ボラ）の水準別・その後の日経225（/learn/what-is-nikkei-vi）
  * - ドル円の勢いの帯別・その後の日経225（/learn/what-is-usdjpy-momentum）
  * - SQ のある週とない週の日経225 の値動き（/learn/what-is-arbitrage-balance）
+ * - 海外投資家の売買（4 週累計）の帯別・その後の日経225 など（/learn/what-is-investor-flow）。
+ *   投資部門別の推移は src/data/investor-flow-history.json（update-investor-flow-history.ts が作る）を読む
  * を src/data/learn-extra-stats.json に出力する。
  *
  * 月次の update-historical-stats.yml から実行する。
@@ -15,11 +17,12 @@
  */
 
 import YahooFinance from "yahoo-finance2";
-import { writeFileSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import { fetchDailyCloses } from "./_lib/shared";
 import { computeLearnExtraStats } from "./_lib/learn-extra-stats";
 import { dropIntradayToday, toJstIsoDate } from "./_lib/trading-date";
+import type { InvestorFlowHistory } from "../src/lib/investor-flow-history";
 
 const yahooFinance = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
@@ -44,9 +47,15 @@ async function main() {
   if (dropIntradayToday(nikkei, now)) console.log(`  取引時間中の実行のため ${todayJst} の日経225 を除外`);
   console.log(`  → 日経225 ${nikkei.size} 日 / ドル円 ${usdJpy.size} 日`);
 
+  const flow = JSON.parse(
+    readFileSync(resolve(__dirname, "../src/data/investor-flow-history.json"), "utf-8")
+  ) as InvestorFlowHistory;
+  console.log(`  → 投資部門別 ${flow.weeks.length} 週`);
+
   const stats = computeLearnExtraStats(nikkei, usdJpy, {
     from: STATS_FROM,
     generatedAt: todayJst,
+    flowWeeks: flow.weeks,
   });
 
   const outDir = resolve(__dirname, "../src/data");
@@ -67,6 +76,12 @@ async function main() {
   console.log("SQ 週");
   for (const g of stats.sqWeeks.groups)
     console.log(`  ${g.label}: ${g.weeks}週 平均の動き ${g.avgAbsMove}% / 平均 ${g.avgReturn}% / ${stats.sqWeeks.bigMoveThreshold}%以上 ${g.bigMoveShare}%`);
+  const f = stats.investorFlow;
+  console.log(`海外投資家 4 週累計（${f.dataRange.from}〜${f.dataRange.to}、最新 ${f.latest?.foreign4w} 億円）`);
+  for (const b of f.bands) line(`${b.band}（${b.episodes}回）`, b);
+  line("全週", f.baseline);
+  console.log(`  向きの一致: 同じ週 ${f.sameWeek.matchRate}%（${f.sameWeek.weeks}週） / 公表後1週間 ${f.afterPublish.matchRate}%（${f.afterPublish.weeks}週）`);
+  console.log(`  海外と個人が逆向き: ${f.foreignVsIndividual.oppositeRate}%（${f.foreignVsIndividual.weeks}週）`);
 }
 
 main().catch((err) => {

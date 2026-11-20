@@ -1,0 +1,3402 @@
+{
+  "source": "日本取引所グループ（JPX）「投資部門別売買状況」週間・二市場（東証・名証）",
+  "unit": "億円（買い − 売り）",
+  "weeks": [
+    {
+      "startDate": "2016-01-04",
+      "endDate": "2016-01-08",
+      "foreign": -4471.2,
+      "individual": 5814.9
+    },
+    {
+      "startDate": "2016-01-12",
+      "endDate": "2016-01-15",
+      "foreign": -2109,
+      "individual": 2566.5
+    },
+    {
+      "startDate": "2016-01-18",
+      "endDate": "2016-01-22",
+      "foreign": -1902.3,
+      "individual": 277.9
+    },
+    {
+      "startDate": "2016-01-25",
+      "endDate": "2016-01-29",
+      "foreign": -2073.5,
+      "individual": -685.6
+    },
+    {
+      "startDate": "2016-02-01",
+      "endDate": "2016-02-05",
+      "foreign": -6112.5,
+      "individual": 1941.5
+    },
+    {
+      "startDate": "2016-02-08",
+      "endDate": "2016-02-12",
+      "foreign": -5735,
+      "individual": 1886.1
+    },
+    {
+      "startDate": "2016-02-15",
+      "endDate": "2016-02-19",
+      "foreign": -4053.3,
+      "individual": 25.4
+    },
+    {
+      "startDate": "2016-02-22",
+      "endDate": "2016-02-26",
+      "foreign": -4081.9,
+      "individual": -417.4
+    },
+    {
+      "startDate": "2016-02-29",
+      "endDate": "2016-03-04",
+      "foreign": -954.4,
+      "individual": -1989.3
+    },
+    {
+      "startDate": "2016-03-07",
+      "endDate": "2016-03-11",
+      "foreign": -11932,
+      "individual": 2038.5
+    },
+    {
+      "startDate": "2016-03-14",
+      "endDate": "2016-03-18",
+      "foreign": -4579.6,
+      "individual": 1875.4
+    },
+    {
+      "startDate": "2016-03-22",
+      "endDate": "2016-03-25",
+      "foreign": -2042.9,
+      "individual": -205.4
+    },
+    {
+      "startDate": "2016-03-28",
+      "endDate": "2016-04-01",
+      "foreign": -79.4,
+      "individual": 1106.8
+    },
+    {
+      "startDate": "2016-04-04",
+      "endDate": "2016-04-08",
+      "foreign": 326.6,
+      "individual": 110.8
+    },
+    {
+      "startDate": "2016-04-11",
+      "endDate": "2016-04-15",
+      "foreign": 3848.9,
+      "individual": -3465.7
+    },
+    {
+      "startDate": "2016-04-18",
+      "endDate": "2016-04-22",
+      "foreign": 5320.9,
+      "individual": -4605.6
+    },
+    {
+      "startDate": "2016-04-25",
+      "endDate": "2016-04-28",
+      "foreign": -892.3,
+      "individual": 1013
+    },
+    {
+      "startDate": "2016-05-02",
+      "endDate": "2016-05-06",
+      "foreign": -3142.8,
+      "individual": 2616.6
+    },
+    {
+      "startDate": "2016-05-09",
+      "endDate": "2016-05-13",
+      "foreign": 567.7,
+      "individual": -137.4
+    },
+    {
+      "startDate": "2016-05-16",
+      "endDate": "2016-05-20",
+      "foreign": 22,
+      "individual": -1301.3
+    },
+    {
+      "startDate": "2016-05-23",
+      "endDate": "2016-05-27",
+      "foreign": -705,
+      "individual": -1103.9
+    },
+    {
+      "startDate": "2016-05-30",
+      "endDate": "2016-06-03",
+      "foreign": -1461.7,
+      "individual": 348.8
+    },
+    {
+      "startDate": "2016-06-06",
+      "endDate": "2016-06-10",
+      "foreign": 2235.9,
+      "individual": 295.2
+    },
+    {
+      "startDate": "2016-06-13",
+      "endDate": "2016-06-17",
+      "foreign": -2208.1,
+      "individual": 1934
+    },
+    {
+      "startDate": "2016-06-20",
+      "endDate": "2016-06-24",
+      "foreign": -1301.1,
+      "individual": 355.3
+    },
+    {
+      "startDate": "2016-06-27",
+      "endDate": "2016-07-01",
+      "foreign": 105.3,
+      "individual": -119.3
+    },
+    {
+      "startDate": "2016-07-04",
+      "endDate": "2016-07-08",
+      "foreign": -1748.7,
+      "individual": 1691.9
+    },
+    {
+      "startDate": "2016-07-11",
+      "endDate": "2016-07-15",
+      "foreign": 3511.9,
+      "individual": -4990.3
+    },
+    {
+      "startDate": "2016-07-19",
+      "endDate": "2016-07-22",
+      "foreign": -1261.9,
+      "individual": 386.9
+    },
+    {
+      "startDate": "2016-07-25",
+      "endDate": "2016-07-29",
+      "foreign": 788.4,
+      "individual": -988.4
+    },
+    {
+      "startDate": "2016-08-01",
+      "endDate": "2016-08-05",
+      "foreign": -4587,
+      "individual": 2238.5
+    },
+    {
+      "startDate": "2016-08-08",
+      "endDate": "2016-08-12",
+      "foreign": 484.3,
+      "individual": -2114
+    },
+    {
+      "startDate": "2016-08-15",
+      "endDate": "2016-08-19",
+      "foreign": -1667.2,
+      "individual": 767.1
+    },
+    {
+      "startDate": "2016-08-22",
+      "endDate": "2016-08-26",
+      "foreign": 1713.6,
+      "individual": 186.5
+    },
+    {
+      "startDate": "2016-08-29",
+      "endDate": "2016-09-02",
+      "foreign": -642.3,
+      "individual": -3204.3
+    },
+    {
+      "startDate": "2016-09-05",
+      "endDate": "2016-09-09",
+      "foreign": -3338.1,
+      "individual": -1020.5
+    },
+    {
+      "startDate": "2016-09-12",
+      "endDate": "2016-09-16",
+      "foreign": -4805.7,
+      "individual": 1764
+    },
+    {
+      "startDate": "2016-09-20",
+      "endDate": "2016-09-23",
+      "foreign": -1019.2,
+      "individual": -2031
+    },
+    {
+      "startDate": "2016-09-26",
+      "endDate": "2016-09-30",
+      "foreign": -1887.7,
+      "individual": 548
+    },
+    {
+      "startDate": "2016-10-03",
+      "endDate": "2016-10-07",
+      "foreign": 2805.3,
+      "individual": -2877.3
+    },
+    {
+      "startDate": "2016-10-11",
+      "endDate": "2016-10-14",
+      "foreign": 1131.6,
+      "individual": -120
+    },
+    {
+      "startDate": "2016-10-17",
+      "endDate": "2016-10-21",
+      "foreign": 730.9,
+      "individual": -1890
+    },
+    {
+      "startDate": "2016-10-24",
+      "endDate": "2016-10-28",
+      "foreign": 49.4,
+      "individual": -2773.2
+    },
+    {
+      "startDate": "2016-10-31",
+      "endDate": "2016-11-04",
+      "foreign": -645.6,
+      "individual": 1252.4
+    },
+    {
+      "startDate": "2016-11-07",
+      "endDate": "2016-11-11",
+      "foreign": 4007,
+      "individual": -4154.8
+    },
+    {
+      "startDate": "2016-11-14",
+      "endDate": "2016-11-18",
+      "foreign": 4903.3,
+      "individual": -4452.7
+    },
+    {
+      "startDate": "2016-11-21",
+      "endDate": "2016-11-25",
+      "foreign": 3027,
+      "individual": -4332
+    },
+    {
+      "startDate": "2016-11-28",
+      "endDate": "2016-12-02",
+      "foreign": 4148.5,
+      "individual": -3024.8
+    },
+    {
+      "startDate": "2016-12-05",
+      "endDate": "2016-12-09",
+      "foreign": 5625.3,
+      "individual": -3709.8
+    },
+    {
+      "startDate": "2016-12-12",
+      "endDate": "2016-12-16",
+      "foreign": 822.2,
+      "individual": -4813
+    },
+    {
+      "startDate": "2016-12-19",
+      "endDate": "2016-12-22",
+      "foreign": -1947,
+      "individual": -1982.1
+    },
+    {
+      "startDate": "2016-12-26",
+      "endDate": "2016-12-30",
+      "foreign": 324.7,
+      "individual": -2156.7
+    },
+    {
+      "startDate": "2017-01-04",
+      "endDate": "2017-01-06",
+      "foreign": 2326.2,
+      "individual": -2424
+    },
+    {
+      "startDate": "2017-01-10",
+      "endDate": "2017-01-13",
+      "foreign": 1105.7,
+      "individual": 67.1
+    },
+    {
+      "startDate": "2017-01-16",
+      "endDate": "2017-01-20",
+      "foreign": -1039.6,
+      "individual": 105.2
+    },
+    {
+      "startDate": "2017-01-23",
+      "endDate": "2017-01-27",
+      "foreign": -2066.6,
+      "individual": -1317.6
+    },
+    {
+      "startDate": "2017-01-30",
+      "endDate": "2017-02-03",
+      "foreign": -2448,
+      "individual": 2042
+    },
+    {
+      "startDate": "2017-02-06",
+      "endDate": "2017-02-10",
+      "foreign": 1371.5,
+      "individual": -1754.2
+    },
+    {
+      "startDate": "2017-02-13",
+      "endDate": "2017-02-17",
+      "foreign": -763.1,
+      "individual": 122.1
+    },
+    {
+      "startDate": "2017-02-20",
+      "endDate": "2017-02-24",
+      "foreign": -727.7,
+      "individual": -409.1
+    },
+    {
+      "startDate": "2017-02-27",
+      "endDate": "2017-03-03",
+      "foreign": -796.7,
+      "individual": -840.4
+    },
+    {
+      "startDate": "2017-03-06",
+      "endDate": "2017-03-10",
+      "foreign": -986.7,
+      "individual": -975.4
+    },
+    {
+      "startDate": "2017-03-13",
+      "endDate": "2017-03-17",
+      "foreign": -4070,
+      "individual": 1328.8
+    },
+    {
+      "startDate": "2017-03-21",
+      "endDate": "2017-03-24",
+      "foreign": -3741.5,
+      "individual": 3266.4
+    },
+    {
+      "startDate": "2017-03-27",
+      "endDate": "2017-03-31",
+      "foreign": -549.5,
+      "individual": 593.6
+    },
+    {
+      "startDate": "2017-04-03",
+      "endDate": "2017-04-07",
+      "foreign": 908.3,
+      "individual": 3.8
+    },
+    {
+      "startDate": "2017-04-10",
+      "endDate": "2017-04-14",
+      "foreign": 1027.2,
+      "individual": -508.5
+    },
+    {
+      "startDate": "2017-04-17",
+      "endDate": "2017-04-21",
+      "foreign": 2770.5,
+      "individual": -883
+    },
+    {
+      "startDate": "2017-04-24",
+      "endDate": "2017-04-28",
+      "foreign": 2849.9,
+      "individual": -4448.5
+    },
+    {
+      "startDate": "2017-05-01",
+      "endDate": "2017-05-02",
+      "foreign": 1583.3,
+      "individual": -1877.3
+    },
+    {
+      "startDate": "2017-05-08",
+      "endDate": "2017-05-12",
+      "foreign": 5602,
+      "individual": -5100.6
+    },
+    {
+      "startDate": "2017-05-15",
+      "endDate": "2017-05-19",
+      "foreign": 301.8,
+      "individual": 166.7
+    },
+    {
+      "startDate": "2017-05-22",
+      "endDate": "2017-05-26",
+      "foreign": 220.5,
+      "individual": -792.9
+    },
+    {
+      "startDate": "2017-05-29",
+      "endDate": "2017-06-02",
+      "foreign": 4282.3,
+      "individual": -3217.3
+    },
+    {
+      "startDate": "2017-06-05",
+      "endDate": "2017-06-09",
+      "foreign": -354.4,
+      "individual": -43.9
+    },
+    {
+      "startDate": "2017-06-12",
+      "endDate": "2017-06-16",
+      "foreign": -2065.7,
+      "individual": 550.7
+    },
+    {
+      "startDate": "2017-06-19",
+      "endDate": "2017-06-23",
+      "foreign": -92.1,
+      "individual": -2189.4
+    },
+    {
+      "startDate": "2017-06-26",
+      "endDate": "2017-06-30",
+      "foreign": 115.3,
+      "individual": -1515.9
+    },
+    {
+      "startDate": "2017-07-03",
+      "endDate": "2017-07-07",
+      "foreign": -15.4,
+      "individual": -710.4
+    },
+    {
+      "startDate": "2017-07-10",
+      "endDate": "2017-07-14",
+      "foreign": 1732.3,
+      "individual": -1488.6
+    },
+    {
+      "startDate": "2017-07-18",
+      "endDate": "2017-07-21",
+      "foreign": 861.1,
+      "individual": -953.2
+    },
+    {
+      "startDate": "2017-07-24",
+      "endDate": "2017-07-28",
+      "foreign": -1282.9,
+      "individual": 529.9
+    },
+    {
+      "startDate": "2017-07-31",
+      "endDate": "2017-08-04",
+      "foreign": -295.1,
+      "individual": -1401.8
+    },
+    {
+      "startDate": "2017-08-07",
+      "endDate": "2017-08-10",
+      "foreign": -2746.7,
+      "individual": 443.8
+    },
+    {
+      "startDate": "2017-08-14",
+      "endDate": "2017-08-18",
+      "foreign": -2057.1,
+      "individual": 1160.1
+    },
+    {
+      "startDate": "2017-08-21",
+      "endDate": "2017-08-25",
+      "foreign": -1529,
+      "individual": 125.8
+    },
+    {
+      "startDate": "2017-08-28",
+      "endDate": "2017-09-01",
+      "foreign": -613.6,
+      "individual": -860.9
+    },
+    {
+      "startDate": "2017-09-04",
+      "endDate": "2017-09-08",
+      "foreign": -2948.9,
+      "individual": 662.9
+    },
+    {
+      "startDate": "2017-09-11",
+      "endDate": "2017-09-15",
+      "foreign": -4172.6,
+      "individual": -4252.8
+    },
+    {
+      "startDate": "2017-09-19",
+      "endDate": "2017-09-22",
+      "foreign": -611.2,
+      "individual": -3180.2
+    },
+    {
+      "startDate": "2017-09-25",
+      "endDate": "2017-09-29",
+      "foreign": 2017.9,
+      "individual": -2326.3
+    },
+    {
+      "startDate": "2017-10-02",
+      "endDate": "2017-10-06",
+      "foreign": 6575.4,
+      "individual": -3751.9
+    },
+    {
+      "startDate": "2017-10-10",
+      "endDate": "2017-10-13",
+      "foreign": 4594,
+      "individual": -3475.3
+    },
+    {
+      "startDate": "2017-10-16",
+      "endDate": "2017-10-20",
+      "foreign": 4452,
+      "individual": -4955.3
+    },
+    {
+      "startDate": "2017-10-23",
+      "endDate": "2017-10-27",
+      "foreign": 6703.7,
+      "individual": -5951.2
+    },
+    {
+      "startDate": "2017-10-30",
+      "endDate": "2017-11-02",
+      "foreign": 528.9,
+      "individual": -1326
+    },
+    {
+      "startDate": "2017-11-06",
+      "endDate": "2017-11-10",
+      "foreign": 671,
+      "individual": -1315.4
+    },
+    {
+      "startDate": "2017-11-13",
+      "endDate": "2017-11-17",
+      "foreign": -3211.9,
+      "individual": 2353.4
+    },
+    {
+      "startDate": "2017-11-20",
+      "endDate": "2017-11-24",
+      "foreign": -2819.5,
+      "individual": -433.5
+    },
+    {
+      "startDate": "2017-11-27",
+      "endDate": "2017-12-01",
+      "foreign": -1973.9,
+      "individual": -672.7
+    },
+    {
+      "startDate": "2017-12-04",
+      "endDate": "2017-12-08",
+      "foreign": -2168.2,
+      "individual": -750.1
+    },
+    {
+      "startDate": "2017-12-11",
+      "endDate": "2017-12-15",
+      "foreign": -122.2,
+      "individual": -826.4
+    },
+    {
+      "startDate": "2017-12-18",
+      "endDate": "2017-12-22",
+      "foreign": 1223.6,
+      "individual": -3340.1
+    },
+    {
+      "startDate": "2017-12-25",
+      "endDate": "2017-12-29",
+      "foreign": -22.1,
+      "individual": -1186.3
+    },
+    {
+      "startDate": "2018-01-04",
+      "endDate": "2018-01-05",
+      "foreign": 4851,
+      "individual": -5746.1
+    },
+    {
+      "startDate": "2018-01-09",
+      "endDate": "2018-01-12",
+      "foreign": -316.1,
+      "individual": 1774.7
+    },
+    {
+      "startDate": "2018-01-15",
+      "endDate": "2018-01-19",
+      "foreign": -2222.4,
+      "individual": -229.7
+    },
+    {
+      "startDate": "2018-01-22",
+      "endDate": "2018-01-26",
+      "foreign": -3560,
+      "individual": 1817.3
+    },
+    {
+      "startDate": "2018-01-29",
+      "endDate": "2018-02-02",
+      "foreign": -3525.7,
+      "individual": 2733.2
+    },
+    {
+      "startDate": "2018-02-05",
+      "endDate": "2018-02-09",
+      "foreign": -6446.1,
+      "individual": 7458
+    },
+    {
+      "startDate": "2018-02-13",
+      "endDate": "2018-02-16",
+      "foreign": -362.3,
+      "individual": 850.5
+    },
+    {
+      "startDate": "2018-02-19",
+      "endDate": "2018-02-23",
+      "foreign": -1132.4,
+      "individual": 815.2
+    },
+    {
+      "startDate": "2018-02-26",
+      "endDate": "2018-03-02",
+      "foreign": -3484.1,
+      "individual": 3359.2
+    },
+    {
+      "startDate": "2018-03-05",
+      "endDate": "2018-03-09",
+      "foreign": -3754.5,
+      "individual": 713.8
+    },
+    {
+      "startDate": "2018-03-12",
+      "endDate": "2018-03-16",
+      "foreign": -1728.5,
+      "individual": -756.3
+    },
+    {
+      "startDate": "2018-03-19",
+      "endDate": "2018-03-23",
+      "foreign": -4541.3,
+      "individual": 4478.7
+    },
+    {
+      "startDate": "2018-03-26",
+      "endDate": "2018-03-30",
+      "foreign": 48.5,
+      "individual": -388.6
+    },
+    {
+      "startDate": "2018-04-02",
+      "endDate": "2018-04-06",
+      "foreign": 1584.8,
+      "individual": -1264.8
+    },
+    {
+      "startDate": "2018-04-09",
+      "endDate": "2018-04-13",
+      "foreign": 845.1,
+      "individual": -1561.9
+    },
+    {
+      "startDate": "2018-04-16",
+      "endDate": "2018-04-20",
+      "foreign": 1151.3,
+      "individual": -2443.7
+    },
+    {
+      "startDate": "2018-04-23",
+      "endDate": "2018-04-27",
+      "foreign": -1509.4,
+      "individual": -2596.1
+    },
+    {
+      "startDate": "2018-05-01",
+      "endDate": "2018-05-02",
+      "foreign": 17.1,
+      "individual": -538.9
+    },
+    {
+      "startDate": "2018-05-07",
+      "endDate": "2018-05-11",
+      "foreign": -12.4,
+      "individual": -2945.1
+    },
+    {
+      "startDate": "2018-05-14",
+      "endDate": "2018-05-18",
+      "foreign": -937,
+      "individual": -3644.6
+    },
+    {
+      "startDate": "2018-05-21",
+      "endDate": "2018-05-25",
+      "foreign": -3404.3,
+      "individual": 1451.8
+    },
+    {
+      "startDate": "2018-05-28",
+      "endDate": "2018-06-01",
+      "foreign": -3076.2,
+      "individual": 2071.3
+    },
+    {
+      "startDate": "2018-06-04",
+      "endDate": "2018-06-08",
+      "foreign": 205.3,
+      "individual": -3059
+    },
+    {
+      "startDate": "2018-06-11",
+      "endDate": "2018-06-15",
+      "foreign": 317.7,
+      "individual": -1426.5
+    },
+    {
+      "startDate": "2018-06-18",
+      "endDate": "2018-06-22",
+      "foreign": -4306.7,
+      "individual": 2115.5
+    },
+    {
+      "startDate": "2018-06-25",
+      "endDate": "2018-06-29",
+      "foreign": -2857.9,
+      "individual": 700.8
+    },
+    {
+      "startDate": "2018-07-02",
+      "endDate": "2018-07-06",
+      "foreign": -313.7,
+      "individual": 633.6
+    },
+    {
+      "startDate": "2018-07-09",
+      "endDate": "2018-07-13",
+      "foreign": 3248.8,
+      "individual": -2459.2
+    },
+    {
+      "startDate": "2018-07-17",
+      "endDate": "2018-07-20",
+      "foreign": 319.6,
+      "individual": -863.9
+    },
+    {
+      "startDate": "2018-07-23",
+      "endDate": "2018-07-27",
+      "foreign": 859.6,
+      "individual": -2186.5
+    },
+    {
+      "startDate": "2018-07-30",
+      "endDate": "2018-08-03",
+      "foreign": -672.3,
+      "individual": 670.2
+    },
+    {
+      "startDate": "2018-08-06",
+      "endDate": "2018-08-10",
+      "foreign": -347.3,
+      "individual": 289.3
+    },
+    {
+      "startDate": "2018-08-13",
+      "endDate": "2018-08-17",
+      "foreign": -3449.6,
+      "individual": 2254.8
+    },
+    {
+      "startDate": "2018-08-20",
+      "endDate": "2018-08-24",
+      "foreign": -840.3,
+      "individual": -437.2
+    },
+    {
+      "startDate": "2018-08-27",
+      "endDate": "2018-08-31",
+      "foreign": 483.6,
+      "individual": -2363.2
+    },
+    {
+      "startDate": "2018-09-03",
+      "endDate": "2018-09-07",
+      "foreign": -5279.6,
+      "individual": 3697.1
+    },
+    {
+      "startDate": "2018-09-10",
+      "endDate": "2018-09-14",
+      "foreign": -2819.3,
+      "individual": -2204
+    },
+    {
+      "startDate": "2018-09-18",
+      "endDate": "2018-09-21",
+      "foreign": 2771,
+      "individual": -6699
+    },
+    {
+      "startDate": "2018-09-25",
+      "endDate": "2018-09-28",
+      "foreign": 3770.7,
+      "individual": -3364
+    },
+    {
+      "startDate": "2018-10-01",
+      "endDate": "2018-10-05",
+      "foreign": 5756,
+      "individual": 210.3
+    },
+    {
+      "startDate": "2018-10-09",
+      "endDate": "2018-10-12",
+      "foreign": -3290.4,
+      "individual": 6023.3
+    },
+    {
+      "startDate": "2018-10-15",
+      "endDate": "2018-10-19",
+      "foreign": -2120.4,
+      "individual": 2756.6
+    },
+    {
+      "startDate": "2018-10-22",
+      "endDate": "2018-10-26",
+      "foreign": -3174.3,
+      "individual": 3251.9
+    },
+    {
+      "startDate": "2018-10-29",
+      "endDate": "2018-11-02",
+      "foreign": 262.3,
+      "individual": -1663
+    },
+    {
+      "startDate": "2018-11-05",
+      "endDate": "2018-11-09",
+      "foreign": 2440.7,
+      "individual": -1776.2
+    },
+    {
+      "startDate": "2018-11-12",
+      "endDate": "2018-11-16",
+      "foreign": -1369.6,
+      "individual": 1074.1
+    },
+    {
+      "startDate": "2018-11-19",
+      "endDate": "2018-11-22",
+      "foreign": -1967.9,
+      "individual": -361.5
+    },
+    {
+      "startDate": "2018-11-26",
+      "endDate": "2018-11-30",
+      "foreign": -2101.8,
+      "individual": -3586.4
+    },
+    {
+      "startDate": "2018-12-03",
+      "endDate": "2018-12-07",
+      "foreign": -5955.9,
+      "individual": 2220.5
+    },
+    {
+      "startDate": "2018-12-10",
+      "endDate": "2018-12-14",
+      "foreign": -1613.9,
+      "individual": 218.2
+    },
+    {
+      "startDate": "2018-12-17",
+      "endDate": "2018-12-21",
+      "foreign": -3263.6,
+      "individual": -1065.9
+    },
+    {
+      "startDate": "2018-12-25",
+      "endDate": "2018-12-28",
+      "foreign": -578.4,
+      "individual": -1703.8
+    },
+    {
+      "startDate": "2019-01-04",
+      "endDate": "2019-01-04",
+      "foreign": -2086.1,
+      "individual": 416.7
+    },
+    {
+      "startDate": "2019-01-07",
+      "endDate": "2019-01-11",
+      "foreign": -2905.2,
+      "individual": -1743.7
+    },
+    {
+      "startDate": "2019-01-15",
+      "endDate": "2019-01-18",
+      "foreign": -542.6,
+      "individual": -996.6
+    },
+    {
+      "startDate": "2019-01-21",
+      "endDate": "2019-01-25",
+      "foreign": 1201.6,
+      "individual": -757.9
+    },
+    {
+      "startDate": "2019-01-28",
+      "endDate": "2019-02-01",
+      "foreign": -1294.2,
+      "individual": -77.7
+    },
+    {
+      "startDate": "2019-02-04",
+      "endDate": "2019-02-08",
+      "foreign": -1536.4,
+      "individual": 268.7
+    },
+    {
+      "startDate": "2019-02-12",
+      "endDate": "2019-02-15",
+      "foreign": -655.2,
+      "individual": -2487.1
+    },
+    {
+      "startDate": "2019-02-18",
+      "endDate": "2019-02-22",
+      "foreign": -34.6,
+      "individual": -2422.4
+    },
+    {
+      "startDate": "2019-02-25",
+      "endDate": "2019-03-01",
+      "foreign": -1952.2,
+      "individual": -897
+    },
+    {
+      "startDate": "2019-03-04",
+      "endDate": "2019-03-08",
+      "foreign": -5688.7,
+      "individual": 1779.4
+    },
+    {
+      "startDate": "2019-03-11",
+      "endDate": "2019-03-15",
+      "foreign": -5061.9,
+      "individual": -1280.9
+    },
+    {
+      "startDate": "2019-03-18",
+      "endDate": "2019-03-22",
+      "foreign": -3785.1,
+      "individual": -60.3
+    },
+    {
+      "startDate": "2019-03-25",
+      "endDate": "2019-03-29",
+      "foreign": -744.6,
+      "individual": 742.7
+    },
+    {
+      "startDate": "2019-04-01",
+      "endDate": "2019-04-05",
+      "foreign": 6227.9,
+      "individual": -5576.5
+    },
+    {
+      "startDate": "2019-04-08",
+      "endDate": "2019-04-12",
+      "foreign": 1214.5,
+      "individual": -45.7
+    },
+    {
+      "startDate": "2019-04-15",
+      "endDate": "2019-04-19",
+      "foreign": 5534.3,
+      "individual": -3117
+    },
+    {
+      "startDate": "2019-04-22",
+      "endDate": "2019-04-26",
+      "foreign": 3079.3,
+      "individual": -419.2
+    },
+    {
+      "startDate": "2019-05-07",
+      "endDate": "2019-05-10",
+      "foreign": -191,
+      "individual": 3690.3
+    },
+    {
+      "startDate": "2019-05-13",
+      "endDate": "2019-05-17",
+      "foreign": -1174,
+      "individual": -397.8
+    },
+    {
+      "startDate": "2019-05-20",
+      "endDate": "2019-05-24",
+      "foreign": -799.2,
+      "individual": 585.2
+    },
+    {
+      "startDate": "2019-05-27",
+      "endDate": "2019-05-31",
+      "foreign": -2838.1,
+      "individual": 1122.7
+    },
+    {
+      "startDate": "2019-06-03",
+      "endDate": "2019-06-07",
+      "foreign": -1143.5,
+      "individual": -972
+    },
+    {
+      "startDate": "2019-06-10",
+      "endDate": "2019-06-14",
+      "foreign": -1992.3,
+      "individual": -757.5
+    },
+    {
+      "startDate": "2019-06-17",
+      "endDate": "2019-06-21",
+      "foreign": -1125.8,
+      "individual": -890.8
+    },
+    {
+      "startDate": "2019-06-24",
+      "endDate": "2019-06-28",
+      "foreign": -5.6,
+      "individual": 16.1
+    },
+    {
+      "startDate": "2019-07-01",
+      "endDate": "2019-07-05",
+      "foreign": 449.4,
+      "individual": -3072.8
+    },
+    {
+      "startDate": "2019-07-08",
+      "endDate": "2019-07-12",
+      "foreign": -238.4,
+      "individual": 551.3
+    },
+    {
+      "startDate": "2019-07-16",
+      "endDate": "2019-07-19",
+      "foreign": -1444,
+      "individual": 500.5
+    },
+    {
+      "startDate": "2019-07-22",
+      "endDate": "2019-07-26",
+      "foreign": 1202.6,
+      "individual": -1183.8
+    },
+    {
+      "startDate": "2019-07-29",
+      "endDate": "2019-08-02",
+      "foreign": -2091.6,
+      "individual": 2368.6
+    },
+    {
+      "startDate": "2019-08-05",
+      "endDate": "2019-08-09",
+      "foreign": -1882.3,
+      "individual": 2447.2
+    },
+    {
+      "startDate": "2019-08-13",
+      "endDate": "2019-08-16",
+      "foreign": -3035.7,
+      "individual": 842.6
+    },
+    {
+      "startDate": "2019-08-19",
+      "endDate": "2019-08-23",
+      "foreign": -402.9,
+      "individual": -1314.6
+    },
+    {
+      "startDate": "2019-08-26",
+      "endDate": "2019-08-30",
+      "foreign": -34.5,
+      "individual": -648.3
+    },
+    {
+      "startDate": "2019-09-02",
+      "endDate": "2019-09-06",
+      "foreign": 1284.7,
+      "individual": -2273.1
+    },
+    {
+      "startDate": "2019-09-09",
+      "endDate": "2019-09-13",
+      "foreign": -3091.6,
+      "individual": -4957
+    },
+    {
+      "startDate": "2019-09-17",
+      "endDate": "2019-09-20",
+      "foreign": -619.6,
+      "individual": -2566
+    },
+    {
+      "startDate": "2019-09-24",
+      "endDate": "2019-09-27",
+      "foreign": -2822.1,
+      "individual": 721.8
+    },
+    {
+      "startDate": "2019-09-30",
+      "endDate": "2019-10-04",
+      "foreign": 1149.1,
+      "individual": 1317.4
+    },
+    {
+      "startDate": "2019-10-07",
+      "endDate": "2019-10-11",
+      "foreign": 530.8,
+      "individual": -1083.5
+    },
+    {
+      "startDate": "2019-10-15",
+      "endDate": "2019-10-18",
+      "foreign": 5563.8,
+      "individual": -3530.7
+    },
+    {
+      "startDate": "2019-10-21",
+      "endDate": "2019-10-25",
+      "foreign": 1521.2,
+      "individual": -1750.8
+    },
+    {
+      "startDate": "2019-10-28",
+      "endDate": "2019-11-01",
+      "foreign": 2581.4,
+      "individual": -2885.3
+    },
+    {
+      "startDate": "2019-11-05",
+      "endDate": "2019-11-08",
+      "foreign": 4602.1,
+      "individual": -3632.4
+    },
+    {
+      "startDate": "2019-11-11",
+      "endDate": "2019-11-15",
+      "foreign": 2045.6,
+      "individual": -1451.2
+    },
+    {
+      "startDate": "2019-11-18",
+      "endDate": "2019-11-22",
+      "foreign": -160.6,
+      "individual": 124.5
+    },
+    {
+      "startDate": "2019-11-25",
+      "endDate": "2019-11-29",
+      "foreign": 4042,
+      "individual": -2107.9
+    },
+    {
+      "startDate": "2019-12-02",
+      "endDate": "2019-12-06",
+      "foreign": -2660.5,
+      "individual": -459.8
+    },
+    {
+      "startDate": "2019-12-09",
+      "endDate": "2019-12-13",
+      "foreign": 2852.5,
+      "individual": -3711.2
+    },
+    {
+      "startDate": "2019-12-16",
+      "endDate": "2019-12-20",
+      "foreign": 177.6,
+      "individual": -704.7
+    },
+    {
+      "startDate": "2019-12-23",
+      "endDate": "2019-12-27",
+      "foreign": 1553.5,
+      "individual": -1193.5
+    },
+    {
+      "startDate": "2019-12-30",
+      "endDate": "2019-12-30",
+      "foreign": -727,
+      "individual": 801.9
+    },
+    {
+      "startDate": "2020-01-06",
+      "endDate": "2020-01-10",
+      "foreign": -454.8,
+      "individual": -88.4
+    },
+    {
+      "startDate": "2020-01-14",
+      "endDate": "2020-01-17",
+      "foreign": 751.1,
+      "individual": 1634.7
+    },
+    {
+      "startDate": "2020-01-20",
+      "endDate": "2020-01-24",
+      "foreign": -715,
+      "individual": 1954.1
+    },
+    {
+      "startDate": "2020-01-27",
+      "endDate": "2020-01-31",
+      "foreign": -2401.5,
+      "individual": 3164.7
+    },
+    {
+      "startDate": "2020-02-03",
+      "endDate": "2020-02-07",
+      "foreign": 2819.9,
+      "individual": -3187.6
+    },
+    {
+      "startDate": "2020-02-10",
+      "endDate": "2020-02-14",
+      "foreign": -494.9,
+      "individual": 580.5
+    },
+    {
+      "startDate": "2020-02-17",
+      "endDate": "2020-02-21",
+      "foreign": -353.3,
+      "individual": 973
+    },
+    {
+      "startDate": "2020-02-25",
+      "endDate": "2020-02-28",
+      "foreign": -3648.4,
+      "individual": 3163.7
+    },
+    {
+      "startDate": "2020-03-02",
+      "endDate": "2020-03-06",
+      "foreign": -1535.6,
+      "individual": 5554.4
+    },
+    {
+      "startDate": "2020-03-09",
+      "endDate": "2020-03-13",
+      "foreign": -6793.8,
+      "individual": 1708.3
+    },
+    {
+      "startDate": "2020-03-16",
+      "endDate": "2020-03-19",
+      "foreign": -4134.3,
+      "individual": 2424.2
+    },
+    {
+      "startDate": "2020-03-23",
+      "endDate": "2020-03-27",
+      "foreign": -9517.8,
+      "individual": -1232.5
+    },
+    {
+      "startDate": "2020-03-30",
+      "endDate": "2020-04-03",
+      "foreign": -654.7,
+      "individual": 255.1
+    },
+    {
+      "startDate": "2020-04-06",
+      "endDate": "2020-04-10",
+      "foreign": 543.8,
+      "individual": -1584.8
+    },
+    {
+      "startDate": "2020-04-13",
+      "endDate": "2020-04-17",
+      "foreign": -3019.8,
+      "individual": -43.2
+    },
+    {
+      "startDate": "2020-04-20",
+      "endDate": "2020-04-24",
+      "foreign": -3483.7,
+      "individual": 1867.2
+    },
+    {
+      "startDate": "2020-04-27",
+      "endDate": "2020-05-01",
+      "foreign": -1482.4,
+      "individual": 65.6
+    },
+    {
+      "startDate": "2020-05-07",
+      "endDate": "2020-05-08",
+      "foreign": -1206.5,
+      "individual": 170.5
+    },
+    {
+      "startDate": "2020-05-11",
+      "endDate": "2020-05-15",
+      "foreign": -1296.4,
+      "individual": 1882.5
+    },
+    {
+      "startDate": "2020-05-18",
+      "endDate": "2020-05-22",
+      "foreign": 772.8,
+      "individual": -798.4
+    },
+    {
+      "startDate": "2020-05-25",
+      "endDate": "2020-05-29",
+      "foreign": -216.8,
+      "individual": -3316
+    },
+    {
+      "startDate": "2020-06-01",
+      "endDate": "2020-06-05",
+      "foreign": 2613.3,
+      "individual": -2980.4
+    },
+    {
+      "startDate": "2020-06-08",
+      "endDate": "2020-06-12",
+      "foreign": -2847.8,
+      "individual": 948.3
+    },
+    {
+      "startDate": "2020-06-15",
+      "endDate": "2020-06-19",
+      "foreign": -3331.6,
+      "individual": 314.7
+    },
+    {
+      "startDate": "2020-06-22",
+      "endDate": "2020-06-26",
+      "foreign": -4852.8,
+      "individual": 1626.4
+    },
+    {
+      "startDate": "2020-06-29",
+      "endDate": "2020-07-03",
+      "foreign": -1086.6,
+      "individual": 785.8
+    },
+    {
+      "startDate": "2020-07-06",
+      "endDate": "2020-07-10",
+      "foreign": 1108.5,
+      "individual": 1066.4
+    },
+    {
+      "startDate": "2020-07-13",
+      "endDate": "2020-07-17",
+      "foreign": -620.7,
+      "individual": -1931.5
+    },
+    {
+      "startDate": "2020-07-20",
+      "endDate": "2020-07-22",
+      "foreign": 849.8,
+      "individual": -248.2
+    },
+    {
+      "startDate": "2020-07-27",
+      "endDate": "2020-07-31",
+      "foreign": -4624.3,
+      "individual": 2831.1
+    },
+    {
+      "startDate": "2020-08-03",
+      "endDate": "2020-08-07",
+      "foreign": 1792,
+      "individual": -1219.2
+    },
+    {
+      "startDate": "2020-08-11",
+      "endDate": "2020-08-14",
+      "foreign": 3663.8,
+      "individual": -5185.5
+    },
+    {
+      "startDate": "2020-08-17",
+      "endDate": "2020-08-21",
+      "foreign": -298.6,
+      "individual": 1009
+    },
+    {
+      "startDate": "2020-08-24",
+      "endDate": "2020-08-28",
+      "foreign": -1597.7,
+      "individual": 123.4
+    },
+    {
+      "startDate": "2020-08-31",
+      "endDate": "2020-09-04",
+      "foreign": 125,
+      "individual": 502
+    },
+    {
+      "startDate": "2020-09-07",
+      "endDate": "2020-09-11",
+      "foreign": -4440.6,
+      "individual": -531.9
+    },
+    {
+      "startDate": "2020-09-14",
+      "endDate": "2020-09-18",
+      "foreign": -5275.8,
+      "individual": -444.4
+    },
+    {
+      "startDate": "2020-09-23",
+      "endDate": "2020-09-25",
+      "foreign": -1847.9,
+      "individual": 1185
+    },
+    {
+      "startDate": "2020-09-28",
+      "endDate": "2020-10-02",
+      "foreign": -571.5,
+      "individual": 393.3
+    },
+    {
+      "startDate": "2020-10-05",
+      "endDate": "2020-10-09",
+      "foreign": 4170.5,
+      "individual": -2576.9
+    },
+    {
+      "startDate": "2020-10-12",
+      "endDate": "2020-10-16",
+      "foreign": 696,
+      "individual": 1555.3
+    },
+    {
+      "startDate": "2020-10-19",
+      "endDate": "2020-10-23",
+      "foreign": -26.8,
+      "individual": 23
+    },
+    {
+      "startDate": "2020-10-26",
+      "endDate": "2020-10-30",
+      "foreign": -1060.8,
+      "individual": 875.8
+    },
+    {
+      "startDate": "2020-11-02",
+      "endDate": "2020-11-06",
+      "foreign": 3572.6,
+      "individual": -4311
+    },
+    {
+      "startDate": "2020-11-09",
+      "endDate": "2020-11-13",
+      "foreign": 3842.4,
+      "individual": -6883
+    },
+    {
+      "startDate": "2020-11-16",
+      "endDate": "2020-11-20",
+      "foreign": 3331.8,
+      "individual": -2343.9
+    },
+    {
+      "startDate": "2020-11-24",
+      "endDate": "2020-11-27",
+      "foreign": 4366.2,
+      "individual": -4966.1
+    },
+    {
+      "startDate": "2020-11-30",
+      "endDate": "2020-12-04",
+      "foreign": 1599,
+      "individual": 1351.5
+    },
+    {
+      "startDate": "2020-12-07",
+      "endDate": "2020-12-11",
+      "foreign": 2557.5,
+      "individual": -910.3
+    },
+    {
+      "startDate": "2020-12-14",
+      "endDate": "2020-12-18",
+      "foreign": 1655.7,
+      "individual": -1238.1
+    },
+    {
+      "startDate": "2020-12-21",
+      "endDate": "2020-12-25",
+      "foreign": -500.1,
+      "individual": -196.3
+    },
+    {
+      "startDate": "2020-12-28",
+      "endDate": "2020-12-30",
+      "foreign": -74,
+      "individual": -2541.8
+    },
+    {
+      "startDate": "2021-01-04",
+      "endDate": "2021-01-08",
+      "foreign": 3647.4,
+      "individual": -2821.9
+    },
+    {
+      "startDate": "2021-01-12",
+      "endDate": "2021-01-15",
+      "foreign": 2614,
+      "individual": 537.8
+    },
+    {
+      "startDate": "2021-01-18",
+      "endDate": "2021-01-22",
+      "foreign": -1340.2,
+      "individual": 1700.7
+    },
+    {
+      "startDate": "2021-01-25",
+      "endDate": "2021-01-29",
+      "foreign": -748.5,
+      "individual": 4300.9
+    },
+    {
+      "startDate": "2021-02-01",
+      "endDate": "2021-02-05",
+      "foreign": 4215.5,
+      "individual": -4041.7
+    },
+    {
+      "startDate": "2021-02-08",
+      "endDate": "2021-02-12",
+      "foreign": 3451.6,
+      "individual": -4303.1
+    },
+    {
+      "startDate": "2021-02-15",
+      "endDate": "2021-02-19",
+      "foreign": -382.7,
+      "individual": -29
+    },
+    {
+      "startDate": "2021-02-22",
+      "endDate": "2021-02-26",
+      "foreign": -3811.6,
+      "individual": 4695.3
+    },
+    {
+      "startDate": "2021-03-01",
+      "endDate": "2021-03-05",
+      "foreign": 417.4,
+      "individual": 720.2
+    },
+    {
+      "startDate": "2021-03-08",
+      "endDate": "2021-03-12",
+      "foreign": 3008.3,
+      "individual": -3048.9
+    },
+    {
+      "startDate": "2021-03-15",
+      "endDate": "2021-03-19",
+      "foreign": 4088.7,
+      "individual": -3186.4
+    },
+    {
+      "startDate": "2021-03-22",
+      "endDate": "2021-03-26",
+      "foreign": -3729.8,
+      "individual": 3069.3
+    },
+    {
+      "startDate": "2021-03-29",
+      "endDate": "2021-04-02",
+      "foreign": 895.9,
+      "individual": -580.6
+    },
+    {
+      "startDate": "2021-04-05",
+      "endDate": "2021-04-09",
+      "foreign": 4355.3,
+      "individual": 1231.2
+    },
+    {
+      "startDate": "2021-04-12",
+      "endDate": "2021-04-16",
+      "foreign": -311.9,
+      "individual": 295.1
+    },
+    {
+      "startDate": "2021-04-19",
+      "endDate": "2021-04-23",
+      "foreign": -172.1,
+      "individual": 4048
+    },
+    {
+      "startDate": "2021-04-26",
+      "endDate": "2021-04-30",
+      "foreign": 184.8,
+      "individual": 1373
+    },
+    {
+      "startDate": "2021-05-06",
+      "endDate": "2021-05-07",
+      "foreign": 2152.6,
+      "individual": -1514.7
+    },
+    {
+      "startDate": "2021-05-10",
+      "endDate": "2021-05-14",
+      "foreign": -4214.8,
+      "individual": 4452.8
+    },
+    {
+      "startDate": "2021-05-17",
+      "endDate": "2021-05-21",
+      "foreign": -2269.5,
+      "individual": -1173.1
+    },
+    {
+      "startDate": "2021-05-24",
+      "endDate": "2021-05-28",
+      "foreign": 3738.2,
+      "individual": -3358.2
+    },
+    {
+      "startDate": "2021-05-31",
+      "endDate": "2021-06-04",
+      "foreign": 606,
+      "individual": 944
+    },
+    {
+      "startDate": "2021-06-07",
+      "endDate": "2021-06-11",
+      "foreign": -2264,
+      "individual": 1483.1
+    },
+    {
+      "startDate": "2021-06-14",
+      "endDate": "2021-06-18",
+      "foreign": 1394.4,
+      "individual": 1110.4
+    },
+    {
+      "startDate": "2021-06-21",
+      "endDate": "2021-06-25",
+      "foreign": -1113.6,
+      "individual": -252.4
+    },
+    {
+      "startDate": "2021-06-28",
+      "endDate": "2021-07-02",
+      "foreign": -2737.5,
+      "individual": 1609.9
+    },
+    {
+      "startDate": "2021-07-05",
+      "endDate": "2021-07-09",
+      "foreign": 137.8,
+      "individual": 4668.2
+    },
+    {
+      "startDate": "2021-07-12",
+      "endDate": "2021-07-16",
+      "foreign": 1101.1,
+      "individual": -2167.6
+    },
+    {
+      "startDate": "2021-07-19",
+      "endDate": "2021-07-21",
+      "foreign": -3133.9,
+      "individual": 2425.8
+    },
+    {
+      "startDate": "2021-07-26",
+      "endDate": "2021-07-30",
+      "foreign": -579.1,
+      "individual": 0.2
+    },
+    {
+      "startDate": "2021-08-02",
+      "endDate": "2021-08-06",
+      "foreign": 710.3,
+      "individual": -1903.7
+    },
+    {
+      "startDate": "2021-08-10",
+      "endDate": "2021-08-13",
+      "foreign": 1576.2,
+      "individual": -1579.2
+    },
+    {
+      "startDate": "2021-08-16",
+      "endDate": "2021-08-20",
+      "foreign": -3634.2,
+      "individual": 4058.7
+    },
+    {
+      "startDate": "2021-08-23",
+      "endDate": "2021-08-27",
+      "foreign": -45.2,
+      "individual": -2483
+    },
+    {
+      "startDate": "2021-08-30",
+      "endDate": "2021-09-03",
+      "foreign": 3669.9,
+      "individual": -4917.5
+    },
+    {
+      "startDate": "2021-09-06",
+      "endDate": "2021-09-10",
+      "foreign": 3010.4,
+      "individual": -5805.8
+    },
+    {
+      "startDate": "2021-09-13",
+      "endDate": "2021-09-17",
+      "foreign": -500.3,
+      "individual": -520.9
+    },
+    {
+      "startDate": "2021-09-21",
+      "endDate": "2021-09-24",
+      "foreign": -2691.9,
+      "individual": -163.3
+    },
+    {
+      "startDate": "2021-09-27",
+      "endDate": "2021-10-01",
+      "foreign": -4889.8,
+      "individual": 5516.1
+    },
+    {
+      "startDate": "2021-10-04",
+      "endDate": "2021-10-08",
+      "foreign": 4653.5,
+      "individual": 2159.9
+    },
+    {
+      "startDate": "2021-10-11",
+      "endDate": "2021-10-15",
+      "foreign": 4788.3,
+      "individual": -1605.6
+    },
+    {
+      "startDate": "2021-10-18",
+      "endDate": "2021-10-22",
+      "foreign": -1089.2,
+      "individual": 416.7
+    },
+    {
+      "startDate": "2021-10-25",
+      "endDate": "2021-10-29",
+      "foreign": -1415,
+      "individual": 188.1
+    },
+    {
+      "startDate": "2021-11-01",
+      "endDate": "2021-11-05",
+      "foreign": 1453.5,
+      "individual": -3386.4
+    },
+    {
+      "startDate": "2021-11-08",
+      "endDate": "2021-11-12",
+      "foreign": -372.6,
+      "individual": -541.2
+    },
+    {
+      "startDate": "2021-11-15",
+      "endDate": "2021-11-19",
+      "foreign": -1475,
+      "individual": 1281.1
+    },
+    {
+      "startDate": "2021-11-22",
+      "endDate": "2021-11-26",
+      "foreign": -2483.1,
+      "individual": 4100
+    },
+    {
+      "startDate": "2021-11-29",
+      "endDate": "2021-12-03",
+      "foreign": -1201.3,
+      "individual": 2039.2
+    },
+    {
+      "startDate": "2021-12-06",
+      "endDate": "2021-12-10",
+      "foreign": -2733.9,
+      "individual": -976.9
+    },
+    {
+      "startDate": "2021-12-13",
+      "endDate": "2021-12-17",
+      "foreign": -4660.1,
+      "individual": -1799.6
+    },
+    {
+      "startDate": "2021-12-20",
+      "endDate": "2021-12-24",
+      "foreign": 540.2,
+      "individual": -2278.5
+    },
+    {
+      "startDate": "2021-12-27",
+      "endDate": "2021-12-30",
+      "foreign": 1022.4,
+      "individual": -1174.8
+    },
+    {
+      "startDate": "2022-01-04",
+      "endDate": "2022-01-07",
+      "foreign": 2988.9,
+      "individual": -3.2
+    },
+    {
+      "startDate": "2022-01-11",
+      "endDate": "2022-01-14",
+      "foreign": -727.3,
+      "individual": 1729.6
+    },
+    {
+      "startDate": "2022-01-17",
+      "endDate": "2022-01-21",
+      "foreign": -3046.3,
+      "individual": 3194.4
+    },
+    {
+      "startDate": "2022-01-24",
+      "endDate": "2022-01-28",
+      "foreign": -2009.7,
+      "individual": 1817.8
+    },
+    {
+      "startDate": "2022-01-31",
+      "endDate": "2022-02-04",
+      "foreign": -1705.6,
+      "individual": -468.4
+    },
+    {
+      "startDate": "2022-02-07",
+      "endDate": "2022-02-10",
+      "foreign": -148.7,
+      "individual": -1712.9
+    },
+    {
+      "startDate": "2022-02-14",
+      "endDate": "2022-02-18",
+      "foreign": 32.4,
+      "individual": 16.7
+    },
+    {
+      "startDate": "2022-02-21",
+      "endDate": "2022-02-25",
+      "foreign": -2678.1,
+      "individual": 1647.5
+    },
+    {
+      "startDate": "2022-02-28",
+      "endDate": "2022-03-04",
+      "foreign": -2692.4,
+      "individual": 2941.1
+    },
+    {
+      "startDate": "2022-03-07",
+      "endDate": "2022-03-11",
+      "foreign": -9935,
+      "individual": 1853.2
+    },
+    {
+      "startDate": "2022-03-14",
+      "endDate": "2022-03-18",
+      "foreign": -1996.6,
+      "individual": -3556.9
+    },
+    {
+      "startDate": "2022-03-22",
+      "endDate": "2022-03-25",
+      "foreign": -1644,
+      "individual": -3472.2
+    },
+    {
+      "startDate": "2022-03-28",
+      "endDate": "2022-04-01",
+      "foreign": 3603.8,
+      "individual": 915.7
+    },
+    {
+      "startDate": "2022-04-04",
+      "endDate": "2022-04-08",
+      "foreign": 6857.3,
+      "individual": 2951.1
+    },
+    {
+      "startDate": "2022-04-11",
+      "endDate": "2022-04-15",
+      "foreign": 863.1,
+      "individual": 178.6
+    },
+    {
+      "startDate": "2022-04-18",
+      "endDate": "2022-04-22",
+      "foreign": 2380.9,
+      "individual": 404.1
+    },
+    {
+      "startDate": "2022-04-25",
+      "endDate": "2022-04-28",
+      "foreign": 1514.5,
+      "individual": 562.9
+    },
+    {
+      "startDate": "2022-05-02",
+      "endDate": "2022-05-06",
+      "foreign": 514.6,
+      "individual": -1295.1
+    },
+    {
+      "startDate": "2022-05-09",
+      "endDate": "2022-05-13",
+      "foreign": -3534.3,
+      "individual": 2832
+    },
+    {
+      "startDate": "2022-05-16",
+      "endDate": "2022-05-20",
+      "foreign": 336.5,
+      "individual": -389.5
+    },
+    {
+      "startDate": "2022-05-23",
+      "endDate": "2022-05-27",
+      "foreign": -368.4,
+      "individual": -1497.5
+    },
+    {
+      "startDate": "2022-05-30",
+      "endDate": "2022-06-03",
+      "foreign": -410.4,
+      "individual": -2081
+    },
+    {
+      "startDate": "2022-06-06",
+      "endDate": "2022-06-10",
+      "foreign": 1823.7,
+      "individual": -15.4
+    },
+    {
+      "startDate": "2022-06-13",
+      "endDate": "2022-06-17",
+      "foreign": -8045,
+      "individual": 7069.7
+    },
+    {
+      "startDate": "2022-06-20",
+      "endDate": "2022-06-24",
+      "foreign": -1656.8,
+      "individual": -1017.5
+    },
+    {
+      "startDate": "2022-06-27",
+      "endDate": "2022-07-01",
+      "foreign": -3673.1,
+      "individual": 1517.4
+    },
+    {
+      "startDate": "2022-07-04",
+      "endDate": "2022-07-08",
+      "foreign": 4307.8,
+      "individual": -3047.7
+    },
+    {
+      "startDate": "2022-07-11",
+      "endDate": "2022-07-15",
+      "foreign": -1443.2,
+      "individual": -107.8
+    },
+    {
+      "startDate": "2022-07-19",
+      "endDate": "2022-07-22",
+      "foreign": 1919.7,
+      "individual": -5699.2
+    },
+    {
+      "startDate": "2022-07-25",
+      "endDate": "2022-07-29",
+      "foreign": -3083,
+      "individual": 141
+    },
+    {
+      "startDate": "2022-08-01",
+      "endDate": "2022-08-05",
+      "foreign": -820.8,
+      "individual": -58.8
+    },
+    {
+      "startDate": "2022-08-08",
+      "endDate": "2022-08-12",
+      "foreign": 1229,
+      "individual": -2747.9
+    },
+    {
+      "startDate": "2022-08-15",
+      "endDate": "2022-08-19",
+      "foreign": -222.9,
+      "individual": -1871
+    },
+    {
+      "startDate": "2022-08-22",
+      "endDate": "2022-08-26",
+      "foreign": -1212.9,
+      "individual": 1840.8
+    },
+    {
+      "startDate": "2022-08-29",
+      "endDate": "2022-09-02",
+      "foreign": -4273.1,
+      "individual": 6910.9
+    },
+    {
+      "startDate": "2022-09-05",
+      "endDate": "2022-09-09",
+      "foreign": -213.4,
+      "individual": -1090.4
+    },
+    {
+      "startDate": "2022-09-12",
+      "endDate": "2022-09-16",
+      "foreign": -670.9,
+      "individual": 2784.4
+    },
+    {
+      "startDate": "2022-09-20",
+      "endDate": "2022-09-22",
+      "foreign": -1756.1,
+      "individual": 2036.6
+    },
+    {
+      "startDate": "2022-09-26",
+      "endDate": "2022-09-30",
+      "foreign": -5644.2,
+      "individual": 6206.6
+    },
+    {
+      "startDate": "2022-10-03",
+      "endDate": "2022-10-07",
+      "foreign": 4035.5,
+      "individual": -4544.6
+    },
+    {
+      "startDate": "2022-10-11",
+      "endDate": "2022-10-14",
+      "foreign": 1524.5,
+      "individual": -136.2
+    },
+    {
+      "startDate": "2022-10-17",
+      "endDate": "2022-10-21",
+      "foreign": -4930.8,
+      "individual": 1482.7
+    },
+    {
+      "startDate": "2022-10-24",
+      "endDate": "2022-10-28",
+      "foreign": 835.3,
+      "individual": -1041.5
+    },
+    {
+      "startDate": "2022-10-31",
+      "endDate": "2022-11-04",
+      "foreign": 3904.4,
+      "individual": -931.8
+    },
+    {
+      "startDate": "2022-11-07",
+      "endDate": "2022-11-11",
+      "foreign": 5209.8,
+      "individual": -6504.1
+    },
+    {
+      "startDate": "2022-11-14",
+      "endDate": "2022-11-18",
+      "foreign": -169.6,
+      "individual": -185.4
+    },
+    {
+      "startDate": "2022-11-21",
+      "endDate": "2022-11-25",
+      "foreign": 4029.9,
+      "individual": -5367.4
+    },
+    {
+      "startDate": "2022-11-28",
+      "endDate": "2022-12-02",
+      "foreign": -101.5,
+      "individual": 5245.4
+    },
+    {
+      "startDate": "2022-12-05",
+      "endDate": "2022-12-09",
+      "foreign": -797.7,
+      "individual": 569
+    },
+    {
+      "startDate": "2022-12-12",
+      "endDate": "2022-12-16",
+      "foreign": -164.5,
+      "individual": 1287.6
+    },
+    {
+      "startDate": "2022-12-19",
+      "endDate": "2022-12-23",
+      "foreign": -2418.5,
+      "individual": 2788.8
+    },
+    {
+      "startDate": "2022-12-26",
+      "endDate": "2022-12-30",
+      "foreign": 1782.5,
+      "individual": -307.9
+    },
+    {
+      "startDate": "2023-01-04",
+      "endDate": "2023-01-06",
+      "foreign": -640.9,
+      "individual": 2410.4
+    },
+    {
+      "startDate": "2023-01-10",
+      "endDate": "2023-01-13",
+      "foreign": 1705.3,
+      "individual": -598.4
+    },
+    {
+      "startDate": "2023-01-16",
+      "endDate": "2023-01-20",
+      "foreign": 987.9,
+      "individual": -128.9
+    },
+    {
+      "startDate": "2023-01-23",
+      "endDate": "2023-01-27",
+      "foreign": 3038,
+      "individual": -3991.6
+    },
+    {
+      "startDate": "2023-01-30",
+      "endDate": "2023-02-03",
+      "foreign": -67.4,
+      "individual": 683.1
+    },
+    {
+      "startDate": "2023-02-06",
+      "endDate": "2023-02-10",
+      "foreign": 1864.9,
+      "individual": -703.7
+    },
+    {
+      "startDate": "2023-02-13",
+      "endDate": "2023-02-17",
+      "foreign": 2331.1,
+      "individual": -688.1
+    },
+    {
+      "startDate": "2023-02-20",
+      "endDate": "2023-02-24",
+      "foreign": -2263.6,
+      "individual": 887.5
+    },
+    {
+      "startDate": "2023-02-27",
+      "endDate": "2023-03-03",
+      "foreign": -994.4,
+      "individual": -2082.2
+    },
+    {
+      "startDate": "2023-03-06",
+      "endDate": "2023-03-10",
+      "foreign": -11276,
+      "individual": -2009
+    },
+    {
+      "startDate": "2023-03-13",
+      "endDate": "2023-03-17",
+      "foreign": -5686.3,
+      "individual": 7542.5
+    },
+    {
+      "startDate": "2023-03-20",
+      "endDate": "2023-03-24",
+      "foreign": -4617.4,
+      "individual": 2217.5
+    },
+    {
+      "startDate": "2023-03-27",
+      "endDate": "2023-03-31",
+      "foreign": 70.6,
+      "individual": -2720.1
+    },
+    {
+      "startDate": "2023-04-03",
+      "endDate": "2023-04-07",
+      "foreign": 6796.4,
+      "individual": 2103.2
+    },
+    {
+      "startDate": "2023-04-10",
+      "endDate": "2023-04-14",
+      "foreign": 10494.8,
+      "individual": -4230.2
+    },
+    {
+      "startDate": "2023-04-17",
+      "endDate": "2023-04-21",
+      "foreign": 2760.5,
+      "individual": -2577.4
+    },
+    {
+      "startDate": "2023-04-24",
+      "endDate": "2023-04-28",
+      "foreign": 1458.8,
+      "individual": -1049.1
+    },
+    {
+      "startDate": "2023-05-01",
+      "endDate": "2023-05-02",
+      "foreign": 1602.6,
+      "individual": -2815.5
+    },
+    {
+      "startDate": "2023-05-08",
+      "endDate": "2023-05-12",
+      "foreign": 5658.8,
+      "individual": -3054.7
+    },
+    {
+      "startDate": "2023-05-15",
+      "endDate": "2023-05-19",
+      "foreign": 7476.8,
+      "individual": -9273.9
+    },
+    {
+      "startDate": "2023-05-22",
+      "endDate": "2023-05-26",
+      "foreign": 3816.8,
+      "individual": -442.7
+    },
+    {
+      "startDate": "2023-05-29",
+      "endDate": "2023-06-02",
+      "foreign": 5352.5,
+      "individual": 388.4
+    },
+    {
+      "startDate": "2023-06-05",
+      "endDate": "2023-06-09",
+      "foreign": 9854.2,
+      "individual": -4819.1
+    },
+    {
+      "startDate": "2023-06-12",
+      "endDate": "2023-06-16",
+      "foreign": 6414.3,
+      "individual": -5777.5
+    },
+    {
+      "startDate": "2023-06-19",
+      "endDate": "2023-06-23",
+      "foreign": -3604.9,
+      "individual": 3446.4
+    },
+    {
+      "startDate": "2023-06-26",
+      "endDate": "2023-06-30",
+      "foreign": 3041.5,
+      "individual": -1027.6
+    },
+    {
+      "startDate": "2023-07-03",
+      "endDate": "2023-07-07",
+      "foreign": 313.7,
+      "individual": 3687.1
+    },
+    {
+      "startDate": "2023-07-10",
+      "endDate": "2023-07-14",
+      "foreign": 2793.9,
+      "individual": 1802
+    },
+    {
+      "startDate": "2023-07-18",
+      "endDate": "2023-07-21",
+      "foreign": 197.2,
+      "individual": 126.4
+    },
+    {
+      "startDate": "2023-07-24",
+      "endDate": "2023-07-28",
+      "foreign": 738.2,
+      "individual": -1304
+    },
+    {
+      "startDate": "2023-07-31",
+      "endDate": "2023-08-04",
+      "foreign": 188.5,
+      "individual": 2661.7
+    },
+    {
+      "startDate": "2023-08-07",
+      "endDate": "2023-08-10",
+      "foreign": 1799.1,
+      "individual": -2395.3
+    },
+    {
+      "startDate": "2023-08-14",
+      "endDate": "2023-08-18",
+      "foreign": -7415.5,
+      "individual": 3558
+    },
+    {
+      "startDate": "2023-08-21",
+      "endDate": "2023-08-25",
+      "foreign": -2046.9,
+      "individual": -1160.6
+    },
+    {
+      "startDate": "2023-08-28",
+      "endDate": "2023-09-01",
+      "foreign": 3393.2,
+      "individual": -9226.5
+    },
+    {
+      "startDate": "2023-09-04",
+      "endDate": "2023-09-08",
+      "foreign": -7625.5,
+      "individual": 1933.4
+    },
+    {
+      "startDate": "2023-09-11",
+      "endDate": "2023-09-15",
+      "foreign": -2781.5,
+      "individual": -3459
+    },
+    {
+      "startDate": "2023-09-19",
+      "endDate": "2023-09-22",
+      "foreign": -9131.7,
+      "individual": 6613
+    },
+    {
+      "startDate": "2023-09-25",
+      "endDate": "2023-09-29",
+      "foreign": -776.2,
+      "individual": 5734.6
+    },
+    {
+      "startDate": "2023-10-02",
+      "endDate": "2023-10-06",
+      "foreign": 5262.6,
+      "individual": 4012
+    },
+    {
+      "startDate": "2023-10-10",
+      "endDate": "2023-10-13",
+      "foreign": 4557.5,
+      "individual": -1508.9
+    },
+    {
+      "startDate": "2023-10-16",
+      "endDate": "2023-10-20",
+      "foreign": -766.1,
+      "individual": 3236.3
+    },
+    {
+      "startDate": "2023-10-23",
+      "endDate": "2023-10-27",
+      "foreign": 594.1,
+      "individual": 1423.3
+    },
+    {
+      "startDate": "2023-10-30",
+      "endDate": "2023-11-02",
+      "foreign": 576.5,
+      "individual": -3868.1
+    },
+    {
+      "startDate": "2023-11-06",
+      "endDate": "2023-11-10",
+      "foreign": 783.3,
+      "individual": -2545.3
+    },
+    {
+      "startDate": "2023-11-13",
+      "endDate": "2023-11-17",
+      "foreign": 3629.6,
+      "individual": -5722
+    },
+    {
+      "startDate": "2023-11-20",
+      "endDate": "2023-11-24",
+      "foreign": -10.1,
+      "individual": -894.6
+    },
+    {
+      "startDate": "2023-11-27",
+      "endDate": "2023-12-01",
+      "foreign": -3687.9,
+      "individual": 456.5
+    },
+    {
+      "startDate": "2023-12-04",
+      "endDate": "2023-12-08",
+      "foreign": -5868.7,
+      "individual": 4194.8
+    },
+    {
+      "startDate": "2023-12-11",
+      "endDate": "2023-12-15",
+      "foreign": 2379,
+      "individual": -3298.8
+    },
+    {
+      "startDate": "2023-12-18",
+      "endDate": "2023-12-22",
+      "foreign": 565,
+      "individual": -2103.1
+    },
+    {
+      "startDate": "2023-12-25",
+      "endDate": "2023-12-29",
+      "foreign": -2020.8,
+      "individual": -2834.7
+    },
+    {
+      "startDate": "2024-01-04",
+      "endDate": "2024-01-05",
+      "foreign": 1405.7,
+      "individual": -336.3
+    },
+    {
+      "startDate": "2024-01-09",
+      "endDate": "2024-01-12",
+      "foreign": 9557.1,
+      "individual": -10695.1
+    },
+    {
+      "startDate": "2024-01-15",
+      "endDate": "2024-01-19",
+      "foreign": 3841.3,
+      "individual": -1854.8
+    },
+    {
+      "startDate": "2024-01-22",
+      "endDate": "2024-01-26",
+      "foreign": 4105.2,
+      "individual": 2946.1
+    },
+    {
+      "startDate": "2024-01-29",
+      "endDate": "2024-02-02",
+      "foreign": 1784,
+      "individual": 570
+    },
+    {
+      "startDate": "2024-02-05",
+      "endDate": "2024-02-09",
+      "foreign": 3663.7,
+      "individual": 2277.5
+    },
+    {
+      "startDate": "2024-02-13",
+      "endDate": "2024-02-16",
+      "foreign": 3013.9,
+      "individual": -3164.9
+    },
+    {
+      "startDate": "2024-02-19",
+      "endDate": "2024-02-22",
+      "foreign": -786.5,
+      "individual": -918.8
+    },
+    {
+      "startDate": "2024-02-26",
+      "endDate": "2024-03-01",
+      "foreign": 3834.8,
+      "individual": -905.5
+    },
+    {
+      "startDate": "2024-03-04",
+      "endDate": "2024-03-08",
+      "foreign": 1763.9,
+      "individual": 3274.2
+    },
+    {
+      "startDate": "2024-03-11",
+      "endDate": "2024-03-15",
+      "foreign": -875.2,
+      "individual": 4942.1
+    },
+    {
+      "startDate": "2024-03-18",
+      "endDate": "2024-03-22",
+      "foreign": 960.8,
+      "individual": -8726.9
+    },
+    {
+      "startDate": "2024-03-25",
+      "endDate": "2024-03-29",
+      "foreign": -2126.1,
+      "individual": 4438.7
+    },
+    {
+      "startDate": "2024-04-01",
+      "endDate": "2024-04-05",
+      "foreign": 11821.3,
+      "individual": 6347.8
+    },
+    {
+      "startDate": "2024-04-08",
+      "endDate": "2024-04-12",
+      "foreign": 5955.1,
+      "individual": -2053.5
+    },
+    {
+      "startDate": "2024-04-15",
+      "endDate": "2024-04-19",
+      "foreign": -5924.8,
+      "individual": 9086
+    },
+    {
+      "startDate": "2024-04-22",
+      "endDate": "2024-04-26",
+      "foreign": 2159.2,
+      "individual": -1873.8
+    },
+    {
+      "startDate": "2024-04-30",
+      "endDate": "2024-05-02",
+      "foreign": 1745.9,
+      "individual": -2741.3
+    },
+    {
+      "startDate": "2024-05-07",
+      "endDate": "2024-05-10",
+      "foreign": 2636.1,
+      "individual": -407
+    },
+    {
+      "startDate": "2024-05-13",
+      "endDate": "2024-05-17",
+      "foreign": 384,
+      "individual": -1204.6
+    },
+    {
+      "startDate": "2024-05-20",
+      "endDate": "2024-05-24",
+      "foreign": -1139.3,
+      "individual": 816.1
+    },
+    {
+      "startDate": "2024-05-27",
+      "endDate": "2024-05-31",
+      "foreign": -1126.2,
+      "individual": -887.1
+    },
+    {
+      "startDate": "2024-06-03",
+      "endDate": "2024-06-07",
+      "foreign": -1986.6,
+      "individual": 2861.2
+    },
+    {
+      "startDate": "2024-06-10",
+      "endDate": "2024-06-14",
+      "foreign": -2494.2,
+      "individual": 853.8
+    },
+    {
+      "startDate": "2024-06-17",
+      "endDate": "2024-06-21",
+      "foreign": -213.7,
+      "individual": 1899.8
+    },
+    {
+      "startDate": "2024-06-24",
+      "endDate": "2024-06-28",
+      "foreign": 1239.7,
+      "individual": -4885.9
+    },
+    {
+      "startDate": "2024-07-01",
+      "endDate": "2024-07-05",
+      "foreign": 1836.9,
+      "individual": -4966.4
+    },
+    {
+      "startDate": "2024-07-08",
+      "endDate": "2024-07-12",
+      "foreign": 1288.7,
+      "individual": -773.6
+    },
+    {
+      "startDate": "2024-07-16",
+      "endDate": "2024-07-19",
+      "foreign": -2459.5,
+      "individual": 2512
+    },
+    {
+      "startDate": "2024-07-22",
+      "endDate": "2024-07-26",
+      "foreign": -5659.1,
+      "individual": 5050.7
+    },
+    {
+      "startDate": "2024-07-29",
+      "endDate": "2024-08-02",
+      "foreign": -5524.3,
+      "individual": 4817.6
+    },
+    {
+      "startDate": "2024-08-05",
+      "endDate": "2024-08-09",
+      "foreign": 4953.6,
+      "individual": -553.3
+    },
+    {
+      "startDate": "2024-08-13",
+      "endDate": "2024-08-16",
+      "foreign": 1872.1,
+      "individual": -4041.1
+    },
+    {
+      "startDate": "2024-08-19",
+      "endDate": "2024-08-23",
+      "foreign": -3988.9,
+      "individual": -366.4
+    },
+    {
+      "startDate": "2024-08-26",
+      "endDate": "2024-08-30",
+      "foreign": -2451.3,
+      "individual": -1106.7
+    },
+    {
+      "startDate": "2024-09-02",
+      "endDate": "2024-09-06",
+      "foreign": -8235.6,
+      "individual": 4672.3
+    },
+    {
+      "startDate": "2024-09-09",
+      "endDate": "2024-09-13",
+      "foreign": -15425.9,
+      "individual": 2193.7
+    },
+    {
+      "startDate": "2024-09-17",
+      "endDate": "2024-09-20",
+      "foreign": -5122.8,
+      "individual": -3567.2
+    },
+    {
+      "startDate": "2024-09-24",
+      "endDate": "2024-09-27",
+      "foreign": -567.5,
+      "individual": -5870
+    },
+    {
+      "startDate": "2024-09-30",
+      "endDate": "2024-10-04",
+      "foreign": 3955.5,
+      "individual": 1777.3
+    },
+    {
+      "startDate": "2024-10-07",
+      "endDate": "2024-10-11",
+      "foreign": 2473.6,
+      "individual": -1737.1
+    },
+    {
+      "startDate": "2024-10-15",
+      "endDate": "2024-10-18",
+      "foreign": -579.2,
+      "individual": 841.6
+    },
+    {
+      "startDate": "2024-10-21",
+      "endDate": "2024-10-25",
+      "foreign": -206.5,
+      "individual": 272.9
+    },
+    {
+      "startDate": "2024-10-28",
+      "endDate": "2024-11-01",
+      "foreign": -1885.3,
+      "individual": -438.1
+    },
+    {
+      "startDate": "2024-11-05",
+      "endDate": "2024-11-08",
+      "foreign": 1938.2,
+      "individual": -7436.8
+    },
+    {
+      "startDate": "2024-11-11",
+      "endDate": "2024-11-15",
+      "foreign": 1521.3,
+      "individual": 14.8
+    },
+    {
+      "startDate": "2024-11-18",
+      "endDate": "2024-11-22",
+      "foreign": -3300.5,
+      "individual": 1784
+    },
+    {
+      "startDate": "2024-11-25",
+      "endDate": "2024-11-29",
+      "foreign": -1794.8,
+      "individual": 1409
+    },
+    {
+      "startDate": "2024-12-02",
+      "endDate": "2024-12-06",
+      "foreign": 1249.5,
+      "individual": -4806.7
+    },
+    {
+      "startDate": "2024-12-09",
+      "endDate": "2024-12-13",
+      "foreign": -5092.7,
+      "individual": -3565.6
+    },
+    {
+      "startDate": "2024-12-16",
+      "endDate": "2024-12-20",
+      "foreign": -4750.3,
+      "individual": 1561.4
+    },
+    {
+      "startDate": "2024-12-23",
+      "endDate": "2024-12-27",
+      "foreign": 4956.2,
+      "individual": -8790.4
+    },
+    {
+      "startDate": "2024-12-30",
+      "endDate": "2024-12-30",
+      "foreign": -657.2,
+      "individual": 1315.8
+    },
+    {
+      "startDate": "2025-01-06",
+      "endDate": "2025-01-10",
+      "foreign": 3435.5,
+      "individual": 7277.5
+    },
+    {
+      "startDate": "2025-01-14",
+      "endDate": "2025-01-17",
+      "foreign": -46.2,
+      "individual": 4513.3
+    },
+    {
+      "startDate": "2025-01-20",
+      "endDate": "2025-01-24",
+      "foreign": 3911.1,
+      "individual": -4586.4
+    },
+    {
+      "startDate": "2025-01-27",
+      "endDate": "2025-01-31",
+      "foreign": -3133.6,
+      "individual": 1424.4
+    },
+    {
+      "startDate": "2025-02-03",
+      "endDate": "2025-02-07",
+      "foreign": -2657.5,
+      "individual": 4892.3
+    },
+    {
+      "startDate": "2025-02-10",
+      "endDate": "2025-02-14",
+      "foreign": 964.3,
+      "individual": -1001.2
+    },
+    {
+      "startDate": "2025-02-17",
+      "endDate": "2025-02-21",
+      "foreign": -1632.4,
+      "individual": 1751.1
+    },
+    {
+      "startDate": "2025-02-25",
+      "endDate": "2025-02-28",
+      "foreign": -6071.5,
+      "individual": 5181.9
+    },
+    {
+      "startDate": "2025-03-03",
+      "endDate": "2025-03-07",
+      "foreign": -1015.8,
+      "individual": -4319.3
+    },
+    {
+      "startDate": "2025-03-10",
+      "endDate": "2025-03-14",
+      "foreign": -8086,
+      "individual": -1309.1
+    },
+    {
+      "startDate": "2025-03-17",
+      "endDate": "2025-03-21",
+      "foreign": 2611.4,
+      "individual": -4729.3
+    },
+    {
+      "startDate": "2025-03-24",
+      "endDate": "2025-03-28",
+      "foreign": -8416.9,
+      "individual": 4782.7
+    },
+    {
+      "startDate": "2025-03-31",
+      "endDate": "2025-04-04",
+      "foreign": 6011.3,
+      "individual": 7209.3
+    },
+    {
+      "startDate": "2025-04-07",
+      "endDate": "2025-04-11",
+      "foreign": 1582.3,
+      "individual": -1177.1
+    },
+    {
+      "startDate": "2025-04-14",
+      "endDate": "2025-04-18",
+      "foreign": 1503.8,
+      "individual": -2305.4
+    },
+    {
+      "startDate": "2025-04-21",
+      "endDate": "2025-04-25",
+      "foreign": 2881.4,
+      "individual": -3549.3
+    },
+    {
+      "startDate": "2025-04-28",
+      "endDate": "2025-05-02",
+      "foreign": 3946.1,
+      "individual": -1673.4
+    },
+    {
+      "startDate": "2025-05-07",
+      "endDate": "2025-05-09",
+      "foreign": 3570.1,
+      "individual": -3576.4
+    },
+    {
+      "startDate": "2025-05-12",
+      "endDate": "2025-05-16",
+      "foreign": 6232.8,
+      "individual": -2579.8
+    },
+    {
+      "startDate": "2025-05-19",
+      "endDate": "2025-05-23",
+      "foreign": 2850.2,
+      "individual": -550.6
+    },
+    {
+      "startDate": "2025-05-26",
+      "endDate": "2025-05-30",
+      "foreign": 6165.7,
+      "individual": -3567.8
+    },
+    {
+      "startDate": "2025-06-02",
+      "endDate": "2025-06-06",
+      "foreign": 3985.9,
+      "individual": 1618.5
+    },
+    {
+      "startDate": "2025-06-09",
+      "endDate": "2025-06-13",
+      "foreign": 997,
+      "individual": -40.1
+    },
+    {
+      "startDate": "2025-06-16",
+      "endDate": "2025-06-20",
+      "foreign": 884.6,
+      "individual": -2326.3
+    },
+    {
+      "startDate": "2025-06-23",
+      "endDate": "2025-06-27",
+      "foreign": 3398.2,
+      "individual": -5917.1
+    },
+    {
+      "startDate": "2025-06-30",
+      "endDate": "2025-07-04",
+      "foreign": 5456.4,
+      "individual": -603.3
+    },
+    {
+      "startDate": "2025-07-07",
+      "endDate": "2025-07-11",
+      "foreign": 4030.9,
+      "individual": -665.5
+    },
+    {
+      "startDate": "2025-07-14",
+      "endDate": "2025-07-18",
+      "foreign": 1875.1,
+      "individual": -879.9
+    },
+    {
+      "startDate": "2025-07-22",
+      "endDate": "2025-07-25",
+      "foreign": 6024,
+      "individual": -12190.5
+    },
+    {
+      "startDate": "2025-07-28",
+      "endDate": "2025-08-01",
+      "foreign": -1892.1,
+      "individual": 255.4
+    },
+    {
+      "startDate": "2025-08-04",
+      "endDate": "2025-08-08",
+      "foreign": -53.3,
+      "individual": -5780.6
+    },
+    {
+      "startDate": "2025-08-12",
+      "endDate": "2025-08-15",
+      "foreign": 5737.8,
+      "individual": -11253.5
+    },
+    {
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-22",
+      "foreign": -1988.7,
+      "individual": 1502
+    },
+    {
+      "startDate": "2025-08-25",
+      "endDate": "2025-08-29",
+      "foreign": -3031.5,
+      "individual": 4134.8
+    },
+    {
+      "startDate": "2025-09-01",
+      "endDate": "2025-09-05",
+      "foreign": 1314.5,
+      "individual": 1657.8
+    },
+    {
+      "startDate": "2025-09-08",
+      "endDate": "2025-09-12",
+      "foreign": -6923.7,
+      "individual": -4689
+    },
+    {
+      "startDate": "2025-09-16",
+      "endDate": "2025-09-19",
+      "foreign": -2943.8,
+      "individual": -326.6
+    },
+    {
+      "startDate": "2025-09-22",
+      "endDate": "2025-09-26",
+      "foreign": -5591.8,
+      "individual": 1293.7
+    },
+    {
+      "startDate": "2025-09-29",
+      "endDate": "2025-10-03",
+      "foreign": 12398.5,
+      "individual": 4222.6
+    },
+    {
+      "startDate": "2025-10-06",
+      "endDate": "2025-10-10",
+      "foreign": 10586.8,
+      "individual": -4290.2
+    },
+    {
+      "startDate": "2025-10-14",
+      "endDate": "2025-10-17",
+      "foreign": 1532.8,
+      "individual": 3431.2
+    },
+    {
+      "startDate": "2025-10-20",
+      "endDate": "2025-10-24",
+      "foreign": 6436.5,
+      "individual": -5124.8
+    },
+    {
+      "startDate": "2025-10-27",
+      "endDate": "2025-10-31",
+      "foreign": 3459.4,
+      "individual": -1876.8
+    },
+    {
+      "startDate": "2025-11-04",
+      "endDate": "2025-11-07",
+      "foreign": -3559.4,
+      "individual": 5557.5
+    },
+    {
+      "startDate": "2025-11-10",
+      "endDate": "2025-11-14",
+      "foreign": 5147.7,
+      "individual": -2366.2
+    },
+    {
+      "startDate": "2025-11-17",
+      "endDate": "2025-11-21",
+      "foreign": -3836.3,
+      "individual": 1159
+    },
+    {
+      "startDate": "2025-11-25",
+      "endDate": "2025-11-28",
+      "foreign": -1162.7,
+      "individual": -4528.3
+    },
+    {
+      "startDate": "2025-12-01",
+      "endDate": "2025-12-05",
+      "foreign": 34.6,
+      "individual": 2076.9
+    },
+    {
+      "startDate": "2025-12-08",
+      "endDate": "2025-12-12",
+      "foreign": 1897.9,
+      "individual": -2502.8
+    },
+    {
+      "startDate": "2025-12-15",
+      "endDate": "2025-12-19",
+      "foreign": -4391,
+      "individual": 2565.3
+    },
+    {
+      "startDate": "2025-12-22",
+      "endDate": "2025-12-26",
+      "foreign": -210.3,
+      "individual": -3852.9
+    },
+    {
+      "startDate": "2025-12-29",
+      "endDate": "2025-12-30",
+      "foreign": -149.9,
+      "individual": 1846.8
+    },
+    {
+      "startDate": "2026-01-05",
+      "endDate": "2026-01-09",
+      "foreign": 12246.9,
+      "individual": -5428.4
+    },
+    {
+      "startDate": "2026-01-13",
+      "endDate": "2026-01-16",
+      "foreign": 7804.2,
+      "individual": -6627.9
+    },
+    {
+      "startDate": "2026-01-19",
+      "endDate": "2026-01-23",
+      "foreign": 1921.6,
+      "individual": 4792
+    },
+    {
+      "startDate": "2026-01-26",
+      "endDate": "2026-01-30",
+      "foreign": 1598.9,
+      "individual": 8348.5
+    },
+    {
+      "startDate": "2026-02-02",
+      "endDate": "2026-02-06",
+      "foreign": 2746,
+      "individual": -4402.7
+    },
+    {
+      "startDate": "2026-02-09",
+      "endDate": "2026-02-13",
+      "foreign": 12323.6,
+      "individual": -11658.7
+    },
+    {
+      "startDate": "2026-02-16",
+      "endDate": "2026-02-20",
+      "foreign": 5426.7,
+      "individual": 5466.2
+    },
+    {
+      "startDate": "2026-02-24",
+      "endDate": "2026-02-27",
+      "foreign": 7910.7,
+      "individual": -4604.8
+    },
+    {
+      "startDate": "2026-03-02",
+      "endDate": "2026-03-06",
+      "foreign": 2377.9,
+      "individual": 8329.4
+    },
+    {
+      "startDate": "2026-03-09",
+      "endDate": "2026-03-13",
+      "foreign": -4906.7,
+      "individual": 4267.2
+    },
+    {
+      "startDate": "2026-03-16",
+      "endDate": "2026-03-19",
+      "foreign": -5191.1,
+      "individual": 3384
+    },
+    {
+      "startDate": "2026-03-23",
+      "endDate": "2026-03-27",
+      "foreign": -15090.5,
+      "individual": -145.8
+    },
+    {
+      "startDate": "2026-03-30",
+      "endDate": "2026-04-03",
+      "foreign": 19149.9,
+      "individual": -4396.1
+    },
+    {
+      "startDate": "2026-04-06",
+      "endDate": "2026-04-10",
+      "foreign": 16419,
+      "individual": -7871.1
+    },
+    {
+      "startDate": "2026-04-13",
+      "endDate": "2026-04-17",
+      "foreign": 9977.2,
+      "individual": 3303
+    },
+    {
+      "startDate": "2026-04-20",
+      "endDate": "2026-04-24",
+      "foreign": 7842.1,
+      "individual": 1617.6
+    },
+    {
+      "startDate": "2026-04-27",
+      "endDate": "2026-05-01",
+      "foreign": 3576.4,
+      "individual": 3033.7
+    },
+    {
+      "startDate": "2026-05-07",
+      "endDate": "2026-05-08",
+      "foreign": 12351.3,
+      "individual": -4978.9
+    },
+    {
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-15",
+      "foreign": 5572.8,
+      "individual": 1720
+    },
+    {
+      "startDate": "2026-05-18",
+      "endDate": "2026-05-22",
+      "foreign": 4609.1,
+      "individual": -1402.9
+    },
+    {
+      "startDate": "2026-05-25",
+      "endDate": "2026-05-29",
+      "foreign": -3952.7,
+      "individual": 1057.2
+    },
+    {
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-05",
+      "foreign": -809.7,
+      "individual": 3081.1
+    },
+    {
+      "startDate": "2026-06-08",
+      "endDate": "2026-06-12",
+      "foreign": -5074.3,
+      "individual": -5010.2
+    },
+    {
+      "startDate": "2026-06-15",
+      "endDate": "2026-06-19",
+      "foreign": 10562.8,
+      "individual": -4470
+    },
+    {
+      "startDate": "2026-06-22",
+      "endDate": "2026-06-26",
+      "foreign": -12378.2,
+      "individual": 9503.7
+    },
+    {
+      "startDate": "2026-06-29",
+      "endDate": "2026-07-03",
+      "foreign": 3662.4,
+      "individual": -6368.5
+    },
+    {
+      "startDate": "2026-07-06",
+      "endDate": "2026-07-10",
+      "foreign": 4929.7,
+      "individual": -637.9
+    },
+    {
+      "startDate": "2026-07-13",
+      "endDate": "2026-07-17",
+      "foreign": -2863,
+      "individual": 4074.8
+    },
+    {
+      "startDate": "2026-07-21",
+      "endDate": "2026-07-24",
+      "foreign": 3514.6,
+      "individual": -4568.1
+    },
+    {
+      "startDate": "2026-07-27",
+      "endDate": "2026-07-31",
+      "foreign": -4921.6,
+      "individual": -4167.4
+    },
+    {
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-07",
+      "foreign": -3827.8,
+      "individual": -1566.7
+    },
+    {
+      "startDate": "2026-08-10",
+      "endDate": "2026-08-14",
+      "foreign": 2134.7,
+      "individual": -6557.9
+    },
+    {
+      "startDate": "2026-08-17",
+      "endDate": "2026-08-21",
+      "foreign": -4378.1,
+      "individual": 6977.5
+    },
+    {
+      "startDate": "2026-08-24",
+      "endDate": "2026-08-28",
+      "foreign": -1319.4,
+      "individual": -1155.7
+    },
+    {
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-04",
+      "foreign": 6893.4,
+      "individual": -18.7
+    },
+    {
+      "startDate": "2026-09-07",
+      "endDate": "2026-09-11",
+      "foreign": -3036.8,
+      "individual": 4491.4
+    },
+    {
+      "startDate": "2026-09-14",
+      "endDate": "2026-09-18",
+      "foreign": -6425.1,
+      "individual": -3117.5
+    },
+    {
+      "startDate": "2026-09-24",
+      "endDate": "2026-09-25",
+      "foreign": -930.1,
+      "individual": -86.4
+    },
+    {
+      "startDate": "2026-09-28",
+      "endDate": "2026-10-02",
+      "foreign": 9559.1,
+      "individual": 2229.3
+    },
+    {
+      "startDate": "2026-10-05",
+      "endDate": "2026-10-09",
+      "foreign": 14318,
+      "individual": 881
+    },
+    {
+      "startDate": "2026-10-13",
+      "endDate": "2026-10-16",
+      "foreign": -3654,
+      "individual": 2192.6
+    },
+    {
+      "startDate": "2026-10-19",
+      "endDate": "2026-10-23",
+      "foreign": 244.2,
+      "individual": -716.3
+    },
+    {
+      "startDate": "2026-10-26",
+      "endDate": "2026-10-30",
+      "foreign": -2176.2,
+      "individual": -332.4
+    },
+    {
+      "startDate": "2026-11-02",
+      "endDate": "2026-11-06",
+      "foreign": -714,
+      "individual": -4802.6
+    },
+    {
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-13",
+      "foreign": -3124.9,
+      "individual": -3614.7
+    }
+  ]
+}

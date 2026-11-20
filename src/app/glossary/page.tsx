@@ -176,7 +176,7 @@ export default function GlossaryPage() {
           <p className="text-base leading-relaxed">
             <strong>市場温度スコア</strong>は、株温計が公開データから独自計算する 0〜100 のセンチメント指標です。
             日本版は日経225 の終値と 125 日移動平均との乖離率（±15% を 0〜100 に換算）で算出し、
-            海外投資家フローと信用買い残の増減から作る「需給の温度」を別枠で参考表示しています。
+            海外投資家フローと信用買い残の増減（直近 4 週）は温度に混ぜず、数字のまま別枠で参考表示しています。
             米国版は VIX を主系列とした推定値で表示しています。
             日本版は 2026 年 11 月まで 5 要素の平均でしたが、週次の需給データが遅れて急落を映さなかったため、現在の形に改めました。
             <strong> 0 に近いほど「冷たい（悲観）」、100 に近いほど「熱い（楽観）」</strong>という設計です。
@@ -202,7 +202,7 @@ export default function GlossaryPage() {
             水準感は時代や個別銘柄構成によって変動します。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計では倍率の水準ではなく<strong>信用買い残の 4 週変化</strong>を「需給の温度」の材料にしています。
+            株温計では倍率の水準ではなく<strong>信用買い残の 4 週変化</strong>をゲージの下に表示しています。
             また{" "}
             <Link href="/analysis/margin-ratio-temperature" className="underline hover:text-gray-900">
               「信用倍率 × 株温計」分析記事
@@ -258,7 +258,7 @@ export default function GlossaryPage() {
             と言われ、市場の方向感を最も大きく左右する主体としてフォーカスされます。
           </p>
           <p className="text-base leading-relaxed mt-2 text-gray-600">
-            株温計では外国人フロー（直近 4 週の売買差引）を「需給の温度」の材料にしており、過去の暴落局面では
+            株温計では外国人フロー（直近 4 週の売買差引）をゲージの下に表示しており、過去の暴落局面では
             {" "}
             <Link href="/events" className="underline hover:text-gray-900">
               主要イベント一覧

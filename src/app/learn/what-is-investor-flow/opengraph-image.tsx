@@ -151,7 +151,7 @@ export default async function Image() {
               <span
                 style={{ fontSize: 40, fontWeight: 800, color: "#0f172a" }}
               >
-                需給の温度
+                ゲージ下に実数
               </span>
             </div>
           </div>

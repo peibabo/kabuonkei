@@ -184,7 +184,7 @@ export default function WhatIsMarginRatioPage() {
               単独指標としては<strong>意外と頼りない</strong>シグナルでした
             </li>
             <li>
-              本領発揮するのは<strong>「市場温度との組合せ」</strong>。株温計は信用買い残の増減を「需給の温度」の材料として、
+              本領発揮するのは<strong>「市場温度との組合せ」</strong>。株温計は信用買い残の 4 週の増減を、
               日経225 の市場温度と並べて毎日表示しています
             </li>
             <li>
@@ -394,8 +394,9 @@ export default function WhatIsMarginRatioPage() {
           </p>
           <p className="text-base leading-relaxed mt-3">
             そこで現在の株温計は、<strong>市場温度を日経225 の 125 日移動平均乖離だけで決め</strong>、
-            信用買い残の 4 週変化は海外投資家フローと合わせた<strong>「需給の温度」</strong>としてゲージの下に別枠で表示しています。
-            JPX の公表は週 1 回で 1〜2 週遅れるため、需給の温度は市場温度に混ぜずに参考として並べる形です。
+            信用買い残の 4 週変化は海外投資家フローと並べて、<strong>ゲージの下の別枠に数字のまま</strong>表示しています。
+            JPX の公表は週 1 回で 1〜2 週遅れるうえ、2002 年以降のデータでは買い残の急減の後にさらに下げ続けた時期（2007〜08 年）もあり、
+            「急減＝底」とは言えないため、温度には換算していません。
           </p>
           <p className="text-base leading-relaxed mt-3">
             日々の温度は{" "}
@@ -428,7 +429,7 @@ export default function WhatIsMarginRatioPage() {
             </li>
             <li>
               <strong>株温計のトップページ</strong>: 日本市場データセクションで最新の信用倍率と推移を表示。
-              市場温度のゲージの下には、信用買い残の 4 週変化を使った「需給の温度」も出しています
+              市場温度のゲージの下には、信用買い残の 4 週変化も出しています
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

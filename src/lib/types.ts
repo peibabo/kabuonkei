@@ -19,7 +19,6 @@ export type {
   JapanFearGreedComponent,
   JapanFearGreedData,
   JapanFearGreedGroup,
-  JapanSupplyTemperature,
 } from "./types/japan-fear-greed";
 export type {
   InvestorTradingEntity,

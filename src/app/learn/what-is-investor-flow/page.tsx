@@ -13,7 +13,7 @@ const ARTICLE_PATH = "/learn/what-is-investor-flow";
 const ARTICLE_TITLE =
   "投資部門別売買動向とは？外国人投資家のフローを毎週どう読むか";
 const ARTICLE_DESCRIPTION =
-  "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。外国人投資家・個人・自己・投資信託など主体別の現物/先物の売買フローを、株温計の「需給の温度」での扱いも含めて整理。なぜ外国人フローが日本市場の主役と言われるのかも具体的な数字で示し、2016 年からの週次データで外国人の売買と日経225 の関係を検証します。";
+  "投資部門別売買状況（JPX 公表）の見方を初心者向けに解説。外国人投資家・個人・自己・投資信託など主体別の現物/先物の売買フローを、株温計での表示のしかたも含めて整理。なぜ外国人フローが日本市場の主役と言われるのかも具体的な数字で示し、2016 年からの週次データで外国人の売買と日経225 の関係を検証します。";
 const PUBLISHED_AT = "2026-05-08";
 const MODIFIED_AT = "2026-11-20";
 
@@ -49,7 +49,7 @@ const TOC_ITEMS = [
   { href: "#foreign", label: "なぜ外国人フローが主役なのか" },
   { href: "#how-to-read", label: "読み方のコツ 4 つ" },
   { href: "#data", label: "株温計のデータで確かめると（2016 年〜）" },
-  { href: "#temperature", label: "温度スコアとの関係（株温計の需給の温度）" },
+  { href: "#temperature", label: "温度スコアとの関係（株温計での扱い）" },
   { href: "#where", label: "毎週どこで確認できるか" },
   { href: "#related", label: "関連用語・関連記事" },
 ];
@@ -207,7 +207,7 @@ export default function WhatIsInvestorFlowPage() {
               </li>
             )}
             <li>
-              株温計では外国人フローを<strong>「需給の温度」</strong>の材料にして、日経225 の市場温度と並べて毎日表示しています
+              株温計では外国人フローを温度には混ぜず、<strong>直近 4 週の売買差引の実数</strong>を日経225 の市場温度の下に毎日表示しています
             </li>
           </ul>
         </section>
@@ -411,8 +411,8 @@ export default function WhatIsInvestorFlowPage() {
             ③ 大きく売り越した後、日経225 はどうなったか
           </h3>
           <p className="text-base leading-relaxed">
-            株温計の「需給の温度」と同じく、海外投資家の<strong>直近 4 週の合計</strong>で分けました。
-            区切りは需給の温度の 25 と 75 に当たる ±1 兆円です。
+            株温計のトップページと同じく、海外投資家の<strong>直近 4 週の合計</strong>で分けました。
+            区切りは ±1 兆円です。
           </p>
           <ForwardReturnTable
             caption={`海外投資家の 4 週累計（東証・名証）の帯別・公表翌日からの日経225（${flow.dataRange.from}〜${flow.dataRange.to}、株温計調べ）`}
@@ -477,12 +477,14 @@ export default function WhatIsInvestorFlowPage() {
 
         <section id="temperature" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">
-            温度スコアとの関係（株温計の需給の温度）
+            温度スコアとの関係（株温計での扱い）
           </h2>
           <p className="text-base leading-relaxed">
-            株温計の日本版では、外国人投資家の<strong>直近 4 週の売買差引の合計</strong>を 0〜100 に換算しています
-            （4 週で 2 兆円の売り越しを 0、2 兆円の買い越しを 100）。
-            これに信用買い残の 4 週変化を合わせた平均を<strong>「需給の温度」</strong>として、ゲージの下に別枠で表示しています。
+            株温計の日本版では、外国人投資家の<strong>直近 4 週の売買差引の合計</strong>を、信用買い残の 4 週変化と並べて
+            ゲージの下に別枠で表示しています（例:「4 週で 5,771 億円の売り越し」）。
+            0〜100 の温度には換算していません。2016 年以降の毎日の値（公表の遅れも再現）で確かめたところ、
+            上の ③ のように大きな売り越しの後も買い越しの後も平均を下回らないなど、
+            「売り越しなら冷たい」という一方向の関係が見られなかったためです。
           </p>
           <p className="text-base leading-relaxed mt-3">
             2026 年 11 月までは、外国人フローを日経225 の移動平均乖離・信用倍率・裁定残・ドル円の勢いと合わせた 5 要素の平均で
@@ -491,7 +493,7 @@ export default function WhatIsInvestorFlowPage() {
           </p>
           <p className="text-base leading-relaxed mt-3">
             そこで現在は、<strong>市場温度を日経225 の 125 日移動平均乖離だけで決め</strong>、
-            外国人フローは市場温度に混ぜずに参考として並べる形にしています。
+            外国人フローは市場温度に混ぜずに、実数のまま参考として並べる形にしています。
             「株価は冷えているのに外国人はまだ買い越し」のような、株価と需給の食い違いをそのまま読めるのがこの形の利点です。
           </p>
         </section>
@@ -519,7 +521,7 @@ export default function WhatIsInvestorFlowPage() {
             </li>
             <li>
               <strong>株温計のトップページ</strong>: 日本市場データセクションで外国人投資家フローの
-              直近水準と推移を可視化。市場温度のゲージの下には、外国人フローを使った「需給の温度」も出しています
+              直近水準と推移を可視化。市場温度のゲージの下には、外国人フローの直近 4 週の合計も出しています
             </li>
           </ul>
           <p className="text-base leading-relaxed mt-3">

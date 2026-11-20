@@ -228,14 +228,14 @@ export function computeSqWeekGroups(closes: Closes, from = ""): SqWeekGroup[] {
 
 // --- 投資部門別（海外投資家のフロー） ---
 
-/** 海外投資家の 4 週累計の帯（億円）。株温計の「需給の温度」（4 週で ±2 兆円を 0〜100）の 25 / 50 / 75 に当たる ±1 兆円と 0 で区切る */
+/** 海外投資家の 4 週累計の帯（億円）。±1 兆円と 0 で区切る */
 export const FLOW_BANDS = [
   { label: "1 兆円以上の売り越し", min: -Infinity, max: -10_000 },
   { label: "1 兆円未満の売り越し", min: -10_000, max: 0 },
   { label: "1 兆円未満の買い越し", min: 0, max: 10_000 },
   { label: "1 兆円以上の買い越し", min: 10_000, max: Infinity },
 ] as const;
-/** 累計する週数（需給の温度と同じ） */
+/** 累計する週数（ゲージ下の需給の欄と同じ） */
 export const FLOW_WEEKS = 4;
 /**
  * 週次データは翌週の第 4 営業日（原則木曜）の 15:30 に出る。取引終了と同じ時刻なので、

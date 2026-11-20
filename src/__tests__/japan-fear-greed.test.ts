@@ -264,8 +264,8 @@ describe("computeJapanFearGreed", () => {
     });
     expect(result?.score).toBe(0);
     expect(result?.level).toBe("極寒");
-    // 需給は高くても市場温度には混ざらない
-    expect(result?.supply).toEqual({ score: 88, level: "沸騰", availableCount: 2 });
+    // 需給は高くても市場温度には混ざらない（需給は components に実数だけ載る）
+    expect(result?.components.find((c) => c.id === "marginBuyChange")?.rawValue).toBe(15);
   });
 
   it("移動平均はチャート末尾（= 現在値と同じ立会日）を除いて取る", () => {
@@ -280,7 +280,7 @@ describe("computeJapanFearGreed", () => {
     expect(result?.components.find((c) => c.id === "nikkeiMa")?.rawValue).toBe(10);
   });
 
-  it("需給の温度は海外投資家フローと信用買残 4 週変化の平均。片方だけでも出す", () => {
+  it("需給の要素は取れたものだけ available になる", () => {
     const result = computeJapanFearGreed({
       nikkei225Chart: chartWithLast(30000),
       nikkei225Price: 30000,
@@ -288,7 +288,6 @@ describe("computeJapanFearGreed", () => {
       marginTrading: null,
     });
     expect(result?.score).toBe(50);
-    expect(result?.supply).toEqual({ score: 75, level: "過熱", availableCount: 1 });
     expect(result?.components.map((c) => [c.id, c.group, c.available])).toEqual([
       ["nikkeiMa", "price", true],
       ["foreignFlow", "supply", true],
@@ -306,7 +305,7 @@ describe("computeJapanFearGreed", () => {
     expect(result?.score).toBe(0);
   });
 
-  it("需給データが無ければ supply は null（市場温度は出す）", () => {
+  it("需給データが無くても市場温度は出す", () => {
     const result = computeJapanFearGreed({
       nikkei225Chart: chartWithLast(30000),
       nikkei225Price: 30000,
@@ -314,7 +313,9 @@ describe("computeJapanFearGreed", () => {
       marginTrading: null,
     });
     expect(result?.score).toBe(50);
-    expect(result?.supply).toBeNull();
+    expect(result?.components.filter((c) => c.group === "supply").every((c) => !c.available)).toBe(
+      true,
+    );
   });
 
   it("C1 が計算できなければ null（需給だけでは出さない）", () => {

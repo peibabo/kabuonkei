@@ -178,11 +178,23 @@ function formatSignedPct(pct: number): string {
   return `${pct > 0 ? "+" : ""}${pct.toFixed(1)}%`;
 }
 
-function formatRaw(c: JapanFearGreedComponent): string | null {
+/**
+ * 需給の要素を「4週で 5,771億円の売り越し」のような文にする。取れなければ null。
+ * 0〜100 の温度にはしない（2026-11-20 の検証で将来リターンとの一貫した関係がなかったため）
+ */
+export function describeSupply(c: JapanFearGreedComponent): string | null {
   if (!c.available || c.rawValue == null) return null;
-  if (c.id === "foreignFlow") return `4週 ${formatOkuYen(c.rawValue)}`;
-  if (c.id === "marginBuyChange") return `4週 ${formatSignedPct(c.rawValue)}`;
-  return formatSignedPct(c.rawValue);
+  const v = c.rawValue;
+  if (c.id === "foreignFlow") {
+    if (v === 0) return "4週で売り買いが均衡";
+    const amount = formatOkuYen(Math.abs(v)).replace(/^\+/, "");
+    return `4週で ${amount}の${v < 0 ? "売り越し" : "買い越し"}`;
+  }
+  if (c.id === "marginBuyChange") {
+    if (v === 0) return "4週で横ばい";
+    return `4週で ${Math.abs(v).toFixed(1)}% ${v < 0 ? "減少" : "増加"}`;
+  }
+  return null;
 }
 
 /** 需給の各要素から解説記事へのリンク先 */
@@ -194,7 +206,6 @@ const SUPPLY_LEARN_LINKS: Record<string, string> = {
 function JpFooter({ data }: { data: JapanFearGreedData }) {
   const nikkeiMa = data.components.find((c) => c.id === "nikkeiMa");
   const supplyComponents = data.components.filter((c) => c.group === "supply");
-  const supplyColor = data.supply ? getSentimentColor(data.supply.score) : undefined;
 
   return (
     <>
@@ -216,58 +227,35 @@ function JpFooter({ data }: { data: JapanFearGreedData }) {
 
       <div
         className="mt-4 rounded-lg bg-gray-50 border border-gray-200 px-3 py-3"
-        data-testid="supply-temperature"
+        data-testid="supply-facts"
       >
-        <div className="flex items-baseline justify-between">
-          <span className="text-xs font-semibold text-gray-700">
-            需給の温度（週次）
-          </span>
-          {data.supply ? (
-            <span className="font-mono font-semibold" style={{ color: supplyColor }}>
-              {data.supply.score}°{" "}
-              <span className="text-xs">{data.supply.level}</span>
-            </span>
-          ) : (
-            <span className="font-mono text-gray-400">—</span>
-          )}
-        </div>
-        <div className="mt-2 space-y-1">
+        <div className="text-xs font-semibold text-gray-700">需給（週次・JPX）</div>
+        <dl className="mt-2 space-y-1">
           {supplyComponents.map((c) => {
-            const compColor = c.available ? getSentimentColor(c.score) : "#d1d5db";
-            const raw = formatRaw(c);
+            const text = describeSupply(c);
             return (
-              <div key={c.id} className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span
-                    className="inline-block w-2 h-2 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: compColor }}
-                  />
+              <div key={c.id} className="flex items-baseline justify-between gap-3 text-xs">
+                <dt className="flex-shrink-0">
                   {SUPPLY_LEARN_LINKS[c.id] ? (
                     <Link
                       href={SUPPLY_LEARN_LINKS[c.id]}
-                      className={`truncate underline decoration-dotted underline-offset-2 hover:text-gray-900 ${c.available ? "text-gray-700" : "text-gray-400"}`}
+                      className={`underline decoration-dotted underline-offset-2 hover:text-gray-900 ${c.available ? "text-gray-700" : "text-gray-400"}`}
                     >
                       {c.label}
                     </Link>
                   ) : (
-                    <span className={`truncate ${c.available ? "text-gray-700" : "text-gray-400"}`}>
-                      {c.label}
-                    </span>
+                    <span className={c.available ? "text-gray-700" : "text-gray-400"}>{c.label}</span>
                   )}
-                  {raw && <span className="text-gray-400 font-mono">{raw}</span>}
-                </div>
-                <span
-                  className={`font-mono font-semibold ml-2 ${c.available ? "" : "text-gray-400"}`}
-                  style={c.available ? { color: compColor } : undefined}
-                >
-                  {c.available ? c.score : "—"}
-                </span>
+                </dt>
+                <dd className={`text-right ${text ? "font-semibold text-gray-800" : "text-gray-400"}`}>
+                  {text ?? "—"}
+                </dd>
               </div>
             );
           })}
-        </div>
+        </dl>
         <p className="text-[12px] text-gray-500 mt-2 leading-relaxed">
-          JPX の週次公表データで、1〜2 週遅れて動きます。上の市場温度には含めていません
+          JPX の週次公表で、1〜2 週遅れます。過去の検証でその後の株価との関係が見られなかったため、温度にはせず数字だけ載せています
         </p>
       </div>
 

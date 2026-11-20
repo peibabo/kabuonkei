@@ -1,8 +1,8 @@
 /**
  * 日本版の閾値定数。fear → 0 / greed → 100 に線形マップして clamp する。
  *
- * 現行で使うのは nikkeiMaDeviationPct（市場温度）と、需給の温度を作る
- * foreignFlow4wOkuYen / marginBuyChange4wPct の 3 つ。
+ * 現行で使うのは nikkeiMaDeviationPct（市場温度）と、需給の要素の
+ * foreignFlow4wOkuYen / marginBuyChange4wPct の 3 つ（需給の score は画面では使わず、実数だけを出す）。
  * marginRatio / arbitrageRatio / usdJpyMomentumPct は 2026-11 まで使っていた旧 5 要素版のもので、
  * 過去スナップショットの再計算（scripts/_lib/snapshot-backfill.ts）と試算スクリプトのために残している。
  */

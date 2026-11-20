@@ -14,7 +14,6 @@ import {
   normalizeMarginBuyChange,
 } from "./normalize";
 import {
-  averageGroupScore,
   buildAvailableComponent,
   buildUnavailableComponent,
 } from "./component-builder";
@@ -37,7 +36,8 @@ export interface JapanFearGreedInputs {
  * 日本版の市場温度を算出する。
  *
  * - 市場温度（score）= C1（日経225 の 125 日移動平均乖離）単独。C1 が取れなければ null
- * - 需給の温度（supply）= 海外投資家フロー・信用買い残の 4 週変化の平均。市場温度には混ぜない
+ * - 需給（海外投資家フロー・信用買い残の 4 週変化）は components に実数（rawValue）を載せるだけで、市場温度には混ぜない。
+ *   0〜100 の「需給の温度」は 2026-11-20 にやめた（将来リターンとの一貫した関係がなかった。`npm run analyze:supply`）
  *
  * 2026-11 まで使っていた 5 要素の等ウェイト平均をやめた理由は docs/features/temperature-score.md。
  */
@@ -52,19 +52,10 @@ export function computeJapanFearGreed(
     buildForeignFlow(inputs),
     buildMarginBuyChange(inputs),
   ];
-  const supply = averageGroupScore(components, "supply");
-
   return {
     score: nikkeiMa.score,
     level: getSentimentLevel(nikkeiMa.score),
     components,
-    supply: supply
-      ? {
-          score: supply.score,
-          level: getSentimentLevel(supply.score),
-          availableCount: supply.count,
-        }
-      : null,
     generatedAt: new Date().toISOString(),
   };
 }

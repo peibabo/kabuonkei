@@ -13,7 +13,7 @@ const ARTICLE_PATH = "/learn/what-is-fear-greed";
 const ARTICLE_TITLE =
   "Fear & Greed Index とは？CNN 米国版の中身と、日本版を株温計でどう作っているか";
 const ARTICLE_DESCRIPTION =
-  "Fear & Greed Index（CNN 恐怖と欲望指数）の構成 7 要素・スコアの読み方・実用上の使いどころを腰を据えて解説。日本版を作るとしたら何が違うのかも、株温計の市場温度（日経225 の移動平均乖離＋需給の温度）と対比しながら整理します。";
+  "Fear & Greed Index（CNN 恐怖と欲望指数）の構成 7 要素・スコアの読み方・実用上の使いどころを腰を据えて解説。日本版を作るとしたら何が違うのかも、株温計の市場温度（日経225 の移動平均乖離）と需給データの扱いと対比しながら整理します。";
 const PUBLISHED_AT = "2026-04-28";
 const MODIFIED_AT = "2026-11-19";
 
@@ -452,7 +452,7 @@ export default function WhatIsFearGreedPage() {
             日経平均が 1 日で約 6% 下げた 2026 年 11 月 6 日にもスコアが「過熱」のままでした。
             過去約 19 年分のデータで組み合わせを検証したところ、ドル円の勢いを足すと急落局面の判定がむしろ悪くなることもわかりました。
             そこで 2026 年 11 月から、<strong>市場温度は CNN の Market Momentum にあたる 1 つの指標だけ</strong>で決め、
-            需給データは混ぜずに「需給の温度」として横に並べる形に改めています。
+            需給データは混ぜずに数字のまま横に並べる形に改めています。
           </p>
 
           <div className="overflow-x-auto not-prose mt-4">
@@ -471,8 +471,8 @@ export default function WhatIsFearGreedPage() {
                   <td>Market Momentum</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">需給の温度（参考）</td>
-                  <td>海外投資家の 4 週累計の売買差引と、信用買い残の 4 週変化の平均（JPX 週次データ）</td>
+                  <td className="font-semibold">需給（参考）</td>
+                  <td>海外投資家の 4 週累計の売買差引と、信用買い残の 4 週変化（JPX 週次データ）。温度には換算せず実数で表示</td>
                   <td>日本固有の需給情報（米国版にはない）</td>
                 </tr>
               </tbody>

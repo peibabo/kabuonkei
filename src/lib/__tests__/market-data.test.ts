@@ -150,7 +150,6 @@ describe("buildMarketData", () => {
       score: 55,
       level: "平温",
       components: [],
-      supply: null,
       generatedAt: "2026-04-20T00:00:00Z",
     };
     const result = buildMarketData({

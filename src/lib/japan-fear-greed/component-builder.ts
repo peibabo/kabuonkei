@@ -39,18 +39,3 @@ export function buildUnavailableComponent(
     available: false,
   };
 }
-
-/** 指定グループの利用可能な component の単純平均（四捨五入）。1 つもなければ null */
-export function averageGroupScore(
-  components: readonly JapanFearGreedComponent[],
-  group: JapanFearGreedGroup,
-): { score: number; count: number } | null {
-  const scores = components
-    .filter((c) => c.available && c.group === group)
-    .map((c) => c.score);
-  if (scores.length === 0) return null;
-  return {
-    score: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
-    count: scores.length,
-  };
-}

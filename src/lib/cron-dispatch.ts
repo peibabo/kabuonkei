@@ -26,7 +26,7 @@ export interface WorkflowDispatch {
 export const CRON_JOBS: Record<string, readonly WorkflowDispatch[]> = {
   // 平日 16 時台 JST: 東証の引け（15:30）後
   "stock-temperatures": [{ workflow: "update-stock-temperatures.yml" }],
-  // 水・木 16 時台 JST: JPX の公表（水 15:00 / 木 15:30）後。ゲージ下の「需給の温度」が読む
+  // 水・木 16 時台 JST: JPX の公表（水 15:00 / 木 15:30）後。ゲージ下の需給の欄が読む
   "japan-market": [{ workflow: "update-japan-market-data.yml" }],
   // 平日 17 時台 JST
   "japan-snapshot": [{ workflow: "snapshot-japan-fg.yml" }],

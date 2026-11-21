@@ -15,6 +15,7 @@ import {
   getNikkeiMaDeviationAnalysis,
   MA_DEVIATION_ARTICLE,
 } from "./nikkei-ma-deviation-analysis";
+import { getSupplyDemandAnalysis, SUPPLY_DEMAND_ARTICLE } from "./supply-demand-analysis";
 import { getPortfolioHistory } from "./portfolio";
 import { getEventsMeta, getEventPublishedAt } from "./events";
 import type { EventMeta } from "./types";
@@ -123,6 +124,17 @@ function collectEntries(): FeedEntry[] {
       "日経平均の125日移動平均乖離率ごとに、その後 1ヶ月〜1年のリターンを1985年以降で集計。上に離れすぎた後・下に離れすぎた後の値動きを、日数と回数の両方で検証した分析記事。",
     publishedAt: MA_DEVIATION_ARTICLE.publishedAt,
     updatedAt: maDeviation.generatedAt,
+  });
+
+  const supplyDemand = getSupplyDemandAnalysis();
+  entries.push({
+    id: `${SITE_ORIGIN}${SUPPLY_DEMAND_ARTICLE.path}`,
+    url: `${SITE_ORIGIN}${SUPPLY_DEMAND_ARTICLE.path}`,
+    title: SUPPLY_DEMAND_ARTICLE.title,
+    summary:
+      "海外投資家の売買（4週累計）と信用買い残の4週変化ごとに、その後 1〜6ヶ月の日経平均のリターンを集計。JPX の公表日のずれを再現し、需給の数字が買い時・売り時のサインになるかを日数と回数の両方で検証した分析記事。",
+    publishedAt: SUPPLY_DEMAND_ARTICLE.publishedAt,
+    updatedAt: supplyDemand.generatedAt,
   });
 
   const portfolio = getPortfolioHistory();

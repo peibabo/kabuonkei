@@ -1,0 +1,1741 @@
+{
+  "generatedAt": "2026-11-21",
+  "mergeWindow": 20,
+  "coldThreshold": 20,
+  "flow": {
+    "dataRange": {
+      "from": "2016-02-05",
+      "to": "2026-11-19"
+    },
+    "dayCount": 2635,
+    "halfSplitDate": "2021-06-29",
+    "baseline": {
+      "all": {
+        "1m": {
+          "avgReturn": 1.2,
+          "medianReturn": 1.3,
+          "winRate": 61.5,
+          "sampleSize": 2614
+        },
+        "3m": {
+          "avgReturn": 3.8,
+          "medianReturn": 2.7,
+          "winRate": 62.4,
+          "sampleSize": 2572
+        },
+        "6m": {
+          "avgReturn": 7.9,
+          "medianReturn": 5.2,
+          "winRate": 68,
+          "sampleSize": 2509
+        }
+      },
+      "firstHalf": {
+        "1m": {
+          "avgReturn": 1,
+          "medianReturn": 1.3,
+          "winRate": 62.9,
+          "sampleSize": 1317
+        },
+        "3m": {
+          "avgReturn": 3,
+          "medianReturn": 2.6,
+          "winRate": 62.2,
+          "sampleSize": 1317
+        },
+        "6m": {
+          "avgReturn": 6,
+          "medianReturn": 4.5,
+          "winRate": 66.4,
+          "sampleSize": 1317
+        }
+      },
+      "secondHalf": {
+        "1m": {
+          "avgReturn": 1.4,
+          "medianReturn": 1.4,
+          "winRate": 60.1,
+          "sampleSize": 1297
+        },
+        "3m": {
+          "avgReturn": 4.6,
+          "medianReturn": 2.8,
+          "winRate": 62.7,
+          "sampleSize": 1255
+        },
+        "6m": {
+          "avgReturn": 10,
+          "medianReturn": 6.7,
+          "winRate": 69.8,
+          "sampleSize": 1192
+        }
+      }
+    },
+    "bands": [
+      {
+        "key": "very-low",
+        "all": {
+          "1m": {
+            "avgReturn": 2.7,
+            "medianReturn": 2.9,
+            "winRate": 67.4,
+            "sampleSize": 288
+          },
+          "3m": {
+            "avgReturn": 6.3,
+            "medianReturn": 4.7,
+            "winRate": 71.7,
+            "sampleSize": 283
+          },
+          "6m": {
+            "avgReturn": 9.5,
+            "medianReturn": 6.5,
+            "winRate": 73.9,
+            "sampleSize": 283
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 2.9,
+            "medianReturn": 3.4,
+            "winRate": 72.5,
+            "sampleSize": 153
+          },
+          "3m": {
+            "avgReturn": 5.9,
+            "medianReturn": 4.2,
+            "winRate": 70.6,
+            "sampleSize": 153
+          },
+          "6m": {
+            "avgReturn": 9.8,
+            "medianReturn": 6.3,
+            "winRate": 84.3,
+            "sampleSize": 153
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 2.5,
+            "medianReturn": 2.1,
+            "winRate": 61.5,
+            "sampleSize": 135
+          },
+          "3m": {
+            "avgReturn": 6.7,
+            "medianReturn": 5.2,
+            "winRate": 73.1,
+            "sampleSize": 130
+          },
+          "6m": {
+            "avgReturn": 9.2,
+            "medianReturn": 11.4,
+            "winRate": 61.5,
+            "sampleSize": 130
+          }
+        }
+      },
+      {
+        "key": "low",
+        "all": {
+          "1m": {
+            "avgReturn": 1.6,
+            "medianReturn": 2.1,
+            "winRate": 66.6,
+            "sampleSize": 731
+          },
+          "3m": {
+            "avgReturn": 4,
+            "medianReturn": 3,
+            "winRate": 66.2,
+            "sampleSize": 714
+          },
+          "6m": {
+            "avgReturn": 7.2,
+            "medianReturn": 4.9,
+            "winRate": 68.8,
+            "sampleSize": 698
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 2.1,
+            "medianReturn": 2.2,
+            "winRate": 70.8,
+            "sampleSize": 424
+          },
+          "3m": {
+            "avgReturn": 5.3,
+            "medianReturn": 4.3,
+            "winRate": 74.8,
+            "sampleSize": 424
+          },
+          "6m": {
+            "avgReturn": 6.1,
+            "medianReturn": 4.7,
+            "winRate": 67.7,
+            "sampleSize": 424
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 0.8,
+            "medianReturn": 1.7,
+            "winRate": 60.9,
+            "sampleSize": 307
+          },
+          "3m": {
+            "avgReturn": 2.1,
+            "medianReturn": 0.3,
+            "winRate": 53.8,
+            "sampleSize": 290
+          },
+          "6m": {
+            "avgReturn": 8.9,
+            "medianReturn": 5.2,
+            "winRate": 70.4,
+            "sampleSize": 274
+          }
+        }
+      },
+      {
+        "key": "mid",
+        "all": {
+          "1m": {
+            "avgReturn": -0.1,
+            "medianReturn": 0,
+            "winRate": 50.5,
+            "sampleSize": 729
+          },
+          "3m": {
+            "avgReturn": 3.2,
+            "medianReturn": 2.8,
+            "winRate": 61.8,
+            "sampleSize": 714
+          },
+          "6m": {
+            "avgReturn": 7.5,
+            "medianReturn": 4.2,
+            "winRate": 63.4,
+            "sampleSize": 703
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": -1,
+            "medianReturn": -0.3,
+            "winRate": 48.1,
+            "sampleSize": 397
+          },
+          "3m": {
+            "avgReturn": 3,
+            "medianReturn": 3.5,
+            "winRate": 64.7,
+            "sampleSize": 397
+          },
+          "6m": {
+            "avgReturn": 7.1,
+            "medianReturn": 5.6,
+            "winRate": 65.2,
+            "sampleSize": 397
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 1,
+            "medianReturn": 0.2,
+            "winRate": 53.3,
+            "sampleSize": 332
+          },
+          "3m": {
+            "avgReturn": 3.5,
+            "medianReturn": 1.5,
+            "winRate": 58,
+            "sampleSize": 317
+          },
+          "6m": {
+            "avgReturn": 8.1,
+            "medianReturn": 1.8,
+            "winRate": 61.1,
+            "sampleSize": 306
+          }
+        }
+      },
+      {
+        "key": "high",
+        "all": {
+          "1m": {
+            "avgReturn": 0.1,
+            "medianReturn": 0.2,
+            "winRate": 52.4,
+            "sampleSize": 489
+          },
+          "3m": {
+            "avgReturn": 0.5,
+            "medianReturn": -0.6,
+            "winRate": 44.6,
+            "sampleSize": 484
+          },
+          "6m": {
+            "avgReturn": 4.8,
+            "medianReturn": 2.3,
+            "winRate": 57.7,
+            "sampleSize": 466
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 0.7,
+            "medianReturn": 0.4,
+            "winRate": 59.1,
+            "sampleSize": 235
+          },
+          "3m": {
+            "avgReturn": -1.3,
+            "medianReturn": -1.3,
+            "winRate": 40.4,
+            "sampleSize": 235
+          },
+          "6m": {
+            "avgReturn": 2.2,
+            "medianReturn": -0.9,
+            "winRate": 48.1,
+            "sampleSize": 235
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": -0.4,
+            "medianReturn": -0.3,
+            "winRate": 46.1,
+            "sampleSize": 254
+          },
+          "3m": {
+            "avgReturn": 2.1,
+            "medianReturn": -0.2,
+            "winRate": 48.6,
+            "sampleSize": 249
+          },
+          "6m": {
+            "avgReturn": 7.5,
+            "medianReturn": 5.8,
+            "winRate": 67.5,
+            "sampleSize": 231
+          }
+        }
+      },
+      {
+        "key": "very-high",
+        "all": {
+          "1m": {
+            "avgReturn": 3.3,
+            "medianReturn": 3.1,
+            "winRate": 80.4,
+            "sampleSize": 377
+          },
+          "3m": {
+            "avgReturn": 6.9,
+            "medianReturn": 6.2,
+            "winRate": 72.4,
+            "sampleSize": 377
+          },
+          "6m": {
+            "avgReturn": 12.8,
+            "medianReturn": 9.3,
+            "winRate": 84.1,
+            "sampleSize": 359
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 2.1,
+            "medianReturn": 2.1,
+            "winRate": 81.5,
+            "sampleSize": 108
+          },
+          "3m": {
+            "avgReturn": -0.2,
+            "medianReturn": -1.1,
+            "winRate": 38.9,
+            "sampleSize": 108
+          },
+          "6m": {
+            "avgReturn": 4.8,
+            "medianReturn": 4.1,
+            "winRate": 79.6,
+            "sampleSize": 108
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 3.8,
+            "medianReturn": 3.7,
+            "winRate": 79.9,
+            "sampleSize": 269
+          },
+          "3m": {
+            "avgReturn": 9.7,
+            "medianReturn": 9.7,
+            "winRate": 85.9,
+            "sampleSize": 269
+          },
+          "6m": {
+            "avgReturn": 16.3,
+            "medianReturn": 15.8,
+            "winRate": 86.1,
+            "sampleSize": 251
+          }
+        }
+      }
+    ],
+    "extremeThreshold": -10000,
+    "extremeEpisodes": [
+      {
+        "date": "2016-02-05",
+        "value": -10556,
+        "temperature": 16,
+        "returns": {
+          "1m": -0.2,
+          "3m": -1,
+          "6m": -0.5
+        }
+      },
+      {
+        "date": "2016-10-07",
+        "value": -11051,
+        "temperature": 58,
+        "returns": {
+          "1m": -3.6,
+          "3m": 14.4,
+          "6m": 9.3
+        }
+      },
+      {
+        "date": "2017-12-15",
+        "value": -10173,
+        "temperature": 78,
+        "returns": {
+          "1m": 5.6,
+          "3m": -4.3,
+          "6m": -0.2
+        }
+      },
+      {
+        "date": "2018-02-22",
+        "value": -15754,
+        "temperature": 49,
+        "returns": {
+          "1m": -4.5,
+          "3m": 3.4,
+          "6m": 3.1
+        }
+      },
+      {
+        "date": "2018-12-14",
+        "value": -11395,
+        "temperature": 34,
+        "returns": {
+          "1m": -3.5,
+          "3m": -1.9,
+          "6m": -0.5
+        }
+      },
+      {
+        "date": "2019-03-28",
+        "value": -12737,
+        "temperature": 41,
+        "returns": {
+          "1m": 5.8,
+          "3m": 2.9,
+          "6m": 1.8
+        }
+      },
+      {
+        "date": "2020-03-23",
+        "value": -12331,
+        "temperature": 0,
+        "returns": {
+          "1m": 14.2,
+          "3m": 33.4,
+          "6m": 39.2
+        }
+      },
+      {
+        "date": "2020-07-10",
+        "value": -12119,
+        "temperature": 65,
+        "returns": {
+          "1m": 4.3,
+          "3m": 5.5,
+          "6m": 28.5
+        }
+      },
+      {
+        "date": "2020-10-02",
+        "value": -11189,
+        "temperature": 69,
+        "returns": {
+          "1m": 1.2,
+          "3m": 17.9,
+          "6m": 29.1
+        }
+      },
+      {
+        "date": "2021-12-24",
+        "value": -11078,
+        "temperature": 51,
+        "returns": {
+          "1m": -9.1,
+          "3m": -3.3,
+          "6m": -9.1
+        }
+      },
+      {
+        "date": "2022-03-18",
+        "value": -15273,
+        "temperature": 33,
+        "returns": {
+          "1m": 0.6,
+          "3m": -2.5,
+          "6m": 1.2
+        }
+      },
+      {
+        "date": "2022-07-08",
+        "value": -11551,
+        "temperature": 44,
+        "returns": {
+          "1m": 5.6,
+          "3m": -0.5,
+          "6m": -2.6
+        }
+      },
+      {
+        "date": "2023-03-17",
+        "value": -12203,
+        "temperature": 50,
+        "returns": {
+          "1m": 4.8,
+          "3m": 22.2,
+          "6m": 20.8
+        }
+      },
+      {
+        "date": "2023-09-15",
+        "value": -13695,
+        "temperature": 77,
+        "returns": {
+          "1m": -4.4,
+          "3m": -0.9,
+          "6m": 20.5
+        }
+      },
+      {
+        "date": "2024-08-09",
+        "value": -12354,
+        "temperature": 17,
+        "returns": {
+          "1m": 3.2,
+          "3m": 10.6,
+          "6m": 12.1
+        }
+      },
+      {
+        "date": "2024-12-27",
+        "value": -10388,
+        "temperature": 65,
+        "returns": {
+          "1m": -4.4,
+          "3m": -22.7,
+          "6m": -1.5
+        }
+      },
+      {
+        "date": "2025-03-27",
+        "value": -16806,
+        "temperature": 42,
+        "returns": {
+          "1m": -5.5,
+          "3m": 6.2,
+          "6m": 18.9
+        }
+      },
+      {
+        "date": "2025-09-25",
+        "value": -10629,
+        "temperature": 100,
+        "returns": {
+          "1m": 10.4,
+          "3m": 10.9,
+          "6m": 16.1
+        }
+      },
+      {
+        "date": "2026-04-03",
+        "value": -22810,
+        "temperature": 59,
+        "returns": {
+          "1m": 18.1,
+          "3m": 28.5,
+          "6m": 29.9
+        }
+      },
+      {
+        "date": "2026-08-28",
+        "value": -10993,
+        "temperature": 71,
+        "returns": {
+          "1m": 3.8,
+          "3m": null,
+          "6m": null
+        }
+      }
+    ],
+    "extremeSummary": {
+      "1m": {
+        "avgReturn": 2.1,
+        "medianReturn": 2.2,
+        "winRate": 60,
+        "sampleSize": 20
+      },
+      "3m": {
+        "avgReturn": 6.2,
+        "medianReturn": 3.4,
+        "winRate": 57.9,
+        "sampleSize": 19
+      },
+      "6m": {
+        "avgReturn": 11.4,
+        "medianReturn": 9.3,
+        "winRate": 68.4,
+        "sampleSize": 19
+      }
+    },
+    "correlation": {
+      "1m": -0.03,
+      "3m": -0.03,
+      "6m": 0.06
+    },
+    "coldWeakThreshold": -10000,
+    "cold": {
+      "all": {
+        "all": {
+          "1m": {
+            "avgReturn": 7.1,
+            "medianReturn": 6.2,
+            "winRate": 93.3,
+            "sampleSize": 105
+          },
+          "3m": {
+            "avgReturn": 12.6,
+            "medianReturn": 12.3,
+            "winRate": 93.3,
+            "sampleSize": 105
+          },
+          "6m": {
+            "avgReturn": 19.3,
+            "medianReturn": 18.6,
+            "winRate": 98.1,
+            "sampleSize": 105
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 6.3,
+            "medianReturn": 5.6,
+            "winRate": 90.8,
+            "sampleSize": 76
+          },
+          "3m": {
+            "avgReturn": 12.2,
+            "medianReturn": 11.9,
+            "winRate": 90.8,
+            "sampleSize": 76
+          },
+          "6m": {
+            "avgReturn": 16.2,
+            "medianReturn": 18.4,
+            "winRate": 97.4,
+            "sampleSize": 76
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 8.9,
+            "medianReturn": 8.4,
+            "winRate": 100,
+            "sampleSize": 29
+          },
+          "3m": {
+            "avgReturn": 13.7,
+            "medianReturn": 14.3,
+            "winRate": 100,
+            "sampleSize": 29
+          },
+          "6m": {
+            "avgReturn": 27.3,
+            "medianReturn": 23.9,
+            "winRate": 100,
+            "sampleSize": 29
+          }
+        }
+      },
+      "weak": {
+        "all": {
+          "1m": {
+            "avgReturn": 6.6,
+            "medianReturn": 5.7,
+            "winRate": 94.3,
+            "sampleSize": 70
+          },
+          "3m": {
+            "avgReturn": 11.3,
+            "medianReturn": 11.8,
+            "winRate": 90,
+            "sampleSize": 70
+          },
+          "6m": {
+            "avgReturn": 16.4,
+            "medianReturn": 12.3,
+            "winRate": 97.1,
+            "sampleSize": 70
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 6,
+            "medianReturn": 5.5,
+            "winRate": 93.7,
+            "sampleSize": 63
+          },
+          "3m": {
+            "avgReturn": 10.5,
+            "medianReturn": 9.7,
+            "winRate": 88.9,
+            "sampleSize": 63
+          },
+          "6m": {
+            "avgReturn": 13.8,
+            "medianReturn": 10.9,
+            "winRate": 96.8,
+            "sampleSize": 63
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 11.9,
+            "medianReturn": 10.2,
+            "winRate": 100,
+            "sampleSize": 7
+          },
+          "3m": {
+            "avgReturn": 18.5,
+            "medianReturn": 17.2,
+            "winRate": 100,
+            "sampleSize": 7
+          },
+          "6m": {
+            "avgReturn": 39.8,
+            "medianReturn": 41.3,
+            "winRate": 100,
+            "sampleSize": 7
+          }
+        }
+      },
+      "other": {
+        "all": {
+          "1m": {
+            "avgReturn": 7.9,
+            "medianReturn": 8.4,
+            "winRate": 91.4,
+            "sampleSize": 35
+          },
+          "3m": {
+            "avgReturn": 15.2,
+            "medianReturn": 13.9,
+            "winRate": 100,
+            "sampleSize": 35
+          },
+          "6m": {
+            "avgReturn": 25,
+            "medianReturn": 23.9,
+            "winRate": 100,
+            "sampleSize": 35
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 7.8,
+            "medianReturn": 9.6,
+            "winRate": 76.9,
+            "sampleSize": 13
+          },
+          "3m": {
+            "avgReturn": 20.4,
+            "medianReturn": 14.1,
+            "winRate": 100,
+            "sampleSize": 13
+          },
+          "6m": {
+            "avgReturn": 28,
+            "medianReturn": 26.6,
+            "winRate": 100,
+            "sampleSize": 13
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 8,
+            "medianReturn": 8,
+            "winRate": 100,
+            "sampleSize": 22
+          },
+          "3m": {
+            "avgReturn": 12.2,
+            "medianReturn": 12.9,
+            "winRate": 100,
+            "sampleSize": 22
+          },
+          "6m": {
+            "avgReturn": 23.3,
+            "medianReturn": 13.8,
+            "winRate": 100,
+            "sampleSize": 22
+          }
+        }
+      }
+    }
+  },
+  "margin": {
+    "dataRange": {
+      "from": "2002-09-05",
+      "to": "2026-11-19"
+    },
+    "dayCount": 5906,
+    "halfSplitDate": "2014-10-01",
+    "baseline": {
+      "all": {
+        "1m": {
+          "avgReturn": 0.9,
+          "medianReturn": 1.2,
+          "winRate": 59.4,
+          "sampleSize": 5885
+        },
+        "3m": {
+          "avgReturn": 2.7,
+          "medianReturn": 2.3,
+          "winRate": 59.1,
+          "sampleSize": 5843
+        },
+        "6m": {
+          "avgReturn": 5.7,
+          "medianReturn": 4.1,
+          "winRate": 62.1,
+          "sampleSize": 5780
+        }
+      },
+      "firstHalf": {
+        "1m": {
+          "avgReturn": 0.6,
+          "medianReturn": 1,
+          "winRate": 57.5,
+          "sampleSize": 2953
+        },
+        "3m": {
+          "avgReturn": 2,
+          "medianReturn": 1.9,
+          "winRate": 56.6,
+          "sampleSize": 2953
+        },
+        "6m": {
+          "avgReturn": 4.6,
+          "medianReturn": 4,
+          "winRate": 60.7,
+          "sampleSize": 2953
+        }
+      },
+      "secondHalf": {
+        "1m": {
+          "avgReturn": 1.2,
+          "medianReturn": 1.3,
+          "winRate": 61.2,
+          "sampleSize": 2932
+        },
+        "3m": {
+          "avgReturn": 3.4,
+          "medianReturn": 2.7,
+          "winRate": 61.7,
+          "sampleSize": 2890
+        },
+        "6m": {
+          "avgReturn": 6.8,
+          "medianReturn": 4.3,
+          "winRate": 63.7,
+          "sampleSize": 2827
+        }
+      }
+    },
+    "bands": [
+      {
+        "key": "very-low",
+        "all": {
+          "1m": {
+            "avgReturn": 0.8,
+            "medianReturn": 1.6,
+            "winRate": 62.2,
+            "sampleSize": 534
+          },
+          "3m": {
+            "avgReturn": 1.5,
+            "medianReturn": 2.6,
+            "winRate": 59.9,
+            "sampleSize": 534
+          },
+          "6m": {
+            "avgReturn": 2.1,
+            "medianReturn": 2,
+            "winRate": 57.5,
+            "sampleSize": 534
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 0.1,
+            "medianReturn": 1.1,
+            "winRate": 57.9,
+            "sampleSize": 380
+          },
+          "3m": {
+            "avgReturn": -0.4,
+            "medianReturn": 1,
+            "winRate": 54.2,
+            "sampleSize": 380
+          },
+          "6m": {
+            "avgReturn": -1.2,
+            "medianReturn": 0,
+            "winRate": 50.3,
+            "sampleSize": 380
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 2.8,
+            "medianReturn": 3,
+            "winRate": 72.7,
+            "sampleSize": 154
+          },
+          "3m": {
+            "avgReturn": 6.1,
+            "medianReturn": 4.9,
+            "winRate": 74,
+            "sampleSize": 154
+          },
+          "6m": {
+            "avgReturn": 10.2,
+            "medianReturn": 4.8,
+            "winRate": 75.3,
+            "sampleSize": 154
+          }
+        }
+      },
+      {
+        "key": "low",
+        "all": {
+          "1m": {
+            "avgReturn": 0.5,
+            "medianReturn": 0.9,
+            "winRate": 58.2,
+            "sampleSize": 1344
+          },
+          "3m": {
+            "avgReturn": 2,
+            "medianReturn": 2.2,
+            "winRate": 58.5,
+            "sampleSize": 1337
+          },
+          "6m": {
+            "avgReturn": 5.1,
+            "medianReturn": 3.8,
+            "winRate": 59.5,
+            "sampleSize": 1325
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": -0.1,
+            "medianReturn": 0.8,
+            "winRate": 56.6,
+            "sampleSize": 740
+          },
+          "3m": {
+            "avgReturn": 1.6,
+            "medianReturn": 2.4,
+            "winRate": 58.1,
+            "sampleSize": 740
+          },
+          "6m": {
+            "avgReturn": 6.2,
+            "medianReturn": 4.4,
+            "winRate": 62.8,
+            "sampleSize": 740
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 1.2,
+            "medianReturn": 1,
+            "winRate": 60.1,
+            "sampleSize": 604
+          },
+          "3m": {
+            "avgReturn": 2.5,
+            "medianReturn": 1.9,
+            "winRate": 59,
+            "sampleSize": 597
+          },
+          "6m": {
+            "avgReturn": 3.6,
+            "medianReturn": 2.7,
+            "winRate": 55.4,
+            "sampleSize": 585
+          }
+        }
+      },
+      {
+        "key": "mid",
+        "all": {
+          "1m": {
+            "avgReturn": 1,
+            "medianReturn": 1.4,
+            "winRate": 60.7,
+            "sampleSize": 1750
+          },
+          "3m": {
+            "avgReturn": 3.5,
+            "medianReturn": 2.5,
+            "winRate": 60.5,
+            "sampleSize": 1732
+          },
+          "6m": {
+            "avgReturn": 6.5,
+            "medianReturn": 4.6,
+            "winRate": 63.3,
+            "sampleSize": 1727
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 1.1,
+            "medianReturn": 1.4,
+            "winRate": 59.9,
+            "sampleSize": 755
+          },
+          "3m": {
+            "avgReturn": 3.1,
+            "medianReturn": 2.3,
+            "winRate": 58.7,
+            "sampleSize": 755
+          },
+          "6m": {
+            "avgReturn": 5.8,
+            "medianReturn": 5,
+            "winRate": 63,
+            "sampleSize": 755
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 1,
+            "medianReturn": 1.4,
+            "winRate": 61.3,
+            "sampleSize": 995
+          },
+          "3m": {
+            "avgReturn": 3.7,
+            "medianReturn": 2.7,
+            "winRate": 61.8,
+            "sampleSize": 977
+          },
+          "6m": {
+            "avgReturn": 7.1,
+            "medianReturn": 4.2,
+            "winRate": 63.6,
+            "sampleSize": 972
+          }
+        }
+      },
+      {
+        "key": "high",
+        "all": {
+          "1m": {
+            "avgReturn": 0.9,
+            "medianReturn": 0.9,
+            "winRate": 57.3,
+            "sampleSize": 1552
+          },
+          "3m": {
+            "avgReturn": 3.1,
+            "medianReturn": 2.2,
+            "winRate": 58.4,
+            "sampleSize": 1535
+          },
+          "6m": {
+            "avgReturn": 6.9,
+            "medianReturn": 4.4,
+            "winRate": 63.9,
+            "sampleSize": 1509
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 0.5,
+            "medianReturn": 0.4,
+            "winRate": 53.8,
+            "sampleSize": 554
+          },
+          "3m": {
+            "avgReturn": 2.3,
+            "medianReturn": 0.6,
+            "winRate": 51.4,
+            "sampleSize": 554
+          },
+          "6m": {
+            "avgReturn": 5.6,
+            "medianReturn": 3.6,
+            "winRate": 59.6,
+            "sampleSize": 554
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 1.1,
+            "medianReturn": 1.1,
+            "winRate": 59.2,
+            "sampleSize": 998
+          },
+          "3m": {
+            "avgReturn": 3.6,
+            "medianReturn": 2.9,
+            "winRate": 62.4,
+            "sampleSize": 981
+          },
+          "6m": {
+            "avgReturn": 7.7,
+            "medianReturn": 5,
+            "winRate": 66.4,
+            "sampleSize": 955
+          }
+        }
+      },
+      {
+        "key": "very-high",
+        "all": {
+          "1m": {
+            "avgReturn": 1.2,
+            "medianReturn": 1.6,
+            "winRate": 60.7,
+            "sampleSize": 705
+          },
+          "3m": {
+            "avgReturn": 2.2,
+            "medianReturn": 2,
+            "winRate": 58,
+            "sampleSize": 705
+          },
+          "6m": {
+            "avgReturn": 4.6,
+            "medianReturn": 4.4,
+            "winRate": 63.9,
+            "sampleSize": 685
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 1.2,
+            "medianReturn": 1.6,
+            "winRate": 59,
+            "sampleSize": 524
+          },
+          "3m": {
+            "avgReturn": 2.5,
+            "medianReturn": 2.3,
+            "winRate": 58.8,
+            "sampleSize": 524
+          },
+          "6m": {
+            "avgReturn": 3.4,
+            "medianReturn": 4.4,
+            "winRate": 63,
+            "sampleSize": 524
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 1,
+            "medianReturn": 1.4,
+            "winRate": 65.7,
+            "sampleSize": 181
+          },
+          "3m": {
+            "avgReturn": 1.4,
+            "medianReturn": 1.6,
+            "winRate": 55.8,
+            "sampleSize": 181
+          },
+          "6m": {
+            "avgReturn": 8.5,
+            "medianReturn": 5.2,
+            "winRate": 67.1,
+            "sampleSize": 161
+          }
+        }
+      }
+    ],
+    "extremeThreshold": -10,
+    "extremeEpisodes": [
+      {
+        "date": "2002-10-03",
+        "value": -12,
+        "temperature": 0,
+        "returns": {
+          "1m": 0,
+          "3m": -4.9,
+          "6m": -12.5
+        }
+      },
+      {
+        "date": "2003-12-04",
+        "value": -11,
+        "temperature": 63,
+        "returns": {
+          "1m": 3.9,
+          "3m": 9.6,
+          "6m": 10.5
+        }
+      },
+      {
+        "date": "2004-10-15",
+        "value": -13.2,
+        "temperature": 41,
+        "returns": {
+          "1m": 1.6,
+          "3m": 2.7,
+          "6m": 0
+        }
+      },
+      {
+        "date": "2006-06-15",
+        "value": -14.5,
+        "temperature": 14,
+        "returns": {
+          "1m": 2.6,
+          "3m": 8.8,
+          "6m": 16.9
+        }
+      },
+      {
+        "date": "2006-10-13",
+        "value": -10.5,
+        "temperature": 65,
+        "returns": {
+          "1m": -1.5,
+          "3m": 5,
+          "6m": 5.1
+        }
+      },
+      {
+        "date": "2007-08-30",
+        "value": -10.2,
+        "temperature": 25,
+        "returns": {
+          "1m": 5.5,
+          "3m": -3.2,
+          "6m": -22.4
+        }
+      },
+      {
+        "date": "2007-12-06",
+        "value": -12.8,
+        "temperature": 32,
+        "returns": {
+          "1m": -11.1,
+          "3m": -21.7,
+          "6m": -9.6
+        }
+      },
+      {
+        "date": "2008-04-10",
+        "value": -16.2,
+        "temperature": 13,
+        "returns": {
+          "1m": 9.1,
+          "3m": 0.7,
+          "6m": -27
+        }
+      },
+      {
+        "date": "2008-09-26",
+        "value": -12.4,
+        "temperature": 14,
+        "returns": {
+          "1m": -35.9,
+          "3m": -25.5,
+          "6m": -25.5
+        }
+      },
+      {
+        "date": "2009-04-02",
+        "value": -15.2,
+        "temperature": 61,
+        "returns": {
+          "1m": 7.6,
+          "3m": 11,
+          "6m": 12.8
+        }
+      },
+      {
+        "date": "2009-08-13",
+        "value": -11.3,
+        "temperature": 100,
+        "returns": {
+          "1m": -3,
+          "3m": -8,
+          "6m": -1.6
+        }
+      },
+      {
+        "date": "2009-12-10",
+        "value": -13.3,
+        "temperature": 46,
+        "returns": {
+          "1m": 10.6,
+          "3m": 8.7,
+          "6m": 1.3
+        }
+      },
+      {
+        "date": "2010-09-30",
+        "value": -10.9,
+        "temperature": 32,
+        "returns": {
+          "1m": -2.3,
+          "3m": 10.8,
+          "6m": 2.4
+        }
+      },
+      {
+        "date": "2011-03-25",
+        "value": -11,
+        "temperature": 33,
+        "returns": {
+          "1m": 1.4,
+          "3m": 1.2,
+          "6m": -9.7
+        }
+      },
+      {
+        "date": "2011-10-06",
+        "value": -10.3,
+        "temperature": 19,
+        "returns": {
+          "1m": 1.6,
+          "3m": -1.6,
+          "6m": 11
+        }
+      },
+      {
+        "date": "2012-01-26",
+        "value": -14.6,
+        "temperature": 54,
+        "returns": {
+          "1m": 9,
+          "3m": 8,
+          "6m": -3.2
+        }
+      },
+      {
+        "date": "2013-07-04",
+        "value": -12.5,
+        "temperature": 88,
+        "returns": {
+          "1m": 1.7,
+          "3m": 0,
+          "6m": 13.5
+        }
+      },
+      {
+        "date": "2013-11-28",
+        "value": -12.6,
+        "temperature": 89,
+        "returns": {
+          "1m": 3.6,
+          "3m": -3.8,
+          "6m": -3.8
+        }
+      },
+      {
+        "date": "2014-11-20",
+        "value": -12.7,
+        "temperature": 88,
+        "returns": {
+          "1m": 1.9,
+          "3m": 8.6,
+          "6m": 18.9
+        }
+      },
+      {
+        "date": "2016-02-12",
+        "value": -10.4,
+        "temperature": 0,
+        "returns": {
+          "1m": 15.3,
+          "3m": 11.3,
+          "6m": 12
+        }
+      },
+      {
+        "date": "2016-07-07",
+        "value": -10,
+        "temperature": 24,
+        "returns": {
+          "1m": 9,
+          "3m": 11.4,
+          "6m": 25
+        }
+      },
+      {
+        "date": "2017-05-18",
+        "value": -10.1,
+        "temperature": 59,
+        "returns": {
+          "1m": 2,
+          "3m": 0.8,
+          "6m": 14.5
+        }
+      },
+      {
+        "date": "2018-08-02",
+        "value": -10.1,
+        "temperature": 56,
+        "returns": {
+          "1m": 1.6,
+          "3m": -1.2,
+          "6m": -9.7
+        }
+      },
+      {
+        "date": "2019-01-10",
+        "value": -14.9,
+        "temperature": 19,
+        "returns": {
+          "1m": 3.5,
+          "3m": 8.5,
+          "6m": 6.5
+        }
+      },
+      {
+        "date": "2019-04-11",
+        "value": -11.9,
+        "temperature": 54,
+        "returns": {
+          "1m": -1.9,
+          "3m": -3.1,
+          "6m": 3.9
+        }
+      },
+      {
+        "date": "2019-09-20",
+        "value": -12.8,
+        "temperature": 62,
+        "returns": {
+          "1m": 3,
+          "3m": 7.9,
+          "6m": -18.2
+        }
+      },
+      {
+        "date": "2020-03-19",
+        "value": -17.9,
+        "temperature": 0,
+        "returns": {
+          "1m": 18.8,
+          "3m": 36.2,
+          "6m": 40.2
+        }
+      },
+      {
+        "date": "2022-04-07",
+        "value": -11.8,
+        "temperature": 37,
+        "returns": {
+          "1m": -4.2,
+          "3m": -0.3,
+          "6m": -2.4
+        }
+      },
+      {
+        "date": "2024-01-18",
+        "value": -13.3,
+        "temperature": 79,
+        "returns": {
+          "1m": 8.5,
+          "3m": 4.5,
+          "6m": 11.6
+        }
+      },
+      {
+        "date": "2024-08-16",
+        "value": -17.2,
+        "temperature": 43,
+        "returns": {
+          "1m": -4.9,
+          "3m": 0.9,
+          "6m": 0.5
+        }
+      },
+      {
+        "date": "2025-04-17",
+        "value": -12.3,
+        "temperature": 16,
+        "returns": {
+          "1m": 8.5,
+          "3m": 15.8,
+          "6m": 43.4
+        }
+      },
+      {
+        "date": "2026-11-12",
+        "value": -12.3,
+        "temperature": 25,
+        "returns": {
+          "1m": null,
+          "3m": null,
+          "6m": null
+        }
+      }
+    ],
+    "extremeSummary": {
+      "1m": {
+        "avgReturn": 2.1,
+        "medianReturn": 2,
+        "winRate": 74.2,
+        "sampleSize": 31
+      },
+      "3m": {
+        "avgReturn": 3.2,
+        "medianReturn": 2.7,
+        "winRate": 67.7,
+        "sampleSize": 31
+      },
+      "6m": {
+        "avgReturn": 3.4,
+        "medianReturn": 2.4,
+        "winRate": 61.3,
+        "sampleSize": 31
+      }
+    },
+    "correlation": {
+      "1m": 0.02,
+      "3m": 0.01,
+      "6m": 0.06
+    },
+    "coldWeakThreshold": -3,
+    "cold": {
+      "all": {
+        "all": {
+          "1m": {
+            "avgReturn": 1.3,
+            "medianReturn": 2.6,
+            "winRate": 63,
+            "sampleSize": 486
+          },
+          "3m": {
+            "avgReturn": 4,
+            "medianReturn": 3,
+            "winRate": 59.3,
+            "sampleSize": 486
+          },
+          "6m": {
+            "avgReturn": 7.4,
+            "medianReturn": 5.7,
+            "winRate": 60.3,
+            "sampleSize": 486
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": -0.3,
+            "medianReturn": 1,
+            "winRate": 54.7,
+            "sampleSize": 351
+          },
+          "3m": {
+            "avgReturn": 1.4,
+            "medianReturn": -0.4,
+            "winRate": 47.9,
+            "sampleSize": 351
+          },
+          "6m": {
+            "avgReturn": 4.9,
+            "medianReturn": 2.1,
+            "winRate": 53.6,
+            "sampleSize": 351
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 5.6,
+            "medianReturn": 5.5,
+            "winRate": 84.4,
+            "sampleSize": 135
+          },
+          "3m": {
+            "avgReturn": 10.5,
+            "medianReturn": 9,
+            "winRate": 88.9,
+            "sampleSize": 135
+          },
+          "6m": {
+            "avgReturn": 13.9,
+            "medianReturn": 10.9,
+            "winRate": 77.8,
+            "sampleSize": 135
+          }
+        }
+      },
+      "weak": {
+        "all": {
+          "1m": {
+            "avgReturn": -0.2,
+            "medianReturn": 1.4,
+            "winRate": 57.1,
+            "sampleSize": 301
+          },
+          "3m": {
+            "avgReturn": 1.1,
+            "medianReturn": 0.3,
+            "winRate": 51.8,
+            "sampleSize": 301
+          },
+          "6m": {
+            "avgReturn": 4.2,
+            "medianReturn": 4.3,
+            "winRate": 57.5,
+            "sampleSize": 301
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": -1.9,
+            "medianReturn": -0.4,
+            "winRate": 48,
+            "sampleSize": 229
+          },
+          "3m": {
+            "avgReturn": -2,
+            "medianReturn": -1.8,
+            "winRate": 39.3,
+            "sampleSize": 229
+          },
+          "6m": {
+            "avgReturn": 1.4,
+            "medianReturn": 0,
+            "winRate": 50.2,
+            "sampleSize": 229
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 5.4,
+            "medianReturn": 5.7,
+            "winRate": 86.1,
+            "sampleSize": 72
+          },
+          "3m": {
+            "avgReturn": 11.1,
+            "medianReturn": 11.1,
+            "winRate": 91.7,
+            "sampleSize": 72
+          },
+          "6m": {
+            "avgReturn": 13.2,
+            "medianReturn": 11.6,
+            "winRate": 80.6,
+            "sampleSize": 72
+          }
+        }
+      },
+      "other": {
+        "all": {
+          "1m": {
+            "avgReturn": 3.8,
+            "medianReturn": 3.3,
+            "winRate": 72.4,
+            "sampleSize": 185
+          },
+          "3m": {
+            "avgReturn": 8.6,
+            "medianReturn": 8.7,
+            "winRate": 71.4,
+            "sampleSize": 185
+          },
+          "6m": {
+            "avgReturn": 12.5,
+            "medianReturn": 7.9,
+            "winRate": 64.9,
+            "sampleSize": 185
+          }
+        },
+        "firstHalf": {
+          "1m": {
+            "avgReturn": 2.7,
+            "medianReturn": 2.6,
+            "winRate": 67.2,
+            "sampleSize": 122
+          },
+          "3m": {
+            "avgReturn": 7.9,
+            "medianReturn": 8.8,
+            "winRate": 63.9,
+            "sampleSize": 122
+          },
+          "6m": {
+            "avgReturn": 11.3,
+            "medianReturn": 6.6,
+            "winRate": 59.8,
+            "sampleSize": 122
+          }
+        },
+        "secondHalf": {
+          "1m": {
+            "avgReturn": 5.8,
+            "medianReturn": 5.2,
+            "winRate": 82.5,
+            "sampleSize": 63
+          },
+          "3m": {
+            "avgReturn": 9.9,
+            "medianReturn": 8.4,
+            "winRate": 85.7,
+            "sampleSize": 63
+          },
+          "6m": {
+            "avgReturn": 14.8,
+            "medianReturn": 10.1,
+            "winRate": 74.6,
+            "sampleSize": 63
+          }
+        }
+      }
+    }
+  },
+  "latest": {
+    "date": "2026-11-19",
+    "temperature": 18,
+    "flow4w": -6300,
+    "flowBandKey": "low",
+    "marginChange4w": -12.3,
+    "marginBandKey": "very-low"
+  }
+}

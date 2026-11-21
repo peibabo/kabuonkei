@@ -24,7 +24,8 @@
 - **イベント詳細ページ（`/events/[slug]`）** - 15件の主要市場イベントについて、その日の日米温度・前後±90日の温度推移・1M/3M/6M/1Y 実リターンに加え、各イベントごとの「当時の背景と市場心理」解説（Markdown 本文、1本 500〜600字）を表示する恒久 URL（全件 SSG、イベント別 OG 画像付き）
 - **主要イベント一覧（`/events`）** - 15件を日付降順で俯瞰できるインデックスページ。Footer・About・類似日カード末尾から導線あり
 - **投資家タイプ別ガイド（`/guide`）** - NISA積立 / 短期トレーダー / FIRE目指し の 3 タイプ別に、温度帯ごとの具体的なアクション指針を解説するガイドページ。Footer・About から導線あり
-- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。現在6本公開：
+- **分析記事（`/analysis`）** - 独自データを掛け合わせた深掘り SEO 記事。現在7本公開：
+  - 「海外投資家の売り越し・信用買い残の減少は買い時のサイン？— 日経平均のその後を検証」（`/analysis/supply-demand-signals`）: 海外投資家の 4 週累計（2016年〜）と信用買い残の 4 週変化（2002年〜）の区切りごとの 1〜6ヶ月後のリターン、極端な値の回の一覧、前半・後半、市場温度が低い日を需給で分けた比較。JPX の公表日のずれを再現
   - 「日経平均の125日移動平均乖離率は買い時・売り時のサインになる？— 1985年以降で検証」（`/analysis/nikkei-ma-deviation`）: 市場温度の元の値（125日線乖離率）の区切りごとの 1ヶ月〜1年後のリターン、±15% を超えた回の一覧（日数と回数の両方）、前半・後半の比較
   - 「日経平均が1日5%以上下げた後どうなった？— 1985年以降の急落を全件検証」（`/analysis/nikkei-crash-aftermath`）: 急落した日に買った場合の 1ヶ月〜1年後のリターン、急落した日が底だったか、急落した日の温度別の比較、全件一覧
   - 「暴落時に強い業種はどれ？— 温度帯×17業種の過去10年検証」（`/analysis/sector-rotation-temperature`）: 極寒後に最も戻ったのはディフェンシブではなく機械・電機・鉄鋼という逆説を軸に、温度帯別のセクターローテーションを検証。基データは `/sectors` と共通
@@ -80,6 +81,7 @@ npm run generate:vix-sp500                  # VIX × S&P500 × 日経225 + JP温
 npm run generate:divergence                 # 日米温度の乖離 × {N225, S&P500} 前方リターン分析 JSON（/analysis 用）
 npm run generate:nikkei-crash               # 日経225 の急落（1日 -5% 以下）後の値動き JSON（/analysis 用）
 npm run generate:nikkei-ma-deviation        # 日経225 の 125 日線乖離率ごとのその後 JSON（/analysis 用）
+npm run generate:supply-demand              # 海外投資家・信用買い残ごとの日経225 のその後 JSON（/analysis 用）
 npm run generate:portfolio-history          # 温度連動ポートフォリオ バックフィル（/portfolio 用、月次フル再生成）
 npm run snapshot:portfolio                  # 温度連動ポートフォリオ 日次 append（平日 JST 07:00 に自動実行）
 

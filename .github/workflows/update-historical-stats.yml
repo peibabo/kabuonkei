@@ -61,6 +61,11 @@ jobs:
       # JPX が一時的に読めなくても他の統計の更新を止めないよう、失敗しても先に進む（JSON は書き換えずに前回分のまま）
       - run: npm run update:investor-flow
         continue-on-error: true
+      # 海外投資家・信用買い残ごとの日経225 のその後（/analysis/supply-demand-signals）。
+      # Yahoo の ^N225 と、上の margin-ratio-history.json・investor-flow-history.json を読む
+      # 失敗しても他の統計の更新を止めないよう先に進む（JSON は前回分のまま）
+      - run: npm run generate:supply-demand
+        continue-on-error: true
       # 解説記事（日経VI・ドル円・裁定残・投資部門別）の補足集計。Yahoo の ^N225 と JPY=X、
       # 上の investor-flow-history.json を読む
       - run: npm run generate:learn-extra
@@ -73,6 +78,6 @@ jobs:
           git diff --quiet src/data/ && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/events-enriched.json src/data/cross-historical-stats.json src/data/japan-sector-heatmap.json src/data/score-distribution.json src/data/margin-ratio-history.json src/data/margin-ratio-analysis.json src/data/vix-sp500-analysis.json src/data/divergence-analysis.json src/data/nikkei-crash-analysis.json src/data/nikkei-ma-deviation-analysis.json src/data/learn-extra-stats.json src/data/investor-flow-history.json src/data/portfolio-history.json
+          git add src/data/historical-stats.json src/data/temperature-history.json src/data/japan-historical-stats.json src/data/japan-temperature-history.json src/data/japan-similar-days.json src/data/us-similar-days.json src/data/events-enriched.json src/data/cross-historical-stats.json src/data/japan-sector-heatmap.json src/data/score-distribution.json src/data/margin-ratio-history.json src/data/margin-ratio-analysis.json src/data/vix-sp500-analysis.json src/data/divergence-analysis.json src/data/nikkei-crash-analysis.json src/data/nikkei-ma-deviation-analysis.json src/data/supply-demand-analysis.json src/data/learn-extra-stats.json src/data/investor-flow-history.json src/data/portfolio-history.json
           git commit -m "chore: 統計データを更新（$(date +%Y-%m-%d)）"
           git push

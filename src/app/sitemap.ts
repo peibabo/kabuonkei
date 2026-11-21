@@ -14,6 +14,10 @@ import {
   getNikkeiMaDeviationAnalysis,
   MA_DEVIATION_ARTICLE,
 } from "@/lib/nikkei-ma-deviation-analysis";
+import {
+  getSupplyDemandAnalysis,
+  SUPPLY_DEMAND_ARTICLE,
+} from "@/lib/supply-demand-analysis";
 import { getStockCodes, getStockTemperatureFile } from "@/lib/stock-temperature";
 
 /** 利用規約・プライバシーポリシーの最終改定日（各ページの「最終改定日」と揃える） */
@@ -71,6 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const sectorHeatmapModified = new Date(sectorHeatmap.generatedAt);
   const crashAnalysisModified = new Date(getNikkeiCrashAnalysis().generatedAt);
   const maDeviationModified = new Date(getNikkeiMaDeviationAnalysis().generatedAt);
+  const supplyDemandModified = new Date(getSupplyDemandAnalysis().generatedAt);
   const analysisIndexModified = new Date(
     Math.max(
       marginAnalysisModified.getTime(),
@@ -78,7 +83,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       divergenceAnalysisModified.getTime(),
       sectorHeatmapModified.getTime(),
       crashAnalysisModified.getTime(),
-      maDeviationModified.getTime()
+      maDeviationModified.getTime(),
+      supplyDemandModified.getTime()
     )
   );
 
@@ -176,6 +182,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}${MA_DEVIATION_ARTICLE.path}`,
       lastModified: maDeviationModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}${SUPPLY_DEMAND_ARTICLE.path}`,
+      lastModified: supplyDemandModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },

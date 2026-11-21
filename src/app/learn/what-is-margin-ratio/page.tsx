@@ -498,6 +498,13 @@ export default function WhatIsMarginRatioPage() {
               >
                 信用倍率 × 株温計 — 過去10年の徹底検証
               </Link>
+              {" "}/{" "}
+              <Link
+                href="/analysis/supply-demand-signals"
+                className="underline hover:text-gray-900"
+              >
+                信用買い残の減少は買い時のサイン？
+              </Link>
             </li>
             <li>
               トップ:{" "}

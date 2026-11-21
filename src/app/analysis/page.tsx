@@ -13,6 +13,10 @@ import {
   getNikkeiMaDeviationAnalysis,
   MA_DEVIATION_ARTICLE,
 } from "@/lib/nikkei-ma-deviation-analysis";
+import {
+  getSupplyDemandAnalysis,
+  SUPPLY_DEMAND_ARTICLE,
+} from "@/lib/supply-demand-analysis";
 
 export const metadata: Metadata = {
   title: "分析記事",
@@ -43,7 +47,16 @@ export default function AnalysisIndexPage() {
   const sectorHeatmap = getJapanSectorHeatmap();
   const crashAnalysis = getNikkeiCrashAnalysis();
   const maDeviation = getNikkeiMaDeviationAnalysis();
+  const supplyDemand = getSupplyDemandAnalysis();
   const articles: AnalysisArticle[] = [
+    {
+      slug: SUPPLY_DEMAND_ARTICLE.slug,
+      icon: "⚖️",
+      title: SUPPLY_DEMAND_ARTICLE.title,
+      description:
+        "海外投資家が大きく売り越した後、信用買い残が急に減った後に、日経平均はどう動いたか。JPX の投資部門別売買状況と信用取引残高を、公表日のずれも再現して検証。需給の数字は買い時・売り時のサインになるのか、市場温度と組み合わせると何か分かるのかを確かめた。",
+      dateLabel: `最終更新: ${supplyDemand.generatedAt}`,
+    },
     {
       slug: MA_DEVIATION_ARTICLE.slug,
       icon: "📏",

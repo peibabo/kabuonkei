@@ -571,6 +571,15 @@ export default function WhatIsInvestorFlowPage() {
               </Link>
             </li>
             <li>
+              分析記事:{" "}
+              <Link
+                href="/analysis/supply-demand-signals"
+                className="underline hover:text-gray-900"
+              >
+                海外投資家の売り越し・信用買い残の減少は買い時のサイン？
+              </Link>
+            </li>
+            <li>
               解説記事:{" "}
               <Link
                 href="/learn/what-is-margin-ratio"

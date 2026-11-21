@@ -35,6 +35,7 @@
     "report:analytics": "npx tsx scripts/report-analytics.ts",
     "generate:nikkei-crash": "npx tsx scripts/generate-nikkei-crash-analysis.ts",
     "generate:nikkei-ma-deviation": "npx tsx scripts/generate-nikkei-ma-deviation-analysis.ts",
+    "generate:supply-demand": "npx tsx scripts/generate-supply-demand-analysis.ts",
     "fonts:download": "npx tsx scripts/download-fonts.ts",
     "generate:learn-extra": "npx tsx scripts/generate-learn-extra-stats.ts",
     "update:investor-flow": "npx tsx scripts/update-investor-flow-history.ts"

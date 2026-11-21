@@ -2,6 +2,22 @@
 
 独自データを掛け合わせた深掘り SEO 記事の置き場所。ペルソナ別の `/guide`、イベント別の `/events` とは別枠で、トピック×独自データのハイブリッド記事を貯める。収益化戦略上は「すでにメイン口座を持つ中級者」向けに信用取引サブ口座アフィなどの文脈適合 CTA を添える。
 
+## 第7弾: 海外投資家と信用買い残（`/analysis/supply-demand-signals`）
+
+「海外投資家の売り越し」「信用買い残の減少（投げ売り）」が買い時・売り時のサインになるかを検証する記事（2026-11-21 公開）。`npm run analyze:supply`（PR #166）の試算を、0〜100 の「需給の温度」ではなく**実数の区切り**で読者向けに書き直したもの。トップのゲージ下で需給を実数のまま参考表示している理由の説明も兼ねる。フックは「1兆円以上の売り越しの後も、1兆円以上の買い越しの後も成績が良い（U 字）」「信用買い残の 10% 以上の減少は前半（〜2014）と後半で結果が逆」「順位相関はほぼゼロ」。
+
+**データ層**:
+- `src/data/supply-demand-analysis.json`: Yahoo `^N225` 日足（1985-01〜。市場温度の助走）と `investor-flow-history.json`（2016〜）・`margin-ratio-history.json`（2002〜）から生成。生成スクリプト: `npm run generate:supply-demand`（`scripts/generate-supply-demand-analysis.ts`）。月次の `update-historical-stats.yml` で `update:investor-flow` の後に再生成。JST 16 時より前の実行では当日の途中値を捨てる
+- 集計の純粋関数: `scripts/_lib/supply-demand-signals.ts` の `computeSupplyDemandAnalysis()`。営業日ごとの値は `supply-temperature-analysis.ts` の `buildSupplyDays()`（各週は公表後最初の水・木曜の翌営業日から使う＝先読みなし）。区切り（`FLOW_BANDS`: 1兆円以上の売り越し / 3,000億〜1兆 / ±3,000億 / 3,000億〜1兆の買い越し / 1兆円以上の買い越し、`MARGIN_BANDS`: −10%以下 / −10〜−3 / ±3 / +3〜+10 / +10%以上）ごとに 21/63/126 営業日後のリターンを日数ベースで集計。前半・後半は指標ごとに日数の中点で分ける。極端な値（海外勢 −1兆円以下 / 信用買い残 −10%以下）は 20 営業日以内をまとめて回数ベースも持つ。市場温度 20 以下の日を「需給も悪い日」（海外勢 −1兆円以下 / 信用買い残 −3%以下）とそれ以外に分けた `cold` も持つ（海外勢は温度が低い日はほぼ毎日売り越しなので、売り越しの有無ではなく −1兆円で分ける）
+- 型とアクセサ: `src/lib/supply-demand-analysis.ts`（`classifySupply` / `findSupplyBand` / `formatFlowOku` / `formatMarginChange`）
+
+**UI**:
+- `src/app/analysis/supply-demand-signals/page.tsx`: Server Component のみ。結論・2つの数字の説明・検証のやり方・海外投資家（区切り表 / −1兆円以下の回 / 前半後半）・信用買い残（同）・市場温度が低い日×需給・いまの需給・需給を温度に入れない理由・注意点。本文の言い回しはデータから決める（「逆」は両時期とも普段の日と 3 ポイント以上離れて上下が入れ替わる区切りだけ、温度が低い日の差が前半だけで説明できるかは平均 3 ポイントで判定、など）
+- `opengraph-image.tsx`: グレー系。1兆円以上売り越した後の 6ヶ月後の上昇割合（日数ベース、回数ベースを注記）と、信用買い残 −10% 以下の「◯回中◯回」
+- `/analysis` 一覧・sitemap・`/feed.xml`・`related-reading.ts` に追加。`/learn/what-is-investor-flow`・`/learn/what-is-margin-ratio` の関連リンクから内部リンク
+
+**テスト**: `scripts/__tests__/supply-demand-signals.test.ts`（区切りの境界・表示用の文・日数と前半後半の合計・回のまとめ方・最新日の区切り・生成済み JSON の整合）
+
 ## 第6弾: 125日線乖離率（`/analysis/nikkei-ma-deviation`）
 
 市場温度の元の値である「日経平均の 125 日移動平均乖離率」が、買い時・売り時のサインになるかを 1985 年以降の全営業日で検証する記事（2026-11-20 公開。「移動平均乖離率 買い時」系の検索と、市場温度の定義を C1 単独にしたことの説明を兼ねる）。フックは「+15% 以上に離れた後は 6ヶ月後に上がった回が多く、売り時ではなかった」「−15% 以下は日数で見ると良いが、回数で見ると普段並み」「−10〜−5% は前半と後半で結果が逆」。
